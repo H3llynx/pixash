@@ -38,7 +38,7 @@ const handleLogin = async () => {
 </script>
 
 <template>
-    <form class="flex flex-col gap-1 w-2xs" @submit.prevent="handleLogin">
+    <form class="flex flex-col gap-1 w-full max-w-2xs" @submit.prevent="handleLogin">
         <Input v-if="!isLogin" v-model="name" label="What's your name?" id="name" placeholder="Sasha's owner"
             required />
         <Input v-model="email" label="Email address" id="email" type="email" placeholder="ilovemypet@mail.com"

@@ -10,6 +10,7 @@ const button = tv({
             ghost: "btn-hover-fill-ghost text-btn-ghost-text hover:text-brand-light bg-bg-rgba"
         },
         size: {
+            xs: "px-0.5 text-xs",
             sm: "px-1 text-sm",
             md: "px-2.5",
         }
@@ -22,7 +23,7 @@ const button = tv({
 
 const props = defineProps<{
     variant?: keyof typeof button.variants.variant
-    size?: "sm" | "md"
+    size?: keyof typeof button.variants.size
 }>()
 </script>
 

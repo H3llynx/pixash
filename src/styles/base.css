@@ -54,6 +54,9 @@
   --color-loading-bg: var(--color-green-dark);
   --color-loading-svg-1: var(--color-green-pale);
   --color-loading-svg-2: var(--color-beige);
+
+  --color-logo-bg: var(--color-brand);
+  --color-logo-text: var(--color-gold);
 }
 
 [data-theme="dark"] {
@@ -74,17 +77,18 @@
   --color-loading-bg: var(--color-purple-dark);
   --color-loading-svg-1: var(--color-purple);
   --color-loading-svg-2: var(--color-purple-light);
+
+  --color-logo-bg: var(--color-gold);
+  --color-logo-text: var(--color-purple-dark);
 }
 
 @layer base {
   body {
     width: 100vw;
+    height: 100dvh;
     font-family: var(--font-main);
     background: var(--color-bg);
     color: var(--color-text);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 
   *:focus-visible {
@@ -103,9 +107,19 @@
   button {
     transition: var(--transition-default);
   }
+
+  section,
+  header {
+    @apply w-screen p-1 md:px-3;
+  }
 }
 
 @layer components {
+  #app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 
   .toast-enter-active,
   .toast-leave-active {

@@ -50,5 +50,9 @@ label:has(input:required) span::after {
         display: block;
         color: var(--color-error);
     }
+
+    input::placeholder {
+        font-size: small;
+    }
 }
 </style>
