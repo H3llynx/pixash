@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Header from '../components/Header.vue';
+import NavBar from '../components/NavBar.vue';
 </script>
 
 <template>
@@ -15,7 +16,5 @@ import Header from '../components/Header.vue';
       <!-- events list -->
     </section>
   </main>
-  <nav aria-label="main navigation">
-    <!-- bottom nav tabs -->
-  </nav>
+  <NavBar />
 </template>
