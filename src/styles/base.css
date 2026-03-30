@@ -12,6 +12,7 @@
   --color-white: #FFFFFF;
   --color-black: #1A1A1A;
   --color-charcoal: #19171A;
+  --color-charcoal-lighter: #222024;
   --color-charcoal-rgba: rgba(25, 23, 26, 0.4);
   --color-white-rgba: rgba(255, 255, 255, 0.4);
   --color-off-white: #E8E8F0;
@@ -57,7 +58,7 @@
 
 [data-theme="dark"] {
   --color-bg: var(--color-charcoal);
-  --color-bg-2: var(--color-purple-dark);
+  --color-bg-2: var(--color-charcoal-lighter);
   --color-bg-rgba: var(--color-charcoal-rgba);
   --color-text: var(--color-off-white);
   --color-text-secondary: var(--color-grey-light);

@@ -4,7 +4,7 @@ import NavBar from '../components/NavBar.vue';
 </script>
 
 <template>
-  <Header />
+  <Header dashboard />
   <main>
     <div role="group" aria-label="Pet selector">
       <!-- Pet chips + add button -->
