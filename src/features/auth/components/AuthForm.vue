@@ -19,7 +19,7 @@ const password = ref("");
 
 watch(error, (newError) => {
     if (newError) {
-        show("error", newError, isLogin.value ? "Login error" : "Registration error")
+        show("error", newError, isLogin.value ? "Login error" : "Registration error");
     }
 });
 
@@ -47,8 +47,8 @@ const handleAuth = async () => {
             required />
         <Input v-model="password" label="Password" id="password" :type="isShowing ? 'text' : 'password'" required>
             <template #addon>
-                <Button :aria-label="isShowing ? 'Hide password' : 'View password'" @click="isShowing = !isShowing"
-                    variant="addon" size="xs">
+                <Button type="button" :aria-label="isShowing ? 'Hide password' : 'View password'"
+                    @click="isShowing = !isShowing" variant="addon" size="xs">
                     <EyeOff v-if="isShowing" :size="20" />
                     <Eye v-else :size="20" />
                 </Button>

@@ -2,13 +2,11 @@ import { FirebaseError } from 'firebase/app';
 import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { computed, ref } from 'vue';
 import { auth } from "../../../firebase";
-import { handleEmailLogin, handleEmailRegister, handleGoogleLogin } from "../services/auth";
-
+import { handleEmailLogin, handleEmailRegister, handleGoogleLogin } from "../../../services/auth";
 
 const firebaseUser = ref<User | null>(null);
 const loading = ref(true);
 const error = ref<string | null>(null);
-
 const user = computed(() => {
     if (!firebaseUser.value) return null;
     return {
@@ -47,7 +45,7 @@ export const useAuth = () => {
     const registerWithEmail = async (name: string, email: string, password: string) => {
         await handleAuthAction(async () => {
             const user = await handleEmailRegister({ name, email, password });
-            firebaseUser.value = { ...user }; // new object reference → triggers computed
+            firebaseUser.value = { ...user };
             return user;
         });
     };

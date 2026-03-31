@@ -5,7 +5,7 @@ import {
     signInWithPopup,
     updateProfile
 } from "firebase/auth"
-import { auth } from '../../../firebase'
+import { auth } from '../firebase'
 
 type Auth = {
     name?: string

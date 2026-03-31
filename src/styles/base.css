@@ -19,6 +19,7 @@
   --color-grey-light: #E0DDD6;
   --color-grey-dark: #3D3D5C;
   --color-gold: #C9953A;
+  --color-gold-rgba: rgba(201, 149, 58, 0.4);
   --color-purple: #7C6FCD;
   --color-purple-light: #9D92D8;
   --color-purple-dark: #1A1A2E;
@@ -108,9 +109,34 @@
     transition: var(--transition-default);
   }
 
+  input,
+  select {
+    border: 1px solid var(--color-border);
+    width: 100%;
+  }
+
   section,
   header {
     @apply w-screen py-1.5 px-2 md:px-3;
+  }
+
+  label {
+    p {
+      margin-bottom: 0.5rem;
+    }
+
+    &:has(input:required, select:required) p::after {
+      content: "*";
+      margin-left: 3px;
+      font-size: x-small;
+      vertical-align: text-top;
+    }
+
+    svg {
+      position: absolute;
+      right: -2rem;
+      flex-shrink: 0;
+    }
   }
 }
 
@@ -139,5 +165,31 @@
   .filter-blur {
     -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(3px);
+  }
+
+  .check-icon,
+  .error-icon {
+    display: none;
+  }
+
+  .input-container {
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+
+    input::placeholder {
+      font-size: small;
+    }
+
+    &:has(:user-valid) .check-icon {
+      display: block;
+      color: var(--color-success);
+    }
+
+    &:has(:user-invalid) .error-icon {
+      display: block;
+      color: var(--color-error);
+    }
   }
 }

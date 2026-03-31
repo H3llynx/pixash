@@ -11,7 +11,7 @@ const button = tv({
             addon: "text-text-secondary addon-focus"
         },
         size: {
-            xs: "px-0.5 text-xs",
+            xs: "px-0.5  text-sm",
             sm: "px-1 text-sm",
             md: "px-2.5",
         }
