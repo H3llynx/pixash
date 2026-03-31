@@ -11,24 +11,27 @@ const props = withDefaults(defineProps<{
 }>(), {
     type: "text"
 })
-const emit = defineEmits(["update:modelValue"])
+const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <template>
     <label :for="id">
-        <span v-if="label">{{ label }}</span>
+        <p v-if="label" class="mb-0.5">{{ label }}</p>
         <div class="input-container">
             <input :id="id" :type="type" :placeholder="placeholder" :value="modelValue"
-                class="border border-border rounded-full font-medium px-1 py-0.5 w-full mt-0.5"
-                @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)" v-bind="$attrs" />
-            <Check :size="18" class="check-icon hidden" />
+                class="border border-border rounded-full font-medium pl-1 pr-2.5 py-0.5 w-full"
+                @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)" v-bind="$attrs">
+            <div class="absolute right-[2px] top-1/2 -translate-y-1/2">
+                <slot name="addon"></slot>
+            </div>
+            <Check class="check-icon hidden" />
             <AlertCircle class="error-icon hidden" />
         </div>
     </label>
 </template>
 
 <style scoped>
-label:has(input:required) span::after {
+label:has(input:required) p::after {
     content: "*";
     margin-left: 3px;
     font-size: x-small;
@@ -36,10 +39,16 @@ label:has(input:required) span::after {
 }
 
 .input-container {
+    position: relative;
     display: flex;
     gap: 0.5rem;
     align-items: center;
-    margin-top: 0.5;
+
+    svg {
+        position: absolute;
+        right: -2rem;
+        flex-shrink: 0;
+    }
 
     &:has(:user-valid) .check-icon {
         display: block;

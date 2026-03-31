@@ -110,7 +110,7 @@
 
   section,
   header {
-    @apply w-screen p-1 md:px-3;
+    @apply w-screen py-1.5 px-2 md:px-3;
   }
 }
 

@@ -45,7 +45,11 @@ export const useAuth = () => {
     };
 
     const registerWithEmail = async (name: string, email: string, password: string) => {
-        await handleAuthAction(() => handleEmailRegister({ name, email, password }));
+        await handleAuthAction(async () => {
+            const user = await handleEmailRegister({ name, email, password });
+            firebaseUser.value = { ...user }; // new object reference → triggers computed
+            return user;
+        });
     };
 
     const loginWithGoogle = async () => {

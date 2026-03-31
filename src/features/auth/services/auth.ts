@@ -14,18 +14,18 @@ type Auth = {
 }
 
 export const handleEmailRegister = async ({ name, email, password }: Auth) => {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-    if (name) await updateProfile(userCredential.user, { displayName: name })
-    return userCredential.user
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(userCredential.user, { displayName: name });
+    return userCredential.user;
 }
 
 export const handleEmailLogin = async ({ email, password }: Auth) => {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password)
-    return userCredential.user
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
 }
 
 export const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider()
-    const userCredential = await signInWithPopup(auth, provider)
-    return userCredential.user
+    const provider = new GoogleAuthProvider();
+    const userCredential = await signInWithPopup(auth, provider);
+    return userCredential.user;
 }
