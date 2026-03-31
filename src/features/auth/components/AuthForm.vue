@@ -48,7 +48,7 @@ const handleAuth = async () => {
         <Input v-model="password" label="Password" id="password" :type="isShowing ? 'text' : 'password'" required>
             <template #addon>
                 <Button :aria-label="isShowing ? 'Hide password' : 'View password'" @click="isShowing = !isShowing"
-                    variant="ghost" size="xs" class="text-text-secondary">
+                    variant="addon" size="xs">
                     <EyeOff v-if="isShowing" :size="20" />
                     <Eye v-else :size="20" />
                 </Button>
