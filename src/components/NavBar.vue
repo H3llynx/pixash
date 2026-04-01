@@ -29,6 +29,10 @@ nav a {
     align-items: center;
     color: var(--color-text-secondary);
     font-size: small;
+
+    &:not(.router-link-exact-active) {
+        opacity: 0.8
+    }
 }
 
 nav a.router-link-exact-active {

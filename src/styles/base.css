@@ -18,6 +18,7 @@
   --color-off-white: #E8E8F0;
   --color-grey-light: #E0DDD6;
   --color-grey-dark: #3D3D5C;
+  --color-grey-mid: #888888;
   --color-gold: #C9953A;
   --color-gold-rgba: rgba(201, 149, 58, 0.4);
   --color-purple: #7C6FCD;
@@ -26,7 +27,6 @@
   --color-green-dark: #1C3A2A;
   --color-green-mid: #2D5240;
   --color-green-pale: #8FAF8F;
-  --color-grey-light: #999999;
 
   --color-error: #E24B4A;
   --color-error-bg: #FCEBEB;
@@ -42,7 +42,8 @@
   --color-bg-2: var(--color-white);
   --color-bg-rgba: var(--color-white-rgba);
   --color-text: var(--color-black);
-  --color-text-secondary: var(--color-grey-light);
+  --color-text-secondary: var(--color-grey-mid);
+  --color-text-chip: var(--color-gold);
   --color-border: var(--color-grey-light);
   --color-brand: var(--color-green-dark);
   --color-brand-light: var(--color-green-pale);
@@ -65,7 +66,7 @@
   --color-bg-2: var(--color-charcoal-lighter);
   --color-bg-rgba: var(--color-charcoal-rgba);
   --color-text: var(--color-off-white);
-  --color-text-secondary: var(--color-grey-light);
+  --color-text-chip: var(--color-grey-dark);
   --color-border: var(--color-grey-dark);
   --color-brand: var(--color-purple);
   --color-brand-light: var(--color-purple-light);
@@ -142,7 +143,7 @@
 
 @layer components {
   #app {
-    height: 100%;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
   }

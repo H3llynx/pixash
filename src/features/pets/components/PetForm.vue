@@ -54,8 +54,6 @@ const handleSubmit = () => {
 
 <style scoped>
 button {
-    display: flex;
-    align-items: center;
     gap: 0.8rem;
     justify-content: center;
 }

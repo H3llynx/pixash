@@ -1,6 +1,6 @@
 import { addDoc, collection, getDocs, getFirestore, query, serverTimestamp, where } from 'firebase/firestore';
 import { DB } from '../config';
-import type { Pet } from '../features/pets/types';
+import type { Pet, PetExtended } from '../features/pets/types';
 
 const db = getFirestore();
 
@@ -16,15 +16,13 @@ export const addPet = async (pet: Pet, userId: string) => {
   };
   try {
     const docRef = await addDoc(collection(db, DB.pets), newPet);
-    console.log("Document written with ID: ", docRef.id);
-    console.log(docRef)
     return docRef.id;
   } catch (error) {
     console.error("Error adding document: ", error);
   }
 };
 
-export const fetchPets = async (userId: string): Promise<Pet[]> => {
+export const fetchPets = async (userId: string): Promise<PetExtended[]> => {
   try {
     const snapshot = await getDocs(query(
       collection(db, DB.pets),
@@ -38,7 +36,7 @@ export const fetchPets = async (userId: string): Promise<Pet[]> => {
 
     return snapshot.docs.map(doc => ({
       id: doc.id,
-      ...doc.data() as Omit<Pet, "id">
+      ...doc.data() as Omit<PetExtended, "id">
     }));
   } catch (error) {
     console.error("Fetch pets error:", error);

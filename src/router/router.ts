@@ -23,7 +23,7 @@ const router = createRouter({
       component: AuthView
     }
   ]
-})
+});
 
 router.beforeEach(async (to, _from) => {
   await authReady;
@@ -32,6 +32,6 @@ router.beforeEach(async (to, _from) => {
   } else if (to.path === "/auth" && user.value) {
     return "/dashboard";
   }
-})
+});
 
 export default router

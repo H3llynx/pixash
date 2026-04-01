@@ -60,9 +60,6 @@ ul {
     }
 
     button {
-        display: flex;
-        align-items: center;
-        gap: 5px;
         text-align: left;
         background: none;
         -webkit-backdrop-filter: none;
