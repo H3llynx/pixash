@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import type { Pet } from '../types';
+import PetProfile from './PetProfile.vue';
 import PetSelector from './PetSelector.vue';
-
-const props = defineProps<{ pet: Pet }>();
 </script>
 
 <template>
-    <section aria-label="Pet summary">
+    <div class="flex flex-col gap-1.5">
         <PetSelector />
-    </section>
-    <section aria-label="Upcoming events">
-        <!-- events list -->
-    </section>
+        <PetProfile />
+        <section aria-label="Upcoming events">
+            <!-- events list -->
+        </section>
+    </div>
 </template>

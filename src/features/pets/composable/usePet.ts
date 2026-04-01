@@ -1,5 +1,5 @@
 import { FirebaseError } from "firebase/app";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { addPet, fetchPets } from "../../../services/pets";
 import { useAuth } from "../../auth/composables/useAuth";
 import type { Pet, PetExtended } from "../types";
@@ -8,13 +8,13 @@ const { user } = useAuth();
 
 const pets = ref<PetExtended[]>([]);
 const selectedPet = ref<PetExtended | null>(null);
-const loading = ref(false)
+const loading = ref(false);
 const error = ref<string | null>(null);
 const hasPets = computed(() => pets.value.length > 0);
+const isAdding = ref(false);
 
 const fetchUserPets = async () => {
   if (!user.value) {
-    pets.value = [];
     return;
   }
   loading.value = true;
@@ -44,8 +44,10 @@ const addNewPet = async (newPet: Pet) => {
   error.value = null
 
   try {
-    await addPet(newPet, user.value.uid);
+    const newPetId = await addPet(newPet, user.value.uid);
     await fetchUserPets();
+    const addedPet = pets.value.find(pet => pet.id === newPetId)
+    if (addedPet) selectPet(addedPet);
   } catch (e) {
     if (e instanceof FirebaseError) {
       error.value = e.message;
@@ -53,14 +55,33 @@ const addNewPet = async (newPet: Pet) => {
       error.value = "An unexpected error occurred";
     }
   } finally {
-    loading.value = false
+    loading.value = false;
+    isAdding.value = false;
   }
 };
 
 const selectPet = (pet: PetExtended) => {
+  isAdding.value = false;
   selectedPet.value = pet;
 }
 
+const startAdding = () => {
+  selectedPet.value = null;
+  isAdding.value = true;
+}
+
+const stopAdding = () => {
+  isAdding.value = false;
+}
+
+watch(user, (newUser) => {
+  if (!newUser) {
+    pets.value = [];
+    selectedPet.value = null;
+    isAdding.value = false;
+  };
+});
+
 export const usePets = () => {
-  return { pets, selectedPet, selectPet, loading, error, fetchUserPets, addNewPet, hasPets };
+  return { pets, selectedPet, selectPet, loading, error, isAdding, startAdding, stopAdding, fetchUserPets, addNewPet, hasPets };
 };

@@ -1,12 +1,12 @@
 
 export const SPECIES = [
-    { name: "dog", hasBreed: true },
-    { name: "cat", hasBreed: true },
-    { name: "small mammal", hasBreed: false },
-    { name: "bird", hasBreed: false },
-    { name: "fish", hasBreed: false },
-    { name: "reptile", hasBreed: false },
-    { name: "amphibian", hasBreed: false },
+    { name: "dog", hasBreed: true, icon: "🐶" },
+    { name: "cat", hasBreed: true, icon: "🐱" },
+    { name: "small mammal", hasBreed: false, icon: "🐹" },
+    { name: "bird", hasBreed: false, icon: "🐦" },
+    { name: "fish", hasBreed: false, icon: "🐠" },
+    { name: "reptile", hasBreed: false, icon: "🦎" },
+    { name: "amphibian", hasBreed: false, icon: "🐸" },
 ] as const;
 
 export const dogBreeds = [

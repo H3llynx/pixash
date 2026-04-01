@@ -2,14 +2,14 @@
 import { tv } from 'tailwind-variants';
 
 const button = tv({
-    base: "rounded-full font-medium py-0.5 filter-blur flex items-center gap-[5px]",
+    base: "rounded-full font-medium py-0.5 filter-blur flex items-center gap-[5px] justify-center",
     variants: {
         variant: {
             primary: "btn-hover-fill bg-brand border border-brand text-btn-primary-text",
             secondary: "btn-hover-fill border border-brand text-brand bg-bg-rgba",
             ghost: "btn-hover-fill-ghost text-btn-ghost-text hover:text-brand-light bg-bg-rgba",
             addon: "text-text-secondary addon-focus",
-            chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary",
+            chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary capitalize",
         },
         size: {
             xs: "px-0.5 text-sm",

@@ -1,5 +1,5 @@
 <template>
-    <div class="animate-pulse flex flex-col gap-1.5 py-1.5 px-2 md:px-3">
+    <div class="animate-pulse flex flex-col gap-1.5">
 
         <!-- Pet switcher chips -->
         <div class="flex gap-0.5">
