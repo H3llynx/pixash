@@ -9,6 +9,8 @@ export const SPECIES = [
     { name: "amphibian", hasBreed: false, icon: "🐸" },
 ] as const;
 
+export const SEX = ["male", "female"] as const;
+
 export const dogBreeds = [
     { name: "Mixed Breed", value: "mixed" },
     { name: "Unknown", value: "unknown" },
@@ -107,5 +109,11 @@ export const petFields = {
         id: "pet-birth",
         label: "Birth date",
         type: "date",
+    },
+    sex: {
+        id: "pet-sex",
+        label: "Sex",
+        options: SEX,
+        type: "radio",
     }
 };

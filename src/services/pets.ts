@@ -5,12 +5,13 @@ import type { Pet, PetExtended } from '../features/pets/types';
 const db = getFirestore();
 
 export const addPet = async (pet: Pet, userId: string) => {
-  const { name, species, breed, birthDate } = pet
+  const { name, species, breed, birthDate, sex } = pet
   const newPet = {
     name: name,
     species: species,
     breed: breed ?? null,
     birthDate: birthDate,
+    sex: sex,
     ownerUid: userId,
     createdAt: serverTimestamp()
   };

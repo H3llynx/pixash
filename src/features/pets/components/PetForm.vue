@@ -8,7 +8,7 @@ import { useToast } from '../../../composables/useToast';
 import { usePets } from '../composable/usePet';
 import { petFields } from '../config';
 
-const { name, species, breed, birthDate } = petFields;
+const { name, species, breed, birthDate, sex } = petFields;
 const { error, selectedPet } = usePets();
 const { show } = useToast();
 const { addNewPet } = usePets();
@@ -17,7 +17,8 @@ const formData = reactive({
     name: "",
     species: species.options[0].name,
     breed: "",
-    birthDate: ""
+    birthDate: "",
+    sex: sex.options[0]
 });
 
 const getBreedOptions = (species: string) => {
@@ -60,6 +61,11 @@ watch(selectedPet, (newSelectedPet) => {
                     {{ option.name }}
                 </option>
             </Dropdown>
+            <fieldset>
+                <legend>{{ sex.label }}</legend>
+                <Input v-model="formData.sex" v-for="(option, index) in sex.options" :label="option" :type="sex.type"
+                    :name="sex.id" :value="option" :required="index === 0" />
+            </fieldset>
             <Input v-model="formData.birthDate" :id="birthDate.id" :type="birthDate.type" :label="birthDate.label"
                 required />
             <Button>Add pet

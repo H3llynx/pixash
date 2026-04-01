@@ -1,10 +1,11 @@
-import type { SPECIES } from "./config";
+import type { SEX, SPECIES } from "./config";
 
 export type Pet = {
     name: string;
     species: typeof SPECIES[number]["name"];
     breed?: string;
     birthDate: string;
+    sex: typeof SEX[number];
 }
 
 export type PetExtended = Pet & {

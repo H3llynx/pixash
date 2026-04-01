@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { AlertCircle, Check } from '@lucide/vue';
+import { AlertCircle } from '@lucide/vue';
 
 defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<{
-    id: string
+    id?: string
     label?: string
     type?: string
     placeholder?: string
@@ -19,13 +19,20 @@ const emit = defineEmits(["update:modelValue"]);
         <p v-if="label">{{ label }}</p>
         <div class="input-container">
             <input :id="id" :type="type" :placeholder="placeholder" :value="modelValue"
-                class="bg-bg-2 rounded-full font-medium pl-1 pr-2.5 py-0.5"
-                @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)" v-bind="$attrs">
+                :checked="type === 'radio' ? modelValue === $attrs.value : undefined"
+                class="bg-bg-2 rounded-full font-medium pl-1 pr-2.5 py-0.5" tabindex="0"
+                @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)" v-bind="$attrs" />
             <div class="absolute right-[2px] top-1/2 -translate-y-1/2">
                 <slot name="addon"></slot>
             </div>
-            <Check class="check-icon" />
             <AlertCircle class="error-icon" />
         </div>
     </label>
 </template>
+
+<style scoped>
+input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+</style>

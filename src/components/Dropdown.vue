@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AlertCircle, Check } from '@lucide/vue';
+import { AlertCircle } from '@lucide/vue';
 
 const props = defineProps<{
     id: string
@@ -17,7 +17,6 @@ const emit = defineEmits(["update:modelValue"]);
                 v-bind="$attrs" :id="id">
                 <slot />
             </select>
-            <Check class="check-icon" />
             <AlertCircle class="error-icon" />
         </div>
     </label>

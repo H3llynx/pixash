@@ -17,7 +17,7 @@ onMounted(async () => {
 
 <template>
   <Header dashboard />
-  <main class="pb-5">
+  <main class="pb-8 flex flex-col gap-2">
     <DashboardSkeleton v-if="loading" />
     <PetSummary v-else-if="hasPets" />
     <template v-else>
@@ -31,7 +31,7 @@ onMounted(async () => {
         </p>
       </section>
     </template>
-    <PetForm v-if="isAdding" />
+    <PetForm v-if="isAdding && !loading" />
   </main>
   <NavBar />
 </template>

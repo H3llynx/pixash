@@ -121,24 +121,48 @@
     @apply w-screen py-1.5 px-2 md:px-3;
   }
 
+  label p,
+  fieldset:has(input[type="radio"]) legend {
+    margin-bottom: 0.5rem;
+  }
+
   label {
-    p {
-      margin-bottom: 0.5rem;
+    &:has(input[type="radio"]) {
+      cursor: pointer;
+
+      p {
+        width: min-content;
+        text-transform: capitalize;
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        background: var(--color-bg-2);
+        border: 1px solid var(--color-border);
+      }
+
+      &:focus-within p {
+        outline-width: 2px;
+        outline-style: solid;
+        outline-offset: 4px;
+        outline-color: var(--color-gold);
+      }
     }
 
-    &:has(input:required, select:required) p::after {
-      content: "*";
-      margin-left: 3px;
-      font-size: x-small;
-      vertical-align: text-top;
+    &:has(input[type="radio"]:checked) p {
+      background: var(--color-brand-light);
     }
+  }
 
-    .check-icon,
-    .error-icon {
-      position: absolute;
-      right: -2rem;
-      flex-shrink: 0;
-    }
+  label:has(input:not([type="radio"]):required, select:required) p::after,
+  fieldset:has(input:required) legend::after {
+    content: "*";
+    margin-left: 3px;
+    font-size: x-small;
+    vertical-align: text-top;
+  }
+
+  fieldset:has(input[type="radio"]) {
+    display: flex;
+    gap: 0.5rem;
   }
 }
 
@@ -169,7 +193,6 @@
     backdrop-filter: blur(3px);
   }
 
-  .check-icon,
   .error-icon {
     display: none;
   }
@@ -184,9 +207,10 @@
       font-size: small;
     }
 
-    &:has(:user-valid) .check-icon {
-      display: block;
-      color: var(--color-success);
+    .error-icon {
+      position: absolute;
+      right: -2rem;
+      flex-shrink: 0;
     }
 
     &:has(:user-invalid) .error-icon {
