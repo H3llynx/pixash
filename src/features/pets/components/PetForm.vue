@@ -8,7 +8,7 @@ import { useToast } from '../../../composables/useToast';
 import { usePets } from '../composable/usePet';
 import { petFields } from '../config';
 
-const { name, species, breed, birthDate, sex } = petFields;
+const { name, species, breed, birthDate, sex, sterilized } = petFields;
 const { error, selectedPet } = usePets();
 const { show } = useToast();
 const { addNewPet } = usePets();
@@ -18,7 +18,8 @@ const formData = reactive({
     species: species.options[0].name,
     breed: "",
     birthDate: "",
-    sex: sex.options[0]
+    sex: sex.options[0],
+    sterilized: false
 });
 
 const getBreedOptions = (species: string) => {
@@ -48,7 +49,7 @@ watch(selectedPet, (newSelectedPet) => {
 </script>
 <template>
     <section>
-        <form class="flex flex-col gap-1 w-full max-w-2xs m-auto" @submit.prevent="handleSubmit">
+        <form class="flex flex-col gap-1 w-full max-w-md" @submit.prevent="handleSubmit">
             <Input v-model="formData.name" :id="name.id" :type="name.type" :label="name.label" required />
             <Dropdown v-model="formData.species" :id="species.id" :label="species.label" required>
                 <option v-for="option in species.options" :value="option.name" :key="option.name">{{ option.name }}
@@ -63,8 +64,14 @@ watch(selectedPet, (newSelectedPet) => {
             </Dropdown>
             <fieldset>
                 <legend>{{ sex.label }}</legend>
-                <Input v-model="formData.sex" v-for="(option, index) in sex.options" :label="option" :type="sex.type"
-                    :name="sex.id" :value="option" :required="index === 0" />
+                <Input v-model="formData.sex" v-for="(option, index) in sex.options" :label="option" :key="option"
+                    :type="sex.type" :name="sex.name" :value="option" :required="index === 0" />
+            </fieldset>
+            <fieldset>
+                <legend>{{ sterilized.label }}</legend>
+                <Input v-model="formData.sterilized" v-for="(option, index) in sterilized.options" :label="option.text"
+                    :type="sterilized.type" :name="sterilized.name" :key="option.text" :value="option.value"
+                    :required="index === 0" />
             </fieldset>
             <Input v-model="formData.birthDate" :id="birthDate.id" :type="birthDate.type" :label="birthDate.label"
                 required />

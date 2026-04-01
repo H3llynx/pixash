@@ -8,7 +8,7 @@ const { pets, selectPet, selectedPet, startAdding, isAdding } = usePets();
 </script>
 
 <template>
-    <div aria-label="Pet selector" class="flex gap-0.5">
+    <div aria-label="Pet selector" class="pet-selector flex gap-0.5 px-2 md:px-3 overflow-x-scroll">
         <Button variant="chip" size="sm" v-for="pet in pets" :class="selectedPet?.id === pet.id && 'active'"
             @click="selectPet(pet)">
             <span aria-hidden>{{ getIcon(pet) }}</span>
@@ -25,5 +25,9 @@ const { pets, selectPet, selectedPet, startAdding, isAdding } = usePets();
     color: var(--color-text-chip);
     border-color: var(--color-brand);
     font-weight: 500;
+}
+
+.pet-selector::-webkit-scrollbar {
+    display: none;
 }
 </style>

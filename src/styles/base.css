@@ -91,6 +91,7 @@
     font-family: var(--font-main);
     background: var(--color-bg);
     color: var(--color-text);
+    overflow-x: hidden;
   }
 
   *:focus-visible {
@@ -116,9 +117,14 @@
     width: 100%;
   }
 
+  section,
+  header {
+    @apply w-screen px-2 md:px-3;
+  }
+
   main,
   header {
-    @apply w-screen py-1.5 px-2 md:px-3;
+    @apply py-1.5;
   }
 
   label p,

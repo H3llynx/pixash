@@ -7,7 +7,7 @@ const props = withDefaults(defineProps<{
     label?: string
     type?: string
     placeholder?: string
-    modelValue?: string
+    modelValue?: string | boolean
 }>(), {
     type: "text"
 });

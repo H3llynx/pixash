@@ -111,9 +111,18 @@ export const petFields = {
         type: "date",
     },
     sex: {
-        id: "pet-sex",
+        name: "pet-sex",
         label: "Sex",
         options: SEX,
+        type: "radio",
+    },
+    sterilized: {
+        name: "pet-sterilized",
+        label: "Is your pet spayed or neutered?",
+        options: [
+            { text: "Yes", value: true },
+            { text: "No", value: false }
+        ],
         type: "radio",
     }
 };
