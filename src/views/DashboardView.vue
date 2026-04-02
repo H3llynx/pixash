@@ -7,7 +7,7 @@ import PetForm from '../features/pets/components/PetForm.vue';
 import PetSummary from '../features/pets/components/PetSummary.vue';
 import { usePets } from '../features/pets/composable/usePet';
 
-const { loading, hasPets, startAdding, isAdding, fetchUserPets } = usePets();
+const { loading, hasPets, startAdding, fetchUserPets } = usePets();
 
 onMounted(async () => {
   await fetchUserPets();
@@ -17,19 +17,10 @@ onMounted(async () => {
 
 <template>
   <Header dashboard />
-  <main class="pb-8 flex flex-col gap-1.5">
+  <main class="flex flex-col gap-1.5">
     <DashboardSkeleton v-if="loading" />
     <PetSummary v-else-if="hasPets" />
-    <div v-else class="flex flex-col items-center gap-2 p-2 text-center">
-      <div>
-        <h2 class="font-title text-title text-2xl">Your pet care starts here</h2>
-        <p class="text-text-secondary">You haven't added any pets yet.</p>
-      </div>
-      <p>Add your first furry (or scaly!) friend to start tracking care, appointments,
-        and milestones.
-      </p>
-    </div>
-    <PetForm v-if="isAdding && !loading" />
+    <PetForm />
   </main>
   <NavBar />
 </template>

@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import AuthView from '../features/auth/AuthView.vue';
-import { useAuth } from '../features/auth/composables/useAuth';
+import { useAuth } from '../features/user/composables/useAuth';
+import AuthView from '../views/AuthView.vue';
 import DashboardView from '../views/DashboardView.vue';
 import { ROUTES } from './config';
 

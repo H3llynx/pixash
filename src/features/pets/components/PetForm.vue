@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { computed, reactive, watch } from 'vue';
+import { computed, reactive, Transition, watch } from 'vue';
 import Button from '../../../components/Button.vue';
 import Dropdown from '../../../components/Dropdown.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
+import Toggle from '../../../components/Toggle.vue';
 import { useToast } from '../../../composables/useToast';
 import { usePets } from '../composable/usePet';
 import { petFields } from '../config';
 
-const { name, species, breed, birthDate, sex, sterilized } = petFields;
-const { error, selectedPet } = usePets();
+const { name, species, breed, birthDate, sex, sterilized, microchipped } = petFields;
+const { error, isAdding, stopAdding, hasPets, addNewPet } = usePets();
 const { show } = useToast();
-const { addNewPet } = usePets();
 
 const formData = reactive({
     name: "",
@@ -19,7 +19,8 @@ const formData = reactive({
     breed: "",
     birthDate: "",
     sex: sex.options[0],
-    sterilized: false
+    sterilized: true,
+    microchipped: false,
 });
 
 const getBreedOptions = (species: string) => {
@@ -41,49 +42,66 @@ watch(error, (newError) => {
         show("error", newError, "Error");
     }
 });
-
-watch(selectedPet, (newSelectedPet) => {
-    if (!newSelectedPet) return;
-    show("success", `${newSelectedPet.name}! has been successfully added`, "Success")
-});
 </script>
+
 <template>
-    <section>
-        <form class="flex flex-col gap-1 w-full max-w-md" @submit.prevent="handleSubmit">
-            <Input v-model="formData.name" :id="name.id" :type="name.type" :label="name.label" required />
-            <Dropdown v-model="formData.species" :id="species.id" :label="species.label" required>
-                <option v-for="option in species.options" :value="option.name" :key="option.name">{{ option.name }}
-                </option>
-            </Dropdown>
-            <Dropdown v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="breed.label" required>
-                <option value="" disabled>{{ breed.placeholder }}</option>
-                <option v-for="option in getBreedOptions(formData.species)" :key="`${formData.species}-${option.value}`"
-                    :value="option.value">
-                    {{ option.name }}
-                </option>
-            </Dropdown>
-            <fieldset>
-                <legend>{{ sex.label }}</legend>
-                <Input v-model="formData.sex" v-for="(option, index) in sex.options" :label="option" :key="option"
-                    :type="sex.type" :name="sex.name" :value="option" :required="index === 0" />
-            </fieldset>
-            <fieldset>
-                <legend>{{ sterilized.label }}</legend>
-                <Input v-model="formData.sterilized" v-for="(option, index) in sterilized.options" :label="option.text"
-                    :type="sterilized.type" :name="sterilized.name" :key="option.text" :value="option.value"
-                    :required="index === 0" />
-            </fieldset>
-            <Input v-model="formData.birthDate" :id="birthDate.id" :type="birthDate.type" :label="birthDate.label"
-                required />
-            <Button>Add pet
-                <Paw class="w-1 -rotate-12" />
-            </Button>
-        </form>
-    </section>
+    <Transition name="panel">
+        <section v-if="isAdding" class="sticky bottom-0 z-1
+           bg-bg-2 border-t border-border rounded-t-3xl pt-1 pb-2 p-0">
+            <Button v-if="hasPets" action="hide" @click="stopAdding" />
+            <div v-if="!hasPets" class="px-2 py-1 text-center">
+                <h2>Your pet care starts here</h2>
+                <p class="text-text-secondary">You haven't added any pets yet.</p>
+            </div>
+            <h1 class="my-1 default-padding">Add a pet</h1>
+            <form @submit.prevent="handleSubmit">
+                <fieldset class="min-w-0">
+                    <legend class="default-padding">{{ species.label }}</legend>
+                    <div class="pet-selector">
+                        <Input v-model="formData.species" v-for="(option, index) in species.options" :id="option.name"
+                            :value="option.name" :key="option.name" :label="option.icon" :aria-label="option.name"
+                            :type="species.type" :name="species.name" :required="index === 0" />
+                    </div>
+                </fieldset>
+                <div class="default-padding flex flex-col gap-1 max-w-md">
+                    <Input v-model="formData.name" :id="name.id" :type="name.type" :label="name.label" required />
+                    <Dropdown v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="breed.label" required>
+                        <option value="" disabled>{{ breed.placeholder }}</option>
+                        <option v-for="option in getBreedOptions(formData.species)"
+                            :key="`${formData.species}-${option.value}`" :value="option.value">
+                            {{ option.name }}
+                        </option>
+                    </Dropdown>
+                    <div class="flex justify-between gap-1">
+                        <Input v-model="formData.birthDate" :id="birthDate.id" :type="birthDate.type"
+                            :label="birthDate.label" required />
+                        <Dropdown v-model="formData.sex" :id="sex.id" :label="sex.label" required>
+                            <option v-for="option in sex.options" :value="option" :key="option">{{ option }}
+                            </option>
+                        </Dropdown>
+                    </div>
+                    <Toggle v-model="formData.sterilized" :label="sterilized.label" :id="sterilized.id" />
+                    <Toggle v-model="formData.microchipped" :label="microchipped.label" :id="microchipped.id" />
+                    <Button>Add {{ formData.name }}
+                        <Paw class="w-1 -rotate-12" />
+                    </Button>
+                </div>
+            </form>
+        </section>
+    </Transition>
 </template>
 
 <style scoped>
 button {
     gap: 0.8rem;
+}
+
+legend,
+:deep(label p) {
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding-bottom: 10px;
 }
 </style>

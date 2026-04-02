@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Moon, Sun } from '@lucide/vue';
+import Button from '../../../components/Button.vue';
 import { useTheme } from '../composables/useTheme';
-import Button from './Button.vue';
 
 const { setTheme, theme } = useTheme();
 const switchTheme = () => {

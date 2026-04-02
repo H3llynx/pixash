@@ -95,7 +95,9 @@ export const petFields = {
     },
     species: {
         id: "pet-species",
+        name: "pet-species",
         label: "Species",
+        type: "radio",
         options: SPECIES,
     },
     breed: {
@@ -111,18 +113,16 @@ export const petFields = {
         type: "date",
     },
     sex: {
-        name: "pet-sex",
+        id: "pet-sex",
         label: "Sex",
         options: SEX,
-        type: "radio",
     },
     sterilized: {
-        name: "pet-sterilized",
-        label: "Is your pet spayed or neutered?",
-        options: [
-            { text: "Yes", value: true },
-            { text: "No", value: false }
-        ],
-        type: "radio",
+        id: "pet-sterilized",
+        label: "Spayed / neutered",
+    },
+    microchipped: {
+        id: "pet-microchipped",
+        label: "Microchipped",
     }
 };

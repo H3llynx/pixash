@@ -84,14 +84,26 @@
   --color-logo-text: var(--color-purple-dark);
 }
 
+@utility default-transition {
+  transition: all 0.4s ease;
+}
+
+@utility filter-blur {
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+@utility default-padding {
+  @apply px-2.5 md:px-3;
+}
+
 @layer base {
   body {
     width: 100vw;
-    height: 100dvh;
+    min-height: 100dvh;
     font-family: var(--font-main);
     background: var(--color-bg);
     color: var(--color-text);
-    overflow-x: hidden;
   }
 
   *:focus-visible {
@@ -108,7 +120,7 @@
   }
 
   button {
-    transition: var(--transition-default);
+    @apply default-transition;
   }
 
   input,
@@ -119,17 +131,20 @@
 
   section,
   header {
-    @apply w-screen px-2 md:px-3;
+    @apply w-full default-padding;
   }
 
-  main,
   header {
     @apply py-1.5;
   }
 
-  label p,
-  fieldset:has(input[type="radio"]) legend {
+  label p {
     margin-bottom: 0.5rem;
+  }
+
+  label p,
+  legend {
+    @apply text-sm;
   }
 
   label {
@@ -139,16 +154,22 @@
       p {
         width: min-content;
         text-transform: capitalize;
-        padding: 0.5rem 1rem;
-        border-radius: 2rem;
+        width: 5rem;
+        aspect-ratio: 1/1;
+        font-size: xx-large;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0.75rem;
         background: var(--color-bg-2);
         border: 1px solid var(--color-border);
       }
 
-      &:focus-within p {
+      &:has(:focus-visible) p {
+        background: var(--color-gold);
         outline-width: 2px;
         outline-style: solid;
-        outline-offset: 4px;
+        outline-offset: 2px;
         outline-color: var(--color-gold);
       }
     }
@@ -158,17 +179,21 @@
     }
   }
 
-  label:has(input:not([type="radio"]):required, select:required) p::after,
-  fieldset:has(input:required) legend::after {
-    content: "*";
-    margin-left: 3px;
-    font-size: x-small;
-    vertical-align: text-top;
-  }
-
   fieldset:has(input[type="radio"]) {
     display: flex;
     gap: 0.5rem;
+  }
+
+  h1,
+  h2 {
+    font-family: var(--font-title);
+    @apply text-xl
+  }
+
+
+  h1 {
+    color: var(--color-brand);
+    font-weight: 600;
   }
 }
 
@@ -184,19 +209,21 @@
     transition: all 0.3s ease;
   }
 
-  .toast-enter-from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-
+  .toast-enter-from,
   .toast-leave-to {
     opacity: 0;
     transform: translateY(16px);
   }
 
-  .filter-blur {
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
+  .panel-enter-active,
+  .panel-leave-active {
+    transition: opacity 0.3s ease, transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .panel-enter-from,
+  .panel-leave-to {
+    opacity: 0;
+    transform: translateY(60%);
   }
 
   .error-icon {
@@ -226,10 +253,26 @@
   }
 
   .pet-section h2 {
+    @apply text-base;
+    font-family: var(--font-main);
     text-transform: uppercase;
     color: var(--color-brand);
     font-weight: 500;
     letter-spacing: 1px;
     padding-bottom: 10px;
+  }
+
+  .pet-selector {
+    @apply flex gap-0.5 py-0.5 default-padding overflow-x-scroll;
+    scroll-snap-type: x proximity;
+    touch-action: pan-x;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    >* {
+      scroll-snap-align: center;
+    }
   }
 }

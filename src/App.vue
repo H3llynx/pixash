@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Toast from './components/Toast.vue';
-import { useAuth } from './features/auth/composables/useAuth';
+import { useAuth } from './features/user/composables/useAuth';
 import LoadingView from './views/LoadingView.vue';
 const { loading } = useAuth();
 </script>

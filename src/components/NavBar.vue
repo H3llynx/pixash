@@ -5,7 +5,7 @@ import { ROUTES } from '../router/config';
 </script>
 
 <template>
-    <nav class="bg-bg-2 w-screen flex justify-between p-1 fixed bottom-0">
+    <nav class="bg-bg-2 w-screen flex justify-between items-center p-1 fixed bottom-0 h-5">
         <RouterLink :to="ROUTES.dashboard" tabindex="0">
             <LayoutGrid />Home
         </RouterLink>

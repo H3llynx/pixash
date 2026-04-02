@@ -1,10 +1,12 @@
 import { FirebaseError } from "firebase/app";
 import { computed, ref, watch } from "vue";
+import { useToast } from "../../../composables/useToast";
 import { addPet, fetchPets } from "../../../services/pets";
-import { useAuth } from "../../auth/composables/useAuth";
+import { useAuth } from "../../user/composables/useAuth";
 import type { Pet, PetExtended } from "../types";
 
 const { user } = useAuth();
+const { show } = useToast();
 
 const pets = ref<PetExtended[]>([]);
 const selectedPet = ref<PetExtended | null>(null);
@@ -40,14 +42,18 @@ const addNewPet = async (newPet: Pet) => {
   if (!user.value || !newPet) {
     return;
   }
-  loading.value = true
-  error.value = null
+  isAdding.value = false;
+  loading.value = true;
+  error.value = null;
 
   try {
     const newPetId = await addPet(newPet, user.value.uid);
     await fetchUserPets();
     const addedPet = pets.value.find(pet => pet.id === newPetId)
-    if (addedPet) selectPet(addedPet);
+    if (addedPet) {
+      selectPet(addedPet);
+      show("success", `${addedPet.name}! has been successfully added`, "Success")
+    };
   } catch (e) {
     if (e instanceof FirebaseError) {
       error.value = e.message;
@@ -66,7 +72,6 @@ const selectPet = (pet: PetExtended) => {
 }
 
 const startAdding = () => {
-  selectedPet.value = null;
   isAdding.value = true;
 }
 

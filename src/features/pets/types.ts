@@ -7,6 +7,7 @@ export type Pet = {
     birthDate: string;
     sex: typeof SEX[number];
     sterilized: boolean;
+    microchipped: boolean;
 }
 
 export type PetExtended = Pet & {

@@ -2,10 +2,10 @@
 import { Camera, Edit2, LogOut } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref, toRef } from 'vue';
-import { useAuth } from '../features/auth/composables/useAuth';
-import { ROUTES } from '../router/config';
-import router from '../router/router';
-import Button from './Button.vue';
+import Button from '../../../components/Button.vue';
+import { ROUTES } from '../../../router/config';
+import router from '../../../router/router';
+import { useAuth } from '../composables/useAuth';
 
 const { logout } = useAuth();
 
@@ -24,7 +24,7 @@ const menuRef = ref<HTMLUListElement | null>(null);
 
 onClickOutside(menuRef, () => {
     if (props.visible) {
-        emit("update:visible", false)
+        emit("update:visible", false);
     }
 }, { ignore: [toRef(props, "toggleRef")] });
 

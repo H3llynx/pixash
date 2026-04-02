@@ -2,7 +2,7 @@
 import { AlertCircle } from '@lucide/vue';
 
 defineOptions({ inheritAttrs: false })
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
     id?: string
     label?: string
     type?: string
@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<{
 }>(), {
     type: "text"
 });
-const emit = defineEmits(["update:modelValue"]);
+defineEmits(["update:modelValue"]);
 </script>
 
 <template>
@@ -20,8 +20,8 @@ const emit = defineEmits(["update:modelValue"]);
         <div class="input-container">
             <input :id="id" :type="type" :placeholder="placeholder" :value="modelValue"
                 :checked="type === 'radio' ? modelValue === $attrs.value : undefined"
-                class="bg-bg-2 rounded-full font-medium pl-1 pr-2.5 py-0.5" tabindex="0"
-                @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)" v-bind="$attrs" />
+                class="bg-bg rounded-xl font-medium pl-1 pr-2.5 py-0.5" tabindex="0"
+                @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)" v-bind="$attrs" />
             <div class="absolute right-[2px] top-1/2 -translate-y-1/2">
                 <slot name="addon"></slot>
             </div>
