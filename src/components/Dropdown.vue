@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { AlertCircle } from '@lucide/vue';
 
 defineProps<{
     id: string
@@ -17,7 +16,6 @@ defineEmits(["update:modelValue"]);
                 v-bind="$attrs" :id="id">
                 <slot />
             </select>
-            <AlertCircle class="error-icon" />
         </div>
     </label>
 </template>
@@ -32,6 +30,14 @@ select {
     border-radius: 0.75rem;
     text-transform: capitalize;
     background: var(--color-bg);
+
+    &:user-invalid {
+        outline-width: 2px;
+        outline-style: solid;
+        outline-offset: 1px;
+        outline-color: var(--color-error-border);
+        border-radius: 5px;
+    }
 }
 
 .input-container::after {

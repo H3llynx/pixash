@@ -21,8 +21,6 @@ defineEmits(["update:modelValue"]);
 </template>
 
 <style scoped>
-@reference "../styles/base.css";
-
 .toggle-track {
     position: relative;
     border-radius: 2rem;

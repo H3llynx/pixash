@@ -3,7 +3,7 @@ import Paw from '../components/icons/Paw.vue';
 </script>
 
 <template>
-    <div class="loader-screen">
+    <div class="fixed inset-0 flex flex-col items-center justify-center text-center gap-3 bg-loading-bg">
         <div class="fadein-1">
             <Paw class="paw" />
         </div>
@@ -16,8 +16,6 @@ import Paw from '../components/icons/Paw.vue';
 </template>
 
 <style scoped>
-@reference "../styles/base.css";
-
 @keyframes fadein {
     from {
         opacity: 0;
@@ -44,10 +42,6 @@ import Paw from '../components/icons/Paw.vue';
         opacity: 0.3;
         transform: scale(0.88);
     }
-}
-
-.loader-screen {
-    @apply fixed inset-0 flex flex-col items-center justify-center text-center gap-3 bg-loading-bg;
 }
 
 .fadein-1 {
