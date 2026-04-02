@@ -33,7 +33,7 @@ onClickOutside(menuRef, () => {
 <template>
     <Transition name="toast">
         <ul v-if="visible" ref="menuRef" role="menu"
-            class="absolute top-4 right-0 w-max bg-bg-rgba-reverse filter-blur rounded-xl overflow-hidden border border-border bg-bg-2">
+            class="absolute top-4 right-0 w-max filter-blur rounded-xl overflow-hidden border border-border bg-bg-rgba">
             <li role="none">
                 <Button role="menuitem" variant="ghost" size="xs" @click="handleLogout">
                     <LogOut :size="20" /> Log out
@@ -55,8 +55,12 @@ onClickOutside(menuRef, () => {
 
 <style scoped>
 ul {
-    li:focus-within {
-        background: var(--color-gold-rgba);
+    li {
+        padding: 3px;
+
+        &:focus-within {
+            background: var(--color-gold-rgba);
+        }
     }
 
     button {

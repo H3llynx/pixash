@@ -33,4 +33,16 @@ select {
     text-transform: capitalize;
     background: var(--color-bg);
 }
+
+.input-container::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    top: 50%;
+    right: 0.9rem;
+    transform: translateY(-50%);
+    border-width: 5px 4px 0 4px;
+    border-style: solid;
+    border-color: var(--color-border) transparent transparent transparent;
+}
 </style>
