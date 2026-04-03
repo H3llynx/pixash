@@ -1,12 +1,12 @@
 
 export const SPECIES = [
-    { name: "dog", hasBreed: true, icon: "🐶" },
-    { name: "cat", hasBreed: true, icon: "🐱" },
-    { name: "small mammal", hasBreed: false, icon: "🐹" },
-    { name: "bird", hasBreed: false, icon: "🐦" },
-    { name: "fish", hasBreed: false, icon: "🐠" },
-    { name: "reptile", hasBreed: false, icon: "🦎" },
-    { name: "amphibian", hasBreed: false, icon: "🐸" },
+    { name: "dog", hasBreed: true, icon: "🐶", prefersKg: true },
+    { name: "cat", hasBreed: true, icon: "🐱", prefersKg: true },
+    { name: "small mammal", hasBreed: false, icon: "🐹", prefersKg: false },
+    { name: "bird", hasBreed: false, icon: "🐦", prefersKg: false },
+    { name: "fish", hasBreed: false, icon: "🐠", prefersKg: false },
+    { name: "reptile", hasBreed: false, icon: "🦎", prefersKg: false },
+    { name: "amphibian", hasBreed: false, icon: "🐸", prefersKg: false },
 ] as const;
 
 export const SEX = ["male", "female"] as const;

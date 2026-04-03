@@ -8,6 +8,8 @@ export type Pet = {
     sex: typeof SEX[number];
     sterilized: boolean;
     microchipped: boolean;
+    weight?: number;
+    microchip?: string;
 }
 
 export type PetExtended = Pet & {

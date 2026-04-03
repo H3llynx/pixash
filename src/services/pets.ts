@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, getFirestore, query, serverTimestamp, where } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, getFirestore, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
 import { DB } from '../config';
 import type { Pet, PetExtended } from '../features/pets/types';
 
@@ -22,6 +22,18 @@ export const addPet = async (pet: Pet, userId: string) => {
     return docRef.id;
   } catch (error) {
     console.error("Error adding document: ", error);
+  }
+};
+
+export const updatePet = async (
+  petId: string,
+  data: Partial<Pick<Pet, "weight" | "microchip">>
+) => {
+  try {
+    const docRef = doc(db, DB.pets, petId);
+    await updateDoc(docRef, data);
+  } catch (error) {
+    console.error("Error updating pet: ", error);
   }
 };
 

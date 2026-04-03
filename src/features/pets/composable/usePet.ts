@@ -1,7 +1,7 @@
 import { FirebaseError } from "firebase/app";
-import { computed, ref, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import { useToast } from "../../../composables/useToast";
-import { addPet, fetchPets } from "../../../services/pets";
+import { addPet, fetchPets, updatePet } from "../../../services/pets";
 import { useAuth } from "../../user/composables/useAuth";
 import type { Pet, PetExtended } from "../types";
 
@@ -14,6 +14,16 @@ const loading = ref(false);
 const error = ref<string | null>(null);
 const hasPets = computed(() => pets.value.length > 0);
 const isAdding = ref(false);
+const isUpdating = reactive({
+  weight: false,
+  microchip: false,
+});
+
+const resetIsUpdating = () => {
+  Object.keys(isUpdating).forEach((key) => {
+    (isUpdating as Record<string, boolean>)[key] = false;
+  });
+};
 
 const fetchUserPets = async () => {
   if (!user.value) {
@@ -42,7 +52,6 @@ const addNewPet = async (newPet: Pet) => {
   if (!user.value || !newPet) {
     return;
   }
-  isAdding.value = false;
   loading.value = true;
   error.value = null;
 
@@ -66,17 +75,37 @@ const addNewPet = async (newPet: Pet) => {
   }
 };
 
+const updateSelectedPet = async (pet: PetExtended, data: Partial<Pick<Pet, "weight" | "microchip" | "microchipped">>) => {
+  if (!user.value || !pet) {
+    return;
+  }
+  loading.value = true;
+  error.value = null;
+
+  try {
+    await updatePet(pet.id, data);
+    await fetchUserPets();
+    const updatedPet = pets.value.find(p => p.id === pet.id)
+    if (updatedPet) {
+      selectPet(updatedPet);
+      show("success", `${updatedPet.name}! has been successfully updated`, "Success")
+    };
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      error.value = e.message;
+    } else {
+      error.value = "An unexpected error occurred";
+    }
+  } finally {
+    loading.value = false;
+    isAdding.value = false;
+  }
+};
+
 const selectPet = (pet: PetExtended) => {
   isAdding.value = false;
+  resetIsUpdating();
   selectedPet.value = pet;
-}
-
-const startAdding = () => {
-  isAdding.value = true;
-}
-
-const stopAdding = () => {
-  isAdding.value = false;
 }
 
 watch(user, (newUser) => {
@@ -88,5 +117,5 @@ watch(user, (newUser) => {
 });
 
 export const usePets = () => {
-  return { pets, selectedPet, selectPet, loading, error, isAdding, startAdding, stopAdding, fetchUserPets, addNewPet, hasPets };
+  return { pets, selectedPet, selectPet, loading, error, isAdding, isUpdating, fetchUserPets, addNewPet, updateSelectedPet, hasPets };
 };

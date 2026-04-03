@@ -31,7 +31,7 @@ defineEmits(["update:modelValue"]);
     &:has(:focus-visible) {
         outline-width: 2px;
         outline-style: solid;
-        outline-offset: 4px;
+        outline-offset: 1px;
         outline-color: var(--color-gold);
     }
 }

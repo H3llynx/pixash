@@ -10,7 +10,7 @@ import { usePets } from '../composable/usePet';
 import { petFields } from '../config';
 
 const { name, species, breed, birthDate, sex, sterilized, microchipped } = petFields;
-const { error, isAdding, stopAdding, hasPets, addNewPet } = usePets();
+const { error, isAdding, hasPets, addNewPet } = usePets();
 const { show } = useToast();
 
 const formData = reactive({
@@ -48,7 +48,7 @@ watch(error, (newError) => {
     <Transition name="panel">
         <section v-if="isAdding" class="sticky bottom-0 z-1
            bg-bg-2 border-t border-border rounded-t-3xl pt-1 pb-2 p-0">
-            <Button v-if="hasPets" action="hide" @click="stopAdding" />
+            <Button v-if="hasPets" action="hide" @click="isAdding = false" />
             <div v-if="!hasPets" class="px-2 py-1 text-center">
                 <h2>Your pet care starts here</h2>
                 <p class="text-text-secondary">You haven't added any pets yet.</p>

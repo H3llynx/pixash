@@ -6,15 +6,43 @@ export const getIcon = (pet: Pet) => {
     return SPECIES.find(s => s.name === pet.species)?.icon;
 }
 
-export const getAge = (pet: Pet) => {
+export const getUnit = (pet: Pet) => {
     if (!pet) return;
+    return SPECIES.find(s => s.name === pet.species)?.prefersKg;
+}
+
+export const getAge = (pet: Pet) => {
+    if (!pet?.birthDate) return;
     const today = new Date();
     const birthDate = new Date(pet.birthDate);
-    let age = today.getFullYear() - birthDate.getFullYear();
+    let years = today.getFullYear() - birthDate.getFullYear();
+
     const monthDiff = today.getMonth() - birthDate.getMonth();
     const dayDiff = today.getDate() - birthDate.getDate();
     if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-        age--;
+        years--;
     }
-    return age;
+    if (years >= 1) {
+        return years === 1 ? "1 year old" : `${years} years old`;
+    }
+    let months =
+        (today.getFullYear() - birthDate.getFullYear()) * 12 +
+        (today.getMonth() - birthDate.getMonth());
+    if (today.getDate() < birthDate.getDate()) {
+        months--;
+    }
+
+    if (months <= 0) {
+        return "Less than a month old";
+    }
+    return months === 1 ? "1 month old" : `${months} months old`;
+};
+
+export const kgToGrams = (kg: number) => Math.round(kg * 1000);
+export const gramsToKg = (g: number) => g / 1000;
+
+export const getWeight = (pet: Pet) => {
+    if (!pet?.weight) return;
+    if (pet.species === "dog" || pet.species === "cat") return `${gramsToKg(pet.weight)} kg`;
+    else return `${pet.weight} g`;
 };

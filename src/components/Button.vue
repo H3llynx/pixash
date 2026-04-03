@@ -10,8 +10,10 @@ const button = tv({
             ghost: "btn-hover-fill-ghost text-btn-ghost-text hover:text-brand-light bg-bg-rgba",
             addon: "text-text-secondary addon-focus",
             chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary capitalize",
+            summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light"
         },
         size: {
+            xxs: "text-xs p-0.5",
             xs: "px-0.5 text-sm py-0.5",
             sm: "px-1 py-0.5",
             md: "px-2.5 py-[10px]",

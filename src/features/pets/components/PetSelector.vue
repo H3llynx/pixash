@@ -4,7 +4,7 @@ import Button from '../../../components/Button.vue';
 import { usePets } from '../composable/usePet';
 import { getIcon } from '../utils';
 
-const { pets, selectPet, selectedPet, startAdding, isAdding } = usePets();
+const { pets, selectPet, selectedPet, isAdding } = usePets();
 </script>
 
 <template>
@@ -13,7 +13,7 @@ const { pets, selectPet, selectedPet, startAdding, isAdding } = usePets();
             @click="selectPet(pet)">
             <span aria-hidden>{{ getIcon(pet) }}</span>
             {{ pet.name }}</Button>
-        <Button variant="chip" size="sm" :class="{ active: isAdding }" @click="startAdding">
+        <Button variant="chip" size="sm" :class="{ active: isAdding }" @click="isAdding = true">
             <Plus /> Add
         </Button>
     </div>

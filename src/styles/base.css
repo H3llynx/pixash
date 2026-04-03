@@ -29,7 +29,7 @@
   --color-green-dark: #1C3A2A;
   --color-green-mid: #2D5240;
   --color-green-pale: #8FAF8F;
-  --color-green-rgba: rgba(143, 175, 143, 0.4);
+  --color-green-rgba: rgba(143, 175, 143, 0.3);
   --color-purple-rgba: rgba(124, 111, 205, 0.3);
 
   --color-error: #E24B4A;
@@ -117,7 +117,7 @@
   *:focus-visible {
     outline-width: 2px;
     outline-style: solid;
-    outline-offset: 4px;
+    outline-offset: 1px;
     outline-color: var(--color-gold);
     border-radius: 5px;
   }
@@ -135,6 +135,16 @@
   select {
     border: 1px solid var(--color-border);
     width: 100%;
+  }
+
+  input::placeholder {
+    font-size: small;
+  }
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
   }
 
   section,
@@ -177,7 +187,7 @@
         background: var(--color-gold);
         outline-width: 2px;
         outline-style: solid;
-        outline-offset: 2px;
+        outline-offset: 1px;
         outline-color: var(--color-gold);
       }
     }
@@ -244,10 +254,6 @@
     gap: 0.5rem;
     align-items: center;
 
-    input::placeholder {
-      font-size: small;
-    }
-
     .error-icon {
       position: absolute;
       right: 0.5rem;
@@ -257,6 +263,18 @@
     &:has(:user-invalid) .error-icon {
       display: block;
       color: var(--color-error);
+    }
+
+    &:has(select)::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      top: 50%;
+      right: 0.5rem;
+      transform: translateY(-50%);
+      border-width: 5px 4px 0 4px;
+      border-style: solid;
+      border-color: var(--color-border) transparent transparent transparent;
     }
   }
 
@@ -269,7 +287,8 @@
     }
 
     h1 {
-      @apply text-xl
+      @apply text-xl;
+      text-transform: capitalize;
     }
 
     h2 {

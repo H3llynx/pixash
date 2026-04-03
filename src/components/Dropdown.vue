@@ -22,9 +22,6 @@ defineEmits(["update:modelValue"]);
 
 <style scoped>
 select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     height: 2.8rem;
     padding: 0 1rem;
     border-radius: 0.75rem;
@@ -38,17 +35,5 @@ select {
         outline-color: var(--color-error-border);
         border-radius: 5px;
     }
-}
-
-.input-container::after {
-    content: "";
-    position: absolute;
-    pointer-events: none;
-    top: 50%;
-    right: 0.9rem;
-    transform: translateY(-50%);
-    border-width: 5px 4px 0 4px;
-    border-style: solid;
-    border-color: var(--color-border) transparent transparent transparent;
 }
 </style>
