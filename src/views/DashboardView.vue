@@ -7,11 +7,10 @@ import PetForm from '../features/pets/components/PetForm.vue';
 import PetSummary from '../features/pets/components/PetSummary.vue';
 import { usePets } from '../features/pets/composable/usePet';
 
-const { loading, hasPets, isAdding, fetchUserPets } = usePets();
+const { loading, hasPets, fetchUserPets } = usePets();
 
 onMounted(async () => {
   await fetchUserPets();
-  if (!hasPets.value) isAdding.value = true;
 });
 </script>
 

@@ -7,7 +7,7 @@ const button = tv({
         variant: {
             primary: "btn-hover-fill bg-brand border border-brand text-btn-primary-text",
             secondary: "btn-hover-fill border border-brand text-brand bg-bg-rgba",
-            ghost: "btn-hover-fill-ghost text-btn-ghost-text hover:text-brand-light bg-bg-rgba",
+            ghost: "btn-hover-fill-ghost rounded-lg text-btn-ghost-text hover:text-brand-light bg-bg-rgba",
             addon: "text-text-secondary addon-focus",
             chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary capitalize",
             summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light"
@@ -16,7 +16,7 @@ const button = tv({
             xxs: "text-xs p-0.5",
             xs: "px-0.5 text-sm py-0.5",
             sm: "px-1 py-0.5",
-            md: "px-2.5 py-[10px]",
+            md: "px-2 py-[10px]",
         }
     },
     defaultVariants: {

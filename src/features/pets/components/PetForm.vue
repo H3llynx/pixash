@@ -39,7 +39,7 @@ const handleSubmit = () => {
 
 watch(error, (newError) => {
     if (newError) {
-        show("error", newError, "Error");
+        show({ type: "error", title: "Error", message: newError });
     }
 });
 </script>

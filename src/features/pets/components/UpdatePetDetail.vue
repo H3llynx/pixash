@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Edit2, X } from '@lucide/vue';
+import { computed } from '@vue/reactivity';
 import { onClickOutside } from '@vueuse/core';
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import Button from '../../../components/Button.vue';
 import { usePets } from '../composable/usePet';
 import type { Pet } from '../types';
@@ -17,31 +18,38 @@ onClickOutside(updateForm, () => {
     }
 });
 
+const inputRef = ref<HTMLInputElement>();
+
+const preferredUnit = computed<"kg" | "g">(() => {
+    const pet = selectedPet.value
+    if (!pet) return "g"
+    return getUnit(pet) ? "kg" : "g"
+});
+
 const formData = reactive<{
     data: string;
     unit: "kg" | "g";
 }>({
     data: "",
-    unit: "g",
+    unit: preferredUnit.value,
 });
 
 const startUpdating = () => {
     if (!selectedPet.value) return;
     isUpdating[props.data] = true;
-    const prefersKg = getUnit(selectedPet.value);
     const existing = selectedPet.value[props.data];
     if (props.data === "weight" && typeof existing === "number") {
-        formData.unit = prefersKg ? "kg" : "g";
-        formData.data = prefersKg
+        formData.data = preferredUnit.value === "kg"
             ? (existing / 1000).toString()
             : existing.toString();
     } else if (props.data === "microchip" && existing === "string") {
         formData.data = existing;
-    } else {
-        formData.data = "";
-        formData.unit = prefersKg ? "kg" : "g";
-    }
-}
+    };
+};
+
+const handleUnitChange = () => {
+    inputRef.value?.focus()
+};
 
 const handleSubmit = (field: "weight" | "microchip") => {
     if (!selectedPet.value || !formData.data) return;
@@ -49,13 +57,31 @@ const handleSubmit = (field: "weight" | "microchip") => {
     if (field === "weight") {
         const numeric = Number(formData.data);
         if (Number.isNaN(numeric) || numeric <= 0) return;
-        update = { weight: formData.unit === "kg" ? kgToGrams(numeric) : numeric };
+        const grams = formData.unit === "kg" ? kgToGrams(numeric) : numeric;
+        if (selectedPet.value.weight === grams) return;
+        update = { weight: grams };
     } else {
-        update = { microchipped: true, microchip: String(formData.data) };
+        const microchip = formData.data;
+        if (selectedPet.value.microchip === microchip) return;
+        update = { microchipped: true, microchip: microchip };
     }
     updateSelectedPet(selectedPet.value, update);
     isUpdating[props.data] = false;
 }
+
+watch(() => formData.unit,
+    (newUnit, oldUnit) => {
+        if (props.data !== 'weight' || !formData.data) return;
+        const value = parseFloat(formData.data);
+        if (isNaN(value)) return;
+        if (oldUnit === "kg" && newUnit === "g") {
+            formData.data = Math.round(value * 1000).toString()
+        }
+        else if (oldUnit === "g" && newUnit === "kg") {
+            formData.data = (value / 1000).toFixed(3)
+        }
+    }
+);
 </script>
 
 <template>
@@ -65,18 +91,19 @@ const handleSubmit = (field: "weight" | "microchip") => {
             <Edit2 v-if="data in selectedPet" :size="16" />
             <span v-else>Add {{ data }}</span>
         </Button>
-        <form @submit.prevent="handleSubmit(data)" v-else aria-label="update {{data}}" class="flex gap-0.5"
-            ref="updateForm">
-            <input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`">
-            <div class="input-container" v-if="data === 'weight'">
-                <select v-model="formData.unit">
+        <form @submit.prevent="handleSubmit(data)" @keydown.enter.exact="handleSubmit(data)" v-else
+            aria-label="update {{data}}" class="flex gap-0.5" ref="updateForm">
+            <input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
+                :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="inputRef">
+            <div class="input-container">
+                <select v-model="formData.unit" v-if="data === 'weight'" @change="handleUnitChange">
                     <option>kg</option>
                     <option>g</option>
                 </select>
             </div>
         </form>
         <Button v-if="isUpdating[data]" size="xs" variant="ghost" @click="isUpdating[data] = false">
-            <X :size="18" :color="'var(--color-brand-light)'" />
+            <X :size="18" color="var(--color-brand-light)" />
         </Button>
     </div>
 </template>

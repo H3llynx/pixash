@@ -18,17 +18,15 @@ const email = ref("");
 const password = ref("");
 
 watch(error, (newError) => {
-    if (newError) {
-        show("error", newError, isLogin.value ? "Login error" : "Registration error");
-    }
+    if (newError) show({ type: "error", title: isLogin.value ? "Login error" : "Registration error", message: newError });
 });
 
 watch(user, (newUser) => {
     if (!newUser) return;
     const firstName = newUser.firstName;
     if (firstName) {
-        show("success", "You have been successfully logged in.", isLogin.value ? "Welcome back!" : `Hi ${newUser.firstName}!`,)
-        router.push(ROUTES.dashboard)
+        show({ type: "success", title: isLogin.value ? "Welcome back!" : `Hi ${newUser.firstName}!`, message: "You have been successfully logged in." });
+        router.push(ROUTES.dashboard);
     }
 });
 

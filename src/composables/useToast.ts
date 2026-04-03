@@ -12,9 +12,9 @@ const toast = ref<Toast | null>(null)
 let timer: ReturnType<typeof setTimeout> | null = null
 
 export const useToast = () => {
-    const show = (type: ToastType, message: string, title?: string) => {
+    const show = (newToast: Toast) => {
         if (timer) clearTimeout(timer)
-        toast.value = { type, title, message };
+        toast.value = newToast;
         timer = setTimeout(() => { toast.value = null }, 4000);
     }
 

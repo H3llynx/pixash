@@ -1,8 +1,30 @@
-import { addDoc, collection, doc, getDocs, getFirestore, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
 import { DB } from '../config';
 import type { Pet, PetExtended } from '../features/pets/types';
 
 const db = getFirestore();
+
+export const fetchPets = async (userId: string): Promise<PetExtended[]> => {
+  try {
+    const snapshot = await getDocs(query(
+      collection(db, DB.pets),
+      where("ownerUid", "==", userId)
+    ));
+
+    if (snapshot.empty) {
+      console.log("No pets found");
+      return [];
+    }
+
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data() as Omit<PetExtended, "id">
+    }));
+  } catch (error) {
+    console.error("Fetch pets error:", error);
+    return [];
+  }
+};
 
 export const addPet = async (pet: Pet, userId: string) => {
   const { name, species, breed, birthDate, sex, sterilized, microchipped } = pet
@@ -27,7 +49,7 @@ export const addPet = async (pet: Pet, userId: string) => {
 
 export const updatePet = async (
   petId: string,
-  data: Partial<Pick<Pet, "weight" | "microchip">>
+  data: Partial<Pet>
 ) => {
   try {
     const docRef = doc(db, DB.pets, petId);
@@ -37,24 +59,11 @@ export const updatePet = async (
   }
 };
 
-export const fetchPets = async (userId: string): Promise<PetExtended[]> => {
+export const deletePet = async (petId: string) => {
   try {
-    const snapshot = await getDocs(query(
-      collection(db, DB.pets),
-      where("ownerUid", "==", userId)
-    ));
-
-    if (snapshot.empty) {
-      console.log("No pets found");
-      return [];
-    }
-
-    return snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data() as Omit<PetExtended, "id">
-    }));
+    const docRef = doc(db, DB.pets, petId);
+    await deleteDoc(docRef);
   } catch (error) {
-    console.error("Fetch pets error:", error);
-    return [];
+    console.error("Error deleting pet: ", error);
   }
 };
