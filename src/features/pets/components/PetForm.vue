@@ -5,15 +5,20 @@ import Dropdown from '../../../components/Dropdown.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
 import Toggle from '../../../components/Toggle.vue';
-import { useToast } from '../../../composables/useToast';
 import { usePets } from '../composable/usePet';
 import { petFields } from '../config';
+import type { Pet } from '../types';
+import { shallowEqual } from '../utils';
 
 const { name, species, breed, birthDate, sex, sterilized, microchipped } = petFields;
-const { error, isAdding, hasPets, addNewPet } = usePets();
-const { show } = useToast();
+const { isAdding, isUpdating, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();
 
-const formData = reactive({
+const existingPet = computed<Pet | null>(() => {
+    if (isAdding.value || !selectedPet.value) return null;
+    else return selectedPet.value;
+})
+
+const defaultForm: Pet = {
     name: "",
     species: species.options[0].name,
     breed: "",
@@ -21,7 +26,13 @@ const formData = reactive({
     sex: sex.options[0],
     sterilized: true,
     microchipped: false,
-});
+};
+
+const resetForm = () => {
+    Object.assign(formData, defaultForm)
+};
+
+const formData = reactive<Pet>({ ...defaultForm });
 
 const getBreedOptions = (species: string) => {
     if (species === 'dog') return breed.dogOptions
@@ -34,26 +45,48 @@ const selectedSpecies = computed(() =>
 const hasBreed = computed(() => selectedSpecies.value?.hasBreed ?? false);
 
 const handleSubmit = () => {
-    addNewPet({ ...formData });
+    if (isAdding.value) addNewPet({ ...formData });
+    else {
+        if (selectedPet.value && !shallowEqual(formData, selectedPet.value)) {
+            updateSelectedPet(selectedPet.value, formData);
+        }
+    }
 };
 
-watch(error, (newError) => {
-    if (newError) {
-        show({ type: "error", title: "Error", message: newError });
+const handleClose = () => {
+    isAdding.value = false;
+    isUpdating.generalInfo = false;
+};
+
+watch(existingPet, (pet) => {
+    if (!pet) {
+        resetForm();
+        return;
     }
-});
+    Object.assign(formData, {
+        name: pet.name,
+        species: pet.species,
+        breed: pet.breed ?? "",
+        birthDate: pet.birthDate,
+        sex: pet.sex,
+        sterilized: pet.sterilized,
+        microchipped: pet.microchipped
+    })
+}, { immediate: true });
 </script>
 
 <template>
     <Transition name="panel">
-        <section v-if="isAdding" class="sticky bottom-0 z-1
+        <section v-if="isAdding || isUpdating.generalInfo" class="sticky bottom-0 z-1
            bg-bg-2 border-t border-border rounded-t-3xl pt-1 pb-2 p-0">
-            <Button v-if="hasPets" action="hide" @click="isAdding = false" />
+            <Button v-if="hasPets" action="hide" @click="handleClose" />
             <div v-if="!hasPets" class="px-2 py-1 text-center">
                 <h2>Your pet care starts here</h2>
                 <p class="text-text-secondary">You haven't added any pets yet.</p>
             </div>
-            <h1 class="my-1 default-padding">Add a pet</h1>
+            <h1 class="my-1 default-padding" v-if="isAdding">Add a pet</h1>
+            <h1 class="my-1 default-padding" v-if="selectedPet && isUpdating.generalInfo">Edit {{ selectedPet.name }}
+            </h1>
             <form @submit.prevent="handleSubmit">
                 <fieldset class="min-w-0">
                     <legend class="default-padding">{{ species.label }}</legend>
@@ -82,7 +115,7 @@ watch(error, (newError) => {
                     </div>
                     <Toggle v-model="formData.sterilized" :label="sterilized.label" :id="sterilized.id" />
                     <Toggle v-model="formData.microchipped" :label="microchipped.label" :id="microchipped.id" />
-                    <Button>Add {{ formData.name }}
+                    <Button>{{ isAdding ? "Add" : "Update" }} {{ formData.name }}
                         <Paw class="w-1 -rotate-12" />
                     </Button>
                 </div>

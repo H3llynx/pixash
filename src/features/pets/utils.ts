@@ -46,3 +46,6 @@ export const getWeight = (pet: Pet) => {
     if (pet.species === "dog" || pet.species === "cat") return `${gramsToKg(pet.weight)} kg`;
     else return `${pet.weight} g`;
 };
+
+export const shallowEqual = (a: any, b: any) =>
+    Object.keys(a).every((key) => a[key] === b[key]);

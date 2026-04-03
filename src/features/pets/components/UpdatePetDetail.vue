@@ -92,7 +92,7 @@ watch(() => formData.unit,
             <span v-else>Add {{ data }}</span>
         </Button>
         <form @submit.prevent="handleSubmit(data)" @keydown.enter.exact="handleSubmit(data)" v-else
-            aria-label="update {{data}}" class="flex gap-0.5" ref="updateForm">
+            aria-label="Update {{data}}" class="flex gap-0.5" ref="updateForm">
             <input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
                 :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="inputRef">
             <div class="input-container">

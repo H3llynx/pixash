@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Trash2 } from '@lucide/vue';
+import { Edit2, Trash2 } from '@lucide/vue';
 import Button from '../../../components/Button.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { usePets } from '../composable/usePet';
@@ -13,7 +13,7 @@ const handleDelete = async () => {
     const pet = selectedPet.value;
     if (!pet) return;
     open({
-        title: "Delete Maya?",
+        title: `Delete ${selectedPet.value?.name} ?`,
         message: `This will remove ${selectedPet.value?.name}'s profile and ${selectedPet.value?.sex === "male" ? "his" : "her"} tracked information. This action cannot be undone. Are you sure you'd like to proceed?`,
         isDelete: true,
         onConfirm: () => deleteSelectedPet(pet)
@@ -25,16 +25,26 @@ const handleDelete = async () => {
     <section v-if="selectedPet" class="pet-section">
         <h2>{{ selectedPet.name }}'s profile</h2>
         <div class="flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 relative">
-            <div class="flex justify-between items-center">
+            <div class="flex items-center gap-0.5">
                 <div class="rounded-full w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                     {{ getIcon(selectedPet) }}
                 </div>
-                <div class="mr-auto p-1 text-text-secondary text-sm">
-                    <h1>{{ selectedPet.name }}</h1>
+                <div class="p-1 text-text-secondary text-sm">
+                    <div class="flex gap-0.5">
+                        <h1>{{ selectedPet.name }}</h1>
+                        <Button variant="ghost" size="xs" :aria-label="`Edit ${selectedPet.name}'s information`"
+                            @click="isUpdating.generalInfo = true">
+                            <Edit2 :size="14" />
+                        </Button>
+                    </div>
                     <span v-if="selectedPet.breed" class="capitalize">{{ selectedPet.breed }} · </span>
                     <span>{{ getAge(selectedPet) }} · </span>
                     <span class="capitalize">{{ selectedPet.sex }}</span>
                 </div>
+                <Button class="ml-auto mb-auto" variant="ghost" size="xs" :aria-label="`Delete ${selectedPet.name}`"
+                    @click="handleDelete">
+                    <Trash2 :size="22" color="var(--color-border)" />
+                </Button>
             </div>
             <div class="text-sm">
                 <div class="row">
@@ -52,10 +62,6 @@ const handleDelete = async () => {
                     <UpdatePetDetail data="microchip" />
                 </div>
             </div>
-            <Button variant="ghost" size="xs" :aria-label="`Delete ${selectedPet.name}`"
-                class="absolute top-0.5 right-0.5" @click="handleDelete">
-                <Trash2 :size="22" color="var(--color-border)" />
-            </Button>
         </div>
     </section>
 </template>

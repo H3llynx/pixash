@@ -3,7 +3,7 @@
 defineProps<{
     id: string
     label: string
-    modelValue: string
+    modelValue: string | undefined
 }>();
 defineEmits(["update:modelValue"]);
 </script>

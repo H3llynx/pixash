@@ -3,7 +3,7 @@ import type { SEX, SPECIES } from "./config";
 export type Pet = {
     name: string;
     species: typeof SPECIES[number]["name"];
-    breed?: string;
+    breed?: string | undefined;
     birthDate: string;
     sex: typeof SEX[number];
     sterilized: boolean;

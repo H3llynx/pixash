@@ -15,6 +15,7 @@ const error = ref<string | null>(null);
 const hasPets = computed(() => pets.value.length > 0);
 const isAdding = ref(false);
 const isUpdating = reactive({
+  generalInfo: false,
   weight: false,
   microchip: false,
 });
@@ -69,6 +70,7 @@ const addNewPet = async (newPet: Pet) => {
     } else {
       error.value = "An unexpected error occurred";
     }
+    show({ type: "error", title: "Error", message: error.value });
   } finally {
     loading.value = false;
     isAdding.value = false;
@@ -141,6 +143,17 @@ watch(user, (newUser) => {
     isAdding.value = false;
   };
 });
+
+watch(() => [isAdding.value, isUpdating.generalInfo],
+  ([adding, editing], [prevAdding, prevEditing]) => {
+    if (!prevAdding && adding) {
+      resetIsUpdating();
+    }
+    if (!prevEditing && editing) {
+      isAdding.value = false;
+    }
+  }
+);
 
 export const usePets = () => {
   return { pets, selectedPet, selectPet, loading, error, isAdding, isUpdating, fetchUserPets, addNewPet, updateSelectedPet, deleteSelectedPet, hasPets };
