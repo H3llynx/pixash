@@ -2,11 +2,13 @@
 import { Edit2, Trash2 } from '@lucide/vue';
 import Button from '../../../components/Button.vue';
 import { useDialog } from '../../../composables/useDialog';
-import { usePets } from '../composable/usePet';
+import { useHealth } from '../../health/composables/useHealth';
+import { usePets } from '../composables/usePet';
 import { getAge, getIcon, getWeight } from '../utils';
 import UpdatePetDetail from './UpdatePetDetail.vue';
 
 const { selectedPet, isUpdating, deleteSelectedPet } = usePets();
+const { isUpdatingHealth, isAddingHealth } = useHealth();
 const { open } = useDialog();
 
 const handleDelete = async () => {
@@ -19,6 +21,12 @@ const handleDelete = async () => {
         onConfirm: () => deleteSelectedPet(pet)
     });
 };
+
+const handleVaccine = () => {
+    if (!selectedPet.value) return;
+    if (selectedPet.value.nextVaccine) isUpdatingHealth.vaccine = true;
+    else if (!selectedPet.value.nextVaccine) isAddingHealth.vaccine = true;
+}
 </script>
 
 <template>
@@ -38,7 +46,7 @@ const handleDelete = async () => {
                         </Button>
                     </div>
                     <span v-if="selectedPet.breed" class="capitalize">{{ selectedPet.breed }} · </span>
-                    <span>{{ getAge(selectedPet) }} · </span>
+                    <span>{{ getAge(selectedPet)?.text }} · </span>
                     <span class="capitalize">{{ selectedPet.sex }}</span>
                 </div>
                 <Button class="ml-auto mb-auto" variant="ghost" size="xs" :aria-label="`Delete ${selectedPet.name}`"
@@ -54,7 +62,10 @@ const handleDelete = async () => {
                 </div>
                 <div class="row">
                     <span>Next vaccine</span>
-                    <span class="text-brand font-medium">20 sep 1010</span>
+                    <span v-if="selectedPet.nextVaccine" class="text-brand font-medium">20 sep 1010</span>
+                    <Button variant="ghost" size="xs" @click="handleVaccine">
+                        {{ selectedPet.nextVaccine ? "Edit" : "Add" }} vacine
+                    </Button>
                 </div>
                 <div class="row">
                     <span>Microchip</span>

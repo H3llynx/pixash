@@ -14,9 +14,49 @@ export const VACCINE_TYPES = {
         { id: "rabbit-myxorhd", label: "Rabbit: Myxomatosis + RHD", defaultIntervalMonths: 12 },
         { id: "ferret-rabies", label: "Ferret: Rabies", defaultIntervalMonths: 12 },
         { id: "ferret-distemper", label: "Ferret: Distemper", defaultIntervalMonths: 12 },
-        { id: "other", label: 'Other vaccine', defaultIntervalMonths: 12 },
     ],
     default: [
         { id: "other", label: 'Other vaccine', defaultIntervalMonths: 12 },
     ],
 } as const;
+
+export const STAGE = ["puppy", "adult"] as const;
+
+export const vaccineFields = {
+    type: {
+        id: "vaccine-name",
+        label: "Vaccine",
+        type: "checkbox",
+        options: VACCINE_TYPES,
+    },
+    stage: {
+        id: "vaccine-stage",
+        name: "vaccine-stage",
+        label: "Stage",
+        type: "radio",
+        options: STAGE,
+    },
+    givenDate: {
+        id: "vaccine-given-date",
+        label: "Date given",
+        type: "date",
+    },
+    nextDose: {
+        id: "vaccine-followUp",
+        label: "Next dose scheduled?",
+    },
+    dueDate: {
+        id: "vaccine-due-date",
+        label: "Next due",
+        type: "date",
+    },
+    vet: {
+        id: "vaccine-vet",
+        label: "Vet",
+        type: "text",
+    },
+    notes: {
+        id: "vaccine-notes",
+        label: "Notes",
+    }
+};

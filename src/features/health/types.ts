@@ -1,14 +1,12 @@
 import type { Timestamp } from "firebase/firestore";
-import type { SPECIES } from "../pets/config";
-
-type VaccineStage = "puppy" | "adult"
+import type { STAGE } from "./config";
 
 export type VaccineRecord = {
     type: string;
-    label: string;
-    species: typeof SPECIES[number]["name"];
+    stage: typeof STAGE[number];
     givenAt: Timestamp;
-    repeatEveryMonths: number;
-    stage: VaccineStage;
+    dueAt?: Timestamp;
+    repeatEveryMonths?: number;
+    vet?: string;
     notes?: string;
 }

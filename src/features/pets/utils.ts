@@ -1,3 +1,4 @@
+import { STAGE, VACCINE_TYPES } from "../health/config";
 import { SPECIES } from "./config";
 import type { Pet } from "./types";
 
@@ -23,7 +24,10 @@ export const getAge = (pet: Pet) => {
         years--;
     }
     if (years >= 1) {
-        return years === 1 ? "1 year old" : `${years} years old`;
+        return {
+            stage: STAGE[1],
+            text: years === 1 ? "1 year old" : `${years} years old`
+        };
     }
     let months =
         (today.getFullYear() - birthDate.getFullYear()) * 12 +
@@ -33,9 +37,15 @@ export const getAge = (pet: Pet) => {
     }
 
     if (months <= 0) {
-        return "Less than a month old";
-    }
-    return months === 1 ? "1 month old" : `${months} months old`;
+        return {
+            stage: STAGE[0],
+            text: "Less than a month old"
+        }
+    };
+    return {
+        stage: STAGE[0],
+        text: months === 1 ? "1 month old" : `${months} months old`
+    };
 };
 
 export const kgToGrams = (kg: number) => Math.round(kg * 1000);
@@ -47,5 +57,21 @@ export const getWeight = (pet: Pet) => {
     else return `${pet.weight} g`;
 };
 
+export const getVaccineTypes = (species: typeof SPECIES[number]["name"] | "default") => {
+    if (!species) return;
+    const pet = species === "small mammal"
+        ? "smallMammal"
+        : species ?? "default"
+    return VACCINE_TYPES[pet as keyof typeof VACCINE_TYPES] ?? VACCINE_TYPES.default;
+};
+
+export const getNextVaccine = (pet: Pet) => "20/09/1991";
+
 export const shallowEqual = (a: any, b: any) =>
     Object.keys(a).every((key) => a[key] === b[key]);
+
+export const resetState = (state: any) => {
+    Object.keys(state).forEach((key) => {
+        (state as Record<string, boolean>)[key] = false;
+    });
+};

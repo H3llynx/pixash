@@ -4,6 +4,8 @@ import PetSelector from './PetSelector.vue';
 </script>
 
 <template>
-    <PetSelector />
-    <PetProfile />
+    <div class="flex flex-col gap-1.5 flex-1 pb-6">
+        <PetSelector />
+        <PetProfile />
+    </div>
 </template>

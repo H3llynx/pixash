@@ -4,7 +4,7 @@ import { computed } from '@vue/reactivity';
 import { onClickOutside } from '@vueuse/core';
 import { reactive, ref, watch } from 'vue';
 import Button from '../../../components/Button.vue';
-import { usePets } from '../composable/usePet';
+import { usePets } from '../composables/usePet';
 import type { Pet } from '../types';
 import { getUnit, kgToGrams } from '../utils';
 

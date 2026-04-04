@@ -1,4 +1,3 @@
-
 export const SPECIES = [
     { name: "dog", hasBreed: true, icon: "🐶", prefersKg: true },
     { name: "cat", hasBreed: true, icon: "🐱", prefersKg: true },

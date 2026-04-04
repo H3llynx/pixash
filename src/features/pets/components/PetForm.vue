@@ -6,16 +6,16 @@ import FormWrapper from '../../../components/FormWrapper.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
 import Toggle from '../../../components/Toggle.vue';
-import { usePets } from '../composable/usePet';
+import { usePets } from '../composables/usePet';
 import { petFields } from '../config';
 import type { Pet } from '../types';
 import { shallowEqual } from '../utils';
 
 const { name, species, breed, birthDate, sex, sterilized, microchipped } = petFields;
-const { isAdding, isUpdating, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();
+const { isAddingPet, isUpdating, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();
 
 const existingPet = computed<Pet | null>(() => {
-    if (isAdding.value || !selectedPet.value) return null;
+    if (isAddingPet.value || !selectedPet.value) return null;
     else return selectedPet.value;
 })
 
@@ -36,8 +36,8 @@ const resetForm = () => {
 const formData = reactive<Pet>({ ...defaultForm });
 
 const getBreedOptions = (species: string) => {
-    if (species === 'dog') return breed.dogOptions
-    if (species === 'cat') return breed.catOptions
+    if (species === "dog") return breed.dogOptions;
+    if (species === "cat") return breed.catOptions;
     return []
 };
 const selectedSpecies = computed(() =>
@@ -46,7 +46,7 @@ const selectedSpecies = computed(() =>
 const hasBreed = computed(() => selectedSpecies.value?.hasBreed ?? false);
 
 const handleSubmit = () => {
-    if (isAdding.value) addNewPet({ ...formData });
+    if (isAddingPet.value) addNewPet({ ...formData });
     else {
         if (selectedPet.value && !shallowEqual(formData, selectedPet.value)) {
             updateSelectedPet(selectedPet.value, formData);
@@ -55,7 +55,7 @@ const handleSubmit = () => {
 };
 
 const handleClose = () => {
-    isAdding.value = false;
+    isAddingPet.value = false;
     isUpdating.generalInfo = false;
 };
 
@@ -78,12 +78,12 @@ watch(existingPet, (pet) => {
 
 <template>
     <Transition name="panel">
-        <FormWrapper v-if="isAdding || isUpdating.generalInfo" :canClose="hasPets" :onClose="handleClose">
+        <FormWrapper v-if="isAddingPet || isUpdating.generalInfo" :canClose="hasPets" :onClose="handleClose">
             <div v-if="!hasPets" class="px-2 py-1 text-center">
                 <h2>Your pet care starts here</h2>
                 <p class="text-text-secondary">You haven't added any pets yet.</p>
             </div>
-            <h1 class="my-1 default-padding" v-if="isAdding">Add a pet</h1>
+            <h1 class="my-1 default-padding" v-if="isAddingPet">Add a pet</h1>
             <h1 class="my-1 default-padding" v-if="selectedPet && isUpdating.generalInfo">Edit {{ selectedPet.name }}
             </h1>
             <form @submit.prevent="handleSubmit">
@@ -114,7 +114,7 @@ watch(existingPet, (pet) => {
                     </div>
                     <Toggle v-model="formData.sterilized" :label="sterilized.label" :id="sterilized.id" />
                     <Toggle v-model="formData.microchipped" :label="microchipped.label" :id="microchipped.id" />
-                    <Button>{{ isAdding ? "Add" : "Update" }} {{ formData.name }}
+                    <Button>{{ isAddingPet ? "Add" : "Update" }} {{ formData.name }}
                         <Paw class="w-1 -rotate-12" />
                     </Button>
                 </div>

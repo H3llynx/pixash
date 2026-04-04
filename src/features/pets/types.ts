@@ -16,4 +16,5 @@ export type PetExtended = Pet & {
     id: string;
     ownerUid: string;
     createdAt: Date;
+    nextVaccine?: string;
 }

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Plus } from '@lucide/vue';
 import Button from '../../../components/Button.vue';
-import { usePets } from '../composable/usePet';
+import { usePets } from '../composables/usePet';
 import { getIcon } from '../utils';
 
-const { pets, selectPet, selectedPet, isAdding } = usePets();
+const { pets, selectPet, selectedPet, isAddingPet } = usePets();
 </script>
 
 <template>
@@ -13,7 +13,7 @@ const { pets, selectPet, selectedPet, isAdding } = usePets();
             @click="selectPet(pet)">
             <span aria-hidden>{{ getIcon(pet) }}</span>
             {{ pet.name }}</Button>
-        <Button variant="chip" size="sm" :class="{ active: isAdding }" @click="isAdding = true">
+        <Button variant="chip" size="sm" :class="{ active: isAddingPet }" @click="isAddingPet = true">
             <Plus /> Add
         </Button>
     </div>

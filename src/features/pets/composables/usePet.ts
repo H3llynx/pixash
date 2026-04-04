@@ -2,29 +2,26 @@ import { FirebaseError } from "firebase/app";
 import { computed, reactive, ref, watch } from "vue";
 import { useToast } from "../../../composables/useToast";
 import { addPet, deletePet, fetchPets, updatePet } from "../../../services/pets";
+import { useHealth } from "../../health/composables/useHealth";
 import { useAuth } from "../../user/composables/useAuth";
 import type { Pet, PetExtended } from "../types";
+import { getNextVaccine, resetState } from "../utils";
 
 const { user } = useAuth();
 const { show } = useToast();
+const { isAddingHealth, isUpdatingHealth } = useHealth();
 
 const pets = ref<PetExtended[]>([]);
 const selectedPet = ref<PetExtended | null>(null);
 const loading = ref<boolean>(false);
 const error = ref<string | null>(null);
 const hasPets = computed(() => pets.value.length > 0);
-const isAdding = ref<boolean>(false);
+const isAddingPet = ref<boolean>(false);
 const isUpdating = reactive({
   generalInfo: false,
   weight: false,
   microchip: false,
 });
-
-const resetIsUpdating = () => {
-  Object.keys(isUpdating).forEach((key) => {
-    (isUpdating as Record<string, boolean>)[key] = false;
-  });
-};
 
 const fetchUserPets = async () => {
   if (!user.value) {
@@ -33,11 +30,11 @@ const fetchUserPets = async () => {
   loading.value = true;
   error.value = null;
   try {
-    pets.value = await fetchPets(user.value.uid);
+    const userPets = await fetchPets(user.value.uid);
+    pets.value = userPets.map(pet => ({ ...pet, nextVaccine: getNextVaccine(pet) }));
     if (!selectedPet.value && pets.value.length) {
       selectPet(pets.value[0]);
-    }
-    else if (!pets.value.length) isAdding.value = true;
+    } else if (!pets.value.length) isAddingPet.value = true;
   } catch (e) {
     if (e instanceof FirebaseError) {
       error.value = e.message;
@@ -73,7 +70,7 @@ const addNewPet = async (newPet: Pet) => {
     show({ type: "error", title: "Error", message: error.value });
   } finally {
     loading.value = false;
-    isAdding.value = false;
+    isAddingPet.value = false;
   }
 };
 
@@ -100,7 +97,7 @@ const updateSelectedPet = async (pet: PetExtended, data: Partial<Pick<Pet, "weig
     }
   } finally {
     loading.value = false;
-    isAdding.value = false;
+    isAddingPet.value = false;
   }
 };
 
@@ -131,8 +128,10 @@ const deleteSelectedPet = async (pet: PetExtended) => {
 };
 
 const selectPet = (pet: PetExtended | null) => {
-  isAdding.value = false;
-  resetIsUpdating();
+  isAddingPet.value = false;
+  resetState(isUpdating);
+  resetState(isUpdatingHealth);
+  resetState(isAddingHealth);
   selectedPet.value = pet;
 }
 
@@ -140,21 +139,44 @@ watch(user, (newUser) => {
   if (!newUser) {
     pets.value = [];
     selectPet(null);
-    isAdding.value = false;
   };
 });
 
-watch(() => [isAdding.value, isUpdating.generalInfo],
+watch(() => [isAddingPet.value, { ...isUpdating }],
   ([adding, editing], [prevAdding, prevEditing]) => {
     if (!prevAdding && adding) {
-      resetIsUpdating();
+      resetState(isUpdating);
+      resetState(isUpdatingHealth);
+      resetState(isAddingHealth);
+    };
+    const wasUpdating = Object.values(prevEditing).some(Boolean);
+    const isUpdatingNow = Object.values(editing).some(Boolean);
+    if (!wasUpdating && isUpdatingNow) {
+      isAddingPet.value = false;
+      resetState(isUpdatingHealth);
+      resetState(isAddingHealth);
     }
-    if (!prevEditing && editing) {
-      isAdding.value = false;
+  });
+
+watch(() => [{ ...isAddingHealth }, { ...isUpdatingHealth }],
+  ([adding, editing], [prevAdding, prevEditing]) => {
+    const wasAdding = Object.values(prevAdding).some(Boolean);
+    const isAddingNow = Object.values(adding).some(Boolean);
+    const wasUpdating = Object.values(prevEditing).some(Boolean);
+    const isUpdatingNow = Object.values(editing).some(Boolean);
+    if (!wasAdding && isAddingNow) {
+      resetState(isUpdating);
+      resetState(isUpdatingHealth);
+      isAddingPet.value = false;
+    };
+
+    if (!wasUpdating && isUpdatingNow) {
+      resetState(isUpdating);
+      resetState(isAddingHealth);
+      isAddingPet.value = false;
     }
-  }
-);
+  });
 
 export const usePets = () => {
-  return { pets, selectedPet, selectPet, loading, error, isAdding, isUpdating, fetchUserPets, addNewPet, updateSelectedPet, deleteSelectedPet, hasPets };
+  return { pets, selectedPet, selectPet, loading, error, isAddingPet, isUpdating, fetchUserPets, addNewPet, updateSelectedPet, deleteSelectedPet, hasPets };
 };
