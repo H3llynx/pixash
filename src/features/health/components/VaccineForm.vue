@@ -52,7 +52,6 @@ watch(selectedPet, (pet) => {
             <h1 class="my-1 default-padding" v-if="isAddingHealth.vaccine">Add vaccine</h1>
             <h1 class="my-1 default-padding" v-if="isUpdatingHealth.vaccine">Edit vaccine</h1>
             <form @submit.prevent="handleSubmit">
-
                 <fieldset class="default-padding flex-wrap">
                     <legend>{{ type.label }}</legend>
                     <Input v-model="formData.type" v-for="(option, index) in vaccineTypes" :id="option.id"
@@ -110,8 +109,7 @@ watch(selectedPet, (pet) => {
 
 <style scoped>
 legend,
-:deep(label:not(:has(input[type="checkbox"])) p),
-:deep(label span) {
+:deep(label:not(:has(input[type="checkbox"], input[type="radio"])) p):deep(label span) {
     font-weight: 500;
     font-size: medium;
 }
