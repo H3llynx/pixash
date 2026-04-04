@@ -2,6 +2,7 @@
 import { computed, reactive, Transition, watch } from 'vue';
 import Button from '../../../components/Button.vue';
 import Dropdown from '../../../components/Dropdown.vue';
+import FormWrapper from '../../../components/FormWrapper.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
 import Toggle from '../../../components/Toggle.vue';
@@ -77,9 +78,7 @@ watch(existingPet, (pet) => {
 
 <template>
     <Transition name="panel">
-        <section v-if="isAdding || isUpdating.generalInfo" class="sticky bottom-0 z-1
-           bg-bg-2 border-t border-border rounded-t-3xl pt-1 pb-2 p-0">
-            <Button v-if="hasPets" action="hide" @click="handleClose" />
+        <FormWrapper v-if="isAdding || isUpdating.generalInfo" :canClose="hasPets" :onClose="handleClose">
             <div v-if="!hasPets" class="px-2 py-1 text-center">
                 <h2>Your pet care starts here</h2>
                 <p class="text-text-secondary">You haven't added any pets yet.</p>
@@ -120,7 +119,7 @@ watch(existingPet, (pet) => {
                     </Button>
                 </div>
             </form>
-        </section>
+        </FormWrapper>
     </Transition>
 </template>
 
