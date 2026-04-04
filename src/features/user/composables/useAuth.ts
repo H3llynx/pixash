@@ -5,7 +5,7 @@ import { auth } from "../../../firebase";
 import { handleEmailLogin, handleEmailRegister, handleGoogleLogin } from "../../../services/auth";
 
 const firebaseUser = ref<User | null>(null);
-const loading = ref(true);
+const loading = ref<boolean>(true);
 const error = ref<string | null>(null);
 const user = computed(() => {
     if (!firebaseUser.value) return null;

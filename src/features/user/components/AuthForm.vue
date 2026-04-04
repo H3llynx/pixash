@@ -11,11 +11,11 @@ import { useAuth } from '../composables/useAuth';
 const { error, user, loginWithGoogle, loginWithEmail, registerWithEmail } = useAuth();
 const { show } = useToast();
 
-const isLogin = ref(true);
-const isShowing = ref(false);
-const name = ref("");
-const email = ref("");
-const password = ref("");
+const isLogin = ref<boolean>(true);
+const isShowing = ref<boolean>(false);
+const name = ref<string>("");
+const email = ref<string>("");
+const password = ref<string>("");
 
 watch(error, (newError) => {
     if (newError) show({ type: "error", title: isLogin.value ? "Login error" : "Registration error", message: newError });

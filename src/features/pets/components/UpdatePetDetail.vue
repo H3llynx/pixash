@@ -11,14 +11,14 @@ import { getUnit, kgToGrams } from '../utils';
 const { updateSelectedPet, selectedPet, isUpdating } = usePets();
 const props = defineProps<{ data: "weight" | "microchip" }>();
 
-const updateForm = ref(null);
+const updateForm = ref<HTMLFormElement>();
+const inputRef = ref<HTMLInputElement>();
+
 onClickOutside(updateForm, () => {
     if (isUpdating) {
         isUpdating[props.data] = false;
     }
 });
-
-const inputRef = ref<HTMLInputElement>();
 
 const preferredUnit = computed<"kg" | "g">(() => {
     const pet = selectedPet.value

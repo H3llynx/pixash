@@ -10,10 +10,10 @@ const { show } = useToast();
 
 const pets = ref<PetExtended[]>([]);
 const selectedPet = ref<PetExtended | null>(null);
-const loading = ref(false);
+const loading = ref<boolean>(false);
 const error = ref<string | null>(null);
 const hasPets = computed(() => pets.value.length > 0);
-const isAdding = ref(false);
+const isAdding = ref<boolean>(false);
 const isUpdating = reactive({
   generalInfo: false,
   weight: false,

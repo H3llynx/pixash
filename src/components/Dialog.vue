@@ -1,22 +1,36 @@
 <script setup lang="ts">
 import { PawPrint, TriangleAlert } from '@lucide/vue';
-import { ref, watch } from 'vue';
+import { onClickOutside } from '@vueuse/core';
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
+import { nextTick, ref, watch } from 'vue';
 import { useDialog } from '../composables/useDialog';
 import Button from './Button.vue';
 
-const dialogRef = ref<HTMLDialogElement>()
+const dialogRef = ref<HTMLDialogElement>();
+const boxRef = ref<HTMLDialogElement>();
 const { dialog } = useDialog();
 
-const openDialog = () => dialogRef.value?.showModal()
+const { activate, deactivate } = useFocusTrap(boxRef);
+
+const openDialog = async () => {
+    dialogRef.value?.showModal();
+    await nextTick();
+    activate();
+}
 const closeDialog = () => {
     dialog.value = null;
     dialogRef.value?.close();
+    deactivate();
 }
+
+
 const handleConfirm = () => {
     if (!dialog.value?.onConfirm) return;
     dialog.value.onConfirm();
     closeDialog();
 }
+
+onClickOutside(boxRef, () => closeDialog())
 
 watch(dialog, (newVal) => {
     if (newVal) {
@@ -28,10 +42,10 @@ watch(dialog, (newVal) => {
 </script>
 
 <template>
-    <dialog ref="dialogRef" class="m-auto bg-transparent text-text max-w-sm backdrop:bg-black/40"
+    <dialog ref="dialogRef" class="m-auto bg-transparent text-text max-w-xs backdrop:bg-black/40 backdrop:filter-blur"
         :aria-labelledby="dialog?.title">
         <Transition name="modal-pop" appear>
-            <div v-if="dialog"
+            <div v-if="dialog" ref="boxRef"
                 class="bg-bg-2 p-1.5 rounded-2xl text-center border border-border flex flex-col gap-1 items-center">
                 <div class="rounded-full w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                     <TriangleAlert v-if="dialog.isDelete" :size="30" />
@@ -56,6 +70,10 @@ watch(dialog, (newVal) => {
 </template>
 
 <style scoped>
+dialog:focus-visible {
+    outline: none;
+}
+
 h2 {
     font-family: var(--font-main);
     color: var(--color-brand);

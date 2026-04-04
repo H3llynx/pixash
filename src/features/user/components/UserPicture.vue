@@ -4,7 +4,7 @@ import { useAuth } from '../composables/useAuth';
 import UserMenu from './UserMenu.vue';
 
 const { user } = useAuth();
-const visible = ref(false);
+const visible = ref<boolean>(false);
 const menuBtnRef = ref<HTMLButtonElement | null>(null);
 
 </script>
