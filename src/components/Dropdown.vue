@@ -26,7 +26,6 @@ select {
     padding: 0 1rem;
     border-radius: 0.75rem;
     text-transform: capitalize;
-    background: var(--color-bg);
 
     &:user-invalid {
         outline-width: 2px;

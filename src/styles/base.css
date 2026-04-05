@@ -44,6 +44,7 @@
 
   --color-bg: var(--color-beige);
   --color-bg-2: var(--color-white);
+  --color-bg-3: var(--color-white);
   --color-bg-rgba: var(--color-white-rgba);
   --color-text: var(--color-black);
   --color-text-secondary: var(--color-grey-mid);
@@ -70,6 +71,7 @@
 [data-theme="dark"] {
   --color-bg: var(--color-charcoal);
   --color-bg-2: var(--color-charcoal-lighter);
+  --color-bg-3: var(--color-purple-dark);
   --color-bg-rgba: var(--color-charcoal-rgba);
   --color-text: var(--color-off-white);
   --color-text-chip: var(--color-grey-dark);
@@ -134,6 +136,7 @@
   input,
   select {
     border: 1px solid var(--color-border);
+    background: var(--color-bg-rgba);
     width: 100%;
   }
 
@@ -204,13 +207,16 @@
   h1,
   h2 {
     font-family: var(--font-title);
-    @apply text-xl
   }
 
+  h2 {
+    @apply text-xl;
+  }
 
   h1 {
     color: var(--color-brand);
     font-weight: 600;
+    font-size: x-large;
   }
 }
 

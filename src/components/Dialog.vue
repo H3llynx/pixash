@@ -46,7 +46,7 @@ watch(dialog, (newVal) => {
         :aria-labelledby="dialog?.title">
         <Transition name="modal-pop" appear>
             <div v-if="dialog" ref="boxRef"
-                class="bg-bg-2 p-1.5 rounded-2xl text-center border border-border flex flex-col gap-1 items-center">
+                class="bg-bg-3 p-1.5 rounded-2xl text-center border border-border flex flex-col gap-1 items-center">
                 <div class="rounded-full w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                     <TriangleAlert v-if="dialog.isDelete" :size="30" />
                     <PawPrint v-else :size="30" />
