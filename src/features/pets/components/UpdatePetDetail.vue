@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Edit2, X } from '@lucide/vue';
+import { Edit2, Plus, X } from '@lucide/vue';
 import { computed } from '@vue/reactivity';
 import { onClickOutside } from '@vueuse/core';
 import { reactive, ref, watch } from 'vue';
@@ -8,8 +8,9 @@ import { usePets } from '../composables/usePet';
 import type { Pet } from '../types';
 import { getUnit, kgToGrams } from '../utils';
 
-const { updateSelectedPet, selectedPet, isUpdating } = usePets();
-const props = defineProps<{ data: "weight" | "microchip" }>();
+const { updateSelectedPet, selectedPet, isUpdating, isUpdatingHealth, isAddingHealth } = usePets();
+
+const props = defineProps<{ data: "weight" | "microchip" | "nextVaccine" }>();
 
 const updateForm = ref<HTMLFormElement>();
 const inputRef = ref<HTMLInputElement>();
@@ -20,7 +21,7 @@ onClickOutside(updateForm, () => {
     }
 });
 
-const preferredUnit = computed<"kg" | "g">(() => {
+const preferredUnit = computed(() => {
     const pet = selectedPet.value
     if (!pet) return "g"
     return getUnit(pet) ? "kg" : "g"
@@ -42,9 +43,12 @@ const startUpdating = () => {
         formData.data = preferredUnit.value === "kg"
             ? (existing / 1000).toString()
             : existing.toString();
-    } else if (props.data === "microchip" && existing === "string") {
+    } else if (props.data === "microchip" && typeof existing === "string") {
         formData.data = existing;
-    };
+    } else if (props.data === "nextVaccine") {
+        if (existing) isUpdatingHealth.vaccine = true;
+        else isAddingHealth.vaccine = true;
+    }
 };
 
 const handleUnitChange = () => {
@@ -69,9 +73,13 @@ const handleSubmit = (field: "weight" | "microchip") => {
     isUpdating[props.data] = false;
 }
 
+watch(preferredUnit, (unit) => {
+    formData.unit = unit;
+});
+
 watch(() => formData.unit,
     (newUnit, oldUnit) => {
-        if (props.data !== 'weight' || !formData.data) return;
+        if (props.data !== "weight" || !formData.data) return;
         const value = parseFloat(formData.data);
         if (isNaN(value)) return;
         if (oldUnit === "kg" && newUnit === "g") {
@@ -88,11 +96,11 @@ watch(() => formData.unit,
     <div class="flex h-2 gap-[3px]" v-if="selectedPet">
         <Button v-if="!isUpdating[data]" variant="summaryCta" size="xxs" @click="startUpdating"
             :aria-label="`Update ${data}`">
-            <Edit2 v-if="data in selectedPet" :size="16" />
-            <span v-else>Add {{ data }}</span>
+            <Edit2 v-if="selectedPet[data]" :size="16" />
+            <Plus v-else :size="18" />
         </Button>
-        <form @submit.prevent="handleSubmit(data)" @keydown.enter.exact="handleSubmit(data)" v-else
-            aria-label="Update {{data}}" class="flex gap-0.5" ref="updateForm">
+        <form @submit.prevent="handleSubmit(data)" @keydown.enter.exact="handleSubmit(data)"
+            v-else-if="data !== 'nextVaccine'" aria-label="Update {{data}}" class="flex gap-0.5" ref="updateForm">
             <input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
                 :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="inputRef">
             <div class="input-container">
@@ -102,7 +110,8 @@ watch(() => formData.unit,
                 </select>
             </div>
         </form>
-        <Button v-if="isUpdating[data]" size="xs" variant="ghost" @click="isUpdating[data] = false">
+        <Button v-if="isUpdating[data] && data !== 'nextVaccine'" size="xs" variant="ghost"
+            @click="isUpdating[data] = false">
             <X :size="18" color="var(--color-brand-light)" />
         </Button>
     </div>

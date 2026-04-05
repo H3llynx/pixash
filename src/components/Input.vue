@@ -25,12 +25,12 @@ defineEmits(["update:modelValue"]);
                         ? modelValue.includes($attrs.value as string)
                         : modelValue === ($attrs.value as string)
                     : undefined
-                " class="rounded-xl font-medium pl-1 pr-2.5 py-0.5" tabindex="0"
+                " class="font-medium pl-1 pr-2.5 py-0.5" tabindex="0"
                 @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)" v-bind="$attrs" />
-            <div class="absolute right-[2px] top-1/2 -translate-y-1/2">
+            <div class="absolute right-0.5 top-1/2 -translate-y-1/2 flex items-center">
                 <slot name="addon"></slot>
+                <AlertCircle class="error-icon" />
             </div>
-            <AlertCircle class="error-icon" />
         </div>
     </label>
 </template>

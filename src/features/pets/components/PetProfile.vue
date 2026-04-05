@@ -2,13 +2,12 @@
 import { Edit2, Trash2 } from '@lucide/vue';
 import Button from '../../../components/Button.vue';
 import { useDialog } from '../../../composables/useDialog';
-import { useHealth } from '../../health/composables/useHealth';
+import { tsToDate } from '../../../utils';
 import { usePets } from '../composables/usePet';
 import { getAge, getIcon, getWeight } from '../utils';
 import UpdatePetDetail from './UpdatePetDetail.vue';
 
 const { selectedPet, isUpdating, deleteSelectedPet } = usePets();
-const { isUpdatingHealth, isAddingHealth } = useHealth();
 const { open } = useDialog();
 
 const handleDelete = async () => {
@@ -21,12 +20,6 @@ const handleDelete = async () => {
         onConfirm: () => deleteSelectedPet(pet)
     });
 };
-
-const handleVaccine = () => {
-    if (!selectedPet.value) return;
-    if (selectedPet.value.nextVaccine) isUpdatingHealth.vaccine = true;
-    else if (!selectedPet.value.nextVaccine) isAddingHealth.vaccine = true;
-}
 </script>
 
 <template>
@@ -62,10 +55,10 @@ const handleVaccine = () => {
                 </div>
                 <div class="row">
                     <span>Next vaccine</span>
-                    <span v-if="selectedPet.nextVaccine" class="text-brand font-medium">20 sep 1010</span>
-                    <Button variant="ghost" size="xs" @click="handleVaccine">
-                        {{ selectedPet.nextVaccine ? "Edit" : "Add" }} vacine
-                    </Button>
+                    <span v-if="selectedPet.nextVaccine" class="text-brand font-medium">{{
+                        tsToDate(selectedPet.nextVaccine.dueOn!, "date")
+                        }}</span>
+                    <UpdatePetDetail data="nextVaccine" />
                 </div>
                 <div class="row">
                     <span>Microchip</span>

@@ -33,11 +33,8 @@ const handleConfirm = () => {
 onClickOutside(boxRef, () => closeDialog())
 
 watch(dialog, (newVal) => {
-    if (newVal) {
-        openDialog()
-    } else {
-        closeDialog()
-    }
+    if (newVal) openDialog();
+    else closeDialog();
 }, { immediate: true })
 </script>
 

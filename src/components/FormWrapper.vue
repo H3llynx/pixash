@@ -9,8 +9,7 @@ withDefaults(defineProps<{
 
 
 <template>
-    <section class="sticky bottom-0 z-1 mt-auto
-           bg-bg-3 border-t border-border rounded-t-3xl pt-1 pb-2 p-0">
+    <section class="sticky bottom-0 z-1 mt-auto bg-bg-3 border-t border-border rounded-t-3xl pt-1 pb-2 p-0">
         <Button v-if="canClose" action="hide" @click="onClose" />
         <slot />
     </section>

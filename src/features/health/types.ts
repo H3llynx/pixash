@@ -1,12 +1,21 @@
 import type { Timestamp } from "firebase/firestore";
-import type { STAGE } from "./config";
+import type { STAGE, VACCINE_TYPES } from "./config";
+
+export type VaccineTypes = (typeof VACCINE_TYPES)[keyof typeof VACCINE_TYPES][number]
 
 export type VaccineRecord = {
-    type: string;
+    type: string[];
     stage: typeof STAGE[number];
-    givenAt: Timestamp;
-    dueAt?: Timestamp;
-    repeatEveryMonths?: number;
+    givenAt: string;
+    dueOn?: string;
     vet?: string;
     notes?: string;
+}
+
+export type VaccineExtended = VaccineRecord & {
+    id: string;
+    petId: string;
+    userId: string;
+    givenAt: Timestamp;
+    dueOn?: Timestamp;
 }

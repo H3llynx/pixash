@@ -24,7 +24,6 @@ defineEmits(["update:modelValue"]);
 select {
     height: 2.8rem;
     padding: 0 1rem;
-    border-radius: 0.75rem;
     text-transform: capitalize;
 
     &:user-invalid {

@@ -2,14 +2,13 @@ import { FirebaseError } from "firebase/app";
 import { computed, reactive, ref, watch } from "vue";
 import { useToast } from "../../../composables/useToast";
 import { addPet, deletePet, fetchPets, updatePet } from "../../../services/pets";
+import { resetState } from "../../../utils";
 import { useHealth } from "../../health/composables/useHealth";
 import { useAuth } from "../../user/composables/useAuth";
 import type { Pet, PetExtended } from "../types";
-import { getNextVaccine, resetState } from "../utils";
 
 const { user } = useAuth();
 const { show } = useToast();
-const { isAddingHealth, isUpdatingHealth } = useHealth();
 
 const pets = ref<PetExtended[]>([]);
 const selectedPet = ref<PetExtended | null>(null);
@@ -21,7 +20,24 @@ const isUpdating = reactive({
   generalInfo: false,
   weight: false,
   microchip: false,
+  nextVaccine: false,
 });
+
+const selectPet = (pet: PetExtended | null) => {
+  isAddingPet.value = false;
+  resetState(isUpdating);
+  resetState(isUpdatingHealth);
+  resetState(isAddingHealth);
+  selectedPet.value = pet;
+}
+
+const {
+  isAddingHealth,
+  isUpdatingHealth,
+  vaccines,
+  fetchUserVaccines,
+  addNewVaccine,
+} = useHealth(pets);
 
 const fetchUserPets = async () => {
   if (!user.value) {
@@ -30,8 +46,7 @@ const fetchUserPets = async () => {
   loading.value = true;
   error.value = null;
   try {
-    const userPets = await fetchPets(user.value.uid);
-    pets.value = userPets.map(pet => ({ ...pet, nextVaccine: getNextVaccine(pet) }));
+    pets.value = await fetchPets(user.value.uid);
     if (!selectedPet.value && pets.value.length) {
       selectPet(pets.value[0]);
     } else if (!pets.value.length) isAddingPet.value = true;
@@ -67,7 +82,6 @@ const addNewPet = async (newPet: Pet) => {
     } else {
       error.value = "An unexpected error occurred";
     }
-    show({ type: "error", title: "Error", message: error.value });
   } finally {
     loading.value = false;
     isAddingPet.value = false;
@@ -82,7 +96,7 @@ const updateSelectedPet = async (pet: PetExtended, data: Partial<Pick<Pet, "weig
   error.value = null;
 
   try {
-    await updatePet(pet.id, data);
+    await updatePet(pet.id, user.value.uid, data);
     await fetchUserPets();
     const updatedPet = pets.value.find(p => p.id === pet.id)
     if (updatedPet) {
@@ -110,7 +124,7 @@ const deleteSelectedPet = async (pet: PetExtended) => {
   const petName = pet.name;
   selectPet(null);
   try {
-    await deletePet(pet.id);
+    await deletePet(pet.id, user.value.uid);
     await fetchUserPets();
     const deletedPet = pets.value.find(p => p.id === pet.id)
     if (!deletedPet) {
@@ -127,18 +141,28 @@ const deleteSelectedPet = async (pet: PetExtended) => {
   }
 };
 
-const selectPet = (pet: PetExtended | null) => {
-  isAddingPet.value = false;
-  resetState(isUpdating);
-  resetState(isUpdatingHealth);
-  resetState(isAddingHealth);
-  selectedPet.value = pet;
-}
-
-watch(user, (newUser) => {
+watch(user, async (newUser) => {
   if (!newUser) {
     pets.value = [];
+    vaccines.value = [];
     selectPet(null);
+  } else {
+    await fetchUserPets();
+    await fetchUserVaccines();
+    if (pets.value.length) {
+      selectPet(pets.value[0]);
+    }
+  }
+}, { immediate: true });
+
+watch(error, (newError) => {
+  if (newError) show({ type: "error", title: "Error", message: newError });
+});
+
+watch(vaccines, (newVaccines) => {
+  if (newVaccines && selectedPet.value) {
+    const updated = pets.value.find(pet => pet.id === selectedPet.value!.id);
+    if (updated) selectPet(updated);
   };
 });
 
@@ -153,8 +177,6 @@ watch(() => [isAddingPet.value, { ...isUpdating }],
     const isUpdatingNow = Object.values(editing).some(Boolean);
     if (!wasUpdating && isUpdatingNow) {
       isAddingPet.value = false;
-      resetState(isUpdatingHealth);
-      resetState(isAddingHealth);
     }
   });
 
@@ -178,5 +200,22 @@ watch(() => [{ ...isAddingHealth }, { ...isUpdatingHealth }],
   });
 
 export const usePets = () => {
-  return { pets, selectedPet, selectPet, loading, error, isAddingPet, isUpdating, fetchUserPets, addNewPet, updateSelectedPet, deleteSelectedPet, hasPets };
+  return {
+    pets,
+    selectedPet,
+    selectPet,
+    loading,
+    error,
+    isAddingPet,
+    isUpdating,
+    fetchUserPets,
+    addNewPet,
+    updateSelectedPet,
+    deleteSelectedPet,
+    hasPets,
+    isAddingHealth,
+    isUpdatingHealth,
+    fetchUserVaccines,
+    addNewVaccine,
+  };
 };

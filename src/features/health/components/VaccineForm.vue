@@ -1,21 +1,24 @@
 <script setup lang="ts">
 import { CalendarCheck, CalendarClock } from '@lucide/vue';
 import { reactive, ref, watch } from 'vue';
+import Button from '../../../components/Button.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
 import Input from '../../../components/Input.vue';
 import Toggle from '../../../components/Toggle.vue';
+import { dateFromInput, shallowEqual } from '../../../utils';
 import { usePets } from '../../pets/composables/usePet';
-import { getAge, getVaccineTypes } from '../../pets/utils';
-import { useHealth } from '../composables/useHealth';
-import { vaccineFields } from '../config';
+import { getAge, getIcon } from '../../pets/utils';
+import { STAGE, vaccineFields } from '../config';
+import type { VaccineTypes } from '../types';
+import { getVaccineTypes } from '../utils';
 
-const { isAddingHealth, isUpdatingHealth } = useHealth();
-const { selectedPet } = usePets();
+const { selectedPet, isAddingHealth, isUpdatingHealth, addNewVaccine } = usePets();
+
 const { type, stage, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
 const vaccineTypes = ref();
 const formData = reactive({
-    type: "",
-    stage: "",
+    type: [],
+    stage: "adult" as typeof STAGE[number],
     givenAt: "",
     nextDose: false,
     dueOn: "",
@@ -30,33 +33,36 @@ const handleClose = () => {
 };
 
 const handleSubmit = () => {
-
-}
+    if (!selectedPet.value) return;
+    if (isAddingHealth.vaccine) addNewVaccine({ ...formData }, selectedPet.value.id);
+    else {
+        if (selectedPet.value && !shallowEqual(formData, selectedPet.value)) {
+            console.log("update");
+        }
+    }
+};
 
 watch(selectedPet, (pet) => {
-    if (!pet) {
-        return;
-    }
+    if (!pet) return;
     const vaccines = getVaccineTypes(pet.species);
     vaccineTypes.value = vaccines;
     Object.assign(formData, {
         type: [vaccineTypes.value[0].id],
-        stage: getAge(pet)?.stage,
+        stage: getAge(pet)?.stage as typeof STAGE[number],
     })
 }, { immediate: true });
 </script>
 
 <template>
     <Transition name="panel">
-        <FormWrapper v-if="isAddingHealth.vaccine || isUpdatingHealth.vaccine" :onClose="handleClose">
+        <FormWrapper v-if="selectedPet && (isAddingHealth.vaccine || isUpdatingHealth.vaccine)" :onClose="handleClose">
             <h1 class="my-1 default-padding" v-if="isAddingHealth.vaccine">Add vaccine</h1>
             <h1 class="my-1 default-padding" v-if="isUpdatingHealth.vaccine">Edit vaccine</h1>
             <form @submit.prevent="handleSubmit">
                 <fieldset class="default-padding flex-wrap">
                     <legend>{{ type.label }}</legend>
-                    <Input v-model="formData.type" v-for="(option, index) in vaccineTypes" :id="option.id"
-                        :value="option.id" :key="option.id" :label="option.label" :type="type.type"
-                        :required="index === 0" />
+                    <Input v-model="formData.type" v-for="option in vaccineTypes" :id="option.id" :value="option.id"
+                        :key="option.id" :label="option.label" :type="type.type" />
                 </fieldset>
                 <fieldset class="default-padding capitalize my-0.5">
                     <legend>{{ stage.label }}</legend>
@@ -78,30 +84,23 @@ watch(selectedPet, (pet) => {
                             <CalendarClock class="mr-0.5" color="var(--color-border)" />
                         </template>
                     </Input>
-                </div>
-                <!--                 <div class="default-padding flex flex-col gap-1 max-w-md">
-                    <Input v-model="formData.name" :id="name.id" :type="name.type" :label="name.label" required />
-                    <Dropdown v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="breed.label" required>
-                        <option value="" disabled>{{ breed.placeholder }}</option>
-                        <option v-for="option in getBreedOptions(formData.species)"
-                            :key="`${formData.species}-${option.value}`" :value="option.value">
-                            {{ option.name }}
-                        </option>
-                    </Dropdown>
-                    <div class="flex justify-between gap-1">
-                        <Input v-model="formData.birthDate" :id="birthDate.id" :type="birthDate.type"
-                            :label="birthDate.label" required />
-                        <Dropdown v-model="formData.sex" :id="sex.id" :label="sex.label" required>
-                            <option v-for="option in sex.options" :value="option" :key="option">{{ option }}
-                            </option>
-                        </Dropdown>
+                    <Input v-model="formData.vet" :id="vet.id" :type="vet.type" :label="vet.label" />
+                    <label :for="notes.id">
+                        <p>{{ notes.label }}</p>
+                        <textarea v-model="formData.notes" :id="notes.id" />
+                    </label>
+                    <div class="flex gap-1 mt-1 items-center">
+                        <div class="flex flex-wrap gap-[5px] items-center flex-1">
+                            <span>{{ getIcon(selectedPet) }} {{ selectedPet.name }} · </span>
+                            <span>{{vaccineTypes.find((v: VaccineTypes) => v.id ===
+                                String(formData.type)).label}}</span>
+                            <p v-if="formData.dueOn" class="text-text-secondary w-full">Next due: {{
+                                dateFromInput(formData.dueOn) }}
+                            </p>
+                        </div>
+                        <Button size="sm">Save vaccine</Button>
                     </div>
-                    <Toggle v-model="formData.sterilized" :label="sterilized.label" :id="sterilized.id" />
-                    <Toggle v-model="formData.microchipped" :label="microchipped.label" :id="microchipped.id" />
-                    <Button>{{ isAddingPet ? "Add" : "Update" }} {{ formData.name }}
-                        <Paw class="w-1 -rotate-12" />
-                    </Button>
-                </div> -->
+                </div>
             </form>
         </FormWrapper>
     </Transition>
@@ -109,8 +108,20 @@ watch(selectedPet, (pet) => {
 
 <style scoped>
 legend,
-:deep(label:not(:has(input[type="checkbox"], input[type="radio"])) p):deep(label span) {
-    font-weight: 500;
+:deep(label p),
+:deep(label span) {
     font-size: medium;
+}
+
+:deep(fieldset label p) {
+    font-size: 14px;
+}
+
+:deep(label:has(input[type="text"]:not(:required)) p::after),
+label:has(textarea) p::after {
+    content: "(optional)";
+    margin-left: 10px;
+    color: var(--color-text-secondary);
+    font-size: small;
 }
 </style>

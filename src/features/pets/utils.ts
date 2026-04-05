@@ -1,4 +1,4 @@
-import { STAGE, VACCINE_TYPES } from "../health/config";
+import { STAGE } from "../health/config";
 import { SPECIES } from "./config";
 import type { Pet } from "./types";
 
@@ -55,23 +55,4 @@ export const getWeight = (pet: Pet) => {
     if (!pet?.weight) return;
     if (pet.species === "dog" || pet.species === "cat") return `${gramsToKg(pet.weight)} kg`;
     else return `${pet.weight} g`;
-};
-
-export const getVaccineTypes = (species: typeof SPECIES[number]["name"] | "default") => {
-    if (!species) return;
-    const pet = species === "small mammal"
-        ? "smallMammal"
-        : species ?? "default"
-    return VACCINE_TYPES[pet as keyof typeof VACCINE_TYPES] ?? VACCINE_TYPES.default;
-};
-
-export const getNextVaccine = (pet: Pet) => "20/09/1991";
-
-export const shallowEqual = (a: any, b: any) =>
-    Object.keys(a).every((key) => a[key] === b[key]);
-
-export const resetState = (state: any) => {
-    Object.keys(state).forEach((key) => {
-        (state as Record<string, boolean>)[key] = false;
-    });
 };

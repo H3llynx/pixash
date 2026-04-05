@@ -6,10 +6,10 @@ import FormWrapper from '../../../components/FormWrapper.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
 import Toggle from '../../../components/Toggle.vue';
+import { shallowEqual } from '../../../utils';
 import { usePets } from '../composables/usePet';
 import { petFields } from '../config';
 import type { Pet } from '../types';
-import { shallowEqual } from '../utils';
 
 const { name, species, breed, birthDate, sex, sterilized, microchipped } = petFields;
 const { isAddingPet, isUpdating, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();

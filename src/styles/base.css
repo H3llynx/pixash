@@ -14,7 +14,7 @@
   --color-charcoal: #19171A;
   --color-charcoal-lighter: #222024;
   --color-charcoal-rgba: rgba(25, 23, 26, 0.4);
-  --color-white-rgba: rgba(255, 255, 255, 0.4);
+  --color-white-rgba: rgba(230, 230, 223, 0.3);
   --color-off-white: #E8E8F0;
   --color-grey-light: #E0DDD6;
   --color-grey-light-rgba: rgba(224, 221, 214, 0.5);
@@ -125,7 +125,7 @@
   }
 
   button,
-  input {
+  input:not([type="text"]) {
     cursor: pointer;
   }
 
@@ -134,14 +134,21 @@
   }
 
   input,
-  select {
+  select,
+  textarea {
     border: 1px solid var(--color-border);
     background: var(--color-bg-rgba);
     width: 100%;
+    border-radius: 0.75rem;
+  }
+
+  textarea {
+    min-height: 5rem;
+    padding: 0.5rem 1rem;
   }
 
   input::placeholder {
-    font-size: small;
+    font-size: 14px;
   }
 
   select {
@@ -179,7 +186,7 @@
       }
 
       p {
-        background: var(--color-bg-2);
+        background: var(--color-bg-rgba);
         border: 1px solid var(--color-border);
         border-radius: 2rem;
         padding: 5px 10px;
@@ -209,14 +216,18 @@
     font-family: var(--font-title);
   }
 
-  h2 {
-    @apply text-xl;
-  }
-
   h1 {
     color: var(--color-brand);
     font-weight: 600;
     font-size: x-large;
+  }
+
+  h2 {
+    @apply text-xl;
+  }
+
+  h3 {
+    @apply text-lg font-medium;
   }
 }
 
@@ -258,12 +269,6 @@
     display: flex;
     gap: 0.5rem;
     align-items: center;
-
-    .error-icon {
-      position: absolute;
-      right: 0.5rem;
-      flex-shrink: 0;
-    }
 
     &:has(:user-invalid) .error-icon {
       display: block;
