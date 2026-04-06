@@ -3,12 +3,15 @@ import { Edit2, Plus, X } from '@lucide/vue';
 import { computed } from '@vue/reactivity';
 import { onClickOutside } from '@vueuse/core';
 import { reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
+import type { VaccineExtended } from '../../health/types';
 import { usePets } from '../composables/usePet';
 import type { Pet } from '../types';
 import { getUnit, kgToGrams } from '../utils';
 
-const { updateSelectedPet, selectedPet, isUpdating, isUpdatingHealth, isAddingHealth } = usePets();
+const { updateSelectedPet, selectedPet, isUpdating, selectVaccine, isAddingHealth } = usePets();
+const { t } = useI18n();
 
 const props = defineProps<{ data: "weight" | "microchip" | "nextVaccine" }>();
 
@@ -46,7 +49,9 @@ const startUpdating = () => {
     } else if (props.data === "microchip" && typeof existing === "string") {
         formData.data = existing;
     } else if (props.data === "nextVaccine") {
-        if (existing) isUpdatingHealth.vaccine = true;
+        if (existing) {
+            selectVaccine(existing as VaccineExtended);
+        }
         else isAddingHealth.vaccine = true;
     }
 };
@@ -100,7 +105,8 @@ watch(() => formData.unit,
             <Plus v-else :size="18" />
         </Button>
         <form @submit.prevent="handleSubmit(data)" @keydown.enter.exact="handleSubmit(data)"
-            v-else-if="data !== 'nextVaccine'" aria-label="Update {{data}}" class="flex gap-0.5" ref="updateForm">
+            v-else-if="data !== 'nextVaccine'" :aria-label="t('pet.profile.edit.' + data)" class="flex gap-0.5"
+            ref="updateForm">
             <input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
                 :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="inputRef">
             <div class="input-container">

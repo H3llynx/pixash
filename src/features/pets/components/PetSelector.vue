@@ -8,7 +8,7 @@ const { pets, selectPet, selectedPet, isAddingPet } = usePets();
 </script>
 
 <template>
-    <div aria-label="Pet selector" class="pet-selector">
+    <div class="pet-selector">
         <Button variant="chip" size="sm" v-for="pet in pets" :class="selectedPet?.id === pet.id && 'active'"
             @click="selectPet(pet)">
             <span aria-hidden>{{ getIcon(pet) }}</span>

@@ -4,7 +4,7 @@ import type { STAGE, VACCINE_TYPES } from "./config";
 export type VaccineTypes = (typeof VACCINE_TYPES)[keyof typeof VACCINE_TYPES][number]
 
 export type VaccineRecord = {
-    type: string[];
+    types: VaccineTypes[];
     stage: typeof STAGE[number];
     givenAt: string;
     dueOn?: string;

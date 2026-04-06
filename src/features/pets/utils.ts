@@ -4,12 +4,12 @@ import type { Pet } from "./types";
 
 export const getIcon = (pet: Pet) => {
     if (!pet) return;
-    return SPECIES.find(s => s.name === pet.species)?.icon;
+    return SPECIES.find(s => s.id === pet.species)?.icon;
 }
 
 export const getUnit = (pet: Pet) => {
     if (!pet) return;
-    return SPECIES.find(s => s.name === pet.species)?.prefersKg;
+    return SPECIES.find(s => s.id === pet.species)?.prefersKg;
 }
 
 export const getAge = (pet: Pet) => {

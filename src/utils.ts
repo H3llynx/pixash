@@ -10,7 +10,7 @@ export const resetState = (state: any) => {
 export const shallowEqual = (a: any, b: any) =>
     Object.keys(a).every((key) => a[key] === b[key]);
 
-export const tsToDate = (ts: Timestamp, mode: DateFormatMode) => {
+export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode) => {
     if (!ts) return;
     const date = ts.toDate();
     switch (mode) {
@@ -27,6 +27,8 @@ export const tsToDate = (ts: Timestamp, mode: DateFormatMode) => {
             if (diffDays === 1) return "tomorrow";
             return `in ${diffDays} days`;
         }
+        case "input":
+            return date.toISOString().slice(0, 10);
     }
 };
 

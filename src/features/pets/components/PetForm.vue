@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { computed, reactive, Transition, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Dropdown from '../../../components/Dropdown.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
 import Toggle from '../../../components/Toggle.vue';
+import { useToast } from '../../../composables/useToast';
 import { shallowEqual } from '../../../utils';
 import { usePets } from '../composables/usePet';
 import { petFields } from '../config';
 import type { Pet } from '../types';
 
 const { name, species, breed, birthDate, sex, sterilized, microchipped } = petFields;
-const { isAddingPet, isUpdating, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();
+const { error, isAddingPet, isUpdating, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();
+const { show } = useToast();
+const { t } = useI18n();
 
 const existingPet = computed<Pet | null>(() => {
     if (isAddingPet.value || !selectedPet.value) return null;
@@ -21,10 +25,10 @@ const existingPet = computed<Pet | null>(() => {
 
 const defaultForm: Pet = {
     name: "",
-    species: species.options[0].name,
+    species: species.options[0].id,
     breed: "",
     birthDate: "",
-    sex: sex.options[0],
+    sex: sex.options[0].id,
     sterilized: true,
     microchipped: false,
 };
@@ -41,16 +45,29 @@ const getBreedOptions = (species: string) => {
     return []
 };
 const selectedSpecies = computed(() =>
-    species.options.find(s => s.name === formData.species)
+    species.options.find(s => s.id === formData.species)
 );
 const hasBreed = computed(() => selectedSpecies.value?.hasBreed ?? false);
 
-const handleSubmit = () => {
-    if (isAddingPet.value) addNewPet({ ...formData });
-    else {
-        if (selectedPet.value && !shallowEqual(formData, selectedPet.value)) {
-            updateSelectedPet(selectedPet.value, formData);
+const handleSubmit = async () => {
+    try {
+        if (isAddingPet.value) {
+            await addNewPet({ ...formData });
+            show({
+                type: "success",
+                title: t("toast.success.title.generic"),
+                message: t("toast.success.message.petAdded", { name: formData.name }),
+            });
+        } else if (selectedPet.value && !shallowEqual(formData, selectedPet.value)) {
+            await updateSelectedPet(selectedPet.value, formData);
+            show({
+                type: "success",
+                title: t("toast.success.title.generic"),
+                message: t("toast.success.message.petUpdated", { name: formData.name }),
+            });
         }
+    } catch (e) {
+        show({ type: "error", title: "Error", message: error.value || "" });
     }
 };
 
@@ -80,25 +97,28 @@ watch(existingPet, (pet) => {
     <Transition name="panel">
         <FormWrapper v-if="isAddingPet || isUpdating.generalInfo" :canClose="hasPets" :onClose="handleClose">
             <div v-if="!hasPets" class="px-2 py-1 text-center">
-                <h2>Your pet care starts here</h2>
-                <p class="text-text-secondary">You haven't added any pets yet.</p>
+                <h2>{{ t("pet.title.addFirstPet") }}</h2>
+                <p class="text-text-secondary">{{ t("pet.addFirstPet") }}</p>
             </div>
-            <h1 class="my-1 default-padding" v-if="isAddingPet">Add a pet</h1>
-            <h1 class="my-1 default-padding" v-if="selectedPet && isUpdating.generalInfo">Edit {{ selectedPet.name }}
+            <h1 class="my-1 default-padding">
+                {{ isAddingPet
+                    ? t("pet.title.addPet")
+                    : t("pet.title.editPet", { name: selectedPet?.name })
+                }}
             </h1>
             <form @submit.prevent="handleSubmit">
                 <fieldset class="min-w-0">
-                    <legend class="default-padding">{{ species.label }}</legend>
+                    <legend class="default-padding">{{ t(species.label) }}</legend>
                     <div class="pet-selector">
-                        <Input v-model="formData.species" v-for="(option, index) in species.options" :id="option.name"
-                            :value="option.name" :key="option.name" :label="option.icon" :aria-label="option.name"
+                        <Input v-model="formData.species" v-for="(option, index) in species.options" :id="option.id"
+                            :value="option.id" :key="option.id" :label="option.icon" :aria-label="t(option.name)"
                             :type="species.type" :name="species.name" :required="index === 0" />
                     </div>
                 </fieldset>
                 <div class="default-padding flex flex-col gap-1 max-w-md">
-                    <Input v-model="formData.name" :id="name.id" :type="name.type" :label="name.label" required />
-                    <Dropdown v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="breed.label" required>
-                        <option value="" disabled>{{ breed.placeholder }}</option>
+                    <Input v-model="formData.name" :id="name.id" :type="name.type" :label="t(name.label)" required />
+                    <Dropdown v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="t(breed.label)" required>
+                        <option value="" disabled>{{ t(breed.placeholder) }}</option>
                         <option v-for="option in getBreedOptions(formData.species)"
                             :key="`${formData.species}-${option.value}`" :value="option.value">
                             {{ option.name }}
@@ -106,15 +126,16 @@ watch(existingPet, (pet) => {
                     </Dropdown>
                     <div class="flex justify-between gap-1">
                         <Input v-model="formData.birthDate" :id="birthDate.id" :type="birthDate.type"
-                            :label="birthDate.label" required />
-                        <Dropdown v-model="formData.sex" :id="sex.id" :label="sex.label" required>
-                            <option v-for="option in sex.options" :value="option" :key="option">{{ option }}
+                            :label="t(birthDate.label)" required />
+                        <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
+                            <option v-for="option in sex.options" :value="option.id" :key="option.id">{{ t(option.label)
+                            }}
                             </option>
                         </Dropdown>
                     </div>
-                    <Toggle v-model="formData.sterilized" :label="sterilized.label" :id="sterilized.id" />
-                    <Toggle v-model="formData.microchipped" :label="microchipped.label" :id="microchipped.id" />
-                    <Button>{{ isAddingPet ? "Add" : "Update" }} {{ formData.name }}
+                    <Toggle v-model="formData.sterilized" :label="t(sterilized.label)" :id="sterilized.id" />
+                    <Toggle v-model="formData.microchipped" :label="t(microchipped.label)" :id="microchipped.id" />
+                    <Button>{{ t("pet.cta.save", { name: formData.name }) }}
                         <Paw class="w-1 -rotate-12" />
                     </Button>
                 </div>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Edit2, Trash2 } from '@lucide/vue';
+import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { useDialog } from '../../../composables/useDialog';
+import { useToast } from '../../../composables/useToast';
 import { tsToDate } from '../../../utils';
 import { usePets } from '../composables/usePet';
 import { getAge, getIcon, getWeight } from '../utils';
@@ -9,15 +11,26 @@ import UpdatePetDetail from './UpdatePetDetail.vue';
 
 const { selectedPet, isUpdating, deleteSelectedPet } = usePets();
 const { open } = useDialog();
+const { show } = useToast();
+const { t } = useI18n();
 
 const handleDelete = async () => {
     const pet = selectedPet.value;
     if (!pet) return;
     open({
-        title: `Delete ${selectedPet.value?.name} ?`,
-        message: `This will remove ${selectedPet.value?.name}'s profile and ${selectedPet.value?.sex === "male" ? "his" : "her"} tracked information. This action cannot be undone. Are you sure you'd like to proceed?`,
+        title: t("dialog.deletePet.title"),
+        message: t("dialog.deletePet.message", { name: pet.name }),
         isDelete: true,
-        onConfirm: () => deleteSelectedPet(pet)
+        onConfirm: async () => {
+            try {
+                deleteSelectedPet(pet);
+                show({
+                    type: "success",
+                    title: t("toast.success.title.generic"),
+                    message: t("toast.success.message.petDeleted", { name: pet.name }),
+                });
+            } catch (error) { console.log(error) }
+        }
     });
 };
 </script>
@@ -33,7 +46,8 @@ const handleDelete = async () => {
                 <div class="p-1 text-text-secondary text-sm">
                     <div class="flex gap-0.5">
                         <h1>{{ selectedPet.name }}</h1>
-                        <Button variant="ghost" size="xs" :aria-label="`Edit ${selectedPet.name}'s information`"
+                        <Button variant="ghost" size="xs"
+                            :aria-label="t('pet.profile.edit.generalInformation', { name: selectedPet.name })"
                             @click="isUpdating.generalInfo = true">
                             <Edit2 :size="14" />
                         </Button>
@@ -42,26 +56,26 @@ const handleDelete = async () => {
                     <span>{{ getAge(selectedPet)?.text }} · </span>
                     <span class="capitalize">{{ selectedPet.sex }}</span>
                 </div>
-                <Button class="ml-auto mb-auto" variant="ghost" size="xs" :aria-label="`Delete ${selectedPet.name}`"
-                    @click="handleDelete">
+                <Button class="ml-auto mb-auto" variant="ghost" size="xs"
+                    :aria-label="t('pet.cta.delete', { name: selectedPet.name })" @click="handleDelete">
                     <Trash2 :size="22" color="var(--color-border)" />
                 </Button>
             </div>
             <div class="text-sm">
                 <div class="row">
-                    <span>Weight</span>
+                    <span>{{ t("pet.profile.label.weight") }}</span>
                     <span v-if="selectedPet.weight && !isUpdating.weight">{{ getWeight(selectedPet) }}</span>
                     <UpdatePetDetail data="weight" />
                 </div>
                 <div class="row">
-                    <span>Next vaccine</span>
+                    <span>{{ t("pet.profile.label.nextVaccine") }}</span>
                     <span v-if="selectedPet.nextVaccine" class="text-brand font-medium">{{
                         tsToDate(selectedPet.nextVaccine.dueOn!, "date")
                         }}</span>
                     <UpdatePetDetail data="nextVaccine" />
                 </div>
                 <div class="row">
-                    <span>Microchip</span>
+                    <span>{{ t("pet.profile.label.microchip") }}</span>
                     <span v-if="selectedPet.microchip && !isUpdating.microchip">{{ selectedPet.microchip }}</span>
                     <UpdatePetDetail data="microchip" />
                 </div>

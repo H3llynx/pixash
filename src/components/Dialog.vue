@@ -3,14 +3,15 @@ import { PawPrint, TriangleAlert } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { nextTick, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useDialog } from '../composables/useDialog';
 import Button from './Button.vue';
 
 const dialogRef = ref<HTMLDialogElement>();
 const boxRef = ref<HTMLDialogElement>();
 const { dialog } = useDialog();
-
 const { activate, deactivate } = useFocusTrap(boxRef);
+const { t } = useI18n();
 
 const openDialog = async () => {
     dialogRef.value?.showModal();
@@ -22,7 +23,6 @@ const closeDialog = () => {
     dialogRef.value?.close();
     deactivate();
 }
-
 
 const handleConfirm = () => {
     if (!dialog.value?.onConfirm) return;
@@ -53,10 +53,10 @@ watch(dialog, (newVal) => {
                 <div class="flex justify-center gap-0.5 mt-0.5">
                     <Button @click="closeDialog" variant="secondary">{{
                         dialog.cancelText ?
-                            dialog.cancelText : 'Cancel'
+                            dialog.cancelText : t("dialog.common.cancel")
                     }}</Button>
                     <Button @click="handleConfirm" size="md" class="relative">{{ dialog.confirmText ?
-                        dialog.confirmText : 'Confirm' }}
+                        dialog.confirmText : t("dialog.common.confirm") }}
                         <PawPrint class="absolute -top-0.75 -right-0.5" fill="var(--color-bg-rgba)"
                             color="var(--color-brand-light)" :size="28" stroke-width="1.5" />
                     </Button>

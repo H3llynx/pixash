@@ -1,14 +1,12 @@
 export const SPECIES = [
-    { name: "dog", hasBreed: true, icon: "🐶", prefersKg: true },
-    { name: "cat", hasBreed: true, icon: "🐱", prefersKg: true },
-    { name: "small mammal", hasBreed: false, icon: "🐹", prefersKg: false },
-    { name: "bird", hasBreed: false, icon: "🐦", prefersKg: false },
-    { name: "fish", hasBreed: false, icon: "🐠", prefersKg: false },
-    { name: "reptile", hasBreed: false, icon: "🦎", prefersKg: false },
-    { name: "amphibian", hasBreed: false, icon: "🐸", prefersKg: false },
+    { id: "dog", name: "pet.species.dog", hasBreed: true, icon: "🐶", prefersKg: true },
+    { id: "cat", name: "pet.species.cat", hasBreed: true, icon: "🐱", prefersKg: true },
+    { id: "smallMammal", name: "pet.species.smallMammal", hasBreed: false, icon: "🐹", prefersKg: false },
+    { id: "bird", name: "pet.species.bird", hasBreed: false, icon: "🐦", prefersKg: false },
+    { id: "fish", name: "pet.species.fish", hasBreed: false, icon: "🐠", prefersKg: false },
+    { id: "reptile", name: "pet.species.reptile", hasBreed: false, icon: "🦎", prefersKg: false },
+    { id: "amphibian", name: "pet.species.amphibian", hasBreed: false, icon: "🐸", prefersKg: false },
 ] as const;
-
-export const SEX = ["male", "female"] as const;
 
 export const dogBreeds = [
     { name: "Mixed Breed", value: "mixed" },
@@ -89,39 +87,39 @@ export const catBreeds = [
 export const petFields = {
     name: {
         id: "pet-name",
-        label: "Name",
+        label: "pet.form.name",
         type: "text",
     },
     species: {
         id: "pet-species",
         name: "pet-species",
-        label: "Species",
+        label: "pet.form.species",
         type: "radio",
         options: SPECIES,
     },
     breed: {
         id: "breed",
-        label: "Breed",
+        label: "pet.form.breed",
         dogOptions: dogBreeds,
         catOptions: catBreeds,
-        placeholder: "Select breed...",
+        placeholder: "pet.form.placeholderBreed",
     },
     birthDate: {
         id: "pet-birth",
-        label: "Birth date",
+        label: "pet.form.birthDate",
         type: "date",
     },
     sex: {
         id: "pet-sex",
-        label: "Sex",
-        options: SEX,
+        label: "pet.form.sex",
+        options: [{ id: "male", label: "pet.sex.male" }, { id: "female", label: "pet.sex.female" }],
     },
     sterilized: {
         id: "pet-sterilized",
-        label: "Spayed / neutered",
+        label: "pet.form.sterilized",
     },
     microchipped: {
         id: "pet-microchipped",
-        label: "Microchipped",
+        label: "pet.form.microchipped",
     }
 };

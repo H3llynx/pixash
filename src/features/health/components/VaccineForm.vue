@@ -1,23 +1,28 @@
 <script setup lang="ts">
 import { CalendarCheck, CalendarClock } from '@lucide/vue';
 import { reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
 import Input from '../../../components/Input.vue';
 import Toggle from '../../../components/Toggle.vue';
-import { dateFromInput, shallowEqual } from '../../../utils';
+import { useToast } from '../../../composables/useToast';
+import { dateFromInput, shallowEqual, tsToDate } from '../../../utils';
 import { usePets } from '../../pets/composables/usePet';
 import { getAge, getIcon } from '../../pets/utils';
 import { STAGE, vaccineFields } from '../config';
 import type { VaccineTypes } from '../types';
-import { getVaccineTypes } from '../utils';
+import { getVaccineTypes, showTypes } from '../utils';
 
-const { selectedPet, isAddingHealth, isUpdatingHealth, addNewVaccine } = usePets();
+const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError } = usePets();
+const { show } = useToast();
+const { t } = useI18n();
 
-const { type, stage, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
-const vaccineTypes = ref();
+const { types, stage, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
+const vaccineTypes = ref<VaccineTypes[]>([]);
+const error = ref<string | null>(null);
 const formData = reactive({
-    type: [],
+    types: [],
     stage: "adult" as typeof STAGE[number],
     givenAt: "",
     nextDose: false,
@@ -29,76 +34,113 @@ const formData = reactive({
 
 const handleClose = () => {
     isAddingHealth.vaccine = false;
-    isUpdatingHealth.vaccine = false;
+    selectVaccine(null);
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
     if (!selectedPet.value) return;
-    if (isAddingHealth.vaccine) addNewVaccine({ ...formData }, selectedPet.value.id);
-    else {
-        if (selectedPet.value && !shallowEqual(formData, selectedPet.value)) {
+    if (!formData.types.length) {
+        error.value = t("health.form.validationTypes");
+        return;
+    }
+    try {
+        if (isAddingHealth.vaccine) {
+            await addNewVaccine({ ...formData }, selectedPet.value.id);
+            show({
+                type: "success",
+                title: t("toast.success.title.generic"),
+                message: t("toast.success.message.vaccineAdded"),
+            });
+        }
+        else if (selectedPet.value && !shallowEqual(formData, selectedPet.value)) {
             console.log("update");
         }
     }
+    catch (e) {
+        show({ type: "error", title: "Error", message: healthError.value || "" });
+    };
 };
 
-watch(selectedPet, (pet) => {
-    if (!pet) return;
-    const vaccines = getVaccineTypes(pet.species);
-    vaccineTypes.value = vaccines;
-    Object.assign(formData, {
-        type: [vaccineTypes.value[0].id],
-        stage: getAge(pet)?.stage as typeof STAGE[number],
-    })
-}, { immediate: true });
+watch(
+    () => [selectedPet.value, selectedVaccine.value] as const,
+    ([pet, vaccine]) => {
+        if (!pet) return;
+        const options = getVaccineTypes(pet.species);
+        if (!options || !options.length) return;
+        vaccineTypes.value = options;
+        if (vaccine) {
+            Object.assign(formData, {
+                types: [...vaccine.types],
+                stage: vaccine.stage,
+                givenAt: tsToDate(vaccine.givenAt, "input"),
+                nextDose: vaccine.dueOn ? true : false,
+                dueOn: tsToDate(vaccine.dueOn, "input"),
+                vet: vaccine.vet ?? "",
+                notes: vaccine.notes ?? "",
+            });
+        }
+        else {
+            Object.assign(formData, {
+                types: [vaccineTypes.value[0].id],
+                stage: getAge(pet)?.stage as (typeof STAGE)[number],
+            });
+        }
+    },
+    { immediate: true }
+);
 </script>
 
 <template>
     <Transition name="panel">
-        <FormWrapper v-if="selectedPet && (isAddingHealth.vaccine || isUpdatingHealth.vaccine)" :onClose="handleClose">
-            <h1 class="my-1 default-padding" v-if="isAddingHealth.vaccine">Add vaccine</h1>
-            <h1 class="my-1 default-padding" v-if="isUpdatingHealth.vaccine">Edit vaccine</h1>
+        <FormWrapper v-if="selectedPet && (isAddingHealth.vaccine || selectedVaccine)" :onClose="handleClose">
+            <h1 class="my-1 default-padding">
+                {{ isAddingHealth.vaccine
+                    ? t("health.title.addVaccine")
+                    : t("health.title.editVaccine")
+                }}
+            </h1>
             <form @submit.prevent="handleSubmit">
-                <fieldset class="default-padding flex-wrap">
-                    <legend>{{ type.label }}</legend>
-                    <Input v-model="formData.type" v-for="option in vaccineTypes" :id="option.id" :value="option.id"
-                        :key="option.id" :label="option.label" :type="type.type" />
+                <fieldset :class="{ 'border border-error rounded-xl': error, 'default-padding flex-wrap': true }">
+                    <legend>{{ t(types.label) }}</legend>
+                    <Input v-model="formData.types" v-for="option in vaccineTypes" :id="option.id" :value="option.id"
+                        :key="option.id" :label="option.label" :type="types.type" @input="error = null" />
+                    <p v-if="error" class="text-sm w-full text-error pb-0.5">{{ error }}</p>
                 </fieldset>
                 <fieldset class="default-padding capitalize my-0.5">
-                    <legend>{{ stage.label }}</legend>
+                    <legend>{{ t(stage.label) }}</legend>
                     <Input v-model="formData.stage" v-for="(option, index) in stage.options" :id="option"
                         :value="option" :key="option" :label="option" :type="stage.type" :name="stage.name"
                         :required="index === 0" />
                 </fieldset>
                 <div class="default-padding flex flex-col gap-0.5">
-                    <Input v-model="formData.givenAt" :id="givenDate.id" :label="givenDate.label" :type="givenDate.type"
-                        required>
+                    <Input v-model="formData.givenAt" :id="givenDate.id" :label="t(givenDate.label)"
+                        :type="givenDate.type" required>
                         <template #addon>
                             <CalendarCheck class="mr-0.5" color="var(--color-border)" />
                         </template>
                     </Input>
-                    <Toggle v-model="formData.nextDose" :label="nextDose.label" :id="nextDose.id" />
-                    <Input v-if="formData.nextDose" v-model="formData.dueOn" :id="dueDate.id" :label="dueDate.label"
+                    <Toggle v-model="formData.nextDose" :label="t(nextDose.label)" :id="nextDose.id" />
+                    <Input v-if="formData.nextDose" v-model="formData.dueOn" :id="dueDate.id" :label="t(dueDate.label)"
                         :type="dueDate.type" required>
                         <template #addon>
                             <CalendarClock class="mr-0.5" color="var(--color-border)" />
                         </template>
                     </Input>
-                    <Input v-model="formData.vet" :id="vet.id" :type="vet.type" :label="vet.label" />
+                    <Input v-model="formData.vet" :id="vet.id" :type="vet.type" :label="t(vet.label)" />
                     <label :for="notes.id">
-                        <p>{{ notes.label }}</p>
+                        <p>{{ t(notes.label) }}</p>
                         <textarea v-model="formData.notes" :id="notes.id" />
                     </label>
-                    <div class="flex gap-1 mt-1 items-center">
+                    <div class="flex gap-1 mt-1 items-center text-sm">
                         <div class="flex flex-wrap gap-[5px] items-center flex-1">
-                            <span>{{ getIcon(selectedPet) }} {{ selectedPet.name }} · </span>
-                            <span>{{vaccineTypes.find((v: VaccineTypes) => v.id ===
-                                String(formData.type)).label}}</span>
-                            <p v-if="formData.dueOn" class="text-text-secondary w-full">Next due: {{
+                            <p class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name }} · {{
+                                showTypes(formData.types, selectedPet)
+                            }}</p>
+                            <p v-if="formData.dueOn" class="text-text-secondary w-full">{{ t("health.form.dueDate") }}: {{
                                 dateFromInput(formData.dueOn) }}
                             </p>
                         </div>
-                        <Button size="sm">Save vaccine</Button>
+                        <Button size="sm">{{ t("health.cta.save") }}</Button>
                     </div>
                 </div>
             </form>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Eye, EyeOff } from '@lucide/vue';
 import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Input from '../../../components/Input.vue';
 import { useToast } from '../../../composables/useToast';
@@ -10,6 +11,7 @@ import { useAuth } from '../composables/useAuth';
 
 const { error, user, loginWithGoogle, loginWithEmail, registerWithEmail } = useAuth();
 const { show } = useToast();
+const { t } = useI18n();
 
 const isLogin = ref<boolean>(true);
 const isShowing = ref<boolean>(false);
@@ -25,7 +27,13 @@ watch(user, (newUser) => {
     if (!newUser) return;
     const firstName = newUser.firstName;
     if (firstName) {
-        show({ type: "success", title: isLogin.value ? "Welcome back!" : `Hi ${newUser.firstName}!`, message: "You have been successfully logged in." });
+        show({
+            type: "success",
+            title: isLogin.value
+                ? t("toast.success.title.loggedUser")
+                : t("toast.success.title.newUser", { name: newUser.firstName }),
+            message: t("toast.success.message.userAuthenticated"),
+        });
         router.push(ROUTES.dashboard);
     }
 });
@@ -45,17 +53,17 @@ const handleAuth = async () => {
             required />
         <Input v-model="password" label="Password" id="password" :type="isShowing ? 'text' : 'password'" required>
             <template #addon>
-                <Button type="button" :aria-label="isShowing ? 'Hide password' : 'View password'"
+                <Button type="button" :aria-label="isShowing ? t('auth.password.hide') : t('auth.password.show')"
                     @click="isShowing = !isShowing" variant="addon" size="xs">
                     <EyeOff v-if="isShowing" :size="20" />
                     <Eye v-else :size="20" />
                 </Button>
             </template>
         </Input>
-        <Button>{{ isLogin ? " Sign in" : "Register" }} </Button>
-        <Button type="button" variant="secondary" @click="loginWithGoogle">Login with Google</Button>
+        <Button>{{ isLogin ? t("auth.login") : t("auth.register") }} </Button>
+        <Button type="button" variant="secondary" @click="loginWithGoogle">{{ t("auth.loginWithGoogle") }}</Button>
         <Button type="button" variant="ghost" @click="isLogin = !isLogin">
-            {{ isLogin ? "Register" : "I already have an account" }}
+            {{ isLogin ? t("auth.register") : t("auth.switchToLogin") }}
         </Button>
     </form>
 </template>

@@ -23,40 +23,40 @@ export const VACCINE_TYPES = {
 export const STAGE = ["puppy", "adult"] as const;
 
 export const vaccineFields = {
-    type: {
+    types: {
         id: "vaccine-name",
-        label: "Vaccine",
+        label: "health.form.types",
         type: "checkbox",
         options: VACCINE_TYPES,
     },
     stage: {
         id: "vaccine-stage",
         name: "vaccine-stage",
-        label: "Stage",
+        label: "health.form.stage",
         type: "radio",
         options: STAGE,
     },
     givenDate: {
         id: "vaccine-given-date",
-        label: "Date given",
+        label: "health.form.givenDate",
         type: "date",
     },
     nextDose: {
         id: "vaccine-followUp",
-        label: "Next dose scheduled?",
+        label: "health.form.nextDose",
     },
     dueDate: {
         id: "vaccine-due-date",
-        label: "Next due",
+        label: "health.form.dueDate",
         type: "date",
     },
     vet: {
         id: "vaccine-vet",
-        label: "Vet",
+        label: "health.form.vet",
         type: "text",
     },
     notes: {
         id: "vaccine-notes",
-        label: "Notes",
-    }
-};
+        label: "health.form.notes",
+    },
+} as const;

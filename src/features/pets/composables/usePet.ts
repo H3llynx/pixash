@@ -1,6 +1,5 @@
 import { FirebaseError } from "firebase/app";
 import { computed, reactive, ref, watch } from "vue";
-import { useToast } from "../../../composables/useToast";
 import { addPet, deletePet, fetchPets, updatePet } from "../../../services/pets";
 import { resetState } from "../../../utils";
 import { useHealth } from "../../health/composables/useHealth";
@@ -8,7 +7,6 @@ import { useAuth } from "../../user/composables/useAuth";
 import type { Pet, PetExtended } from "../types";
 
 const { user } = useAuth();
-const { show } = useToast();
 
 const pets = ref<PetExtended[]>([]);
 const selectedPet = ref<PetExtended | null>(null);
@@ -23,21 +21,23 @@ const isUpdating = reactive({
   nextVaccine: false,
 });
 
-const selectPet = (pet: PetExtended | null) => {
-  isAddingPet.value = false;
-  resetState(isUpdating);
-  resetState(isUpdatingHealth);
-  resetState(isAddingHealth);
-  selectedPet.value = pet;
-}
-
 const {
+  error: healthError,
   isAddingHealth,
-  isUpdatingHealth,
   vaccines,
+  selectedVaccine,
+  selectVaccine,
   fetchUserVaccines,
   addNewVaccine,
 } = useHealth(pets);
+
+const selectPet = (pet: PetExtended | null) => {
+  isAddingPet.value = false;
+  resetState(isUpdating);
+  resetState(isAddingHealth);
+  selectedPet.value = pet;
+  selectVaccine(null);
+}
 
 const fetchUserPets = async () => {
   if (!user.value) {
@@ -72,10 +72,7 @@ const addNewPet = async (newPet: Pet) => {
     const newPetId = await addPet(newPet, user.value.uid);
     await fetchUserPets();
     const addedPet = pets.value.find(pet => pet.id === newPetId)
-    if (addedPet) {
-      selectPet(addedPet);
-      show({ type: "success", title: "Success", message: `${addedPet.name}! has been successfully added` });
-    };
+    if (addedPet) selectPet(addedPet);
   } catch (e) {
     if (e instanceof FirebaseError) {
       error.value = e.message;
@@ -99,10 +96,7 @@ const updateSelectedPet = async (pet: PetExtended, data: Partial<Pick<Pet, "weig
     await updatePet(pet.id, user.value.uid, data);
     await fetchUserPets();
     const updatedPet = pets.value.find(p => p.id === pet.id)
-    if (updatedPet) {
-      selectPet(updatedPet);
-      show({ type: "success", title: "Success", message: `${updatedPet.name}! has been successfully updated` });
-    };
+    if (updatedPet) selectPet(updatedPet);
   } catch (e) {
     if (e instanceof FirebaseError) {
       error.value = e.message;
@@ -121,15 +115,10 @@ const deleteSelectedPet = async (pet: PetExtended) => {
   }
   loading.value = true;
   error.value = null;
-  const petName = pet.name;
   selectPet(null);
   try {
     await deletePet(pet.id, user.value.uid);
     await fetchUserPets();
-    const deletedPet = pets.value.find(p => p.id === pet.id)
-    if (!deletedPet) {
-      show({ type: "success", title: "Success", message: `${petName}! has been successfully deleted` });
-    };
   } catch (e) {
     if (e instanceof FirebaseError) {
       error.value = e.message;
@@ -155,10 +144,6 @@ watch(user, async (newUser) => {
   }
 }, { immediate: true });
 
-watch(error, (newError) => {
-  if (newError) show({ type: "error", title: "Error", message: newError });
-});
-
 watch(vaccines, (newVaccines) => {
   if (newVaccines && selectedPet.value) {
     const updated = pets.value.find(pet => pet.id === selectedPet.value!.id);
@@ -170,31 +155,15 @@ watch(() => [isAddingPet.value, { ...isUpdating }],
   ([adding, editing], [prevAdding, prevEditing]) => {
     if (!prevAdding && adding) {
       resetState(isUpdating);
-      resetState(isUpdatingHealth);
+      selectVaccine(null);
       resetState(isAddingHealth);
     };
     const wasUpdating = Object.values(prevEditing).some(Boolean);
     const isUpdatingNow = Object.values(editing).some(Boolean);
-    if (!wasUpdating && isUpdatingNow) {
-      isAddingPet.value = false;
-    }
-  });
-
-watch(() => [{ ...isAddingHealth }, { ...isUpdatingHealth }],
-  ([adding, editing], [prevAdding, prevEditing]) => {
-    const wasAdding = Object.values(prevAdding).some(Boolean);
-    const isAddingNow = Object.values(adding).some(Boolean);
-    const wasUpdating = Object.values(prevEditing).some(Boolean);
-    const isUpdatingNow = Object.values(editing).some(Boolean);
-    if (!wasAdding && isAddingNow) {
-      resetState(isUpdating);
-      resetState(isUpdatingHealth);
-      isAddingPet.value = false;
-    };
-
-    if (!wasUpdating && isUpdatingNow) {
-      resetState(isUpdating);
+    if (!wasUpdating && isUpdatingNow) isAddingPet.value = false;
+    if (selectedVaccine.value) {
       resetState(isAddingHealth);
+      resetState(isUpdating);
       isAddingPet.value = false;
     }
   });
@@ -206,6 +175,7 @@ export const usePets = () => {
     selectPet,
     loading,
     error,
+    healthError,
     isAddingPet,
     isUpdating,
     fetchUserPets,
@@ -213,8 +183,10 @@ export const usePets = () => {
     updateSelectedPet,
     deleteSelectedPet,
     hasPets,
+    vaccines,
+    selectedVaccine,
+    selectVaccine,
     isAddingHealth,
-    isUpdatingHealth,
     fetchUserVaccines,
     addNewVaccine,
   };

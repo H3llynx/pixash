@@ -1,5 +1,5 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { DB } from '../config';
+import { DB } from '../config/config';
 import type { Pet, PetExtended } from '../features/pets/types';
 
 const db = getFirestore();

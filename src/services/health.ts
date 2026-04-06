@@ -1,5 +1,5 @@
 import { addDoc, collection, collectionGroup, getDocs, query, where } from "firebase/firestore";
-import { DB } from "../config";
+import { DB } from "../config/config";
 import type { VaccineExtended, VaccineRecord } from "../features/health/types";
 import { db } from "../firebase";
 import { tsFromInput } from "../utils";
@@ -27,7 +27,7 @@ export const addVaccine = async (vaccine: VaccineRecord, petId: string, userId: 
     const newVaccine = {
         petId: petId,
         userId: userId,
-        type: vaccine.type,
+        types: vaccine.types,
         stage: vaccine.stage,
         givenAt: tsFromInput(vaccine.givenAt),
         dueOn: vaccine.dueOn ? tsFromInput(vaccine.dueOn) : null,

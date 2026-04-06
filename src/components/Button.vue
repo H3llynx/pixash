@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const button = tv({
     base: "font-medium rounded-full filter-blur flex items-center gap-[5px] justify-center",
@@ -38,7 +41,8 @@ withDefaults(defineProps<{
         <slot />
     </button>
 
-    <button v-else aria-label="Hide form" tabindex="0" class="flex justify-center m-auto py-0.5 px-2 h-1.5">
+    <button v-else :aria-label="t('common.panel.hide')" tabindex="0"
+        class="flex justify-center m-auto py-0.5 px-2 h-1.5">
         <div class="h-[7px] w-4 rounded-full bg-border"></div>
     </button>
 </template>

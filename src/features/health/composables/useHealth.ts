@@ -1,27 +1,28 @@
 import { FirebaseError } from "firebase/app";
-import { reactive, ref, watch, type Ref } from "vue";
-import { useToast } from "../../../composables/useToast";
+import { reactive, ref, type Ref } from "vue";
 import { addVaccine, fetchVaccines } from "../../../services/health";
+import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
 import type { VaccineExtended, VaccineRecord } from "../types";
 import { getNextVaccine } from "../utils";
 
-const { user } = useAuth();
-const { show } = useToast();
-
 export const useHealth = (pets: Ref<PetExtended[]>) => {
+    const { user } = useAuth();
+
     const vaccines = ref<VaccineExtended[]>([]);
+    const selectedVaccine = ref<VaccineExtended | null>(null);
     const loading = ref<boolean>(false);
     const error = ref<string | null>(null);
     const isAddingHealth = reactive({
         vaccine: false,
         treatment: false
     });
-    const isUpdatingHealth = reactive({
-        vaccine: false,
-        treatment: false
-    });
+
+    const selectVaccine = (vaccine: VaccineExtended | null) => {
+        resetState(isAddingHealth);
+        selectedVaccine.value = vaccine;
+    }
 
     const assignVaccines = () => {
         pets.value = pets.value.map(pet => {
@@ -62,12 +63,8 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         error.value = null;
 
         try {
-            const newVaccineId = await addVaccine(newVaccine, petId, user.value.uid);
+            await addVaccine(newVaccine, petId, user.value.uid);
             await fetchUserVaccines();
-            const addedVaccine = vaccines.value.find(vaccine => vaccine.id === newVaccineId)
-            if (addedVaccine) {
-                show({ type: "success", title: "Success", message: `${addedVaccine.type}! vaccine has been successfully added` });
-            };
         } catch (e) {
             if (e instanceof FirebaseError) {
                 error.value = e.message;
@@ -80,9 +77,5 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         }
     };
 
-    watch(error, (newError) => {
-        if (newError) show({ type: "error", title: "Error", message: newError });
-    });
-
-    return { vaccines, isAddingHealth, isUpdatingHealth, fetchUserVaccines, addNewVaccine };
+    return { error, vaccines, selectedVaccine, selectVaccine, isAddingHealth, fetchUserVaccines, addNewVaccine };
 };
