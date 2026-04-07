@@ -38,7 +38,6 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         if (!user.value) {
             return;
         }
-        loading.value = true;
         error.value = null;
         try {
             vaccines.value = await fetchVaccines(user.value.uid);
@@ -49,8 +48,6 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
             } else {
                 error.value = "An unexpected error occurred";
             }
-        } finally {
-            loading.value = false;
         }
     };
 
@@ -77,6 +74,8 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     };
 
     const updateSelectedVaccine = async (vaccine: VaccineExtended, petId: string, data: VaccineRecord) => {
+        error.value = null;
+        loading.value = true;
         try {
             await updateVaccine(vaccine.id, petId, user.value!.uid, data);
             selectVaccine(null);
@@ -87,6 +86,8 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
             } else {
                 error.value = "An unexpected error occurred";
             }
+        } finally {
+            loading.value = false;
         }
     };
 

@@ -7,6 +7,7 @@ export type VaccineRecord = {
     types: VaccineTypes[];
     stage: typeof STAGE[number];
     givenAt: string;
+    nextDose?: boolean,
     dueOn?: string;
     vet?: string;
     notes?: string;

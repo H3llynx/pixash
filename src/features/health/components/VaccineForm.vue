@@ -21,16 +21,19 @@ const { t } = useI18n();
 const { types, stage, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
 const vaccineTypes = ref<VaccineTypes[]>([]);
 const error = ref<string | null>(null);
-const formData = reactive({
+const defaultForm = {
     types: [],
     stage: "adult" as typeof STAGE[number],
     givenAt: "",
     nextDose: false,
     dueOn: "",
-    repeatEveryMonths: "",
     vet: "",
     notes: "",
-});
+};
+const formData = reactive({ ...defaultForm });
+const resetForm = () => {
+    Object.assign(formData, defaultForm)
+};
 
 const handleClose = () => {
     isAddingHealth.vaccine = false;
@@ -66,10 +69,12 @@ const handleSubmit = async () => {
     };
 };
 
-watch(
-    () => [selectedPet.value, selectedVaccine.value] as const,
+watch(() => [selectedPet.value, selectedVaccine.value] as const,
     ([pet, vaccine]) => {
-        if (!pet) return;
+        if (!pet) {
+            resetForm();
+            return
+        };
         const options = getVaccineTypes(pet.species);
         if (!options || !options.length) return;
         vaccineTypes.value = options;
@@ -93,6 +98,10 @@ watch(
     },
     { immediate: true }
 );
+
+watch(() => formData.nextDose, () => {
+    if (!formData.nextDose) formData.dueOn = "";
+});
 </script>
 
 <template>

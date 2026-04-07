@@ -32,13 +32,10 @@ const defaultForm: Pet = {
     sterilized: true,
     microchipped: false,
 };
-
+const formData = reactive<Pet>({ ...defaultForm });
 const resetForm = () => {
     Object.assign(formData, defaultForm)
 };
-
-const formData = reactive<Pet>({ ...defaultForm });
-
 const getBreedOptions = (species: string) => {
     if (species === "dog") return breed.dogOptions;
     if (species === "cat") return breed.catOptions;
@@ -60,11 +57,8 @@ const handleSubmit = async () => {
             });
         } else if (selectedPet.value && !shallowEqual(formData, selectedPet.value)) {
             await updateSelectedPet(selectedPet.value, formData);
-            if (!selectedPet.value) return;
             const updated = pets.value.find(pet => pet.id === selectedPet.value!.id);
-            if (updated) {
-                selectedPet.value = updated;
-            };
+            if (updated) selectedPet.value = updated;
             show({
                 type: "success",
                 title: t("toast.success.title.generic"),
@@ -96,6 +90,10 @@ watch(existingPet, (pet) => {
         microchipped: pet.microchipped
     })
 }, { immediate: true });
+
+watch(() => formData.species, () => {
+    if (!hasBreed.value) formData.breed = "";
+});
 </script>
 
 <template>

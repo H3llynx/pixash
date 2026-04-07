@@ -1,12 +1,12 @@
 import type { VaccineExtended } from "../health/types";
-import type { SEX, SPECIES } from "./config";
+import type { SPECIES } from "./config";
 
 export type Pet = {
     name: string;
     species: typeof SPECIES[number]["id"];
     breed?: string | undefined;
     birthDate: string;
-    sex: typeof SEX[number];
+    sex: string;
     sterilized: boolean;
     microchipped: boolean;
     weight?: number;

@@ -69,7 +69,8 @@ const fetchUserPets = async () => {
       selectPet(pets.value[0]);
     } else if (!pets.value.length) isAddingPet.value = true;
   },
-    () => loading.value = false);
+    () => loading.value = false
+  );
 };
 
 const addNewPet = async (newPet: Pet) => {
@@ -95,7 +96,8 @@ const updateSelectedPet = async (pet: PetExtended, data: Partial<Pick<Pet, "weig
     };
     pets.value.splice(index, 1, updatedPet);
     selectPet(updatedPet);
-  }, () => isAddingPet.value = false);
+  }, () => isAddingPet.value = false
+  );
 };
 
 const deleteSelectedPet = async (pet: PetExtended) => {
@@ -104,7 +106,8 @@ const deleteSelectedPet = async (pet: PetExtended) => {
     selectPet(null);
     await deletePet(pet.id, user.value!.uid);
     await fetchUserPets();
-  }, () => loading.value = false)
+  }, () => loading.value = false
+  );
 };
 
 watch(user, async (newUser) => {

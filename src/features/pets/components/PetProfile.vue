@@ -2,6 +2,7 @@
 import { Edit2, Trash2 } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
+import Loading from '../../../components/Loading.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
 import { tsToDate } from '../../../utils';
@@ -9,7 +10,7 @@ import { usePets } from '../composables/usePet';
 import { getAge, getIcon, getWeight } from '../utils';
 import UpdatePetDetail from './UpdatePetDetail.vue';
 
-const { selectedPet, isUpdating, deleteSelectedPet } = usePets();
+const { selectedPet, isUpdating, deleteSelectedPet, healthLoading } = usePets();
 const { open } = useDialog();
 const { show } = useToast();
 const { t } = useI18n();
@@ -69,10 +70,11 @@ const handleDelete = async () => {
                 </div>
                 <div class="row">
                     <span>{{ t("pet.profile.label.nextVaccine") }}</span>
-                    <span v-if="selectedPet.nextVaccine" class="text-brand font-medium">{{
+                    <Loading v-if="healthLoading" />
+                    <span v-else-if="selectedPet.nextVaccine" class="text-brand font-medium">{{
                         tsToDate(selectedPet.nextVaccine.dueOn!, "date")
                         }}</span>
-                    <UpdatePetDetail data="nextVaccine" />
+                    <UpdatePetDetail v-if="!healthLoading" data="nextVaccine" />
                 </div>
                 <div class="row">
                     <span>{{ t("pet.profile.label.microchip") }}</span>
