@@ -13,7 +13,7 @@ const { loading, hasPets } = usePets();
 <template>
   <Header dashboard />
   <main>
-    <DashboardSkeleton v-if="loading" />
+    <DashboardSkeleton v-if="loading.pet" />
     <PetSummary v-else-if="hasPets" />
     <PetForm />
     <VaccineForm />

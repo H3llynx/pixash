@@ -8,7 +8,7 @@ const { toast, dismiss } = useToast();
 const { t } = useI18n();
 
 const toastBox = tv({
-    base: "flex px-0.5 py-1 gap-0.5 w-full max-w-xs items-start font-inter fixed bottom-4 left-1/2 -translate-x-1/2 border rounded-xl md:bottom-auto md:top-4 md:right-4 md:left-auto md:translate-x-0",
+    base: "flex px-0.5 py-1 gap-0.5 w-full max-w-xs items-start rounded-xl font-inter fixed bottom-4 left-1/2 -translate-x-1/2 border md:bottom-auto md:top-4 md:right-4 md:left-auto md:translate-x-0",
     variants: {
         type: {
             error: "bg-error-bg border-error-border text-error-text",
@@ -26,7 +26,7 @@ const toastBox = tv({
                     color="var(--color-success-bg)" />
                 <AlertCircle v-else fill="var(--color-error)" color="var(--color-error-bg)" />
             </div>
-            <div>
+            <div class="w-full">
                 <h3 class="text-medium text-lg">{{ toast.title }}</h3>
                 <p class="text-sm text-light">{{ toast.message }}</p>
             </div>

@@ -23,7 +23,7 @@ const handleDelete = async () => {
         isDelete: true,
         onConfirm: async () => {
             try {
-                deleteSelectedPet(pet);
+                await deleteSelectedPet(pet);
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),

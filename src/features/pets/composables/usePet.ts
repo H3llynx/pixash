@@ -23,6 +23,7 @@ const isUpdating = reactive({
 
 const {
   error: healthError,
+  loading: healthLoading,
   isAddingHealth,
   vaccines,
   selectedVaccine,
@@ -39,95 +40,70 @@ const selectPet = (pet: PetExtended | null) => {
   selectVaccine(null);
 }
 
-const fetchUserPets = async () => {
-  if (!user.value) {
-    return;
-  }
-  loading.value = true;
+const handlePetAction = async (
+  action: () => Promise<void> | void,
+  onFinal: () => void
+) => {
+  if (!user.value) return;
   error.value = null;
   try {
-    pets.value = await fetchPets(user.value.uid);
+    await action();
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      error.value = e.message;
+    } else {
+      error.value = "An unexpected error occurred";
+    }
+  } finally {
+    onFinal();
+  }
+};
+
+const fetchUserPets = async () => {
+  await handlePetAction(async () => {
+    loading.value = true;
+    pets.value = await fetchPets(user.value!.uid);
+    await fetchUserVaccines();
     if (!selectedPet.value && pets.value.length) {
       selectPet(pets.value[0]);
     } else if (!pets.value.length) isAddingPet.value = true;
-  } catch (e) {
-    if (e instanceof FirebaseError) {
-      error.value = e.message;
-    } else {
-      error.value = "An unexpected error occurred";
-    }
-  } finally {
-    loading.value = false;
-  }
+  },
+    () => loading.value = false);
 };
 
 const addNewPet = async (newPet: Pet) => {
-  if (!user.value || !newPet) {
-    return;
-  }
-  loading.value = true;
-  error.value = null;
-
-  try {
-    const newPetId = await addPet(newPet, user.value.uid);
+  await handlePetAction(async () => {
+    loading.value = true;
+    const newPetId = await addPet(newPet, user.value!.uid);
     await fetchUserPets();
     const addedPet = pets.value.find(pet => pet.id === newPetId)
     if (addedPet) selectPet(addedPet);
-  } catch (e) {
-    if (e instanceof FirebaseError) {
-      error.value = e.message;
-    } else {
-      error.value = "An unexpected error occurred";
-    }
-  } finally {
+  }, () => {
     loading.value = false;
-    isAddingPet.value = false;
-  }
+    isAddingPet.value = false
+  });
 };
 
 const updateSelectedPet = async (pet: PetExtended, data: Partial<Pick<Pet, "weight" | "microchip" | "microchipped">>) => {
-  if (!user.value || !pet) {
-    return;
-  }
-  loading.value = true;
-  error.value = null;
-
-  try {
-    await updatePet(pet.id, user.value.uid, data);
-    await fetchUserPets();
-    const updatedPet = pets.value.find(p => p.id === pet.id)
-    if (updatedPet) selectPet(updatedPet);
-  } catch (e) {
-    if (e instanceof FirebaseError) {
-      error.value = e.message;
-    } else {
-      error.value = "An unexpected error occurred";
-    }
-  } finally {
-    loading.value = false;
-    isAddingPet.value = false;
-  }
+  await handlePetAction(async () => {
+    await updatePet(pet.id, user.value!.uid, data);
+    const index = pets.value.findIndex(p => p.id === pet.id);
+    const updatedPet: PetExtended = {
+      ...pets.value[index],
+      ...data,
+    };
+    pets.value.splice(index, 1, updatedPet);
+    selectPet(updatedPet);
+  }, () => isAddingPet.value = false);
 };
 
 const deleteSelectedPet = async (pet: PetExtended) => {
-  if (!user.value || !pet) {
-    return;
-  }
-  loading.value = true;
-  error.value = null;
-  selectPet(null);
-  try {
-    await deletePet(pet.id, user.value.uid);
+  await handlePetAction(async () => {
+    loading.value = true;
+    selectPet(null);
+    await deletePet(pet.id, user.value!.uid);
     await fetchUserPets();
-  } catch (e) {
-    if (e instanceof FirebaseError) {
-      error.value = e.message;
-    } else {
-      error.value = "An unexpected error occurred";
-    }
-  } finally {
-    loading.value = false;
-  }
+  }, () => loading.value = false)
 };
 
 watch(user, async (newUser) => {
@@ -137,10 +113,6 @@ watch(user, async (newUser) => {
     selectPet(null);
   } else {
     await fetchUserPets();
-    await fetchUserVaccines();
-    if (pets.value.length) {
-      selectPet(pets.value[0]);
-    }
   }
 }, { immediate: true });
 
@@ -174,6 +146,7 @@ export const usePets = () => {
     selectedPet,
     selectPet,
     loading,
+    healthLoading,
     error,
     healthError,
     isAddingPet,

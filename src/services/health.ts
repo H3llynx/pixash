@@ -1,4 +1,4 @@
-import { addDoc, collection, collectionGroup, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, collectionGroup, deleteDoc, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { DB } from "../config/config";
 import type { VaccineExtended, VaccineRecord } from "../features/health/types";
 import { db } from "../firebase";
@@ -39,5 +39,28 @@ export const addVaccine = async (vaccine: VaccineRecord, petId: string, userId: 
         return docRef.id;
     } catch (error) {
         console.error("Error adding vaccine: ", error);
+    }
+};
+
+export const updateVaccine = async (
+    vaccineId: string,
+    petId: string,
+    userId: string,
+    data: Partial<VaccineRecord>
+) => {
+    try {
+        const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
+        await updateDoc(docRef, data);
+    } catch (error) {
+        console.error("Error updating vaccine: ", error);
+    }
+};
+
+export const deleteVaccine = async (vaccineId: string, petId: string, userId: string) => {
+    try {
+        const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
+        await deleteDoc(docRef);
+    } catch (error) {
+        console.error("Error deleting vaccine: ", error);
     }
 };

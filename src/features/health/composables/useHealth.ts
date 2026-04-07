@@ -9,7 +9,6 @@ import { getNextVaccine } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
     const { user } = useAuth();
-
     const vaccines = ref<VaccineExtended[]>([]);
     const selectedVaccine = ref<VaccineExtended | null>(null);
     const loading = ref<boolean>(false);
@@ -77,5 +76,5 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         }
     };
 
-    return { error, vaccines, selectedVaccine, selectVaccine, isAddingHealth, fetchUserVaccines, addNewVaccine };
+    return { error, loading, vaccines, selectedVaccine, selectVaccine, isAddingHealth, fetchUserVaccines, addNewVaccine };
 };

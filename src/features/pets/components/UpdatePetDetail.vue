@@ -60,7 +60,7 @@ const handleUnitChange = () => {
     inputRef.value?.focus()
 };
 
-const handleSubmit = (field: "weight" | "microchip") => {
+const handleSubmit = async (field: "weight" | "microchip",) => {
     if (!selectedPet.value || !formData.data) return;
     let update: Partial<Pick<Pet, "weight" | "microchip" | "microchipped">> = {};
     if (field === "weight") {
@@ -74,7 +74,7 @@ const handleSubmit = (field: "weight" | "microchip") => {
         if (selectedPet.value.microchip === microchip) return;
         update = { microchipped: true, microchip: microchip };
     }
-    updateSelectedPet(selectedPet.value, update);
+    await updateSelectedPet(selectedPet.value, update);
     isUpdating[props.data] = false;
 }
 
