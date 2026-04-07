@@ -14,7 +14,7 @@ import { STAGE, vaccineFields } from '../config';
 import type { VaccineTypes } from '../types';
 import { getVaccineTypes, showTypes } from '../utils';
 
-const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError } = usePets();
+const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, updateSelectedVaccine } = usePets();
 const { show } = useToast();
 const { t } = useI18n();
 
@@ -49,11 +49,16 @@ const handleSubmit = async () => {
             show({
                 type: "success",
                 title: t("toast.success.title.generic"),
-                message: t("toast.success.message.vaccineAdded"),
+                message: t("toast.success.message.vaccineAdded", { name: selectedPet.value.name, type: showTypes(formData.types, selectedPet.value) }),
             });
         }
-        else if (selectedPet.value && !shallowEqual(formData, selectedPet.value)) {
-            console.log("update");
+        else if (selectedVaccine.value && !shallowEqual(formData, selectedVaccine.value)) {
+            await updateSelectedVaccine(selectedVaccine.value, selectedPet.value.id, { ...formData });
+            show({
+                type: "success",
+                title: t("toast.success.title.generic"),
+                message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showTypes(formData.types, selectedPet.value) }),
+            });
         }
     }
     catch (e) {
@@ -135,9 +140,10 @@ watch(
                         <div class="flex flex-wrap gap-[5px] items-center flex-1">
                             <p class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name }} · {{
                                 showTypes(formData.types, selectedPet)
-                            }}</p>
-                            <p v-if="formData.dueOn" class="text-text-secondary w-full">{{ t("health.form.dueDate") }}: {{
-                                dateFromInput(formData.dueOn) }}
+                                }}</p>
+                            <p v-if="formData.dueOn" class="text-text-secondary w-full">{{ t("health.form.dueDate") }}:
+                                {{
+                                    dateFromInput(formData.dueOn) }}
                             </p>
                         </div>
                         <Button size="sm">{{ t("health.cta.save") }}</Button>

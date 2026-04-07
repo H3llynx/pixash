@@ -14,7 +14,7 @@ import { petFields } from '../config';
 import type { Pet } from '../types';
 
 const { name, species, breed, birthDate, sex, sterilized, microchipped } = petFields;
-const { error, isAddingPet, isUpdating, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();
+const { pets, error, isAddingPet, isUpdating, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();
 const { show } = useToast();
 const { t } = useI18n();
 
@@ -60,6 +60,11 @@ const handleSubmit = async () => {
             });
         } else if (selectedPet.value && !shallowEqual(formData, selectedPet.value)) {
             await updateSelectedPet(selectedPet.value, formData);
+            if (!selectedPet.value) return;
+            const updated = pets.value.find(pet => pet.id === selectedPet.value!.id);
+            if (updated) {
+                selectedPet.value = updated;
+            };
             show({
                 type: "success",
                 title: t("toast.success.title.generic"),
@@ -129,7 +134,7 @@ watch(existingPet, (pet) => {
                             :label="t(birthDate.label)" required />
                         <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
                             <option v-for="option in sex.options" :value="option.id" :key="option.id">{{ t(option.label)
-                                }}
+                            }}
                             </option>
                         </Dropdown>
                     </div>

@@ -46,11 +46,21 @@ export const updateVaccine = async (
     vaccineId: string,
     petId: string,
     userId: string,
-    data: Partial<VaccineRecord>
+    data: VaccineRecord
 ) => {
+    const updated = {
+        petId: petId,
+        userId: userId,
+        types: data.types,
+        stage: data.stage,
+        givenAt: tsFromInput(data.givenAt),
+        dueOn: data.dueOn ? tsFromInput(data.dueOn) : null,
+        vet: data.vet,
+        notes: data.notes,
+    };
     try {
         const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
-        await updateDoc(docRef, data);
+        await updateDoc(docRef, updated);
     } catch (error) {
         console.error("Error updating vaccine: ", error);
     }

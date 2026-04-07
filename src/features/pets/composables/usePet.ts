@@ -30,6 +30,7 @@ const {
   selectVaccine,
   fetchUserVaccines,
   addNewVaccine,
+  updateSelectedVaccine
 } = useHealth(pets);
 
 const selectPet = (pet: PetExtended | null) => {
@@ -162,5 +163,6 @@ export const usePets = () => {
     isAddingHealth,
     fetchUserVaccines,
     addNewVaccine,
+    updateSelectedVaccine
   };
 };

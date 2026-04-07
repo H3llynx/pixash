@@ -101,7 +101,8 @@ export default {
                 petAdded: "{name}! has been successfully added",
                 petUpdated: "{name}! has been successfully updated",
                 petDeleted: "{name}! has been successfully deleted",
-                vaccineAdded: "{type} successfully added",
+                vaccineAdded: "{name}'s {type} successfully added",
+                vaccineUpdated: "{name}'s {type} successfully updated",
             },
         },
         error: {
