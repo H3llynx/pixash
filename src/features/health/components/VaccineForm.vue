@@ -7,7 +7,7 @@ import FormWrapper from '../../../components/FormWrapper.vue';
 import Input from '../../../components/Input.vue';
 import Toggle from '../../../components/Toggle.vue';
 import { useToast } from '../../../composables/useToast';
-import { dateFromInput, shallowEqual, tsToDate } from '../../../utils';
+import { dateFromInput, getOneYearLaterInput, shallowEqual, tsToDate } from '../../../utils';
 import { usePets } from '../../pets/composables/usePet';
 import { getAge, getIcon } from '../../pets/utils';
 import { STAGE, vaccineFields } from '../config';
@@ -101,6 +101,7 @@ watch(() => [selectedPet.value, selectedVaccine.value] as const,
 
 watch(() => formData.nextDose, () => {
     if (!formData.nextDose) formData.dueOn = "";
+    else formData.dueOn = getOneYearLaterInput(formData.givenAt) ?? "";
 });
 </script>
 
@@ -135,7 +136,7 @@ watch(() => formData.nextDose, () => {
                     </Input>
                     <Toggle v-model="formData.nextDose" :label="t(nextDose.label)" :id="nextDose.id" />
                     <Input v-if="formData.nextDose" v-model="formData.dueOn" :id="dueDate.id" :label="t(dueDate.label)"
-                        :type="dueDate.type" required>
+                        :type="dueDate.type" :min="formData.givenAt" required>
                         <template #addon>
                             <CalendarClock class="mr-0.5" color="var(--color-border)" />
                         </template>
