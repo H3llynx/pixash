@@ -1,6 +1,6 @@
 import { FirebaseError } from "firebase/app";
 import { reactive, ref, type Ref } from "vue";
-import { addVaccine, fetchVaccines, updateVaccine } from "../../../services/health";
+import { addVaccine, deleteVaccine, fetchVaccines, updateVaccine } from "../../../services/health";
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
@@ -91,5 +91,23 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         }
     };
 
-    return { error, loading, vaccines, selectedVaccine, selectVaccine, isAddingHealth, fetchUserVaccines, addNewVaccine, updateSelectedVaccine };
+    const deleteSelectedVaccine = async (vaccine: VaccineExtended, petId: string,) => {
+        error.value = null;
+        loading.value = true;
+        try {
+            selectVaccine(null);
+            await deleteVaccine(vaccine.id, petId, user.value!.uid);
+            await fetchUserVaccines();
+        } catch (e) {
+            if (e instanceof FirebaseError) {
+                error.value = e.message;
+            } else {
+                error.value = "An unexpected error occurred";
+            }
+        } finally {
+            loading.value = false;
+        }
+    };
+
+    return { error, loading, vaccines, selectedVaccine, selectVaccine, isAddingHealth, fetchUserVaccines, addNewVaccine, updateSelectedVaccine, deleteSelectedVaccine };
 };

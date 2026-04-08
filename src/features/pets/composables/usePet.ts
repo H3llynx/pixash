@@ -30,7 +30,8 @@ const {
   selectVaccine,
   fetchUserVaccines,
   addNewVaccine,
-  updateSelectedVaccine
+  updateSelectedVaccine,
+  deleteSelectedVaccine,
 } = useHealth(pets);
 
 const selectPet = (pet: PetExtended | null) => {
@@ -120,11 +121,11 @@ watch(user, async (newUser) => {
   }
 }, { immediate: true });
 
-watch(vaccines, (newVaccines) => {
-  if (newVaccines && selectedPet.value) {
+watch(vaccines, (_newVaccines) => {
+  if (selectedPet.value) {
     const updated = pets.value.find(pet => pet.id === selectedPet.value!.id);
     if (updated) selectPet(updated);
-  };
+  }
 });
 
 watch(() => [isAddingPet.value, { ...isUpdating }],
@@ -166,6 +167,7 @@ export const usePets = () => {
     isAddingHealth,
     fetchUserVaccines,
     addNewVaccine,
-    updateSelectedVaccine
+    updateSelectedVaccine,
+    deleteSelectedVaccine
   };
 };

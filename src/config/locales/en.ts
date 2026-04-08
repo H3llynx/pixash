@@ -33,6 +33,10 @@ export default {
         },
         profile: {
             label: {
+                sterilized: {
+                    male: "Neutered",
+                    female: "Spayed"
+                },
                 weight: "Weight",
                 microchip: "Microchip",
                 nextVaccine: "Next Vaccine",
@@ -98,11 +102,12 @@ export default {
             },
             message: {
                 userAuthenticated: "You have been successfully logged in.",
-                petAdded: "{name}! has been successfully added",
-                petUpdated: "{name}! has been successfully updated",
-                petDeleted: "{name}! has been successfully deleted",
+                petAdded: "{name} has been successfully added",
+                petUpdated: "{name} has been successfully updated",
+                petDeleted: "{name} has been successfully deleted",
                 vaccineAdded: "{name}'s {type} successfully added",
                 vaccineUpdated: "{name}'s {type} successfully updated",
+                vaccineDeleted: "{name}'s {type} has been successfully deleted",
             },
         },
         error: {
@@ -118,6 +123,10 @@ export default {
         deletePet: {
             title: "Delete {name} ?",
             message: "This will remove {name}'s profile and tracked information. This action cannot be undone. Are you sure you'd like to proceed?",
+        },
+        deleteVaccine: {
+            title: "Delete {type} ?",
+            message: "This will remove {name}'s {type}. This action cannot be undone. Are you sure you'd like to proceed?",
         }
     }
 };

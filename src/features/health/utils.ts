@@ -1,7 +1,7 @@
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { VACCINE_TYPES } from "./config";
-import type { VaccineExtended } from "./types";
+import type { VaccineExtended, VaccineTypes } from "./types";
 
 export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default") => {
     if (!species) return;
@@ -10,17 +10,12 @@ export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default
 };
 
 export const getNextVaccine = (vaccines: VaccineExtended[]) => {
-    console.log(
-        vaccines
-            .filter(vaccine => vaccine.dueOn)
-            .sort((a, b) => a.dueOn!.toMillis() - b.dueOn!.toMillis())[0]
-    )
     return vaccines
         .filter(vaccine => vaccine.dueOn)
         .sort((a, b) => a.dueOn!.toMillis() - b.dueOn!.toMillis())[0] ?? null;
 };
 
-export const showTypes = (vaccineType: string[], pet: PetExtended) => {
+export const showTypes = (vaccineType: VaccineTypes["id"][], pet: PetExtended) => {
     const vaccines = getVaccineTypes(pet.species);
     if (!vaccines) return;
     const labels: string[] = [];

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { CalendarCheck, CalendarClock } from '@lucide/vue';
+import { CalendarCheck, CalendarClock, Trash2 } from '@lucide/vue';
 import { reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
 import Input from '../../../components/Input.vue';
 import Toggle from '../../../components/Toggle.vue';
+import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
 import { dateFromInput, getOneYearLaterInput, shallowEqual, tsToDate } from '../../../utils';
 import { usePets } from '../../pets/composables/usePet';
@@ -14,8 +15,9 @@ import { STAGE, vaccineFields } from '../config';
 import type { VaccineTypes } from '../types';
 import { getVaccineTypes, showTypes } from '../utils';
 
-const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, updateSelectedVaccine } = usePets();
+const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
 const { show } = useToast();
+const { open } = useDialog();
 const { t } = useI18n();
 
 const { types, stage, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
@@ -69,6 +71,27 @@ const handleSubmit = async () => {
     };
 };
 
+const handleDelete = async () => {
+    const pet = selectedPet.value;
+    const vaccine = selectedVaccine.value;
+    if (!vaccine || !pet) return;
+    open({
+        title: t("dialog.deleteVaccine.title", { type: showTypes(vaccine.types as VaccineTypes["id"][], pet) }),
+        message: t("dialog.deleteVaccine.message", { name: pet.name, type: showTypes(vaccine.types as VaccineTypes["id"][], pet) }),
+        isDelete: true,
+        onConfirm: async () => {
+            try {
+                await deleteSelectedVaccine(vaccine, pet.id);
+                show({
+                    type: "success",
+                    title: t("toast.success.title.generic"),
+                    message: t("toast.success.message.vaccineDeleted", { name: pet.name, type: showTypes(vaccine.types as VaccineTypes["id"][], pet) }),
+                });
+            } catch (error) { console.log(error) }
+        }
+    });
+};
+
 watch(() => [selectedPet.value, selectedVaccine.value] as const,
     ([pet, vaccine]) => {
         if (!pet) {
@@ -101,19 +124,27 @@ watch(() => [selectedPet.value, selectedVaccine.value] as const,
 
 watch(() => formData.nextDose, () => {
     if (!formData.nextDose) formData.dueOn = "";
-    else formData.dueOn = getOneYearLaterInput(formData.givenAt) ?? "";
+    else formData.dueOn = selectedVaccine.value?.dueOn
+        ? tsToDate(selectedVaccine.value.dueOn, "input") ?? ""
+        : getOneYearLaterInput(formData.givenAt) ?? ""
 });
 </script>
 
 <template>
     <Transition name="panel">
         <FormWrapper v-if="selectedPet && (isAddingHealth.vaccine || selectedVaccine)" :onClose="handleClose">
-            <h1 class="my-1 default-padding">
-                {{ isAddingHealth.vaccine
-                    ? t("health.title.addVaccine")
-                    : t("health.title.editVaccine")
-                }}
-            </h1>
+            <div class="flex gap-1 justify-between my-1 default-padding">
+                <h1>
+                    {{ isAddingHealth.vaccine
+                        ? t("health.title.addVaccine")
+                        : t("health.title.editVaccine")
+                    }}
+                </h1>
+                <Button class="ml-auto mb-auto" variant="ghost" size="xs" :aria-label="t('health.cta.delete')"
+                    @click="handleDelete">
+                    <Trash2 :size="22" color="var(--color-brand-light)" />
+                </Button>
+            </div>
             <form @submit.prevent="handleSubmit">
                 <fieldset :class="{ 'border border-error rounded-xl': error, 'default-padding flex-wrap': true }">
                     <legend>{{ t(types.label) }}</legend>
@@ -181,5 +212,9 @@ label:has(textarea) p::after {
     margin-left: 10px;
     color: var(--color-text-secondary);
     font-size: small;
+}
+
+label:has(input[type="checkbox"]) {
+    text-transform: capitalize;
 }
 </style>

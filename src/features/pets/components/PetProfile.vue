@@ -55,7 +55,9 @@ const handleDelete = async () => {
                     </div>
                     <span v-if="selectedPet.breed" class="capitalize">{{ selectedPet.breed }} · </span>
                     <span>{{ getAge(selectedPet)?.text }} · </span>
-                    <span class="capitalize">{{ selectedPet.sex }}</span>
+                    <span class="capitalize">{{ selectedPet.sex }} · </span>
+                    <span class="capitalize" v-if="selectedPet.sterilized">{{ selectedPet.sex === "male" ?
+                        t("pet.profile.label.sterilize.male") : t("pet.profile.label.sterilized.female") }}</span>
                 </div>
                 <Button class="ml-auto mb-auto" variant="ghost" size="xs"
                     :aria-label="t('pet.cta.delete', { name: selectedPet.name })" @click="handleDelete">
