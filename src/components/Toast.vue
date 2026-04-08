@@ -27,7 +27,7 @@ const toastBox = tv({
                 <AlertCircle v-else fill="var(--color-error)" color="var(--color-error-bg)" />
             </div>
             <div class="w-full">
-                <h3 class="text-medium text-lg">{{ toast.title }}</h3>
+                <h3>{{ toast.title }}</h3>
                 <p class="text-sm text-light">{{ toast.message }}</p>
             </div>
             <button @click="dismiss()" :aria-label="t('toast.dismiss')">
