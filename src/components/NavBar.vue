@@ -2,10 +2,13 @@
 import { Calendar, History, LayoutGrid, MapPin } from '@lucide/vue';
 import { RouterLink } from 'vue-router';
 import { ROUTES } from '../router/config';
+import Logo from './Logo.vue';
 </script>
 
 <template>
-    <nav class="bg-bg-2 w-screen flex justify-between items-center p-1 fixed bottom-0 h-5">
+    <nav class="bg-bg-2 w-screen flex justify-between items-center p-1 gap-2 fixed bottom-0 h-5
+        md:h-screen md:w-15 md:flex-col md:items-start md:justify-start md:bg-bg-nav">
+        <Logo class="hidden md:flex pb-1" />
         <RouterLink :to="ROUTES.dashboard" tabindex="0">
             <LayoutGrid />Home
         </RouterLink>
@@ -40,6 +43,18 @@ nav a.router-link-exact-active {
 
     &:focus-visible {
         outline: none;
+    }
+}
+
+@media (width >=48rem) {
+    nav a {
+        flex-direction: row;
+        padding-left: 1rem;
+        color: var(--color-text-nav);
+    }
+
+    nav a.router-link-exact-active {
+        color: var(--color-text-nav-active);
     }
 }
 </style>

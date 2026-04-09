@@ -15,7 +15,7 @@ import { STAGE, vaccineFields } from '../config';
 import type { VaccineTypes } from '../types';
 import { getVaccineTypes, showTypes } from '../utils';
 
-const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
+const { selectedPet, isUpdating, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
@@ -39,6 +39,7 @@ const resetForm = () => {
 
 const handleClose = () => {
     isAddingHealth.vaccine = false;
+    isUpdating.nextVaccine = false;
     selectVaccine(null);
 };
 
@@ -181,7 +182,7 @@ watch(() => formData.nextDose, () => {
                         <div class="flex flex-wrap gap-[5px] items-center flex-1">
                             <p class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name }} · {{
                                 showTypes(formData.types, selectedPet)
-                                }}</p>
+                            }}</p>
                             <p v-if="formData.dueOn" class="text-text-secondary w-full">{{ t("health.form.dueDate") }}:
                                 {{
                                     dateFromInput(formData.dueOn) }}

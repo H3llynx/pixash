@@ -45,10 +45,13 @@
   --color-bg: var(--color-beige);
   --color-bg-2: var(--color-white);
   --color-bg-3: var(--color-white);
+  --color-bg-nav: var(--color-green-mid);
   --color-bg-rgba: var(--color-white-rgba);
   --color-text: var(--color-black);
   --color-text-secondary: var(--color-grey-mid);
   --color-text-chip: var(--color-gold);
+  --color-text-nav: var(--color-green-pale);
+  --color-text-nav-active: var(--color-gold);
   --color-border: var(--color-grey-light);
   --color-separator: var(--color-grey-light-rgba);
   --color-brand: var(--color-green-dark);
@@ -72,9 +75,12 @@
   --color-bg: var(--color-charcoal);
   --color-bg-2: var(--color-charcoal-lighter);
   --color-bg-3: var(--color-purple-dark);
+  --color-bg-nav: var(--color-charcoal-lighter);
   --color-bg-rgba: var(--color-charcoal-rgba);
   --color-text: var(--color-off-white);
   --color-text-chip: var(--color-grey-dark);
+  --color-text-nav: var(--color-grey-mid);
+  --color-text-nav-active: var(--color-purple);
   --color-border: var(--color-grey-dark);
   --color-separator: var(--color-grey-dark-rgba);
   --color-brand: var(--color-purple);
@@ -159,7 +165,7 @@
 
   section,
   header {
-    @apply w-full default-padding;
+    @apply w-full default-padding md:pl-18;
   }
 
   header {

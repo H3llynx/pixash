@@ -1,5 +1,5 @@
 <template>
-    <div class="animate-pulse flex flex-col gap-1.5 default-padding">
+    <div class="animate-pulse flex flex-col gap-1.5 default-padding md:pl-18">
 
         <!-- Pet switcher chips -->
         <div class="flex gap-0.5">
