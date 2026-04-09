@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, Transition, watch } from 'vue';
+import { computed, nextTick, reactive, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Dropdown from '../../../components/Dropdown.vue';
@@ -14,15 +14,15 @@ import { petFields } from '../config';
 import type { Pet } from '../types';
 
 const { name, species, breed, birthDate, sex, sterilized, microchipped } = petFields;
-const { pets, error, isAddingPet, isUpdating, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();
+const { loading, pets, error, isAddingPet, isUpdating, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();
 const { show } = useToast();
 const { t } = useI18n();
 
+const petSelectorRef = ref<HTMLDivElement>();
 const existingPet = computed<Pet | null>(() => {
     if (isAddingPet.value || !selectedPet.value) return null;
     else return selectedPet.value;
 })
-
 const defaultForm: Pet = {
     name: "",
     species: species.options[0].id,
@@ -75,6 +75,16 @@ const handleClose = () => {
     isUpdating.generalInfo = false;
 };
 
+watch(() => [isAddingPet.value, isUpdating.generalInfo],
+    ([adding, editing]) => {
+        if (editing || adding) {
+            nextTick(() => {
+                const petInputs = petSelectorRef.value?.querySelectorAll("input");
+                if (petInputs) petInputs[0].focus();
+            });
+        }
+    });
+
 watch(existingPet, (pet) => {
     if (!pet) {
         resetForm();
@@ -112,7 +122,7 @@ watch(() => formData.species, () => {
             <form @submit.prevent="handleSubmit">
                 <fieldset class="min-w-0">
                     <legend class="default-padding">{{ t(species.label) }}</legend>
-                    <div class="pet-selector">
+                    <div class="pet-selector" ref="petSelectorRef">
                         <Input v-model="formData.species" v-for="(option, index) in species.options" :id="option.id"
                             :value="option.id" :key="option.id" :label="option.icon" :aria-label="t(option.name)"
                             :type="species.type" :name="species.name" :required="index === 0" />
@@ -138,7 +148,7 @@ watch(() => formData.species, () => {
                     </div>
                     <Toggle v-model="formData.sterilized" :label="t(sterilized.label)" :id="sterilized.id" />
                     <Toggle v-model="formData.microchipped" :label="t(microchipped.label)" :id="microchipped.id" />
-                    <Button>{{ t("pet.cta.save", { name: formData.name }) }}
+                    <Button :disabled="loading">{{ t("pet.cta.save", { name: formData.name }) }}
                         <Paw class="w-1 -rotate-12" />
                     </Button>
                 </div>

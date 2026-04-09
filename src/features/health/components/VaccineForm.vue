@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarCheck, CalendarClock, Trash2 } from '@lucide/vue';
-import { reactive, ref, watch } from 'vue';
+import { nextTick, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
@@ -23,6 +23,7 @@ const { t } = useI18n();
 const { types, stage, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
 const vaccineTypes = ref<VaccineTypes[]>([]);
 const error = ref<string | null>(null);
+const vaccineSelectorRef = ref<HTMLDivElement>();
 const defaultForm = {
     types: [],
     stage: "adult" as typeof STAGE[number],
@@ -93,6 +94,17 @@ const handleDelete = async () => {
     });
 };
 
+watch(() => [isAddingHealth.vaccine, selectedVaccine.value],
+    ([adding, editing]) => {
+        if (editing || adding) {
+            nextTick(() => {
+                const petInputs = vaccineSelectorRef.value?.querySelectorAll("input");
+                if (petInputs) petInputs[0].focus();
+            });
+        }
+    });
+
+
 watch(() => [selectedPet.value, selectedVaccine.value] as const,
     ([pet, vaccine]) => {
         if (!pet) {
@@ -147,7 +159,8 @@ watch(() => formData.nextDose, () => {
                 </Button>
             </div>
             <form @submit.prevent="handleSubmit">
-                <fieldset :class="{ 'border border-error rounded-xl': error, 'default-padding flex-wrap': true }">
+                <fieldset ref="vaccineSelectorRef"
+                    :class="{ 'border border-error rounded-xl': error, 'default-padding flex-wrap': true }">
                     <legend>{{ t(types.label) }}</legend>
                     <Input v-model="formData.types" v-for="option in vaccineTypes" :id="option.id" :value="option.id"
                         :key="option.id" :label="option.label" :type="types.type" @input="error = null" />
