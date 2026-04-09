@@ -119,7 +119,7 @@ watch(() => formData.species, () => {
                     : t("pet.title.editPet", { name: selectedPet?.name })
                 }}
             </h1>
-            <form @submit.prevent="handleSubmit">
+            <form @submit.prevent="handleSubmit" class="md:max-w-max">
                 <fieldset class="min-w-0">
                     <legend class="default-padding">{{ t(species.label) }}</legend>
                     <div class="pet-selector" ref="petSelectorRef">
@@ -128,7 +128,7 @@ watch(() => formData.species, () => {
                             :type="species.type" :name="species.name" :required="index === 0" />
                     </div>
                 </fieldset>
-                <div class="default-padding flex flex-col gap-1 max-w-md">
+                <div class="default-padding flex flex-col gap-1">
                     <Input v-model="formData.name" :id="name.id" :type="name.type" :label="t(name.label)" required />
                     <Dropdown v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="t(breed.label)" required>
                         <option value="" disabled>{{ t(breed.placeholder) }}</option>
@@ -142,13 +142,13 @@ watch(() => formData.species, () => {
                             :label="t(birthDate.label)" required />
                         <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
                             <option v-for="option in sex.options" :value="option.id" :key="option.id">{{ t(option.label)
-                                }}
+                            }}
                             </option>
                         </Dropdown>
                     </div>
                     <Toggle v-model="formData.sterilized" :label="t(sterilized.label)" :id="sterilized.id" />
                     <Toggle v-model="formData.microchipped" :label="t(microchipped.label)" :id="microchipped.id" />
-                    <Button :disabled="loading">{{ t("pet.cta.save", { name: formData.name }) }}
+                    <Button :disabled="loading" class="md:ml-auto">{{ t("pet.cta.save", { name: formData.name }) }}
                         <Paw class="w-1 -rotate-12" />
                     </Button>
                 </div>

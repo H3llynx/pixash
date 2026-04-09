@@ -6,7 +6,7 @@ export default {
             saveLabel: "save {label}",
         },
         panel: {
-            hide: "Hide form"
+            hide: "Close form"
         }
     },
     auth: {

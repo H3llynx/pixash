@@ -39,7 +39,8 @@ watch(dialog, (newVal) => {
 </script>
 
 <template>
-    <dialog ref="dialogRef" class="m-auto bg-transparent text-text max-w-xs backdrop:bg-black/40 backdrop:filter-blur"
+    <dialog ref="dialogRef"
+        class="m-auto bg-transparent text-text max-w-xs md:max-w-sm backdrop:bg-black/40 backdrop:filter-blur"
         :aria-labelledby="dialog?.title">
         <Transition name="modal-pop" appear>
             <div v-if="dialog" ref="boxRef"

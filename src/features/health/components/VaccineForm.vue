@@ -146,65 +146,69 @@ watch(() => formData.nextDose, () => {
 <template>
     <Transition name="panel">
         <FormWrapper v-if="selectedPet && (isAddingHealth.vaccine || selectedVaccine)" :onClose="handleClose">
-            <div class="flex gap-1 justify-between my-1 default-padding">
-                <h1>
-                    {{ isAddingHealth.vaccine
-                        ? t("health.title.addVaccine")
-                        : t("health.title.editVaccine")
-                    }}
-                </h1>
-                <Button class="ml-auto mb-auto" variant="ghost" size="xs" :aria-label="t('health.cta.delete')"
-                    @click="handleDelete">
-                    <Trash2 :size="22" color="var(--color-brand-light)" />
-                </Button>
-            </div>
-            <form @submit.prevent="handleSubmit">
-                <fieldset ref="vaccineSelectorRef"
-                    :class="{ 'border border-error rounded-xl': error, 'default-padding flex-wrap': true }">
-                    <legend>{{ t(types.label) }}</legend>
-                    <Input v-model="formData.types" v-for="option in vaccineTypes" :id="option.id" :value="option.id"
-                        :key="option.id" :label="option.label" :type="types.type" @input="error = null" />
-                    <p v-if="error" class="text-sm w-full text-error pb-0.5">{{ error }}</p>
-                </fieldset>
-                <fieldset class="default-padding capitalize my-0.5">
-                    <legend>{{ t(stage.label) }}</legend>
-                    <Input v-model="formData.stage" v-for="(option, index) in stage.options" :id="option"
-                        :value="option" :key="option" :label="option" :type="stage.type" :name="stage.name"
-                        :required="index === 0" />
-                </fieldset>
-                <div class="default-padding flex flex-col gap-0.5">
-                    <Input v-model="formData.givenAt" :id="givenDate.id" :label="t(givenDate.label)"
-                        :type="givenDate.type" required>
-                        <template #addon>
-                            <CalendarCheck class="mr-0.5" color="var(--color-border)" />
-                        </template>
-                    </Input>
-                    <Toggle v-model="formData.nextDose" :label="t(nextDose.label)" :id="nextDose.id" />
-                    <Input v-if="formData.nextDose" v-model="formData.dueOn" :id="dueDate.id" :label="t(dueDate.label)"
-                        :type="dueDate.type" :min="formData.givenAt" required>
-                        <template #addon>
-                            <CalendarClock class="mr-0.5" color="var(--color-border)" />
-                        </template>
-                    </Input>
-                    <Input v-model="formData.vet" :id="vet.id" :type="vet.type" :label="t(vet.label)" />
-                    <label :for="notes.id">
-                        <p>{{ t(notes.label) }}</p>
-                        <textarea v-model="formData.notes" :id="notes.id" />
-                    </label>
-                    <div class="flex gap-1 mt-1 items-center text-sm">
-                        <div class="flex flex-wrap gap-[5px] items-center flex-1">
-                            <p class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name }} · {{
-                                showTypes(formData.types, selectedPet)
-                            }}</p>
-                            <p v-if="formData.dueOn" class="text-text-secondary w-full">{{ t("health.form.dueDate") }}:
-                                {{
-                                    dateFromInput(formData.dueOn) }}
-                            </p>
-                        </div>
-                        <Button size="sm">{{ t("health.cta.save") }}</Button>
-                    </div>
+            <div class="md:max-w-max">
+                <div class="flex gap-1 justify-between my-1 default-padding">
+                    <h1>
+                        {{ isAddingHealth.vaccine
+                            ? t("health.title.addVaccine")
+                            : t("health.title.editVaccine")
+                        }}
+                    </h1>
+                    <Button class="ml-auto mb-auto" variant="ghost" size="xs" :aria-label="t('health.cta.delete')"
+                        @click="handleDelete">
+                        <Trash2 :size="22" color="var(--color-brand-light)" />
+                    </Button>
                 </div>
-            </form>
+                <form @submit.prevent="handleSubmit" class="md:max-w-max">
+                    <fieldset ref="vaccineSelectorRef"
+                        :class="{ 'border border-error rounded-xl': error, 'default-padding flex-wrap': true }">
+                        <legend>{{ t(types.label) }}</legend>
+                        <Input v-model="formData.types" v-for="option in vaccineTypes" :id="option.id"
+                            :value="option.id" :key="option.id" :label="option.label" :type="types.type"
+                            @input="error = null" />
+                        <p v-if="error" class="text-sm w-full text-error pb-0.5">{{ error }}</p>
+                    </fieldset>
+                    <fieldset class="default-padding capitalize my-0.5">
+                        <legend>{{ t(stage.label) }}</legend>
+                        <Input v-model="formData.stage" v-for="(option, index) in stage.options" :id="option"
+                            :value="option" :key="option" :label="option" :type="stage.type" :name="stage.name"
+                            :required="index === 0" />
+                    </fieldset>
+                    <div class="default-padding flex flex-col gap-0.5">
+                        <Input v-model="formData.givenAt" :id="givenDate.id" :label="t(givenDate.label)"
+                            :type="givenDate.type" required>
+                            <template #addon>
+                                <CalendarCheck class="mr-0.5" color="var(--color-border)" />
+                            </template>
+                        </Input>
+                        <Toggle v-model="formData.nextDose" :label="t(nextDose.label)" :id="nextDose.id" />
+                        <Input v-if="formData.nextDose" v-model="formData.dueOn" :id="dueDate.id"
+                            :label="t(dueDate.label)" :type="dueDate.type" :min="formData.givenAt" required>
+                            <template #addon>
+                                <CalendarClock class="mr-0.5" color="var(--color-border)" />
+                            </template>
+                        </Input>
+                        <Input v-model="formData.vet" :id="vet.id" :type="vet.type" :label="t(vet.label)" />
+                        <label :for="notes.id">
+                            <p>{{ t(notes.label) }}</p>
+                            <textarea v-model="formData.notes" :id="notes.id" />
+                        </label>
+                        <div class="flex gap-1 mt-1 items-center text-sm">
+                            <div class="flex flex-wrap gap-[5px] items-center flex-1">
+                                <p class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name }} · {{
+                                    showTypes(formData.types, selectedPet)
+                                    }}</p>
+                                <p v-if="formData.dueOn" class="text-text-secondary w-full">{{ t("health.form.dueDate")
+                                    }}:
+                                    {{
+                                        dateFromInput(formData.dueOn) }}
+                                </p>
+                            </div>
+                            <Button size="sm">{{ t("health.cta.save") }}</Button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </FormWrapper>
     </Transition>
 </template>

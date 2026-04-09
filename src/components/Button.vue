@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { X } from '@lucide/vue';
 import { tv } from 'tailwind-variants';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
 const button = tv({
-    base: "font-medium rounded-full filter-blur flex items-center gap-[5px] justify-center",
+    base: "font-medium rounded-full filter-blur flex items-center gap-[5px] justify-center disabled:opacity-40",
     variants: {
         variant: {
             primary: "btn-hover-fill bg-brand border border-brand text-btn-primary-text",
@@ -42,8 +43,9 @@ withDefaults(defineProps<{
     </button>
 
     <button v-else :aria-label="t('common.panel.hide')" tabindex="0"
-        class="flex justify-center m-auto py-0.5 px-2 h-1.5">
-        <div class="h-[7px] w-4 rounded-full bg-border"></div>
+        class="flex justify-center m-auto py-0.5 px-2 h-1.5 md:m-0 md:w-full md:justify-end">
+        <div class="h-[7px] w-4 rounded-full bg-border md:hidden"></div>
+        <X class="hidden md:block" />
     </button>
 </template>
 

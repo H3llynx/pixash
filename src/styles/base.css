@@ -165,7 +165,11 @@
 
   section,
   header {
-    @apply w-full default-padding md:pl-18;
+    @apply w-full default-padding;
+  }
+
+  main {
+    @apply md:pl-15;
   }
 
   header {
