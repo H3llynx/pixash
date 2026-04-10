@@ -36,6 +36,10 @@ export const vaccineFields = {
         type: "radio",
         options: STAGE,
     },
+    given: {
+        id: "vaccine-given",
+        label: "health.form.given",
+    },
     givenDate: {
         id: "vaccine-given-date",
         label: "health.form.givenDate",

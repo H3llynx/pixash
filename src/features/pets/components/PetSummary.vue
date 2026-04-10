@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Calendar from '../../../components/Calendar.vue';
 import Card from '../../health/components/Card.vue';
 import { usePets } from '../composables/usePet';
 import PetProfile from './PetProfile.vue';
@@ -14,5 +15,6 @@ const { selectedPet } = usePets();
             <Card :data="selectedPet.nextVaccine" />
         </div>
         <PetProfile />
+        <Calendar />
     </div>
 </template>

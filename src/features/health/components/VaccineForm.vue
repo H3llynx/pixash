@@ -11,22 +11,23 @@ import { useToast } from '../../../composables/useToast';
 import { dateFromInput, getOneYearLaterInput, shallowEqual, tsToDate } from '../../../utils';
 import { usePets } from '../../pets/composables/usePet';
 import { getAge, getIcon } from '../../pets/utils';
-import { STAGE, vaccineFields } from '../config';
+import { STAGE, VACCINE_TYPES, vaccineFields } from '../config';
 import type { VaccineTypes } from '../types';
 import { getVaccineTypes, showTypes } from '../utils';
 
-const { selectedPet, isUpdating, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
+const { selectedPet, isUpdating, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, healthLoading, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
 
-const { types, stage, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
+const { types, stage, given, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
 const vaccineTypes = ref<VaccineTypes[]>([]);
-const error = ref<string | null>(null);
+const error = ref<boolean>(false)
 const vaccineSelectorRef = ref<HTMLDivElement>();
 const defaultForm = {
-    types: [],
+    types: [VACCINE_TYPES.default[0].id],
     stage: "adult" as typeof STAGE[number],
+    given: false,
     givenAt: "",
     nextDose: false,
     dueOn: "",
@@ -47,9 +48,9 @@ const handleClose = () => {
 const handleSubmit = async () => {
     if (!selectedPet.value) return;
     if (!formData.types.length) {
-        error.value = t("health.form.validationTypes");
+        error.value = true;
         return;
-    }
+    };
     try {
         if (isAddingHealth.vaccine) {
             await addNewVaccine({ ...formData }, selectedPet.value.id);
@@ -78,8 +79,8 @@ const handleDelete = async () => {
     const vaccine = selectedVaccine.value;
     if (!vaccine || !pet) return;
     open({
-        title: t("dialog.deleteVaccine.title", { type: showTypes(vaccine.types as VaccineTypes["id"][], pet) }),
-        message: t("dialog.deleteVaccine.message", { name: pet.name, type: showTypes(vaccine.types as VaccineTypes["id"][], pet) }),
+        title: t("dialog.deleteVaccine.title", { type: showTypes(vaccine.types, pet) }),
+        message: t("dialog.deleteVaccine.message", { name: pet.name, type: showTypes(vaccine.types, pet) }),
         isDelete: true,
         onConfirm: async () => {
             try {
@@ -118,6 +119,7 @@ watch(() => [selectedPet.value, selectedVaccine.value] as const,
             Object.assign(formData, {
                 types: [...vaccine.types],
                 stage: vaccine.stage,
+                given: vaccine.givenAt ? true : false,
                 givenAt: tsToDate(vaccine.givenAt, "input"),
                 nextDose: vaccine.dueOn ? true : false,
                 dueOn: tsToDate(vaccine.dueOn, "input"),
@@ -136,10 +138,17 @@ watch(() => [selectedPet.value, selectedVaccine.value] as const,
 );
 
 watch(() => formData.nextDose, () => {
-    if (!formData.nextDose) formData.dueOn = "";
+    if (formData.givenAt && !formData.nextDose) formData.dueOn = "";
     else formData.dueOn = selectedVaccine.value?.dueOn
         ? tsToDate(selectedVaccine.value.dueOn, "input") ?? ""
         : getOneYearLaterInput(formData.givenAt) ?? ""
+});
+
+watch(() => formData.given, () => {
+    if (!formData.given) formData.givenAt = "";
+    else formData.givenAt = selectedVaccine.value?.givenAt
+        ? tsToDate(selectedVaccine.value.givenAt, "input") ?? ""
+        : ""
 });
 </script>
 
@@ -160,13 +169,13 @@ watch(() => formData.nextDose, () => {
                     </Button>
                 </div>
                 <form @submit.prevent="handleSubmit" class="md:max-w-max">
-                    <fieldset ref="vaccineSelectorRef"
-                        :class="{ 'border border-error rounded-xl': error, 'default-padding flex-wrap': true }">
+                    <fieldset ref="vaccineSelectorRef" class="default-padding flex-wrap capitalize">
                         <legend>{{ t(types.label) }}</legend>
                         <Input v-model="formData.types" v-for="option in vaccineTypes" :id="option.id"
                             :value="option.id" :key="option.id" :label="option.label" :type="types.type"
-                            @input="error = null" />
-                        <p v-if="error" class="text-sm w-full text-error pb-0.5">{{ error }}</p>
+                            @input="error = false" />
+                        <p v-if="error" class="text-sm w-full text-error pb-0.5">{{
+                            t("health.form.validationTypes") }}</p>
                     </fieldset>
                     <fieldset class="default-padding capitalize my-0.5">
                         <legend>{{ t(stage.label) }}</legend>
@@ -175,14 +184,17 @@ watch(() => formData.nextDose, () => {
                             :required="index === 0" />
                     </fieldset>
                     <div class="default-padding flex flex-col gap-0.5">
-                        <Input v-model="formData.givenAt" :id="givenDate.id" :label="t(givenDate.label)"
-                            :type="givenDate.type" required>
+                        <Toggle v-model="formData.given" :label="t(given.label, { name: selectedPet.name })"
+                            :id="given.id" />
+                        <Input v-if="formData.given" v-model="formData.givenAt" :id="givenDate.id"
+                            :label="t(givenDate.label)" :type="givenDate.type" required>
                             <template #addon>
-                                <CalendarCheck class="mr-0.5" color="var(--color-border)" />
+                                <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
-                        <Toggle v-model="formData.nextDose" :label="t(nextDose.label)" :id="nextDose.id" />
-                        <Input v-if="formData.nextDose" v-model="formData.dueOn" :id="dueDate.id"
+                        <Toggle v-if="formData.given" v-model="formData.nextDose" :label="t(nextDose.label)"
+                            :id="nextDose.id" />
+                        <Input v-if="!formData.given || formData.nextDose" v-model="formData.dueOn" :id="dueDate.id"
                             :label="t(dueDate.label)" :type="dueDate.type" :min="formData.givenAt" required>
                             <template #addon>
                                 <CalendarClock class="mr-0.5" color="var(--color-border)" />
@@ -204,7 +216,7 @@ watch(() => formData.nextDose, () => {
                                         dateFromInput(formData.dueOn) }}
                                 </p>
                             </div>
-                            <Button size="sm">{{ t("health.cta.save") }}</Button>
+                            <Button size="sm" :disabled="healthLoading">{{ t("health.cta.save") }}</Button>
                         </div>
                     </div>
                 </form>
@@ -232,7 +244,5 @@ label:has(textarea) p::after {
     font-size: small;
 }
 
-label:has(input[type="checkbox"]) {
-    text-transform: capitalize;
-}
+;
 </style>

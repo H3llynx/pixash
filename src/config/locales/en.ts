@@ -84,12 +84,13 @@ export default {
         form: {
             types: "Vaccine",
             stage: "Stage",
+            given: "{name} has already received this vaccine",
             givenDate: "Date given",
             nextDose: "Next dose scheduled?",
             dueDate: "Next due",
             vet: "Vet",
             notes: "Notes",
-            validationTypes: "You must select a vaccine type"
+            validationTypes: "You must select a vaccine type",
         },
     },
     toast: {

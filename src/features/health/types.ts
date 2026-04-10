@@ -4,9 +4,9 @@ import type { STAGE, VACCINE_TYPES } from "./config";
 export type VaccineTypes = (typeof VACCINE_TYPES)[keyof typeof VACCINE_TYPES][number];
 
 export type VaccineRecord = {
-    types: string[];
+    types: VaccineTypes["id"][];
     stage: typeof STAGE[number];
-    givenAt: string;
+    givenAt?: string;
     nextDose?: boolean;
     dueOn?: string;
     vet?: string;
@@ -18,6 +18,6 @@ export type VaccineExtended = VaccineRecord & {
     id: string;
     petId: string;
     userId: string;
-    givenAt: Timestamp;
+    givenAt?: Timestamp;
     dueOn?: Timestamp;
 }
