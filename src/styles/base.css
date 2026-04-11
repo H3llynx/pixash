@@ -63,11 +63,11 @@
   --color-btn-hover-text: var(--color-white);
   --color-btn-ghost-text: var(--color-green-dark);
 
-  --color-loading-bg: var(--color-green-dark);
+  --color-brand-dark: var(--color-green-dark);
   --color-loading-svg-1: var(--color-green-pale);
   --color-loading-svg-2: var(--color-beige);
 
-  --color-logo-bg: var(--color-brand);
+  --color-logo-bg: var(--color-green-mid);
   --color-logo-text: var(--color-gold);
 }
 
@@ -92,7 +92,7 @@
   --color-btn-hover-text: var(--color-white);
   --color-btn-ghost-text: var(--color-text);
 
-  --color-loading-bg: var(--color-purple-dark);
+  --color-brand-dark: var(--color-purple-dark);
   --color-loading-svg-1: var(--color-purple);
   --color-loading-svg-2: var(--color-purple-light);
 

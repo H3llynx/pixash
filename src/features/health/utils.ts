@@ -15,7 +15,8 @@ export const getNextVaccine = (vaccines: VaccineExtended[]) => {
         .sort((a, b) => a.dueOn!.toMillis() - b.dueOn!.toMillis())[0] ?? null;
 };
 
-export const showTypes = (vaccineType: VaccineTypes["id"][], pet: PetExtended) => {
+export const showTypes = (vaccineType: VaccineTypes["id"][], pet?: PetExtended) => {
+    if (!pet) return;
     const vaccines = getVaccineTypes(pet.species);
     if (!vaccines) return;
     const labels: string[] = [];

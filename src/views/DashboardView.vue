@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import DashboardSkeleton from '../components/DashboardSkeleton.vue';
 import Header from '../components/Header.vue';
-import NavBar from '../components/NavBar.vue';
 import VaccineForm from '../features/health/components/VaccineForm.vue';
 import PetForm from '../features/pets/components/PetForm.vue';
 import PetSummary from '../features/pets/components/PetSummary.vue';
@@ -11,12 +10,11 @@ const { loading, hasPets } = usePets();
 </script>
 
 <template>
-  <Header dashboard />
+  <Header type="dashboard" />
   <main>
     <DashboardSkeleton v-if="loading" />
     <PetSummary v-else-if="hasPets" />
     <PetForm />
     <VaccineForm />
   </main>
-  <NavBar />
 </template>

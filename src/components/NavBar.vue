@@ -12,7 +12,7 @@ import Logo from './Logo.vue';
         <RouterLink :to="ROUTES.dashboard" tabindex="0">
             <LayoutGrid />Home
         </RouterLink>
-        <RouterLink to="/" tabindex="0">
+        <RouterLink :to="ROUTES.calendar" tabindex="0">
             <Calendar />Calendar
         </RouterLink>
         <RouterLink to="/" tabindex="0">

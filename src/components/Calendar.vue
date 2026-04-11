@@ -1,23 +1,15 @@
 <script setup lang="ts">
+import type { EventInput } from '@fullcalendar/core/index.js';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from '@fullcalendar/vue3';
-import { showTypes } from '../features/health/utils';
-import { usePets } from '../features/pets/composables/usePet';
-import { tsToDate } from '../utils';
 
-const { selectedPet } = usePets();
-const vaccines = selectedPet.value?.vaccines
-    .filter(vaccine => vaccine.dueOn)
-    .map(vaccine => ({
-        title: showTypes(vaccine.types, selectedPet.value!),
-        date: tsToDate(vaccine.dueOn!, "input")
-    }));
+const props = defineProps<{ events?: EventInput }>();
 
 const calendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: "dayGridMonth",
-    events: vaccines,
+    events: props.events,
     height: "auto",
     headerToolbar: {
         left: "title",
@@ -35,9 +27,11 @@ const calendarOptions = {
 
 <style scoped>
 .fc {
-    background-color: var(--color-loading-bg);
+    background-color: var(--color-brand-dark);
     color: var(--color-brand-light);
-    padding: 1rem;
+    padding: 1rem 1rem 0rem 1rem;
+    position: relative;
+    z-index: 0;
 }
 
 :deep(.fc-toolbar-title) {
@@ -62,6 +56,11 @@ const calendarOptions = {
     border: none;
     border-radius: 4px;
     padding: 2px 4px;
+    cursor: pointer;
+}
+
+:deep(.fc-event-title) {
+    color: var(--color-brand-dark);
 }
 
 :deep(.fc-scrollgrid-section-header th) {
@@ -69,7 +68,11 @@ const calendarOptions = {
     font-weight: 200;
     font-size: small;
     color: var(--color-text-secondary);
-    height: 40px;
+    height: 50px;
+}
+
+:deep(.fc-daygrid-day-frame) {
+    aspect-ratio: 1;
 }
 
 :deep(.fc-button),
@@ -84,9 +87,5 @@ const calendarOptions = {
     width: 100%;
     text-align: center;
     font-size: smaller;
-}
-
-:deep(.fc-daygrid-day-frame) {
-    height: 40px;
 }
 </style>

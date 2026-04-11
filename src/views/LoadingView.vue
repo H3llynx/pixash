@@ -3,7 +3,7 @@ import Paw from '../components/icons/Paw.vue';
 </script>
 
 <template>
-    <div class="fixed inset-0 flex flex-col items-center justify-center text-center gap-3 bg-loading-bg">
+    <div class="fixed inset-0 flex flex-col items-center justify-center text-center gap-3 bg-brand-dark">
         <div class="fadein-1">
             <Paw class="paw" />
         </div>

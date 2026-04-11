@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { useAuth } from '../features/user/composables/useAuth';
 import AuthView from '../views/AuthView.vue';
+import CalendarView from '../views/CalendarView.vue';
 import DashboardView from '../views/DashboardView.vue';
 import { ROUTES } from './config';
 
@@ -16,6 +17,11 @@ const router = createRouter({
     {
       path: ROUTES.dashboard,
       component: DashboardView,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: ROUTES.calendar,
+      component: CalendarView,
       meta: { requiresAuth: true }
     },
     {
