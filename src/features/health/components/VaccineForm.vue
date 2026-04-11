@@ -88,7 +88,7 @@ const handleDelete = async () => {
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.vaccineDeleted", { name: pet.name, type: showTypes(vaccine.types as VaccineTypes["id"][], pet) }),
+                    message: t("toast.success.message.vaccineDeleted", { name: pet.name, type: showTypes(vaccine.types, pet) }),
                 });
             } catch (error) { console.log(error) }
         }
@@ -209,9 +209,9 @@ watch(() => formData.given, () => {
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name }} · {{
                                     showTypes(formData.types, selectedPet)
-                                    }}</p>
+                                }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{ t("health.form.dueDate")
-                                    }}:
+                                }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
