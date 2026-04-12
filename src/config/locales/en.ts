@@ -20,6 +20,13 @@ export default {
         switchToLogin: "I already have an account",
         logOut: "Sign out"
     },
+    dashboard: {
+        title: {
+            petProfile: "{name}'s profile",
+            petProfiles: "Pet profiles",
+            upcoming: "Upcoming"
+        },
+    },
     pet: {
         title: {
             addFirstPet: "Your pet care starts here",

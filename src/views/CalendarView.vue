@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Calendar from '../components/Calendar.vue';
 import Header from '../components/Header.vue';
+import UpcomingEvents from '../features/health/components/UpcomingEvents.vue';
 import { showTypes } from '../features/health/utils';
 import { usePets } from '../features/pets/composables/usePet';
 import { tsToDate } from '../utils';
@@ -18,5 +19,6 @@ const vaccinesToShow = vaccines.value
     <Header type="calendar" />
     <main>
         <Calendar :events="vaccinesToShow" />
+        <UpcomingEvents />
     </main>
 </template>

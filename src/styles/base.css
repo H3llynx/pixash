@@ -165,11 +165,11 @@
 
   section,
   header {
-    @apply w-full default-padding;
+    @apply max-w-full default-padding;
   }
 
   main {
-    @apply md:pl-15;
+    @apply flex flex-col gap-1.5 pb-6 md:pl-15 md:pb-0;
   }
 
   header {

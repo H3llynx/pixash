@@ -13,8 +13,7 @@ export type VaccineRecord = {
     notes?: string;
 }
 
-export type VaccineExtended = VaccineRecord & {
-    types: VaccineTypes["id"];
+export type VaccineExtended = Omit<VaccineRecord, "givenAt" | "dueOn"> & {
     id: string;
     petId: string;
     userId: string;
