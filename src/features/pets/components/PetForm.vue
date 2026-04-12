@@ -14,7 +14,7 @@ import { petFields } from '../config';
 import type { Pet } from '../types';
 
 const { name, species, breed, birthDate, sex, sterilized, microchipped } = petFields;
-const { loading, pets, error, isAddingPet, isUpdating, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();
+const { loading, pets, error, isAddingPet, isUpdatingPet, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();
 const { show } = useToast();
 const { t } = useI18n();
 
@@ -72,10 +72,10 @@ const handleSubmit = async () => {
 
 const handleClose = () => {
     isAddingPet.value = false;
-    isUpdating.generalInfo = false;
+    isUpdatingPet.value = false;
 };
 
-watch(() => [isAddingPet.value, isUpdating.generalInfo],
+watch(() => [isAddingPet.value, isUpdatingPet.value],
     ([adding, editing]) => {
         if (editing || adding) {
             nextTick(() => {
@@ -108,7 +108,7 @@ watch(() => formData.species, () => {
 
 <template>
     <Transition name="panel">
-        <FormWrapper v-if="isAddingPet || isUpdating.generalInfo" :canClose="hasPets" :onClose="handleClose">
+        <FormWrapper v-if="isAddingPet || isUpdatingPet" :canClose="hasPets" :onClose="handleClose">
             <div v-if="!hasPets" class="px-2 py-1 text-center">
                 <h2>{{ t("pet.title.addFirstPet") }}</h2>
                 <p class="text-text-secondary">{{ t("pet.addFirstPet") }}</p>
@@ -142,7 +142,7 @@ watch(() => formData.species, () => {
                             :label="t(birthDate.label)" required />
                         <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
                             <option v-for="option in sex.options" :value="option.id" :key="option.id">{{ t(option.label)
-                            }}
+                                }}
                             </option>
                         </Dropdown>
                     </div>

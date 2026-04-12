@@ -7,27 +7,29 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import type { VaccineExtended } from '../../health/types';
 import { usePets } from '../composables/usePet';
-import type { Pet } from '../types';
+import type { Pet, PetExtended } from '../types';
 import { getUnit, kgToGrams } from '../utils';
 
-const { updateSelectedPet, selectedPet, isUpdating, selectVaccine, isAddingHealth } = usePets();
+const { updateSelectedPet, selectedPet, selectPet, selectVaccine, isAddingHealth } = usePets();
 const { t } = useI18n();
 
-const props = defineProps<{ data: "weight" | "microchip" | "nextVaccine" }>();
+const props = defineProps<{
+    pet: PetExtended
+    data: "weight" | "microchip" | "nextVaccine"
+    isUpdating: any;
+}>();
 
 const updateForm = ref<HTMLFormElement>();
 const inputRef = ref<HTMLInputElement>();
 
 onClickOutside(updateForm, () => {
-    if (isUpdating) {
-        isUpdating[props.data] = false;
+    if (props.isUpdating) {
+        props.isUpdating[props.data] = false;
     }
 });
 
 const preferredUnit = computed(() => {
-    const pet = selectedPet.value
-    if (!pet) return "g"
-    return getUnit(pet) ? "kg" : "g"
+    return getUnit(props.pet) ? "kg" : "g"
 });
 
 const formData = reactive<{
@@ -39,9 +41,9 @@ const formData = reactive<{
 });
 
 const startUpdating = () => {
-    if (!selectedPet.value) return;
-    isUpdating[props.data] = true;
-    const existing = selectedPet.value[props.data];
+    selectPet(props.pet);
+    props.isUpdating[props.data] = true;
+    const existing = props.pet[props.data];
     if (props.data === "weight" && typeof existing === "number") {
         formData.data = preferredUnit.value === "kg"
             ? (existing / 1000).toString()
@@ -75,7 +77,7 @@ const handleSubmit = async (field: "weight" | "microchip",) => {
         update = { microchipped: true, microchip: microchip };
     }
     await updateSelectedPet(selectedPet.value, update);
-    isUpdating[props.data] = false;
+    props.isUpdating[props.data] = false;
 }
 
 watch(preferredUnit, (unit) => {
@@ -98,14 +100,14 @@ watch(() => formData.unit,
 </script>
 
 <template>
-    <div class="flex h-2 gap-[3px]" v-if="selectedPet">
-        <Button v-if="!isUpdating[data]" variant="summaryCta" size="xxs" @click="startUpdating"
-            :aria-label="`Update ${data}`">
-            <Edit2 v-if="selectedPet[data]" :size="16" />
+    <div class="flex h-2 gap-[3px]">
+        <Button v-if="!isUpdating[data] || data === 'nextVaccine'" variant="summaryCta" size="xxs"
+            @click="startUpdating" :aria-label="`Update ${data}`">
+            <Edit2 v-if="pet[data]" :size="16" />
             <Plus v-else :size="18" />
         </Button>
         <form @submit.prevent="handleSubmit(data)" @keydown.enter.exact="handleSubmit(data)"
-            v-else-if="data !== 'nextVaccine'" :aria-label="t('pet.profile.edit.' + data)" class="flex gap-0.5"
+            v-else-if="pet === selectedPet" :aria-label="t('pet.profile.edit.' + data)" class="flex gap-0.5"
             ref="updateForm">
             <input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
                 :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="inputRef">
@@ -116,7 +118,7 @@ watch(() => formData.unit,
                 </select>
             </div>
         </form>
-        <Button v-if="isUpdating[data] && data !== 'nextVaccine'" size="xs" variant="ghost"
+        <Button v-if="isUpdating[data] && data !== 'nextVaccine' && pet === selectedPet" size="xs" variant="ghost"
             @click="isUpdating[data] = false">
             <X :size="18" color="var(--color-brand-light)" />
         </Button>

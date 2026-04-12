@@ -17,8 +17,8 @@ const { loading, hasPets } = usePets();
     <template v-else-if="hasPets">
       <PetSummary />
       <UpcomingEvents />
+      <VaccineForm />
     </template>
     <PetForm />
-    <VaccineForm />
   </main>
 </template>

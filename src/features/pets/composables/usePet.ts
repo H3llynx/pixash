@@ -1,5 +1,5 @@
 import { FirebaseError } from "firebase/app";
-import { computed, reactive, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { addPet, deletePet, fetchPets, updatePet } from "../../../services/pets";
 import { resetState } from "../../../utils";
 import { useHealth } from "../../health/composables/useHealth";
@@ -14,12 +14,7 @@ const loading = ref<boolean>(false);
 const error = ref<string | null>(null);
 const hasPets = computed(() => pets.value.length > 0);
 const isAddingPet = ref<boolean>(false);
-const isUpdating = reactive({
-  generalInfo: false,
-  weight: false,
-  microchip: false,
-  nextVaccine: false,
-});
+const isUpdatingPet = ref<boolean>(false);
 
 const {
   error: healthError,
@@ -36,7 +31,7 @@ const {
 
 const selectPet = (pet: PetExtended | null) => {
   isAddingPet.value = false;
-  resetState(isUpdating);
+  isUpdatingPet.value = false;
   resetState(isAddingHealth);
   selectedPet.value = pet;
   selectVaccine(null);
@@ -128,20 +123,19 @@ watch(vaccines, (_newVaccines) => {
   }
 });
 
-watch(() => [isAddingPet.value, { ...isUpdating }],
+watch(() => [isAddingPet.value, isUpdatingPet.value],
   ([adding, editing], [prevAdding, prevEditing]) => {
     if (!prevAdding && adding) {
-      resetState(isUpdating);
+      isUpdatingPet.value = false;
       selectVaccine(null);
       resetState(isAddingHealth);
     };
-    const wasUpdating = Object.values(prevEditing).some(Boolean);
-    const isUpdatingNow = Object.values(editing).some(Boolean);
-    if (!wasUpdating && isUpdatingNow) isAddingPet.value = false;
-    if (selectedVaccine.value) {
-      resetState(isAddingHealth);
-      resetState(isUpdating);
+    if (!prevEditing && editing) {
       isAddingPet.value = false;
+      if (selectedVaccine.value) {
+        resetState(isAddingHealth);
+        isAddingPet.value = false;
+      }
     }
   });
 
@@ -155,7 +149,7 @@ export const usePets = () => {
     error,
     healthError,
     isAddingPet,
-    isUpdating,
+    isUpdatingPet,
     fetchUserPets,
     addNewPet,
     updateSelectedPet,

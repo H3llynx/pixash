@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Edit2, Trash2 } from '@lucide/vue';
+import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Loading from '../../../components/Loading.vue';
@@ -11,12 +12,23 @@ import type { PetExtended } from '../types';
 import { getAge, getIcon, getWeight } from '../utils';
 import UpdatePetDetail from './UpdatePetDetail.vue';
 
-const { isUpdating, deleteSelectedPet, healthLoading } = usePets();
+const { selectPet, deleteSelectedPet, healthLoading } = usePets();
 const { open } = useDialog();
 const { show } = useToast();
 const { t } = useI18n();
 
 const props = defineProps<{ pet: PetExtended }>();
+const isUpdating = reactive({
+    generalInfo: false,
+    weight: false,
+    microchip: false,
+    nextVaccine: false,
+});
+
+const updateGeneralInfo = () => {
+    selectPet(props.pet);
+    isUpdating.generalInfo = true
+};
 
 const handleDelete = async () => {
     if (!props.pet) return;
@@ -49,7 +61,7 @@ const handleDelete = async () => {
                     <h1>{{ pet.name }}</h1>
                     <Button variant="ghost" size="xs"
                         :aria-label="t('pet.profile.edit.generalInformation', { name: pet.name })"
-                        @click="isUpdating.generalInfo = true">
+                        @click="updateGeneralInfo">
                         <Edit2 :size="14" />
                     </Button>
                 </div>
@@ -68,20 +80,20 @@ const handleDelete = async () => {
             <div class="row">
                 <span>{{ t("pet.profile.label.weight") }}</span>
                 <span v-if="pet.weight && !isUpdating.weight">{{ getWeight(pet) }}</span>
-                <UpdatePetDetail data="weight" />
+                <UpdatePetDetail data="weight" :pet="pet" :isUpdating="isUpdating" />
             </div>
             <div class="row">
                 <span>{{ t("pet.profile.label.nextVaccine") }}</span>
                 <Loading v-if="healthLoading" />
                 <span v-else-if="pet.nextVaccine" class="text-brand font-medium">{{
                     tsToDate(pet.nextVaccine.dueOn!, "date")
-                }}</span>
-                <UpdatePetDetail v-if="!healthLoading" data="nextVaccine" />
+                    }}</span>
+                <UpdatePetDetail v-if="!healthLoading" data="nextVaccine" :pet="pet" :isUpdating="isUpdating" />
             </div>
             <div class="row">
                 <span>{{ t("pet.profile.label.microchip") }}</span>
                 <span v-if="pet.microchip && !isUpdating.microchip">{{ pet.microchip }}</span>
-                <UpdatePetDetail data="microchip" />
+                <UpdatePetDetail data="microchip" :pet="pet" :isUpdating="isUpdating" />
             </div>
         </div>
     </div>

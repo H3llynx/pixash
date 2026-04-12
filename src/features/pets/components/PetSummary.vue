@@ -19,12 +19,12 @@ const nextPetDue = pets.value
 
 <template>
     <div class="flex flex-col gap-1.5 flex-1">
-        <PetSelector v-if="!isMd" />
+        <PetSelector v-if="selectedPet && !isMd" />
         <div v-if="selectedPet?.nextVaccine && !isMd" class="flex gap-1 default-padding">
             <HealthCard :pet="selectedPet" :data="selectedPet.nextVaccine"
                 :title="t('pet.profile.label.nextVaccine')" />
         </div>
-        <div v-else class="flex gap-1 default-padding">
+        <div v-else-if="isMd" class="flex gap-1 default-padding">
             <HealthCard :pet="nextPetDue" :data="nextPetDue.nextVaccine!" :title="t('pet.profile.label.nextVaccine')" />
         </div>
         <ProfileSection />
