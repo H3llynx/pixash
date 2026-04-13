@@ -14,7 +14,7 @@ const { t } = useI18n();
 
 const nextPetDue = pets.value
     .filter(pet => pet.nextVaccine?.dueOn)
-    .sort((a, b) => a.nextVaccine!.dueOn!.seconds - b.nextVaccine!.dueOn!.seconds)[0]
+    .sort((a, b) => a.nextVaccine!.dueOn!.seconds - b.nextVaccine!.dueOn!.seconds)[0];
 </script>
 
 <template>

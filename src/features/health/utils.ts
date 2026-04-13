@@ -12,7 +12,7 @@ export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default
 export const getNextVaccine = (vaccines: VaccineExtended[]) => {
     return vaccines
         .filter(vaccine => vaccine.dueOn)
-        .sort((a, b) => a.dueOn!.toMillis() - b.dueOn!.toMillis())[0] ?? null;
+        .sort((a, b) => a.dueOn!.seconds - b.dueOn!.seconds)[0] ?? null;
 };
 
 export const showTypes = (vaccineType: VaccineTypes["id"][], pet?: PetExtended) => {

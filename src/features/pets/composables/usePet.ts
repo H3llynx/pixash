@@ -1,6 +1,6 @@
 import { FirebaseError } from "firebase/app";
 import { computed, ref, watch } from "vue";
-import { addPet, deletePet, fetchPets, updatePet } from "../../../services/pets";
+import { addPet, deletePet, deletePetField, fetchPets, updatePet } from "../../../services/pets";
 import { resetState } from "../../../utils";
 import { useHealth } from "../../health/composables/useHealth";
 import { useAuth } from "../../user/composables/useAuth";
@@ -39,7 +39,7 @@ const selectPet = (pet: PetExtended | null) => {
 
 const handlePetAction = async (
   action: () => Promise<void> | void,
-  onFinal: () => void
+  onFinal?: () => void
 ) => {
   if (!user.value) return;
   error.value = null;
@@ -52,7 +52,7 @@ const handlePetAction = async (
       error.value = "An unexpected error occurred";
     }
   } finally {
-    onFinal();
+    if (onFinal) onFinal();
   }
 };
 
@@ -92,7 +92,8 @@ const updateSelectedPet = async (pet: PetExtended, data: Partial<Pick<Pet, "weig
     };
     pets.value.splice(index, 1, updatedPet);
     selectPet(updatedPet);
-  }, () => isAddingPet.value = false
+    console.log(isAddingPet.value)
+  }
   );
 };
 
@@ -104,6 +105,17 @@ const deleteSelectedPet = async (pet: PetExtended) => {
     await fetchUserPets();
   }, () => loading.value = false
   );
+};
+
+const deleteSelectedPetField = async (pet: PetExtended, data: keyof Pet) => {
+  await handlePetAction(async () => {
+    await deletePetField(pet.id, user.value!.uid, data);
+    const index = pets.value.findIndex(p => p.id === pet.id);
+    const updatedPet: PetExtended = { ...pets.value[index] };
+    delete updatedPet[data]
+    pets.value.splice(index, 1, updatedPet);
+    selectPet(updatedPet);
+  });
 };
 
 watch(user, async (newUser) => {
@@ -154,6 +166,7 @@ export const usePets = () => {
     addNewPet,
     updateSelectedPet,
     deleteSelectedPet,
+    deleteSelectedPetField,
     hasPets,
     vaccines,
     selectedVaccine,

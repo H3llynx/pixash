@@ -11,7 +11,7 @@ defineProps<{
 <template>
     <div class="p-1 rounded-xl border border-border bg-bg-2 flex gap-0.5 justify-between mb-1">
         <div>
-            <h3>{{ title }}</h3>
+            <h4>{{ title }}</h4>
             <p class="text-text-secondary">{{ date }}</p>
         </div>
         <PetIndicator :pet="pet" />

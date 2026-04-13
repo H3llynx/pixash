@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, deleteField, doc, getDocs, getFirestore, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { DB } from '../config/config';
 import type { Pet, PetExtended } from '../features/pets/types';
 
@@ -60,5 +60,20 @@ export const deletePet = async (petId: string, userId: string) => {
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting pet: ", error);
+  }
+};
+
+export const deletePetField = async (
+  petId: string,
+  userId: string,
+  field: keyof Pet
+) => {
+  try {
+    const docRef = doc(db, DB.users, userId, DB.pets, petId);
+    await updateDoc(docRef, {
+      [field]: deleteField()
+    });
+  } catch (error) {
+    console.error(`Error deleting ${field}: `, error);
   }
 };

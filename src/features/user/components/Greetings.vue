@@ -5,7 +5,7 @@ const { user } = useAuth();
 
 <template>
     <div v-if="user">
-        <span class="tracking-wide font-extralight">Welcome</span>
-        <h2 class="text-2xl">{{ user.firstName }}</h2>
+        <span class="tracking-wide font-extralight md:text-lg">Welcome</span>
+        <h2 class="text-2xl md:text-3xl">{{ user.firstName }}</h2>
     </div>
 </template>

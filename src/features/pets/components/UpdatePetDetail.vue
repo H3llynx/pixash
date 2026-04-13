@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Edit2, Plus, X } from '@lucide/vue';
+import { Edit2, Plus, Trash2, X } from '@lucide/vue';
 import { computed } from '@vue/reactivity';
 import { onClickOutside } from '@vueuse/core';
 import { reactive, ref, watch } from 'vue';
@@ -10,7 +10,7 @@ import { usePets } from '../composables/usePet';
 import type { Pet, PetExtended } from '../types';
 import { getUnit, kgToGrams } from '../utils';
 
-const { updateSelectedPet, selectedPet, selectPet, selectVaccine, isAddingHealth } = usePets();
+const { updateSelectedPet, deleteSelectedPetField, selectedPet, selectPet, selectVaccine, isAddingHealth } = usePets();
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -62,7 +62,7 @@ const handleUnitChange = () => {
     inputRef.value?.focus()
 };
 
-const handleSubmit = async (field: "weight" | "microchip",) => {
+const handleSubmit = async (field: "weight" | "microchip") => {
     if (!selectedPet.value || !formData.data) return;
     let update: Partial<Pick<Pet, "weight" | "microchip" | "microchipped">> = {};
     if (field === "weight") {
@@ -78,7 +78,13 @@ const handleSubmit = async (field: "weight" | "microchip",) => {
     }
     await updateSelectedPet(selectedPet.value, update);
     props.isUpdating[props.data] = false;
-}
+};
+
+const handleDelete = async () => {
+    if (!selectedPet.value) return;
+    await deleteSelectedPetField(selectedPet.value, props.data as keyof Pet);
+    if (props.data === "microchip") await updateSelectedPet(selectedPet.value, { microchipped: false });
+};
 
 watch(preferredUnit, (unit) => {
     formData.unit = unit;
@@ -121,6 +127,10 @@ watch(() => formData.unit,
         <Button v-if="isUpdating[data] && data !== 'nextVaccine' && pet === selectedPet" size="xs" variant="ghost"
             @click="isUpdating[data] = false">
             <X :size="18" color="var(--color-brand-light)" />
+        </Button>
+        <Button v-if="isUpdating[data] && data !== 'nextVaccine' && pet === selectedPet" size="xs" variant="ghost"
+            @click="handleDelete">
+            <Trash2 :size="18" color="var(--color-brand-light)" />
         </Button>
     </div>
 </template>
