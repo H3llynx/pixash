@@ -1,1 +1,1 @@
-export type DateFormatMode = "date" | "datetime" | "daysUntil" | "input";
+export type DateFormatMode = "date" | "datetime" | "daysUntil" | "input" | "isUpcoming";

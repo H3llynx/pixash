@@ -16,7 +16,7 @@ export const VACCINE_TYPES = {
         { id: "ferret-distemper", label: "Ferret: Distemper", defaultIntervalMonths: 12 },
     ],
     default: [
-        { id: "other", label: 'other vaccine', defaultIntervalMonths: 12 },
+        { id: "other", label: 'Other vaccine', defaultIntervalMonths: 12 },
     ],
 } as const;
 

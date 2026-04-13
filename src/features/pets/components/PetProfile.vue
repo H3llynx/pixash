@@ -12,7 +12,7 @@ import type { PetExtended } from '../types';
 import { getAge, getIcon, getWeight } from '../utils';
 import UpdatePetDetail from './UpdatePetDetail.vue';
 
-const { selectPet, deleteSelectedPet, healthLoading } = usePets();
+const { selectPet, selectedPet, deleteSelectedPet, healthLoading } = usePets();
 const { open } = useDialog();
 const { show } = useToast();
 const { t } = useI18n();
@@ -84,10 +84,10 @@ const handleDelete = async () => {
             </div>
             <div class="row">
                 <span>{{ t("pet.profile.label.nextVaccine") }}</span>
-                <Loading v-if="healthLoading" />
+                <Loading v-if="healthLoading && pet === selectedPet" />
                 <span v-else-if="pet.nextVaccine" class="text-brand font-medium">{{
                     tsToDate(pet.nextVaccine.dueOn!, "date")
-                    }}</span>
+                }}</span>
                 <UpdatePetDetail v-if="!healthLoading" data="nextVaccine" :pet="pet" :isUpdating="isUpdating" />
             </div>
             <div class="row">

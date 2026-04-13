@@ -139,14 +139,14 @@ watch(() => [selectedPet.value, selectedVaccine.value] as const,
 watch(() => formData.nextDose, () => {
     if (formData.givenAt && !formData.nextDose) formData.dueOn = "";
     else formData.dueOn = selectedVaccine.value?.dueOn
-        ? tsToDate(selectedVaccine.value.dueOn, "input") ?? ""
+        ? tsToDate(selectedVaccine.value.dueOn, "input") as string
         : getOneYearLaterInput(formData.givenAt) ?? ""
 });
 
 watch(() => formData.given, () => {
     if (!formData.given) formData.givenAt = "";
     else formData.givenAt = selectedVaccine.value?.givenAt
-        ? tsToDate(selectedVaccine.value.givenAt, "input") ?? ""
+        ? tsToDate(selectedVaccine.value.givenAt, "input") as string
         : ""
 });
 </script>
@@ -168,7 +168,7 @@ watch(() => formData.given, () => {
                     </Button>
                 </div>
                 <form @submit.prevent="handleSubmit" class="md:max-w-max">
-                    <fieldset ref="vaccineSelectorRef" class="default-padding flex-wrap capitalize">
+                    <fieldset ref="vaccineSelectorRef" class="default-padding flex-wrap">
                         <legend>{{ t(types.label) }}</legend>
                         <Input v-model="formData.types" v-for="option in vaccineTypes" :id="option.id"
                             :value="option.id" :key="option.id" :label="option.label" :type="types.type"

@@ -13,13 +13,15 @@ export const shallowEqual = (a: any, b: any) =>
 export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode) => {
     if (!ts) return;
     const date = ts.toDate();
+    const now = new Date();
     switch (mode) {
         case "date":
             return date.toLocaleDateString();
         case "datetime":
             return date.toLocaleString();
+        case "input":
+            return date.toISOString().slice(0, 10);
         case "daysUntil": {
-            const now = new Date();
             const diffMs = date.getTime() - now.getTime();
             const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
             if (diffDays < 0) return `${Math.abs(diffDays)} day${Math.abs(diffDays) > 1 && "s"} ago`;
@@ -27,8 +29,11 @@ export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode) => {
             if (diffDays === 1) return "tomorrow";
             return `in ${diffDays} days`;
         }
-        case "input":
-            return date.toISOString().slice(0, 10);
+        case "isUpcoming": {
+            const inThreeMonths = new Date();
+            inThreeMonths.setMonth(now.getMonth() + 3);
+            return date >= now && date <= inThreeMonths;
+        }
     }
 };
 
