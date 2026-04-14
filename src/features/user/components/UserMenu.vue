@@ -2,12 +2,14 @@
 import { Camera, Edit2, LogOut } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref, toRef } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { ROUTES } from '../../../router/config';
 import router from '../../../router/router';
 import { useAuth } from '../composables/useAuth';
 
 const { logout } = useAuth();
+const { t } = useI18n();
 
 const handleLogout = async () => {
     await logout();
@@ -36,17 +38,17 @@ onClickOutside(menuRef, () => {
             class="absolute top-4 right-0 w-max filter-blur rounded-xl overflow-hidden border border-border bg-bg-rgba">
             <li role="none">
                 <Button role="menuitem" variant="ghost" size="xs" @click="handleLogout">
-                    <LogOut :size="20" /> Log out
+                    <LogOut :size="20" /> {{ t("userMenu.logout") }}
                 </Button>
             </li>
             <li role="none">
                 <Button role="menuitem" variant="ghost" size="xs">
-                    <Camera :size="20" /> Update profile picture
+                    <Camera :size="20" /> {{ t("userMenu.updatePicture") }}
                 </Button>
             </li>
             <li role="none">
                 <Button role="menuitem" variant="ghost" size="xs">
-                    <Edit2 :size="18" /> Update name
+                    <Edit2 :size="18" /> {{ t("userMenu.updateName") }}
                 </Button>
             </li>
         </ul>

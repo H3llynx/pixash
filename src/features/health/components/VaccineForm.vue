@@ -26,7 +26,7 @@ const error = ref<boolean>(false)
 const vaccineSelectorRef = ref<HTMLDivElement>();
 const defaultForm = {
     types: [VACCINE_TYPES.default[0].id],
-    stage: "adult" as typeof STAGE[number],
+    stage: "adult" as typeof STAGE[number]["id"],
     given: false,
     givenAt: "",
     nextDose: false,
@@ -129,7 +129,7 @@ watch(() => [selectedPet.value, selectedVaccine.value] as const,
         else {
             Object.assign(formData, {
                 types: [vaccineTypes.value[0].id],
-                stage: getAge(pet)?.stage as (typeof STAGE)[number],
+                stage: getAge(pet)?.stage,
             });
         }
     },
@@ -178,9 +178,9 @@ watch(() => formData.given, () => {
                     </fieldset>
                     <fieldset class="default-padding capitalize my-0.5">
                         <legend>{{ t(stage.label) }}</legend>
-                        <Input v-model="formData.stage" v-for="(option, index) in stage.options" :id="option"
-                            :value="option" :key="option" :label="option" :type="stage.type" :name="stage.name"
-                            :required="index === 0" />
+                        <Input v-model="formData.stage" v-for="(option, index) in stage.options" :id="option.id"
+                            :value="option.id" :key="option.id" :label="t(option.label)" :type="stage.type"
+                            :name="stage.name" :required="index === 0" />
                     </fieldset>
                     <div class="default-padding flex flex-col gap-0.5">
                         <Toggle v-model="formData.given" :label="t(given.label, { name: selectedPet.name })"
@@ -208,9 +208,9 @@ watch(() => formData.given, () => {
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name }} · {{
                                     showTypes(formData.types, selectedPet)
-                                }}</p>
+                                    }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{ t("health.form.dueDate")
-                                }}:
+                                    }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>

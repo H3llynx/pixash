@@ -20,7 +20,7 @@ export const VACCINE_TYPES = {
     ],
 } as const;
 
-export const STAGE = ["puppy", "adult"] as const;
+export const STAGE = [{ id: "young", label: "health.stage.young" }, { id: "adult", label: "health.stage.adult" }] as const;
 
 export const vaccineFields = {
     types: {

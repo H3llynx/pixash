@@ -1,9 +1,9 @@
 <!-- components/AppToggle.vue -->
 <script setup lang="ts">
 defineProps<{
-    id: string;
-    label: string;
-    modelValue: boolean;
+    id: string
+    label: string
+    modelValue: boolean
 }>()
 
 defineEmits(["update:modelValue"]);

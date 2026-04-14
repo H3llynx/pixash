@@ -20,6 +20,11 @@ export default {
         switchToLogin: "I already have an account",
         logOut: "Sign out"
     },
+    userMenu: {
+        logout: "Log out",
+        updatePicture: "Update profile picture",
+        updateName: "Edit name",
+    },
     dashboard: {
         title: {
             petProfile: "{name}'s profile",
@@ -99,6 +104,10 @@ export default {
             notes: "Notes",
             validationTypes: "You must select a vaccine type",
         },
+        stage: {
+            adult: "Adult",
+            young: "Young",
+        }
     },
     toast: {
         dismiss: "Dismiss notification",

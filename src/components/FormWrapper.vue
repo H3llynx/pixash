@@ -2,8 +2,8 @@
 import Button from './Button.vue';
 
 withDefaults(defineProps<{
-    canClose?: boolean;
-    onClose: () => void;
+    canClose?: boolean
+    onClose: () => void
 }>(), { canClose: true });
 </script>
 

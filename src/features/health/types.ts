@@ -6,7 +6,7 @@ export type VaccineTypes = (typeof VACCINE_TYPES)[keyof typeof VACCINE_TYPES][nu
 
 export type VaccineRecord = {
     types: VaccineTypes["id"][];
-    stage: typeof STAGE[number];
+    stage: typeof STAGE[number]["id"];
     given?: boolean;
     givenAt?: string;
     nextDose?: boolean;

@@ -25,7 +25,7 @@ export const getAge = (pet: Pet) => {
     }
     if (years >= 1) {
         return {
-            stage: STAGE[1],
+            stage: STAGE[1].id,
             text: years === 1 ? "1 year old" : `${years} years old`
         };
     }
@@ -38,12 +38,12 @@ export const getAge = (pet: Pet) => {
 
     if (months <= 0) {
         return {
-            stage: STAGE[0],
+            stage: STAGE[0].id,
             text: "Less than a month old"
         }
     };
     return {
-        stage: STAGE[0],
+        stage: STAGE[0].id,
         text: months === 1 ? "1 month old" : `${months} months old`
     };
 };
