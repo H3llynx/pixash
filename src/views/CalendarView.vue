@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Calendar from '../components/Calendar.vue';
 import Header from '../components/Header.vue';
-import UpcomingEvents from '../features/health/components/UpcomingEvents.vue';
+import UpcomingEvents from '../features/health/components/EventList.vue';
 import VaccineForm from '../features/health/components/VaccineForm.vue';
 import { showTypes } from '../features/health/utils';
 import { usePets } from '../features/pets/composables/usePet';

@@ -8,15 +8,15 @@ import { showTypes } from '../utils';
 
 const { pets, selectVaccine } = usePets();
 
-const props = defineProps<{ vaccine: VaccineExtended }>();
+const props = defineProps<{ event: VaccineExtended }>();
 
-const pet = pets.value.filter(pet => pet.id === props.vaccine.petId)[0];
-const title = showTypes(props.vaccine.types, pet);
-const date = tsToDate(props.vaccine.dueOn, "date") as string;
+const pet = pets.value.filter(pet => pet.id === props.event.petId)[0];
+const title = showTypes(props.event.types, pet);
+const date = tsToDate(props.event.dueOn, "date") as string;
 
 </script>
 <template>
-    <Button variant="card" size="card" @click="selectVaccine(vaccine)">
+    <Button variant="card" size="card" @click="selectVaccine(event)">
         <div>
             <h4>{{ title }}</h4>
             <p class="text-text-secondary">{{ date }}</p>
