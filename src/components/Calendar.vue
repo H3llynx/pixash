@@ -4,7 +4,13 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from '@fullcalendar/vue3';
 
-const props = defineProps<{ events?: EventInput }>();
+const props = defineProps<{
+    events?: EventInput
+}>();
+const emit = defineEmits<{
+    updateMonth: [date: Date]
+    updateMonthName: [name: string]
+}>();
 
 const calendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
@@ -14,6 +20,10 @@ const calendarOptions = {
     headerToolbar: {
         left: "title",
         right: "prev,next"
+    },
+    datesSet(info: any) {
+        emit("updateMonth", info.view.currentStart);
+        emit("updateMonthName", info.view.title);
     },
     dateClick(info: any) {
         alert('Next vaccine date : ' + info.dateStr)

@@ -10,7 +10,7 @@ export const resetState = (state: any) => {
 export const shallowEqual = (a: any, b: any) =>
     Object.keys(a).every((key) => a[key] === b[key]);
 
-export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode) => {
+export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, month?: Date) => {
     if (!ts) return;
     const date = ts.toDate();
     const now = new Date();
@@ -33,6 +33,11 @@ export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode) => {
             const inThreeMonths = new Date();
             inThreeMonths.setMonth(now.getMonth() + 3);
             return date >= now && date <= inThreeMonths;
+        }
+        case "isThatMonth": {
+            if (!month) return;
+            return date.getMonth() === month.getMonth() &&
+                date.getFullYear() === month.getFullYear();
         }
     }
 };

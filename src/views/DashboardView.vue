@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import DashboardSkeleton from '../components/DashboardSkeleton.vue';
 import Header from '../components/Header.vue';
-import UpcomingEvents from '../features/health/components/EventList.vue';
+import EventList from '../features/health/components/EventList.vue';
 import VaccineForm from '../features/health/components/VaccineForm.vue';
 import PetForm from '../features/pets/components/PetForm.vue';
 import PetSummary from '../features/pets/components/PetSummary.vue';
@@ -10,6 +11,8 @@ import { usePets } from '../features/pets/composables/usePet';
 import { tsToDate } from '../utils';
 
 const { loading, hasPets, vaccines } = usePets();
+const { t } = useI18n();
+
 const upcomingEvents = computed(() => vaccines.value
   .filter(vaccine => tsToDate(vaccine.dueOn, "isUpcoming"))
   .sort((a, b) => a.dueOn!.seconds - b.dueOn!.seconds))
@@ -21,7 +24,7 @@ const upcomingEvents = computed(() => vaccines.value
     <DashboardSkeleton v-if="loading" />
     <template v-else-if="hasPets">
       <PetSummary />
-      <UpcomingEvents :events="upcomingEvents" />
+      <EventList :title="t('dashboard.title.upcoming')" :events="upcomingEvents" />
     </template>
     <PetForm />
     <VaccineForm />
