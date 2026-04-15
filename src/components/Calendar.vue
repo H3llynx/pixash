@@ -37,6 +37,7 @@ const calendarOptions = {
 
 <style scoped>
 .fc {
+    max-width: 100%;
     background-color: var(--color-brand-dark);
     color: var(--color-brand-light);
     padding: 1rem 1rem 0rem 1rem;
@@ -97,5 +98,18 @@ const calendarOptions = {
     width: 100%;
     text-align: center;
     font-size: smaller;
+}
+
+@media (width >=48rem) {
+    .fc {
+        background-color: var(--color-bg-3);
+        color: var(--color-text-text);
+        border-radius: 0.75rem;
+        border: 1px solid var(--color-border);
+    }
+
+    :deep(.fc-button) {
+        color: var(--color-brand)
+    }
 }
 </style>

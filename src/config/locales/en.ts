@@ -32,6 +32,9 @@ export default {
             upcoming: "Upcoming"
         },
     },
+    calendar: {
+        header: "Calendar",
+    },
     pet: {
         title: {
             addFirstPet: "Your pet care starts here",

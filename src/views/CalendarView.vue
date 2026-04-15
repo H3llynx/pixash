@@ -26,9 +26,11 @@ const vaccinesThisMonth = computed(() =>
 <template>
     <Header type="calendar" />
     <main>
-        <Calendar :events="vaccinesToShow" @update-month="currentMonth = $event"
-            @update-monthName="currentMonthName = $event" />
-        <EventList :title="currentMonthName" :events="vaccinesThisMonth" />
+        <div class="flex flex-col gap-1.5 md:default-padding lg:grid lg:grid-cols-2">
+            <Calendar :events="vaccinesToShow" @update-month="currentMonth = $event"
+                @update-monthName="currentMonthName = $event" />
+            <EventList :title="currentMonthName" :events="vaccinesThisMonth" location="calendar" />
+        </div>
         <VaccineForm />
     </main>
 </template>
