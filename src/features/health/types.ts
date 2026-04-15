@@ -1,5 +1,4 @@
 import type { Timestamp } from "firebase/firestore";
-import type { PetExtended } from "../pets/types";
 import type { STAGE, VACCINE_TYPES } from "./config";
 
 export type VaccineTypes = (typeof VACCINE_TYPES)[keyof typeof VACCINE_TYPES][number];
@@ -23,8 +22,9 @@ export type VaccineExtended = Omit<VaccineRecord, "givenAt" | "dueOn"> & {
     dueOn?: Timestamp;
 }
 
-export type Upcoming = {
-    pet: PetExtended;
+export type VisitRecord = {
     title: string;
     date: string;
+    vet: string;
+    notes?: string;
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { X } from '@lucide/vue';
+import { Plus, X } from '@lucide/vue';
 import { tv } from 'tailwind-variants';
 import { useI18n } from 'vue-i18n';
 
@@ -15,7 +15,7 @@ const button = tv({
             addon: "text-text-secondary addon-focus",
             chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary capitalize",
             summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light",
-            card: "btn-hover-fill-card rounded-xl border border-border bg-bg-2 gap-1.5 justify-between items-start text-left"
+            card: "btn-hover-fill-card rounded-xl border border-border bg-bg-2 gap-1.5 justify-between items-start text-left",
         },
         size: {
             xxs: "text-xs p-0.5",
@@ -32,7 +32,7 @@ const button = tv({
 });
 
 withDefaults(defineProps<{
-    action?: "normal" | "hide"
+    action?: "normal" | "hide" | "addEvent"
     variant?: keyof typeof button.variants.variant
     size?: keyof typeof button.variants.size
 }>(), { action: "normal" })
@@ -42,6 +42,11 @@ withDefaults(defineProps<{
 <template>
     <button v-if="action === 'normal'" tabindex="0" :class="button({ variant, size })">
         <slot />
+    </button>
+
+    <button v-else-if="action === 'addEvent'" tabindex="0"
+        class="btn-hover-fill w-3.5 h-3.5 rounded-full bg-gold shadow-lg text-bg fixed bottom-6 md:bottom-2 right-1 md:right-1.5 flex items-center gap-[5px] justify-center">
+        <Plus :size="32" />
     </button>
 
     <button v-else :aria-label="t('common.panel.hide')" tabindex="0"

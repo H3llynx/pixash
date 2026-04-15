@@ -116,7 +116,8 @@ watch(() => formData.unit,
             v-else-if="pet === selectedPet" :aria-label="t('pet.profile.edit.' + data)" class="flex gap-0.5"
             ref="updateForm">
             <input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
-                :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="inputRef">
+                :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="inputRef"
+                class="text-base">
             <div class="input-container">
                 <select v-model="formData.unit" v-if="data === 'weight'" @change="handleUnitChange">
                     <option>kg</option>

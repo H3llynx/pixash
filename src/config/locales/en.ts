@@ -7,6 +7,9 @@ export default {
         },
         panel: {
             hide: "Close form"
+        },
+        text: {
+            noEventText: "You don't have any event scheduled."
         }
     },
     auth: {
@@ -30,7 +33,7 @@ export default {
             petProfile: "{name}'s profile",
             petProfiles: "Pet profiles",
             upcoming: "Upcoming"
-        },
+        }
     },
     calendar: {
         header: "Calendar",

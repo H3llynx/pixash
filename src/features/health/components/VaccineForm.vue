@@ -204,7 +204,7 @@ watch(() => formData.given, () => {
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id" />
                         </label>
-                        <div class="flex gap-1 mt-1 items-center text-sm">
+                        <div class="flex gap-1 mt-1 items-center">
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name }} · {{
                                     showTypes(formData.types, selectedPet)

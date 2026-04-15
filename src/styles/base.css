@@ -169,7 +169,7 @@
   }
 
   main {
-    @apply flex flex-col gap-1.5 pb-6 md:pl-15 md:pb-0;
+    @apply flex flex-col gap-1.5 pb-5 md:pl-15 md:pb-0;
   }
 
   header {

@@ -87,7 +87,7 @@ const handleDelete = async () => {
                 <Loading v-if="healthLoading && pet === selectedPet" />
                 <span v-else-if="pet.nextVaccine" class="text-brand font-medium">{{
                     tsToDate(pet.nextVaccine.dueOn!, "date")
-                }}</span>
+                    }}</span>
                 <UpdatePetDetail v-if="!healthLoading" data="nextVaccine" :pet="pet" :isUpdating="isUpdating" />
             </div>
             <div class="row">

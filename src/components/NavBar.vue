@@ -25,6 +25,10 @@ import Logo from './Logo.vue';
 </template>
 
 <style scoped>
+nav {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 nav a {
     display: flex;
     flex-direction: column;
