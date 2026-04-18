@@ -9,12 +9,12 @@ const { isMd } = useMedia();
 
         <!-- Pet switcher chips -->
         <div class="flex gap-0.5 md:hidden">
-            <div class="h-2 w-5 rounded-full bg-grey-light opacity-30"></div>
-            <div class="h-2 w-4 rounded-full bg-grey-light opacity-20"></div>
+            <div class="h-2 rounded-full bg-grey-light opacity-30"></div>
+            <div class="h-2 rounded-full bg-grey-light opacity-20"></div>
         </div>
 
         <!-- Stat row -->
-        <div class="grid grid-cols-2 gap-1 md:w-xl md:h-6">
+        <div class="grid grid-cols-2 gap-1 md:max-w-xl md:h-6">
             <div class="bg-bg-2 border border-border rounded-xl p-0.75 space-y-0.25">
                 <div class="h-[10px] w-4 rounded bg-grey-light opacity-30"></div>
                 <div class="h-1.25 w-3 rounded bg-grey-light opacity-30"></div>

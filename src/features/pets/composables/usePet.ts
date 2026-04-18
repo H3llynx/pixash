@@ -33,9 +33,8 @@ const {
 const selectPet = (pet: PetExtended | null) => {
   isAddingPet.value = false;
   isUpdatingPet.value = false;
-  resetState(isAddingHealth);
+  if (selectedVaccine.value) selectVaccine(null);
   selectedPet.value = pet;
-  selectVaccine(null);
 }
 
 const handlePetAction = async (

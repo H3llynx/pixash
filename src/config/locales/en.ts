@@ -95,13 +95,15 @@ export default {
     health: {
         title: {
             addVaccine: "Add vaccine",
+            addVetVisit: "Add vet appointment",
             editVaccine: "Edit vaccine",
+            editVetVisit: "Edit vet appointment",
         },
         cta: {
             save: "Save vaccine",
             delete: "Delete vaccine",
         },
-        form: {
+        vaccineForm: {
             types: "Vaccine",
             stage: "Stage",
             given: "{name} has already received this vaccine",
@@ -111,6 +113,12 @@ export default {
             vet: "Vet",
             notes: "Notes",
             validationTypes: "You must select a vaccine type",
+        },
+        vetVisitForm: {
+            title: "Reason for visit",
+            date: "Date given",
+            vet: "Vet",
+            notes: "Notes",
         },
         stage: {
             adult: "Adult",

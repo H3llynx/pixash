@@ -15,6 +15,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const error = ref<string | null>(null);
     const isAddingHealth = reactive({
         vaccine: false,
+        visit: false,
         treatment: false
     });
 

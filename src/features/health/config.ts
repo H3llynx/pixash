@@ -25,42 +25,64 @@ export const STAGE = [{ id: "young", label: "health.stage.young" }, { id: "adult
 export const vaccineFields = {
     types: {
         id: "vaccine-name",
-        label: "health.form.types",
+        label: "health.vaccineForm.types",
         type: "checkbox",
         options: VACCINE_TYPES,
     },
     stage: {
         id: "vaccine-stage",
         name: "vaccine-stage",
-        label: "health.form.stage",
+        label: "health.vaccineForm.stage",
         type: "radio",
         options: STAGE,
     },
     given: {
         id: "vaccine-given",
-        label: "health.form.given",
+        label: "health.vaccineForm.given",
     },
     givenDate: {
         id: "vaccine-given-date",
-        label: "health.form.givenDate",
+        label: "health.vaccineForm.givenDate",
         type: "date",
     },
     nextDose: {
         id: "vaccine-followUp",
-        label: "health.form.nextDose",
+        label: "health.vaccineForm.nextDose",
     },
     dueDate: {
         id: "vaccine-due-date",
-        label: "health.form.dueDate",
+        label: "health.vaccineForm.dueDate",
         type: "date",
     },
     vet: {
         id: "vaccine-vet",
-        label: "health.form.vet",
+        label: "health.vaccineForm.vet",
         type: "text",
     },
     notes: {
         id: "vaccine-notes",
-        label: "health.form.notes",
+        label: "health.vaccineForm.notes",
+    },
+} as const;
+
+export const vetVisitFields = {
+    title: {
+        id: "visit-title",
+        label: "health.vetVisitForm.title",
+        type: "text",
+    },
+    date: {
+        id: "visit-date",
+        label: "health.vetVisitForm.date",
+        type: "date",
+    },
+    vet: {
+        id: "visit-vet",
+        label: "health.vetVisitForm.vet",
+        type: "text",
+    },
+    notes: {
+        id: "visit-notes",
+        label: "health.vetVisitForm.notes",
     },
 } as const;

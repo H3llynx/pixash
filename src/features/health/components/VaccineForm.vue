@@ -9,13 +9,14 @@ import Toggle from '../../../components/Toggle.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
 import { dateFromInput, getOneYearLaterInput, shallowEqual, tsToDate } from '../../../utils';
+import PetSelector from '../../pets/components/PetSelector.vue';
 import { usePets } from '../../pets/composables/usePet';
 import { getAge, getIcon } from '../../pets/utils';
 import { STAGE, VACCINE_TYPES, vaccineFields } from '../config';
 import type { VaccineTypes } from '../types';
 import { getVaccineTypes, showTypes } from '../utils';
 
-const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, healthLoading, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
+const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, healthLoading, updateSelectedVaccine, deleteSelectedVaccine, isUpdatingPet } = usePets();
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
@@ -104,12 +105,11 @@ watch(() => [isAddingHealth.vaccine, selectedVaccine.value],
         }
     });
 
-
 watch(() => [selectedPet.value, selectedVaccine.value] as const,
     ([pet, vaccine]) => {
-        if (!pet) {
+        if (!pet) return;
+        if (!vaccine) {
             resetForm();
-            return
         };
         const options = getVaccineTypes(pet.species);
         if (!options || !options.length) return;
@@ -162,19 +162,20 @@ watch(() => formData.given, () => {
                             : t("health.title.editVaccine")
                         }}
                     </h1>
-                    <Button class="ml-auto mb-auto" variant="ghost" size="xs" :aria-label="t('health.cta.delete')"
-                        @click="handleDelete">
+                    <Button v-if="selectedVaccine" class="ml-auto mb-auto" variant="ghost" size="xs"
+                        :aria-label="t('health.cta.delete')" @click="handleDelete">
                         <Trash2 :size="22" color="var(--color-brand-light)" />
                     </Button>
                 </div>
-                <form @submit.prevent="handleSubmit" class="md:max-w-max">
+                <PetSelector v-show="isAddingHealth.vaccine" />
+                <form @submit.prevent="handleSubmit" class="mt-1">
                     <fieldset ref="vaccineSelectorRef" class="default-padding flex-wrap">
                         <legend>{{ t(types.label) }}</legend>
                         <Input v-model="formData.types" v-for="option in vaccineTypes" :id="option.id"
                             :value="option.id" :key="option.id" :label="option.label" :type="types.type"
                             @input="error = false" />
                         <p v-if="error" class="text-sm w-full text-error pb-0.5">{{
-                            t("health.form.validationTypes") }}</p>
+                            t("health.vaccineForm.validationTypes") }}</p>
                     </fieldset>
                     <fieldset class="default-padding capitalize my-0.5">
                         <legend>{{ t(stage.label) }}</legend>
@@ -207,10 +208,10 @@ watch(() => formData.given, () => {
                         <div class="flex gap-1 mt-1 items-center">
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name }} · {{
-                                    showTypes(formData.types, selectedPet)
-                                    }}</p>
-                                <p v-if="formData.dueOn" class="text-text-secondary w-full">{{ t("health.form.dueDate")
-                                    }}:
+                                    showTypes(formData.types, selectedPet) }}</p>
+                                <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
+                                    t("health.vaccineForm.dueDate")
+                                }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
@@ -242,6 +243,4 @@ label:has(textarea) p::after {
     color: var(--color-text-secondary);
     font-size: small;
 }
-
-;
 </style>

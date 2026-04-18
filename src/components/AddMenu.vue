@@ -26,6 +26,7 @@ onClickOutside(menuRef, () => {
 const handleClick = (action: string) => {
     if (action === "vaccine") isAddingHealth.vaccine = true;
     else if (action === "pet") isAddingPet.value = true;
+    else if (action === "visit") isAddingHealth.visit = true;
     emit("update:visible", false);
 }
 </script>
@@ -43,6 +44,10 @@ const handleClick = (action: string) => {
                     </div>
                     <div class="row">
                         <Button @click="handleClick('vaccine')">{{ t("health.title.addVaccine") }}</Button>
+                        <Syringe class="btn-icon default-transition filter-blur" :size="40" />
+                    </div>
+                    <div class="row">
+                        <Button @click="handleClick('visit')">{{ t("health.title.addVetVisit") }}</Button>
                         <Syringe class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                 </div>

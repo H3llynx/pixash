@@ -6,6 +6,7 @@ import DashboardSkeleton from '../components/DashboardSkeleton.vue';
 import Header from '../components/Header.vue';
 import EventList from '../features/health/components/EventList.vue';
 import VaccineForm from '../features/health/components/VaccineForm.vue';
+import VetVisitForm from '../features/health/components/VetVisitForm.vue';
 import PetForm from '../features/pets/components/PetForm.vue';
 import PetSummary from '../features/pets/components/PetSummary.vue';
 import { usePets } from '../features/pets/composables/usePet';
@@ -29,6 +30,7 @@ const upcomingEvents = computed(() => vaccines.value
       <AddButton />
     </template>
     <VaccineForm />
+    <VetVisitForm />
     <PetForm />
   </main>
 </template>

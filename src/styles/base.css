@@ -145,6 +145,10 @@
     @apply default-transition;
   }
 
+  form {
+    @apply lg:w-2xl;
+  }
+
   input,
   select,
   textarea {

@@ -119,7 +119,7 @@ watch(() => formData.species, () => {
                     : t("pet.title.editPet", { name: selectedPet?.name })
                 }}
             </h1>
-            <form @submit.prevent="handleSubmit" class="md:max-w-max">
+            <form @submit.prevent="handleSubmit">
                 <fieldset class="min-w-0">
                     <legend class="default-padding">{{ t(species.label) }}</legend>
                     <div class="pet-selector" ref="petSelectorRef">
@@ -142,7 +142,7 @@ watch(() => formData.species, () => {
                             :label="t(birthDate.label)" required />
                         <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
                             <option v-for="option in sex.options" :value="option.id" :key="option.id">{{ t(option.label)
-                                }}
+                            }}
                             </option>
                         </Dropdown>
                     </div>
