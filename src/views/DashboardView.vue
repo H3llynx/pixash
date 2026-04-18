@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../components/Button.vue';
+import AddButton from '../components/AddButton.vue';
 import DashboardSkeleton from '../components/DashboardSkeleton.vue';
 import Header from '../components/Header.vue';
 import EventList from '../features/health/components/EventList.vue';
@@ -26,7 +26,7 @@ const upcomingEvents = computed(() => vaccines.value
     <template v-else-if="hasPets">
       <PetSummary />
       <EventList :title="t('dashboard.title.upcoming')" :events="upcomingEvents" />
-      <Button action="addEvent" />
+      <AddButton />
     </template>
     <VaccineForm />
     <PetForm />

@@ -4,6 +4,7 @@ import NavBar from './components/NavBar.vue';
 import Toast from './components/Toast.vue';
 import { useAuth } from './features/user/composables/useAuth';
 import LoadingView from './views/LoadingView.vue';
+
 const { loading, user } = useAuth();
 </script>
 

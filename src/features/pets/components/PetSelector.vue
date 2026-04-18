@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { Plus } from '@lucide/vue';
+import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { usePets } from '../composables/usePet';
 import { getIcon } from '../utils';
 
 const { pets, selectPet, selectedPet, isAddingPet } = usePets();
+const { t } = useI18n();
 </script>
 
 <template>
@@ -14,7 +16,7 @@ const { pets, selectPet, selectedPet, isAddingPet } = usePets();
             <span aria-hidden>{{ getIcon(pet) }}</span>
             {{ pet.name }}</Button>
         <Button variant="chip" size="sm" :class="{ active: isAddingPet }" @click="isAddingPet = true">
-            <Plus /> Add
+            <Plus /> {{ t("common.button.addLabel") }}
         </Button>
     </div>
 </template>

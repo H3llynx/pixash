@@ -1,8 +1,7 @@
-import { addDoc, collection, deleteDoc, deleteField, doc, getDocs, getFirestore, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, deleteField, doc, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { DB } from '../config/config';
 import type { Pet, PetExtended } from '../features/pets/types';
-
-const db = getFirestore();
+import { db } from "../firebase";
 
 export const fetchPets = async (userId: string): Promise<PetExtended[]> => {
   try {

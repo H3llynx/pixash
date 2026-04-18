@@ -13,10 +13,9 @@ const { isMd } = useMedia();
 </script>
 
 <template>
-    <header
-        :class="{ 'flex text-brand justify-between md:pl-20': true, 'bg-brand-dark md:bg-transparent': type === 'calendar' }">
+    <header :class="{ 'md:pl-21': type !== 'auth', 'bg-brand-dark md:bg-transparent': type === 'calendar' }">
         <Greetings v-if="type === 'dashboard'" />
-        <Logo v-if="type !== 'dashboard'" class="md:hidden" />
+        <Logo v-if="type === 'auth' || (type === 'calendar' && !isMd)" />
         <h2 v-if="type === 'calendar' && isMd" class="text-2xl md:text-3xl my-auto">{{ t("calendar.header") }}</h2>
         <div class="flex gap-0.5 relative z-2">
             <ThemeSwitcher />

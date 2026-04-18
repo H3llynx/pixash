@@ -80,14 +80,12 @@ watch(
 .left-arrow,
 .right-arrow {
     position: absolute;
-    z-index: 2;
     top: 50%;
     transform: translateY(-50%);
     opacity: 0;
     transition: 0.4s ease-in-out;
     color: var(--color-gold);
     filter: drop-shadow(0 0 5px var(--color-bg));
-    cursor: pointer;
 }
 
 .left-arrow {

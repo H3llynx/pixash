@@ -1,5 +1,6 @@
 import { FirebaseError } from "firebase/app";
 import { computed, ref, watch } from "vue";
+import { onBeforeRouteLeave } from "vue-router";
 import { addPet, deletePet, deletePetField, fetchPets, updatePet } from "../../../services/pets";
 import { resetState } from "../../../utils";
 import { useHealth } from "../../health/composables/useHealth";
@@ -152,6 +153,13 @@ watch(() => [isAddingPet.value, isUpdatingPet.value],
   });
 
 export const usePets = () => {
+  onBeforeRouteLeave(() => {
+    isAddingPet.value = false;
+    isUpdatingPet.value = false;
+    resetState(isAddingHealth);
+    selectVaccine(null);
+  });
+
   return {
     pets,
     selectedPet,
