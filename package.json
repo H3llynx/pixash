@@ -21,6 +21,8 @@
     "@vueuse/integrations": "^14.2.1",
     "firebase": "^12.11.0",
     "focus-trap": "^8.0.1",
+    "lottie-web": "^5.13.0",
+    "lottie-web-vue": "^2.0.7",
     "tailwind-merge": "^3.5.0",
     "tailwind-variants": "^3.2.2",
     "tailwindcss": "^4.2.2",

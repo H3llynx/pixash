@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
+import { useMedia } from '../../../composables/useMedia';
 import { tsToDate } from '../../../utils';
 import PetIndicator from '../../pets/components/PetIndicator.vue';
 import type { PetExtended } from '../../pets/types';
 import type { VaccineExtended } from '../types';
 
-const breakpoints = useBreakpoints(breakpointsTailwind);
-const isMd = breakpoints.greaterOrEqual("md");
+const { isMd } = useMedia();
 
 defineProps<{
     title: string

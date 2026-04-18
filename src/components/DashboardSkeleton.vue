@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
+import { useMedia } from '../composables/useMedia';
 
-const breakpoints = useBreakpoints(breakpointsTailwind);
-const isMd = breakpoints.greaterOrEqual("md");
+const { isMd } = useMedia();
 </script>
 
 <template>

@@ -15,7 +15,7 @@ const button = tv({
             addon: "text-text-secondary addon-focus",
             chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary capitalize",
             summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light",
-            card: "btn-hover-fill-card rounded-xl border border-border bg-bg-2 gap-1.5 justify-between items-start text-left",
+            card: "btn-fill-card rounded-xl border border-border gap-1.5 justify-between items-start text-left",
         },
         size: {
             xxs: "text-xs p-0.5",
@@ -45,7 +45,7 @@ withDefaults(defineProps<{
     </button>
 
     <button v-else-if="action === 'addEvent'" tabindex="0"
-        class="btn-hover-fill w-3.5 h-3.5 rounded-full bg-gold shadow-lg text-bg fixed bottom-6 md:bottom-2 right-1 md:right-1.5 flex items-center gap-[5px] justify-center">
+        class="gold-btn w-3.5 h-3.5 rounded-full bg-gold shadow-lg text-bg fixed bottom-6 md:bottom-2 right-1 md:right-1.5 flex items-center gap-[5px] justify-center">
         <Plus :size="32" />
     </button>
 
@@ -63,14 +63,65 @@ withDefaults(defineProps<{
     border-color: var(--color-btn-hover)
 }
 
-.btn-hover-fill-card:hover {
-    background: var(--color-brand-rgba);
-    color: var(--color-brand);
-    border-color: var(--color-btn-hover)
+.btn-fill-card {
+    background: var(--color-bg-2);
+    position: relative;
+    overflow: hidden;
+    transition: 1s ease;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        inset: 0;
+        background-image: var(--background-image-card);
+        background-size: 150% 100%;
+        opacity: 0;
+        z-index: -1;
+        transition: 1s ease;
+    }
+
+    &:hover {
+        color: var(--color-brand);
+        border-color: var(--color-brand-rgba);
+        transform: scale(1.02);
+
+        &::before {
+            animation: move-overlay 10s ease-out infinite;
+            opacity: 1;
+        }
+    }
 }
 
 .addon-focus:focus-visible {
     outline: none;
     color: var(--color-brand);
+}
+
+.gold-btn {
+    background: linear-gradient(145deg, #d8a756 0%, var(--color-gold) 40%, #b07f2c 100%);
+    transition: 1s ease;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        inset: 0;
+        background: var(--background-image-brand-gradient);
+        opacity: 0;
+        z-index: -1;
+        transition: 1s ease;
+    }
+
+    &:hover {
+        transform: scale(1.05);
+
+        &::before {
+            opacity: 1;
+        }
+    }
 }
 </style>

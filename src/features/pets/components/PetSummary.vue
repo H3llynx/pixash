@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 import { useI18n } from 'vue-i18n';
+import { useMedia } from '../../../composables/useMedia';
 import HealthCard from '../../health/components/HealthCard.vue';
 import { usePets } from '../composables/usePet';
 import PetSelector from './PetSelector.vue';
 import ProfileSection from './ProfileSection.vue';
 
-const breakpoints = useBreakpoints(breakpointsTailwind);
-const isMd = breakpoints.greaterOrEqual("md");
-
 const { selectedPet, pets } = usePets();
 const { t } = useI18n();
+const { isMd } = useMedia();
 
 const nextPetDue = pets.value
     .filter(pet => pet.nextVaccine?.dueOn)

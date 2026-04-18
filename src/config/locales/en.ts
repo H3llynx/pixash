@@ -4,6 +4,8 @@ export default {
             addLabel: "Add {label}",
             updateLabel: "Edit {label}",
             saveLabel: "save {label}",
+            scrollRight: "scroll right",
+            scrollLeft: "scroll left"
         },
         panel: {
             hide: "Close form"
