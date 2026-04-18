@@ -32,15 +32,19 @@ const handleClick = (action: string) => {
 
 <template>
     <Transition name="overlay">
-        <div v-if="visible" ref="menuRef" class="fixed inset-0 w-full h-dvh bg-black/60">
+        <div v-if="visible" class="fixed inset-0 w-full h-dvh bg-black/60">
             <Transition name="toast" appear>
-                <div class="flex flex-col gap-1 max-w-2xs absolute bottom-11 md:bottom-7 right-1.5" role="menu">
-                    <Button size="sm" @click="handleClick('pet')">{{ t("pet.title.addPet") }}
-                        <PawPrint class="btn-icon default-transition" :size="35" />
-                    </Button>
-                    <Button size="sm" @click="handleClick('vaccine')">{{ t("health.title.addVaccine") }}
-                        <Syringe class="btn-icon default-transition" :size="35" />
-                    </Button>
+                <div ref="menuRef"
+                    class="flex flex-col items-end gap-1 max-w-2xs absolute bottom-11 md:bottom-7 right-1.5"
+                    role="menu">
+                    <div class="row">
+                        <Button @click="handleClick('pet')">{{ t("pet.title.addPet") }}</Button>
+                        <PawPrint class="btn-icon default-transition filter-blur" :size="40" />
+                    </div>
+                    <div class="row">
+                        <Button @click="handleClick('vaccine')">{{ t("health.title.addVaccine") }}</Button>
+                        <Syringe class="btn-icon default-transition filter-blur" :size="40" />
+                    </div>
                 </div>
             </Transition>
         </div>
@@ -48,20 +52,21 @@ const handleClick = (action: string) => {
 </template>
 
 <style scoped>
-button {
-    gap: 1rem;
+.row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
 
     &:hover .btn-icon {
-        border-color: var(--color-btn-hover-text);
-        background: var(--color-gold-rgba)
+        background: var(--color-btn-hover);
     }
 }
 
 .btn-icon {
-    margin-left: auto;
-    padding: 5px;
+    padding: 8px;
     border-radius: 50%;
-    background: transparent;
-    border: 1px solid transparent;
+    background: var(--color-brand-rgba);
+    color: var(--color-white);
+    border: 1px solid var(--color-brand);
 }
 </style>

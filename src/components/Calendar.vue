@@ -38,7 +38,7 @@ const calendarOptions = {
 <style scoped>
 .fc {
     max-width: 100%;
-    background-color: var(--color-brand-dark);
+    background: var(--color-brand-dark);
     color: var(--color-brand-light);
     padding: 1rem 1rem 0rem 1rem;
     position: relative;

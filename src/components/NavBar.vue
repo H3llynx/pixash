@@ -43,7 +43,7 @@ const { isMd } = useMedia();
 }
 
 .cat {
-    width: 70%;
+    width: 80%;
 }
 
 nav {
