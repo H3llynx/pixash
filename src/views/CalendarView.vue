@@ -12,12 +12,16 @@ const { pets, vaccines, vetVisits } = usePets();
 const calendarEvents = computed(() => [
     ...vaccines.value.filter(vaccine => vaccine.dueOn)
         .map(vaccine => ({
+            id: vaccine.id,
             title: showTypes(vaccine.types, pets.value.find(pet => pet.id === vaccine.petId)),
-            date: tsToDate(vaccine.dueOn!, "input")
+            date: tsToDate(vaccine.dueOn!, "input"),
+            eventType: "vaccine",
         })),
     ...vetVisits.value.map(visit => ({
+        id: visit.id,
         title: visit.title,
-        date: tsToDate(visit.date, "input")
+        date: tsToDate(visit.date, "input"),
+        eventType: "visit",
     }))
 ]);
 
@@ -33,7 +37,7 @@ const eventsThisMonth = computed(() => [
 <template>
     <Header type="calendar" />
     <main>
-        <div class="flex flex-col items-start gap-1.5 md:default-padding lg:grid lg:grid-cols-2">
+        <div class="flex flex-col lg items-start gap-1.5 md:default-padding lg:grid lg:grid-cols-2">
             <Calendar :events="calendarEvents" @update-month="currentMonth = $event"
                 @update-monthName="currentMonthName = $event" />
             <EventList :title="currentMonthName" :events="eventsThisMonth" location="calendar" />

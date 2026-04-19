@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { EventInput } from '@fullcalendar/core/index.js';
+import type { EventClickArg, EventInput } from '@fullcalendar/core/index.js';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from '@fullcalendar/vue3';
+import { computed } from 'vue';
 
 const props = defineProps<{
     events?: EventInput
@@ -12,7 +13,7 @@ const emit = defineEmits<{
     updateMonthName: [name: string]
 }>();
 
-const calendarOptions = {
+const calendarOptions = computed(() => ({
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: "dayGridMonth",
     events: props.events,
@@ -27,8 +28,12 @@ const calendarOptions = {
     },
     dateClick(info: any) {
         alert('Next vaccine date : ' + info.dateStr)
+    },
+    eventClick(info: EventClickArg) {
+        console.log(info.event.id)
+        console.log(info.event.extendedProps.eventType)
     }
-}
+}));
 </script>
 
 <template>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import Button from '../../../components/Button.vue';
 import { tsToDate } from '../../../utils';
 import PetIndicator from '../../pets/components/PetIndicator.vue';
@@ -6,15 +7,20 @@ import { usePets } from '../../pets/composables/usePet';
 import type { PetEvent, VaccineExtended } from '../types';
 import { showTypes } from '../utils';
 
-const { pets, vaccines, selectVaccine } = usePets();
+const { pets, vaccines, selectPet, selectVaccine } = usePets();
 
 const props = defineProps<{ event: PetEvent }>();
 
-const pet = pets.value.filter(pet => pet.id === props.event.petId)[0];
-const title = props.event.eventType === "vaccine" ? showTypes(props.event.types!, pet) : props.event.title;
-const date = tsToDate(props.event.ts, "date");
+const pet = computed(() => pets.value.find(p => p.id === props.event.petId));
+const title = computed(() => props.event.eventType === "vaccine"
+    ? showTypes(props.event.types!, pet.value!)
+    : props.event.title
+);
+const date = computed(() => tsToDate(props.event.ts, "date"));
 
 const handleClick = (event: PetEvent) => {
+    if (!pet.value) return;
+    selectPet(pet.value);
     if (event.eventType === "vaccine") {
         const vaccine = vaccines.value.find(v => v.id === event.id) as VaccineExtended;
         selectVaccine(vaccine);
@@ -28,6 +34,6 @@ const handleClick = (event: PetEvent) => {
             <h4>{{ title }}</h4>
             <p class="text-text-secondary">{{ date }}</p>
         </div>
-        <PetIndicator :pet="pet" />
+        <PetIndicator :pet="pet!" />
     </Button>
 </template>

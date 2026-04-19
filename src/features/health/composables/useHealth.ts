@@ -79,8 +79,8 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         await handleHealthAction(async () => {
             loading.value = true;
             await updateVaccine(vaccine.id, petId, user.value!.uid, data);
-            selectVaccine(null);
             await fetchUserVaccines();
+            selectVaccine(null);
         }, () => {
             loading.value = false;
         })

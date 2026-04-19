@@ -105,8 +105,10 @@ export default {
             editVetVisit: "Edit vet appointment",
         },
         cta: {
-            save: "Save vaccine",
-            delete: "Delete vaccine",
+            saveVaccine: "Save vaccine",
+            deleteVaccine: "Delete vaccine",
+            saveVisit: "Save vet visit",
+            deleteVisit: "Delete vet visit",
         },
         vaccineForm: {
             types: "Vaccine",

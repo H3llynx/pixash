@@ -54,13 +54,14 @@ const handleSubmit = async () => {
         error.value = true;
         return;
     };
+    const typesSnapshot = [...formData.types];
     try {
         if (isAddingHealth.vaccine) {
             await addNewVaccine({ ...formData }, selectedPet.value.id);
             show({
                 type: "success",
                 title: t("toast.success.title.generic"),
-                message: t("toast.success.message.vaccineAdded", { name: selectedPet.value.name, type: showTypes(formData.types, selectedPet.value) }),
+                message: t("toast.success.message.vaccineAdded", { name: selectedPet.value.name, type: showTypes(typesSnapshot, selectedPet.value) }),
             });
         }
         else if (selectedVaccine.value && !shallowEqual(formData, selectedVaccine.value)) {
@@ -68,7 +69,7 @@ const handleSubmit = async () => {
             show({
                 type: "success",
                 title: t("toast.success.title.generic"),
-                message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showTypes(formData.types, selectedPet.value) }),
+                message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showTypes(typesSnapshot, selectedPet.value) }),
             });
         }
     }
@@ -110,9 +111,9 @@ watch(() => [isAddingHealth.vaccine, selectedVaccine.value],
 
 watch(() => [selectedPet.value, selectedVaccine.value] as const,
     ([pet, vaccine]) => {
-        if (!pet) return;
-        if (!vaccine) {
+        if (!pet) {
             resetForm();
+            return;
         };
         const options = getVaccineTypes(pet.species);
         if (!options || !options.length) return;
@@ -130,6 +131,7 @@ watch(() => [selectedPet.value, selectedVaccine.value] as const,
             });
         }
         else {
+            resetForm();
             Object.assign(formData, {
                 types: [vaccineTypes.value[0].id],
                 stage: getAge(pet)?.stage,
@@ -170,11 +172,11 @@ watch(() => formData.given, () => {
                         }}
                     </h1>
                     <Button v-if="selectedVaccine" class="ml-auto mb-auto" variant="ghost" size="xs"
-                        :aria-label="t('health.cta.delete')" @click="handleDelete">
+                        :aria-label="t('health.cta.deleteVaccine')" @click="handleDelete">
                         <Trash2 :size="22" color="var(--color-brand-light)" />
                     </Button>
                 </div>
-                <PetSelector v-show="isAddingHealth.vaccine" />
+                <PetSelector v-if="isAddingHealth.vaccine" />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <fieldset ref="vaccineSelectorRef" class="default-padding flex-wrap">
                         <legend>{{ t(types.label) }}</legend>
@@ -223,7 +225,7 @@ watch(() => formData.given, () => {
                                         dateFromInput(formData.dueOn) }}
                                 </p>
                             </div>
-                            <Button size="sm" :disabled="healthLoading">{{ t("health.cta.save") }}</Button>
+                            <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVaccine") }}</Button>
                         </div>
                     </div>
                 </form>
