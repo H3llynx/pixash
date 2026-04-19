@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useMedia } from '../../../composables/useMedia';
 import HealthCard from '../../health/components/HealthCard.vue';
@@ -10,9 +11,11 @@ const { selectedPet, pets } = usePets();
 const { t } = useI18n();
 const { isMd } = useMedia();
 
-const nextPetDue = pets.value
-    .filter(pet => pet.nextVaccine?.dueOn)
-    .sort((a, b) => a.nextVaccine!.dueOn!.seconds - b.nextVaccine!.dueOn!.seconds)[0];
+const nextPetDue = computed(() => {
+    return (pets.value
+        .filter(pet => pet.nextVaccine)
+        .sort((a, b) => a.nextVaccine!.dueOn!.seconds - b.nextVaccine!.dueOn!.seconds)[0])
+});
 </script>
 
 <template>

@@ -1,27 +1,28 @@
 <script setup lang="ts">
 import { CalendarCheck, Trash2 } from '@lucide/vue';
-import { reactive, ref } from 'vue';
+import { LottieAnimation } from 'lottie-web-vue';
+import { reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import puppy from '../../../assets/animations/puppy-ball.json';
 import Button from '../../../components/Button.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
+import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
+import Loading from '../../../components/Loading.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
+import { shallowEqual, tsToDate } from '../../../utils';
+import PetSelector from '../../pets/components/PetSelector.vue';
 import { usePets } from '../../pets/composables/usePet';
 import { vetVisitFields } from '../config';
-import type { Pet, PetExtended } from '../../pets/types';
-import PetSelector from '../../pets/components/PetSelector.vue';
-import { LottieAnimation } from 'lottie-web-vue';
-import puppy from '../../../assets/animations/puppy-ball.json';
-import Loading from '../../../components/Loading.vue';
 
-const { selectedPet, isAddingHealth, healthLoading, addNewVetVisit, healthError } = usePets();
+const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError } = usePets();
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
 
 const { title, date, vet, notes } = vetVisitFields;
-const error = ref<boolean>(false)
+
 const defaultForm = {
     title: "",
     date: "",
@@ -35,39 +36,79 @@ const resetForm = () => {
 
 const handleClose = () => {
     isAddingHealth.visit = false;
+    selectVisit(null);
 };
 
 const handleSubmit = async () => {
     if (!selectedPet.value) return;
+    const titleSnapshot = formData.title;
     try {
         if (isAddingHealth.visit) {
             await addNewVetVisit({ ...formData }, selectedPet.value.id);
             show({
                 type: "success",
                 title: t("toast.success.title.generic"),
-                message: t("toast.success.message.visitAdded", { name: selectedPet.value.name, title: formData.title }),
+                message: t("toast.success.message.visitAdded", { name: selectedPet.value.name, title: titleSnapshot }),
             });
         }
-        /*
-        else if (selectedVaccine.value && !shallowEqual(formData, selectedVaccine.value)) {
-            await updateSelectedVaccine(selectedVaccine.value, selectedPet.value.id, { ...formData });
+        else if (selectedVisit.value && !shallowEqual(formData, selectedVisit.value)) {
+            await updateSelectedVisit(selectedVisit.value, selectedPet.value.id, { ...formData });
             show({
                 type: "success",
                 title: t("toast.success.title.generic"),
-                message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showTypes(formData.types, selectedPet.value) }),
+                message: t("toast.success.message.visitUpdated", { name: selectedPet.value.name, title: titleSnapshot }),
             });
         }
-            */
     }
     catch (e) {
         show({ type: "error", title: "Error", message: healthError.value || "" });
     };
 };
+
+const handleDelete = async () => {
+    const pet = selectedPet.value;
+    const visit = selectedVisit.value;
+    if (!visit || !pet) return;
+    open({
+        title: t("dialog.deleteVetVisit.title", { title: visit.title }),
+        message: t("dialog.deleteVetVisit.message", { name: pet.name, title: visit.title }),
+        isDelete: true,
+        onConfirm: async () => {
+            try {
+                await deleteSelectedVisit(visit, pet.id);
+                show({
+                    type: "success",
+                    title: t("toast.success.title.generic"),
+                    message: t("toast.success.message.visitDeleted", { name: pet.name, title: visit.title }),
+                });
+            } catch (error) { console.log(error) }
+        }
+    });
+};
+
+watch(() => [selectedPet.value, selectedVisit.value] as const,
+    ([pet, vaccine]) => {
+        if (!pet) {
+            resetForm();
+            return;
+        };
+        if (vaccine) {
+            Object.assign(formData, {
+                title: vaccine.title,
+                date: tsToDate(vaccine.date, "input"),
+                vet: vaccine.vet,
+                notes: vaccine.notes ?? "",
+            });
+        }
+        else resetForm();
+    },
+    { immediate: true }
+);
 </script>
 
 <template>
     <Transition name="panel">
-        <FormWrapper v-if="isAddingHealth.visit" :onClose="handleClose">
+        <FormWrapper v-if="isAddingHealth.visit || selectedVisit" :onClose="handleClose">
             <div v-if="healthLoading" class="flex flex-col items-center">
                 <LottieAnimation :animationData="puppy" :loop="true" :autoplay="true" :speed="1" class="max-w-md" />
                 <Loading />
@@ -80,14 +121,14 @@ const handleSubmit = async () => {
                             : t("health.title.editVetVisit")
                         }}
                     </h1>
-                    <Button class="ml-auto mb-auto" variant="ghost" size="xs" :aria-label="t('health.cta.deleteVisit')"
-                        @click="">
+                    <Button v-if="selectedVisit" class="ml-auto mb-auto" variant="ghost" size="xs"
+                        :aria-label="t('health.cta.deleteVisit')" @click="handleDelete">
                         <Trash2 :size="22" color="var(--color-brand-light)" />
                     </Button>
                 </div>
-                <PetSelector />
+                <PetSelector v-if="isAddingHealth.visit" />
                 <form @submit.prevent="handleSubmit" class="mt-1">
-                    <div class="default-padding flex flex-col gap-0.5 min-w-">
+                    <div class="default-padding flex flex-col gap-1">
                         <Input v-model="formData.title" :id="title.id" :type="title.type" :label="t(title.label)"
                             required />
                         <Input v-model="formData.date" :id="date.id" :label="t(date.label)" :type="date.type" required>
@@ -100,9 +141,9 @@ const handleSubmit = async () => {
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id" />
                         </label>
-                        <div class="flex gap-1 mt-1 items-center">
-                            <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit") }}</Button>
-                        </div>
+                        <Button size="sm" :disabled="healthLoading" class="md:ml-auto">{{ t("health.cta.saveVisit") }}
+                            <Paw class="w-1 -rotate-12" />
+                        </Button>
                     </div>
                 </form>
             </div>

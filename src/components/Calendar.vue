@@ -65,6 +65,7 @@ const calendarOptions = computed(() => ({
 
 :deep(.fc-daygrid-day.fc-day-today) {
     background: var(--color-brand-rgba);
+    border-radius: 10px;
 }
 
 :deep(.fc-event) {

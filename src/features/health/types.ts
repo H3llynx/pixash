@@ -29,7 +29,7 @@ export type VisitRecord = {
     notes?: string;
 }
 
-export type VisitExented = Omit<VisitRecord, "date"> & {
+export type VisitExtended = Omit<VisitRecord, "date"> & {
     id: string;
     petId: string;
     userId: string;

@@ -18,8 +18,9 @@ const cardWidth = 384;
 const handleScroll = () => {
     if (!petSelector.value) return;
     const el = petSelector.value;
-    showLeftArrow.value = el.scrollLeft + el.clientWidth > el.scrollWidth - 1;
-    showRightArrow.value = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
+    showLeftArrow.value = el.scrollLeft > 0;
+    showRightArrow.value = el.scrollLeft + el.clientWidth < el.scrollWidth;
+    console.log(showLeftArrow.value)
 };
 
 const updateArrowState = async () => {

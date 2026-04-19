@@ -1,17 +1,18 @@
 import { FirebaseError } from "firebase/app";
 import { reactive, ref, type Ref } from "vue";
-import { addVaccine, addVetVisit, deleteVaccine, fetchVaccines, fetchVetVisits, updateVaccine } from "../../../services/health";
+import { addVaccine, addVetVisit, deleteVaccine, deleteVisit, fetchVaccines, fetchVetVisits, updateVaccine, updateVetVisit } from "../../../services/health";
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { VaccineExtended, VaccineRecord, VisitExented, VisitRecord } from "../types";
+import type { VaccineExtended, VaccineRecord, VisitExtended, VisitRecord } from "../types";
 import { getNextVaccine } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
     const { user } = useAuth();
     const vaccines = ref<VaccineExtended[]>([]);
-    const vetVisits = ref<VisitExented[]>([]);
+    const vetVisits = ref<VisitExtended[]>([]);
     const selectedVaccine = ref<VaccineExtended | null>(null);
+    const selectedVisit = ref<VisitExtended | null>(null);
     const loading = ref<boolean>(false);
     const error = ref<string | null>(null);
     const isAddingHealth = reactive({
@@ -22,7 +23,14 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
 
     const selectVaccine = (vaccine: VaccineExtended | null) => {
         resetState(isAddingHealth);
+        selectedVisit.value = null;
         selectedVaccine.value = vaccine;
+    }
+
+    const selectVisit = (visit: VisitExtended | null) => {
+        resetState(isAddingHealth);
+        selectedVaccine.value = null;
+        selectedVisit.value = visit;
     }
 
     const assignHealth = () => {
@@ -115,5 +123,27 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         })
     };
 
-    return { error, loading, vaccines, vetVisits, selectedVaccine, selectVaccine, isAddingHealth, fetchUserVaccines, addNewVaccine, updateSelectedVaccine, deleteSelectedVaccine, fetchUserVisits, addNewVetVisit };
+    const updateSelectedVisit = async (visit: VisitExtended, petId: string, data: VisitRecord) => {
+        await handleHealthAction(async () => {
+            loading.value = true;
+            await updateVetVisit(visit.id, petId, user.value!.uid, data);
+            await fetchUserVisits();
+            selectVisit(null);
+        }, () => {
+            loading.value = false;
+        })
+    };
+
+    const deleteSelectedVisit = async (visit: VisitExtended, petId: string,) => {
+        await handleHealthAction(async () => {
+            loading.value = true;
+            selectVisit(null);
+            await deleteVisit(visit.id, petId, user.value!.uid);
+            await fetchUserVisits();
+        }, () => {
+            loading.value = false;
+        })
+    };
+
+    return { error, loading, vaccines, vetVisits, selectedVaccine, selectedVisit, selectVaccine, selectVisit, isAddingHealth, fetchUserVaccines, addNewVaccine, updateSelectedVaccine, deleteSelectedVaccine, fetchUserVisits, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit };
 };

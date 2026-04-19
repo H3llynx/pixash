@@ -19,7 +19,7 @@ import { STAGE, VACCINE_TYPES, vaccineFields } from '../config';
 import type { VaccineTypes } from '../types';
 import { getVaccineTypes, showTypes } from '../utils';
 
-const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, healthLoading, updateSelectedVaccine, deleteSelectedVaccine, isUpdatingPet } = usePets();
+const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, healthLoading, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
@@ -192,7 +192,7 @@ watch(() => formData.given, () => {
                             :value="option.id" :key="option.id" :label="t(option.label)" :type="stage.type"
                             :name="stage.name" :required="index === 0" />
                     </fieldset>
-                    <div class="default-padding flex flex-col gap-0.5">
+                    <div class="default-padding flex flex-col gap-1">
                         <Toggle v-model="formData.given" :label="t(given.label, { name: selectedPet.name })"
                             :id="given.id" />
                         <Input v-if="formData.given" v-model="formData.givenAt" :id="givenDate.id"
@@ -220,7 +220,7 @@ watch(() => formData.given, () => {
                                     showTypes(formData.types, selectedPet) }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.vaccineForm.dueDate")
-                                    }}:
+                                }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>

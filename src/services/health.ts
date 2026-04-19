@@ -1,6 +1,6 @@
 import { addDoc, collection, collectionGroup, deleteDoc, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { DB } from "../config/config";
-import type { VaccineExtended, VaccineRecord, VisitExented, VisitRecord } from "../features/health/types";
+import type { VaccineExtended, VaccineRecord, VisitExtended, VisitRecord } from "../features/health/types";
 import { db } from "../firebase";
 import { tsFromInput } from "../utils";
 
@@ -92,7 +92,7 @@ export const addVetVisit = async (visit: VisitRecord, petId: string, userId: str
     }
 };
 
-export const fetchVetVisits = async (userId: string): Promise<VisitExented[]> => {
+export const fetchVetVisits = async (userId: string): Promise<VisitExtended[]> => {
     try {
         const snapshot = await getDocs(query(
             collectionGroup(db, DB.vetVisit),
@@ -103,10 +103,41 @@ export const fetchVetVisits = async (userId: string): Promise<VisitExented[]> =>
         }
         return snapshot.docs.map(doc => ({
             id: doc.id,
-            ...doc.data() as Omit<VisitExented, "id">
+            ...doc.data() as Omit<VisitExtended, "id">
         }));
     } catch (error) {
         console.error("Fetch vet visits error:", error);
         return [];
+    }
+};
+
+export const updateVetVisit = async (
+    visitId: string,
+    petId: string,
+    userId: string,
+    data: VisitRecord
+) => {
+    const updated = {
+        petId: petId,
+        userId: userId,
+        title: data.title,
+        date: tsFromInput(data.date),
+        vet: data.vet,
+        notes: data.notes,
+    };
+    try {
+        const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vetVisit, visitId);
+        await updateDoc(docRef, updated);
+    } catch (error) {
+        console.error("Error updating vet appointment: ", error);
+    }
+};
+
+export const deleteVisit = async (visitId: string, petId: string, userId: string) => {
+    try {
+        const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vetVisit, visitId);
+        await deleteDoc(docRef);
+    } catch (error) {
+        console.error("Error deleting vet appointment: ", error);
     }
 };

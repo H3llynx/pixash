@@ -146,9 +146,11 @@ export default {
                 petUpdated: "{name} has been successfully updated",
                 petDeleted: "{name} has been successfully deleted",
                 vaccineAdded: "{name}'s {type} successfully added",
-                visitAdded: "{name}'s {title} successfully added",
                 vaccineUpdated: "{name}'s {type} successfully updated",
                 vaccineDeleted: "{name}'s {type} has been successfully deleted",
+                visitAdded: "{name}'s {title} successfully added",
+                visitUpdated: "{name}'s {title} successfully updated",
+                visitDeleted: "{name}'s {title}has been  successfully deleted",
             },
         },
         error: {
@@ -168,6 +170,10 @@ export default {
         deleteVaccine: {
             title: "Delete {type} ?",
             message: "This will remove {name}'s {type}. This action cannot be undone. Are you sure you'd like to proceed?",
+        },
+        deleteVetVisit: {
+            title: "Delete {title} ?",
+            message: "This will remove {name}'s {title}. This action cannot be undone. Are you sure you'd like to proceed?",
         }
     }
 };

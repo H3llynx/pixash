@@ -25,12 +25,16 @@ const {
   vetVisits,
   selectedVaccine,
   selectVaccine,
+  selectVisit,
+  selectedVisit,
   fetchUserVaccines,
   addNewVaccine,
   updateSelectedVaccine,
   deleteSelectedVaccine,
   addNewVetVisit,
   fetchUserVisits,
+  updateSelectedVisit,
+  deleteSelectedVisit,
 } = useHealth(pets);
 
 const selectPet = (pet: PetExtended | null) => {
@@ -188,6 +192,10 @@ export const usePets = () => {
     addNewVaccine,
     updateSelectedVaccine,
     deleteSelectedVaccine,
-    addNewVetVisit
+    addNewVetVisit,
+    selectVisit,
+    selectedVisit,
+    updateSelectedVisit,
+    deleteSelectedVisit
   };
 };
