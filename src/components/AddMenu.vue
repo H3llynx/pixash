@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PawPrint, Syringe } from '@lucide/vue';
+import { BriefcaseMedical, PawPrint, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -39,16 +39,16 @@ const handleClick = (action: string) => {
                     class="flex flex-col items-end gap-1 max-w-2xs absolute bottom-11 md:bottom-7 right-1.5"
                     role="menu">
                     <div class="row">
-                        <Button @click="handleClick('pet')">{{ t("pet.title.addPet") }}</Button>
+                        <Button @click="handleClick('pet')">{{ t("addMenu.pet") }}</Button>
                         <PawPrint class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button @click="handleClick('vaccine')">{{ t("health.title.addVaccine") }}</Button>
+                        <Button @click="handleClick('vaccine')">{{ t("addMenu.vaccine") }}</Button>
                         <Syringe class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button @click="handleClick('visit')">{{ t("health.title.addVetVisit") }}</Button>
-                        <Syringe class="btn-icon default-transition filter-blur" :size="40" />
+                        <Button @click="handleClick('visit')">{{ t("addMenu.vetVisit") }}</Button>
+                        <BriefcaseMedical class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                 </div>
             </Transition>

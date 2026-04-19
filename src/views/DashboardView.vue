@@ -12,12 +12,13 @@ import PetSummary from '../features/pets/components/PetSummary.vue';
 import { usePets } from '../features/pets/composables/usePet';
 import { tsToDate } from '../utils';
 
-const { loading, hasPets, vaccines } = usePets();
+const { loading, hasPets, vaccines, vetVisits } = usePets();
 const { t } = useI18n();
 
-const upcomingEvents = computed(() => vaccines.value
-  .filter(vaccine => tsToDate(vaccine.dueOn, "isUpcoming"))
-  .sort((a, b) => a.dueOn!.seconds - b.dueOn!.seconds))
+const upcomingEvents = computed(() => [
+  ...vaccines.value.filter(vaccine => tsToDate(vaccine.dueOn, "isUpcoming")).map(v => ({ ...v, ts: v.dueOn!, eventType: "vaccine" })),
+  ...vetVisits.value.filter(visit => tsToDate(visit.date, "isUpcoming")).map(v => ({ ...v, ts: v.date!, eventType: "visit" })),
+].sort((a, b) => a.ts.seconds - b.ts.seconds));
 </script>
 
 <template>

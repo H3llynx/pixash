@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import type { VaccineExtended } from '../types';
+import type { PetEvent } from '../types';
 import EventCard from './EventCard.vue';
 
 withDefaults(defineProps<{
     title: string
-    events: VaccineExtended[]
+    events: PetEvent[]
     location?: "dashboard" | "calendar"
 }>(), { location: "dashboard" });
 

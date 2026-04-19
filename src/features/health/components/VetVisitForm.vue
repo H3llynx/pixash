@@ -12,7 +12,7 @@ import { vetVisitFields } from '../config';
 import type { Pet, PetExtended } from '../../pets/types';
 import PetSelector from '../../pets/components/PetSelector.vue';
 
-const { pets, selectPet, selectedPet, isAddingHealth, healthLoading } = usePets();
+const { selectedPet, isAddingHealth, healthLoading, addNewVetVisit, healthError } = usePets();
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
@@ -36,27 +36,29 @@ const handleClose = () => {
 
 const handleSubmit = async () => {
     if (!selectedPet.value) return;
-    /*     try {
-            if (isAddingHealth.vaccine) {
-                await addNewVaccine({ ...formData }, selectedPet.value.id);
-                show({
-                    type: "success",
-                    title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.vaccineAdded", { name: selectedPet.value.name, type: showTypes(formData.types, selectedPet.value) }),
-                });
-            }
-            else if (selectedVaccine.value && !shallowEqual(formData, selectedVaccine.value)) {
-                await updateSelectedVaccine(selectedVaccine.value, selectedPet.value.id, { ...formData });
-                show({
-                    type: "success",
-                    title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showTypes(formData.types, selectedPet.value) }),
-                });
-            }
+    try {
+        if (isAddingHealth.visit) {
+            await addNewVetVisit({ ...formData }, selectedPet.value.id);
+            show({
+                type: "success",
+                title: t("toast.success.title.generic"),
+                message: t("toast.success.message.visitAdded", { name: selectedPet.value.name, title: formData.title }),
+            });
         }
-        catch (e) {
-            show({ type: "error", title: "Error", message: healthError.value || "" });
-        }; */
+        /*
+        else if (selectedVaccine.value && !shallowEqual(formData, selectedVaccine.value)) {
+            await updateSelectedVaccine(selectedVaccine.value, selectedPet.value.id, { ...formData });
+            show({
+                type: "success",
+                title: t("toast.success.title.generic"),
+                message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showTypes(formData.types, selectedPet.value) }),
+            });
+        }
+            */
+    }
+    catch (e) {
+        show({ type: "error", title: "Error", message: healthError.value || "" });
+    };
 };
 </script>
 

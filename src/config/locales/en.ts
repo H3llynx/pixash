@@ -25,6 +25,11 @@ export default {
         switchToLogin: "I already have an account",
         logOut: "Sign out"
     },
+    addMenu: {
+        pet: "Add pet",
+        vetVisit: "Vet visit",
+        vaccine: "New vaccine"
+    },
     userMenu: {
         logout: "Log out",
         updatePicture: "Update profile picture",
@@ -139,6 +144,7 @@ export default {
                 petUpdated: "{name} has been successfully updated",
                 petDeleted: "{name} has been successfully deleted",
                 vaccineAdded: "{name}'s {type} successfully added",
+                visitAdded: "{name}'s {title} successfully added",
                 vaccineUpdated: "{name}'s {type} successfully updated",
                 vaccineDeleted: "{name}'s {type} has been successfully deleted",
             },

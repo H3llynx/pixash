@@ -22,12 +22,15 @@ const {
   loading: healthLoading,
   isAddingHealth,
   vaccines,
+  vetVisits,
   selectedVaccine,
   selectVaccine,
   fetchUserVaccines,
   addNewVaccine,
   updateSelectedVaccine,
   deleteSelectedVaccine,
+  addNewVetVisit,
+  fetchUserVisits,
 } = useHealth(pets);
 
 const selectPet = (pet: PetExtended | null) => {
@@ -61,6 +64,7 @@ const fetchUserPets = async () => {
     loading.value = true;
     pets.value = await fetchPets(user.value!.uid);
     await fetchUserVaccines();
+    await fetchUserVisits();
     if (!selectedPet.value && pets.value.length) {
       selectPet(pets.value[0]);
     } else if (!pets.value.length) isAddingPet.value = true;
@@ -176,12 +180,14 @@ export const usePets = () => {
     deleteSelectedPetField,
     hasPets,
     vaccines,
+    vetVisits,
     selectedVaccine,
     selectVaccine,
     isAddingHealth,
     fetchUserVaccines,
     addNewVaccine,
     updateSelectedVaccine,
-    deleteSelectedVaccine
+    deleteSelectedVaccine,
+    addNewVetVisit
   };
 };

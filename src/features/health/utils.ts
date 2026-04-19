@@ -10,8 +10,9 @@ export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default
 };
 
 export const getNextVaccine = (vaccines: VaccineExtended[]) => {
+    const now = Date.now() / 1000;
     return vaccines
-        .filter(vaccine => vaccine.dueOn)
+        .filter(vaccine => vaccine.dueOn && vaccine.dueOn.seconds >= now)
         .sort((a, b) => a.dueOn!.seconds - b.dueOn!.seconds)[0] ?? null;
 };
 
@@ -27,4 +28,4 @@ export const showTypes = (vaccineType: VaccineTypes["id"][], pet?: PetExtended) 
         }
     })
     return labels.join(" + ");
-}
+} 

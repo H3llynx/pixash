@@ -29,8 +29,8 @@ const { isMd } = useMedia();
 
         <!-- Pet profile card -->
         <div class="h-[10px] w-7 rounded bg-grey-light opacity-30"></div>
-        <div class="flex gap-1">
-            <div class="bg-bg-2 border border-border rounded-2xl p-0.75 space-y-0.5 w-full md:w-sm md:h-15">
+        <div class="flex gap-1 max-w-2xl">
+            <div class="bg-bg-2 border border-border rounded-2xl p-0.75 space-y-0.5 w-full md:w-1/2 md:h-15">
                 <div class="flex items-center gap-0.75">
                     <div class="h-3 w-3 rounded-full bg-grey-light opacity-30 shrink-0"></div>
                     <div class="space-y-0.25 flex-1">
@@ -46,7 +46,7 @@ const { isMd } = useMedia();
                 </div>
             </div>
 
-            <div v-if="isMd" class="bg-bg-2 border border-border rounded-2xl p-0.75 space-y-0.5 md:w-sm md:h-15">
+            <div v-if="isMd" class="bg-bg-2 border border-border rounded-2xl p-0.75 space-y-0.5 md:w-1/2 md:h-15">
                 <div class="flex items-center gap-0.75">
                     <div class="h-3 w-3 rounded-full bg-grey-light opacity-30 shrink-0"></div>
                     <div class="space-y-0.25 flex-1">
@@ -64,7 +64,7 @@ const { isMd } = useMedia();
         </div>
 
         <!-- Upcoming events -->
-        <div class="space-y-1 md:w-md">
+        <div class="space-y-1 md:max-w-md">
             <div class="h-[10px] w-7 rounded bg-grey-light opacity-30"></div>
             <div v-for="i in 2" :key="i"
                 class="bg-bg-2 border border-border rounded-xl p-0.75 flex items-start gap-0.75 md:h-5">
