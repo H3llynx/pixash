@@ -13,6 +13,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const vetVisits = ref<VisitExtended[]>([]);
     const selectedVaccine = ref<VaccineExtended | null>(null);
     const selectedVisit = ref<VisitExtended | null>(null);
+    const selectedDate = ref<string | null>(null);
     const loading = ref<boolean>(false);
     const error = ref<string | null>(null);
     const isAddingHealth = reactive({
@@ -69,7 +70,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const fetchUserVaccines = async () => {
         await handleHealthAction(async () => {
             const v = await fetchVaccines(user.value!.uid);
-            vaccines.value = v.map(v => ({ ...v, ts: v.dueOn, eventType: "vaccine" }));
+            vaccines.value = v.map(v => ({ ...v, ts: v.dueOn ?? null, eventType: "vaccine" }));
             assignHealth();
         });
     };
@@ -148,5 +149,5 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         })
     };
 
-    return { error, loading, vaccines, vetVisits, selectedVaccine, selectedVisit, selectVaccine, selectVisit, isAddingHealth, fetchUserVaccines, addNewVaccine, updateSelectedVaccine, deleteSelectedVaccine, fetchUserVisits, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit };
+    return { error, loading, vaccines, vetVisits, selectedVaccine, selectedVisit, selectVaccine, selectVisit, isAddingHealth, fetchUserVaccines, addNewVaccine, updateSelectedVaccine, deleteSelectedVaccine, fetchUserVisits, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, selectedDate };
 };

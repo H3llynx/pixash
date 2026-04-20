@@ -17,7 +17,7 @@ import { STAGE, VACCINE_TYPES, vaccineFields } from '../config';
 import type { VaccineTypes } from '../types';
 import { getVaccineTypes, showTypes } from '../utils';
 
-const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, healthLoading, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
+const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, healthLoading, updateSelectedVaccine, deleteSelectedVaccine, selectedDate } = usePets();
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
@@ -42,6 +42,8 @@ const resetForm = () => {
 };
 
 const handleClose = () => {
+    error.value = false;
+    selectedDate.value = null;
     isAddingHealth.vaccine = false;
     selectVaccine(null);
 };
@@ -103,9 +105,11 @@ watch(() => [isAddingHealth.vaccine, selectedVaccine.value],
             nextTick(() => {
                 const petInputs = vaccineSelectorRef.value?.querySelectorAll("input");
                 if (petInputs) petInputs[0].focus();
+                if (selectedDate.value) formData.dueOn = selectedDate.value;
             });
         }
-    });
+    }
+);
 
 watch(() => [selectedPet.value, selectedVaccine.value] as const,
     ([pet, vaccine]) => {
@@ -133,6 +137,7 @@ watch(() => [selectedPet.value, selectedVaccine.value] as const,
             Object.assign(formData, {
                 types: [vaccineTypes.value[0].id],
                 stage: getAge(pet)?.stage,
+                dueOn: selectedDate.value ?? ""
             });
         }
     },
@@ -212,11 +217,11 @@ watch(() => formData.given, () => {
                         <div class="flex gap-1 mt-1 items-center">
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name
-                                    }} · {{
+                                }} · {{
                                         showTypes(formData.types, selectedPet) }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.vaccineForm.dueDate")
-                                    }}:
+                                }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>

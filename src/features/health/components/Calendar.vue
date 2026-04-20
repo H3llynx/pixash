@@ -4,14 +4,18 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from '@fullcalendar/vue3';
 import { computed } from 'vue';
+import { usePets } from '../../pets/composables/usePet';
 
 const props = defineProps<{
     events?: EventInput
 }>();
+
 const emit = defineEmits<{
     updateMonth: [date: Date]
     updateMonthName: [name: string]
 }>();
+
+const { selectVaccine, selectVisit, selectedDate, isAddingHealth } = usePets();
 
 const calendarOptions = computed(() => ({
     plugins: [dayGridPlugin, interactionPlugin],
@@ -27,11 +31,12 @@ const calendarOptions = computed(() => ({
         emit("updateMonthName", info.view.title);
     },
     dateClick(info: any) {
-        alert('Next vaccine date : ' + info.dateStr)
+        selectedDate.value = info.dateStr;
+        isAddingHealth.visit = true;
     },
     eventClick(info: EventClickArg) {
-        console.log(info.event.id)
-        console.log(info.event.extendedProps.eventType)
+        if (info.event.extendedProps.event.eventType === "vaccine") selectVaccine(info.event.extendedProps.event);
+        else if (info.event.extendedProps.event.eventType === "visit") selectVisit(info.event.extendedProps.event)
     }
 }));
 </script>
@@ -108,7 +113,7 @@ const calendarOptions = computed(() => ({
 
 @media (width >=48rem) {
     .fc {
-        background-color: var(--color-bg-3);
+        background: var(--color-bg-3);
         color: var(--color-text-text);
         border-radius: 0.75rem;
         border: 1px solid var(--color-border);

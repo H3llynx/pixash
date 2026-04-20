@@ -33,6 +33,7 @@ const {
   fetchUserVisits,
   updateSelectedVisit,
   deleteSelectedVisit,
+  selectedDate,
 } = useHealth(pets);
 
 const selectPet = (pet: PetExtended | null) => {
@@ -171,6 +172,7 @@ export const usePets = () => {
     selectVisit,
     selectedVisit,
     updateSelectedVisit,
-    deleteSelectedVisit
+    deleteSelectedVisit,
+    selectedDate
   };
 };

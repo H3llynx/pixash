@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarCheck, Trash2 } from '@lucide/vue';
-import { reactive, Transition, watch } from 'vue';
+import { nextTick, reactive, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
@@ -14,13 +14,12 @@ import PetSelector from '../../pets/components/PetSelector.vue';
 import { usePets } from '../../pets/composables/usePet';
 import { vetVisitFields } from '../config';
 
-const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError } = usePets();
+const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedDate } = usePets();
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
 
 const { title, date, vet, notes } = vetVisitFields;
-
 const defaultForm = {
     title: "",
     date: "",
@@ -33,6 +32,7 @@ const resetForm = () => {
 };
 
 const handleClose = () => {
+    selectedDate.value = null;
     isAddingHealth.visit = false;
     selectVisit(null);
 };
@@ -84,6 +84,16 @@ const handleDelete = async () => {
     });
 };
 
+watch(() => [isAddingHealth.visit],
+    ([adding]) => {
+        if (adding) {
+            nextTick(() => {
+                if (selectedDate.value) formData.date = selectedDate.value;
+            });
+        }
+    }
+);
+
 watch(() => [selectedPet.value, selectedVisit.value] as const,
     ([pet, vaccine]) => {
         if (!pet) {
@@ -99,6 +109,7 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
             });
         }
         else resetForm();
+        formData.date = selectedDate.value ?? ""
     },
     { immediate: true }
 );
@@ -125,7 +136,7 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
                         <Input v-model="formData.title" :id="title.id" :type="title.type" :label="t(title.label)"
-                            required />
+                            ref="titleInputRef" required />
                         <Input v-model="formData.date" :id="date.id" :label="t(date.label)" :type="date.type" required>
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
@@ -164,6 +175,4 @@ label:has(textarea) p::after {
     color: var(--color-text-secondary);
     font-size: small;
 }
-
-;
 </style>
