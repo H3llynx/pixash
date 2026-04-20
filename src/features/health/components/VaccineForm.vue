@@ -156,7 +156,7 @@ watch(() => formData.given, () => {
 
 <template>
     <Transition name="panel">
-        <FormWrapper v-if="selectedPet && (isAddingHealth.vaccine || selectedVaccine)" :onClose="handleClose">
+        <FormWrapper v-if="isAddingHealth.vaccine || selectedVaccine" :onClose="handleClose">
             <LoadingPuppy v-if="healthLoading" />
             <div class="md:max-w-max" v-else>
                 <div class="flex gap-1 justify-between my-1 default-padding">
@@ -188,7 +188,7 @@ watch(() => formData.given, () => {
                             :name="stage.name" :required="index === 0" />
                     </fieldset>
                     <div class="default-padding flex flex-col gap-1">
-                        <Toggle v-model="formData.given" :label="t(given.label, { name: selectedPet.name })"
+                        <Toggle v-model="formData.given" :label="t(given.label, { name: selectedPet!.name })"
                             :id="given.id" />
                         <Input v-if="formData.given" v-model="formData.givenAt" :id="givenDate.id"
                             :label="t(givenDate.label)" :type="givenDate.type" required>
@@ -211,8 +211,9 @@ watch(() => formData.given, () => {
                         </label>
                         <div class="flex gap-1 mt-1 items-center">
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
-                                <p class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name }} · {{
-                                    showTypes(formData.types, selectedPet) }}</p>
+                                <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name
+                                    }} · {{
+                                        showTypes(formData.types, selectedPet) }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.vaccineForm.dueDate")
                                     }}:

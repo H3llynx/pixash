@@ -121,7 +121,7 @@
 
 @layer base {
   body {
-    width: 100vw;
+    max-width: 100vw;
     min-height: 100dvh;
     font-family: var(--font-main);
     background: var(--color-bg);

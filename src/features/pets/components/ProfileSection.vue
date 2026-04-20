@@ -20,7 +20,6 @@ const handleScroll = () => {
     const el = petSelector.value;
     showLeftArrow.value = el.scrollLeft > 0;
     showRightArrow.value = el.scrollLeft + el.clientWidth < el.scrollWidth;
-    console.log(showLeftArrow.value)
 };
 
 const updateArrowState = async () => {

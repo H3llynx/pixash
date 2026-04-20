@@ -1,8 +1,6 @@
 import { FirebaseError } from "firebase/app";
 import { computed, ref, watch } from "vue";
-import { onBeforeRouteLeave } from "vue-router";
 import { addPet, deletePet, deletePetField, fetchPets, updatePet } from "../../../services/pets";
-import { resetState } from "../../../utils";
 import { useHealth } from "../../health/composables/useHealth";
 import { useAuth } from "../../user/composables/useAuth";
 import type { Pet, PetExtended } from "../types";
@@ -41,6 +39,7 @@ const selectPet = (pet: PetExtended | null) => {
   isAddingPet.value = false;
   isUpdatingPet.value = false;
   if (selectedVaccine.value) selectVaccine(null);
+  if (selectedVisit.value) selectVisit(null);
   selectedPet.value = pet;
 }
 
@@ -100,7 +99,6 @@ const updateSelectedPet = async (pet: PetExtended, data: Partial<Pick<Pet, "weig
     };
     pets.value.splice(index, 1, updatedPet);
     selectPet(updatedPet);
-    console.log(isAddingPet.value)
   }
   );
 };
@@ -143,30 +141,7 @@ watch(vaccines, (_newVaccines) => {
   }
 });
 
-watch(() => [isAddingPet.value, isUpdatingPet.value],
-  ([adding, editing], [prevAdding, prevEditing]) => {
-    if (!prevAdding && adding) {
-      isUpdatingPet.value = false;
-      selectVaccine(null);
-      resetState(isAddingHealth);
-    };
-    if (!prevEditing && editing) {
-      isAddingPet.value = false;
-      if (selectedVaccine.value) {
-        resetState(isAddingHealth);
-        isAddingPet.value = false;
-      }
-    }
-  });
-
 export const usePets = () => {
-  onBeforeRouteLeave(() => {
-    isAddingPet.value = false;
-    isUpdatingPet.value = false;
-    resetState(isAddingHealth);
-    selectVaccine(null);
-  });
-
   return {
     pets,
     selectedPet,

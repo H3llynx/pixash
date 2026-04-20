@@ -1,4 +1,4 @@
-import type { VaccineExtended } from "../health/types";
+import type { VaccineExtended, VisitExtended } from "../health/types";
 import type { SPECIES } from "./config";
 
 export type Pet = {
@@ -19,4 +19,5 @@ export type PetExtended = Pet & {
     createdAt: Date;
     vaccines: VaccineExtended[];
     nextVaccine?: VaccineExtended;
+    nextVetVisit?: VisitExtended;
 }

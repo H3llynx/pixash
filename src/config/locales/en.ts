@@ -65,6 +65,7 @@ export default {
                 weight: "Weight",
                 microchip: "Microchip",
                 nextVaccine: "Next Vaccine",
+                nextVetVisit: "Next vet visit",
                 generalInformation: "general information",
             },
             edit: {

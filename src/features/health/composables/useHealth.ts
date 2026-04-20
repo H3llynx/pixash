@@ -5,7 +5,7 @@ import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
 import type { VaccineExtended, VaccineRecord, VisitExtended, VisitRecord } from "../types";
-import { getNextVaccine } from "../utils";
+import { getNextVaccine, getNextVisit } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
     const { user } = useAuth();
@@ -40,8 +40,9 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
             return {
                 ...pet,
                 vaccines: petVaccines,
-                nextVaccine: getNextVaccine(petVaccines),
                 vetVisits: petVisits,
+                nextVaccine: getNextVaccine(petVaccines),
+                nextVetVisit: getNextVisit(petVisits),
             }
         });
     };
@@ -67,7 +68,8 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
 
     const fetchUserVaccines = async () => {
         await handleHealthAction(async () => {
-            vaccines.value = await fetchVaccines(user.value!.uid);
+            const v = await fetchVaccines(user.value!.uid);
+            vaccines.value = v.map(v => ({ ...v, ts: v.dueOn, eventType: "vaccine" }));
             assignHealth();
         });
     };
@@ -107,7 +109,8 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
 
     const fetchUserVisits = async () => {
         await handleHealthAction(async () => {
-            vetVisits.value = await fetchVetVisits(user.value!.uid);
+            const v = await fetchVetVisits(user.value!.uid);
+            vetVisits.value = v.map(v => ({ ...v, ts: v.date, eventType: "visit" }));
             assignHealth();
         });
     };

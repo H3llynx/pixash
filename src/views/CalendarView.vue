@@ -3,7 +3,6 @@ import { computed, ref } from 'vue';
 import Calendar from '../components/Calendar.vue';
 import Header from '../components/Header.vue';
 import EventList from '../features/health/components/EventList.vue';
-import VaccineForm from '../features/health/components/VaccineForm.vue';
 import { showTypes } from '../features/health/utils';
 import { usePets } from '../features/pets/composables/usePet';
 import { tsToDate } from '../utils';
@@ -15,21 +14,22 @@ const calendarEvents = computed(() => [
             id: vaccine.id,
             title: showTypes(vaccine.types, pets.value.find(pet => pet.id === vaccine.petId)),
             date: tsToDate(vaccine.dueOn!, "input"),
-            eventType: "vaccine",
+            eventType: vaccine.eventType,
         })),
     ...vetVisits.value.map(visit => ({
         id: visit.id,
         title: visit.title,
         date: tsToDate(visit.date, "input"),
-        eventType: "visit",
+        eventType: visit.eventType,
     }))
 ]);
 
 const currentMonth = ref<Date>(new Date());
 const currentMonthName = ref<string>("");
+
 const eventsThisMonth = computed(() => [
-    ...vaccines.value.filter(vaccine => tsToDate(vaccine.dueOn, "isThatMonth", currentMonth.value)).map(v => ({ ...v, ts: v.dueOn!, eventType: "vaccine" })),
-    ...vetVisits.value.filter(visit => tsToDate(visit.date, "isThatMonth", currentMonth.value)).map(v => ({ ...v, ts: v.date!, eventType: "visit" }))
+    ...vaccines.value.filter(vaccine => tsToDate(vaccine.dueOn, "isThatMonth", currentMonth.value)),
+    ...vetVisits.value.filter(visit => tsToDate(visit.date, "isThatMonth", currentMonth.value))
 ].sort((a, b) => a.ts.seconds - b.ts.seconds));
 
 </script>
@@ -42,6 +42,5 @@ const eventsThisMonth = computed(() => [
                 @update-monthName="currentMonthName = $event" />
             <EventList :title="currentMonthName" :events="eventsThisMonth" location="calendar" />
         </div>
-        <VaccineForm />
     </main>
 </template>

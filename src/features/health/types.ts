@@ -20,6 +20,8 @@ export type VaccineExtended = Omit<VaccineRecord, "givenAt" | "dueOn"> & {
     userId: string;
     givenAt?: Timestamp;
     dueOn?: Timestamp;
+    eventType: string;
+    ts: Timestamp;
 }
 
 export type VisitRecord = {
@@ -34,6 +36,8 @@ export type VisitExtended = Omit<VisitRecord, "date"> & {
     petId: string;
     userId: string;
     date: Timestamp;
+    eventType: string;
+    ts: Timestamp;
 }
 
 export type PetEvent = {

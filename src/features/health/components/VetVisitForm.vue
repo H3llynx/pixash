@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarCheck, Trash2 } from '@lucide/vue';
-import { reactive, watch } from 'vue';
+import { reactive, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
@@ -105,10 +105,10 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
 </script>
 
 <template>
-    <Transition name="panel">
+    <Transition name="panel" appear>
         <FormWrapper v-if="isAddingHealth.visit || selectedVisit" :onClose="handleClose">
             <LoadingPuppy v-if="healthLoading" />
-            <div class="md:max-w-max" v-else>
+            <div v-else class="md:max-w-max">
                 <div class="flex gap-1 justify-between my-1 default-padding">
                     <h1>
                         {{ isAddingHealth.visit

@@ -1,7 +1,7 @@
 import { FirebaseError } from 'firebase/app';
 import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { computed, ref } from 'vue';
-import { auth } from "../../../firebase";
+import { auth } from "../../../config/firebase";
 import { handleEmailLogin, handleEmailRegister, handleGoogleLogin } from "../../../services/auth";
 
 const firebaseUser = ref<User | null>(null);

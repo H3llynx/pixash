@@ -1,7 +1,7 @@
 import { addDoc, collection, collectionGroup, deleteDoc, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { DB } from "../config/config";
 import type { VaccineExtended, VaccineRecord, VisitExtended, VisitRecord } from "../features/health/types";
-import { db } from "../firebase";
+import { db } from "../config/firebase";
 import { tsFromInput } from "../utils";
 
 export const fetchVaccines = async (userId: string): Promise<VaccineExtended[]> => {

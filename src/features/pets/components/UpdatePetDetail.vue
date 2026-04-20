@@ -5,6 +5,7 @@ import { onClickOutside } from '@vueuse/core';
 import { reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
+import { resetState } from '../../../utils';
 import type { VaccineExtended } from '../../health/types';
 import { usePets } from '../composables/usePet';
 import type { Pet, PetExtended } from '../types';
@@ -51,6 +52,7 @@ const startUpdating = () => {
     } else if (props.data === "microchip" && typeof existing === "string") {
         formData.data = existing;
     } else if (props.data === "nextVaccine") {
+        resetState(isAddingHealth);
         if (existing) {
             selectVaccine(existing as VaccineExtended);
         }

@@ -1,7 +1,7 @@
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { VACCINE_TYPES } from "./config";
-import type { VaccineExtended, VaccineTypes } from "./types";
+import type { VaccineExtended, VaccineTypes, VisitExtended } from "./types";
 
 export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default") => {
     if (!species) return;
@@ -14,6 +14,13 @@ export const getNextVaccine = (vaccines: VaccineExtended[]) => {
     return vaccines
         .filter(vaccine => vaccine.dueOn && vaccine.dueOn.seconds >= now)
         .sort((a, b) => a.dueOn!.seconds - b.dueOn!.seconds)[0] ?? null;
+};
+
+export const getNextVisit = (visits: VisitExtended[]) => {
+    const now = Date.now() / 1000
+    return visits
+        .filter(visit => visit.date && visit.date.seconds >= now)
+        .sort((a, b) => a.date.seconds - b.date.seconds)[0] ?? null;
 };
 
 export const showTypes = (vaccineType: VaccineTypes["id"][], pet?: PetExtended) => {
