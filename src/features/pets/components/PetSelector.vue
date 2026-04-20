@@ -7,6 +7,8 @@ import { getIcon } from '../utils';
 
 const { pets, selectPet, selectedPet, isAddingPet } = usePets();
 const { t } = useI18n();
+
+withDefaults(defineProps<{ form?: boolean }>(), { form: false });
 </script>
 
 <template>
@@ -15,7 +17,7 @@ const { t } = useI18n();
             @click="selectPet(pet)">
             <span aria-hidden>{{ getIcon(pet) }}</span>
             {{ pet.name }}</Button>
-        <Button variant="chip" size="sm" :class="{ active: isAddingPet }" @click="isAddingPet = true">
+        <Button v-if="!form" variant="chip" size="sm" :class="{ active: isAddingPet }" @click="isAddingPet = true">
             <Plus /> {{ t("common.button.addLabel") }}
         </Button>
     </div>

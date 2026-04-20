@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { CalendarCheck, Trash2 } from '@lucide/vue';
-import { LottieAnimation } from 'lottie-web-vue';
 import { reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import puppy from '../../../assets/animations/puppy-ball.json';
 import Button from '../../../components/Button.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
-import Loading from '../../../components/Loading.vue';
+import LoadingPuppy from '../../../components/LoadingPuppy.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
 import { shallowEqual, tsToDate } from '../../../utils';
@@ -109,10 +107,7 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
 <template>
     <Transition name="panel">
         <FormWrapper v-if="isAddingHealth.visit || selectedVisit" :onClose="handleClose">
-            <div v-if="healthLoading" class="flex flex-col items-center">
-                <LottieAnimation :animationData="puppy" :loop="true" :autoplay="true" :speed="1" class="max-w-md" />
-                <Loading />
-            </div>
+            <LoadingPuppy v-if="healthLoading" />
             <div class="md:max-w-max" v-else>
                 <div class="flex gap-1 justify-between my-1 default-padding">
                     <h1>
@@ -126,7 +121,7 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
                         <Trash2 :size="22" color="var(--color-brand-light)" />
                     </Button>
                 </div>
-                <PetSelector v-if="isAddingHealth.visit" />
+                <PetSelector v-if="isAddingHealth.visit" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
                         <Input v-model="formData.title" :id="title.id" :type="title.type" :label="t(title.label)"
