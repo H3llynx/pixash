@@ -8,7 +8,7 @@ const { toast, dismiss } = useToast();
 const { t } = useI18n();
 
 const toastBox = tv({
-    base: "flex px-0.5 py-1 gap-0.5 w-full max-w-xs items-start rounded-xl font-inter fixed bottom-4 left-1/2 -translate-x-1/2 border md:bottom-auto md:top-4 md:right-4 md:left-auto md:translate-x-0",
+    base: "flex px-0.5 py-1 gap-0.5 w-full max-w-xs items-start rounded-xl font-inter fixed z-2 bottom-4 left-1/2 -translate-x-1/2 border md:bottom-auto md:top-4 md:right-4 md:left-auto md:translate-x-0",
     variants: {
         type: {
             error: "bg-error-bg border-error-border text-error-text",
