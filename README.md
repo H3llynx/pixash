@@ -1,5 +1,9 @@
 # Pixash 🐾
 
+[![Vue.js](https://img.shields.io/badge/Vue.js-3.x-4FC08D?style=for-the-badge&logo=vuedotjs)](https://vuejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Firebase](https://img.shields.io/badge/Firebase-Auth%20%2B%20Firestore-FFCA28?style=for-the-badge&logo=firebase)](https://firebase.google.com/)
+
 > Pet care, beautifully organised.
 
 Pixash is a full-stack pet care tracker built with Vue 3 and Firebase. It helps pet owners keep track of vaccines, vet visits and upcoming health events — all in one place.
@@ -47,7 +51,7 @@ The design system uses a custom palette built around deep forest green and warm 
 ```
 src/
   components/         # Shared UI components
-  composables/        # Global shared composables (useToast, useTheme)
+  composables/        # Global shared composable (useToast, useTheme)
   config/             
     locales/          # Texts by language
   features/
@@ -92,7 +96,7 @@ Current progress:
 - [x] Pet profile creation
 - [x] Vaccine creation and management
 - [x] Vet visit creation and management
-- [IN PROGRESS] Calendar with reminders
+- [ IN PROGRESS ] Calendar with reminders
 - [ ] Google Calendar sync
 - [ ] Vet view and management
 - [ ] History view and management
@@ -101,6 +105,6 @@ Current progress:
 
 ## About
 
-Built by a junior frontend developer coming from React, using Pixash as a real-world project to learn Vue 3 deeply — reactivity system, composables, directives, lifecycle hooks and the Vue ecosystem.
+Built by a junior frontend developer coming from a React specialization, using Pixash as a real-world project to learn Vue 3 deeply — reactivity system, composables, directives, lifecycle hooks and the Vue ecosystem.
 
 No tutorial was followed. Every feature was built from scratch with a focus on accessibility, clean architecture and production-quality code.
