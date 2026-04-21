@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { EventClickArg, EventInput } from '@fullcalendar/core/index.js';
+import type { DatesSetArg, EventClickArg, EventInput } from '@fullcalendar/core/index.js';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin, { type DateClickArg } from "@fullcalendar/interaction";
 import FullCalendar from '@fullcalendar/vue3';
-import { computed, reactive } from 'vue';
+import { computed, nextTick, reactive } from 'vue';
 import { usePets } from '../../pets/composables/usePet';
 import EventMenu from './EventMenu.vue';
 
@@ -16,14 +16,13 @@ const emit = defineEmits<{
     updateMonthName: [name: string]
 }>();
 
-const { selectVaccine, selectVisit, selectedDate, isAddingHealth } = usePets();
+const { selectVaccine, selectVisit, selectedDate } = usePets();
 
 const menu = reactive({
     visible: false,
     x: 0,
     y: 0,
-    event: null
-})
+});
 
 const calendarOptions = computed(() => ({
     plugins: [dayGridPlugin, interactionPlugin],
@@ -34,17 +33,25 @@ const calendarOptions = computed(() => ({
         left: "title",
         right: "prev,next"
     },
-    datesSet(info: any) {
+    datesSet(info: DatesSetArg) {
         emit("updateMonth", info.view.currentStart);
         emit("updateMonthName", info.view.title);
     },
-    dateClick(info: any) {
+    dateClick(info: DateClickArg) {
+        const isSameDay = selectedDate.value === info.dateStr;
+        if (menu.visible && isSameDay) {
+            menu.visible = false;
+            selectedDate.value = null;
+            return;
+        }
         selectedDate.value = info.dateStr;
-        const rect = info.dayEl.getBoundingClientRect()
-        menu.x = rect.left
-        menu.y = rect.top + 25
-        menu.event = info.event
-        menu.visible = true
+        const rect = info.dayEl.getBoundingClientRect();
+        menu.x = rect.left - 15;
+        menu.y = rect.top + 25;
+        menu.visible = false;
+        nextTick(() => {
+            menu.visible = true;
+        });
     },
     eventClick(info: EventClickArg) {
         if (info.event.extendedProps.event.eventType === "vaccine") selectVaccine(info.event.extendedProps.event);

@@ -1,27 +1,19 @@
 <script setup lang="ts">
 import { BriefcaseMedical, Syringe } from '@lucide/vue';
-import { onClickOutside } from '@vueuse/core';
-import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
+import { useMedia } from '../../../composables/useMedia';
 import { resetState } from '../../../utils';
 import { usePets } from '../../pets/composables/usePet';
 
 const { isAddingHealth } = usePets();
 const { t } = useI18n();
+const { isMd } = useMedia();
 
 const props = defineProps<{
     visible: boolean
 }>();
 const emit = defineEmits(["update:visible"]);
-
-const menuRef = ref<HTMLUListElement | null>(null);
-
-onClickOutside(menuRef, () => {
-    if (props.visible) {
-        emit("update:visible", false);
-    }
-});
 
 const handleClick = (action: string) => {
     resetState(isAddingHealth);
@@ -34,14 +26,14 @@ const handleClick = (action: string) => {
 
 <template>
     <Transition name="toast">
-        <div v-if="visible" ref="menuRef" role="menu" class="absolute w-max flex flex-col gap-[5px]">
-            <Button variant="ghost" size="xxs" @click="handleClick('vaccine')">
-                <span>{{ t('addMenu.vaccine') }}</span>
-                <Syringe class="btn-icon default-transition filter-blur" :size="16" />
+        <div v-if="visible" role="menu" class="absolute w-max flex gap-[5px] md:flex-col">
+            <Button variant="ghost" size="xxs" @click="handleClick('vaccine')" :aria-label="t('addMenu.vaccine')">
+                <span v-if="isMd">{{ t("addMenu.vaccine") }}</span>
+                <Syringe :size="18" />
             </Button>
-            <Button variant="ghost" size="xxs" @click="handleClick('visit')">
-                <span>{{ t('addMenu.vetVisit') }}</span>
-                <BriefcaseMedical class="btn-icon default-transition filter-blur" :size="16" />
+            <Button variant="ghost" size="xxs" @click="handleClick('visit')" :aria-label="t('addMenu.vetVisit')">
+                <span v-if="isMd">{{ t("addMenu.vetVisit") }}</span>
+                <BriefcaseMedical :size="18" />
             </Button>
         </div>
     </Transition>
