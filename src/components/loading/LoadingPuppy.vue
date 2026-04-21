@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LottieAnimation } from 'lottie-web-vue';
-import puppy from '../assets/animations/puppy-ball.json';
+import puppy from '../../assets/animations/puppy-ball.json';
 </script>
 
 <template>

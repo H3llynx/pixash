@@ -5,7 +5,7 @@ import AuthForm from '../features/user/components/AuthForm.vue';
 </script>
 
 <template>
-    <Header type="auth" />
+    <Header />
     <section class="m-auto flex justify-center pb-6">
         <AuthForm />
         <img :src="SashaPixie" alt="" class="absolute bottom-0 -z-1 w-3xl right-0 opacity-90" />

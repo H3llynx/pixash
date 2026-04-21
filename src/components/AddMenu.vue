@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import { BriefcaseMedical, PawPrint, Syringe } from '@lucide/vue';
+import { BriefcaseMedical, Hospital, PawPrint, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useMedia } from '../composables/useMedia';
 import { usePets } from '../features/pets/composables/usePet';
 import { resetState } from '../utils';
 import Button from './Button.vue';
 
 const { isAddingPet, isAddingHealth, isUpdatingPet } = usePets();
 const { t } = useI18n();
+const { isMd } = useMedia();
 
 const props = defineProps<{
     visible: boolean
     toggleRef: HTMLElement | null
+    vet?: boolean
 }>();
 const emit = defineEmits(["update:visible"]);
 
@@ -31,6 +34,7 @@ const handleClick = (action: string) => {
     if (action === "vaccine") isAddingHealth.vaccine = true;
     else if (action === "pet") isAddingPet.value = true;
     else if (action === "visit") isAddingHealth.visit = true;
+    else if (action === "vet") { };
     emit("update:visible", false);
 }
 </script>
@@ -39,7 +43,16 @@ const handleClick = (action: string) => {
     <Transition name="overlay">
         <div v-if="visible" class="fixed inset-0 w-full h-dvh bg-black/60">
             <Transition name="toast" appear>
-                <div ref="menuRef"
+                <div v-if="vet && !isMd" ref="menuRef"
+                    class="flex flex-col items-end gap-1 max-w-2xs absolute bottom-11 md:bottom-7 right-1.5"
+                    role="menu">
+                    <div class="row">
+                        <Button @click="handleClick('vet')">{{ t("addMenu.vet") }}</Button>
+                        <Hospital class="btn-icon default-transition filter-blur" :size="40" />
+                    </div>
+                </div>
+
+                <div v-else ref="menuRef"
                     class="flex flex-col items-end gap-1 max-w-2xs absolute bottom-11 md:bottom-7 right-1.5"
                     role="menu">
                     <div class="row">

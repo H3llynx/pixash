@@ -60,7 +60,7 @@ watch(
         <template v-else>
             <h2>{{ t("dashboard.title.petProfiles") }}</h2>
             <div class="relative">
-                <div class="pet-selector pl-0" ref="petSelector" @scroll="handleScroll">
+                <div class="pet-selector gap-1 pl-0" ref="petSelector" @scroll="handleScroll">
                     <PetProfile v-for="pet in pets" :pet="pet" />
                     <button :class="{ 'left-arrow rounded-full': true, 'visible': showLeftArrow }" tabindex="0"
                         @click="scrollLeft" :aria-label="t('common.button.scrollLeft')">

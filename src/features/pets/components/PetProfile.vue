@@ -3,7 +3,7 @@ import { Edit2, Trash2 } from '@lucide/vue';
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
-import Loading from '../../../components/Loading.vue';
+import Loading from '../../../components/loading/Loading.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
 import { tsToDate } from '../../../utils';
@@ -87,7 +87,7 @@ const handleDelete = async () => {
                 <Loading v-if="healthLoading && pet === selectedPet" />
                 <span v-else-if="pet.nextVaccine" class="text-brand font-medium">{{
                     tsToDate(pet.nextVaccine.dueOn!, "date")
-                    }}</span>
+                }}</span>
                 <UpdatePetDetail v-if="!healthLoading" data="nextVaccine" :pet="pet" :isUpdating="isUpdating" />
             </div>
             <div class="row">

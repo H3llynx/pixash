@@ -6,7 +6,7 @@ import Button from '../../../components/Button.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
-import LoadingPuppy from '../../../components/LoadingPuppy.vue';
+import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
 import { shallowEqual, tsToDate } from '../../../utils';

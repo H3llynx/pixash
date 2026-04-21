@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { BriefcaseMedical, Syringe } from '@lucide/vue';
+import { onClickOutside } from '@vueuse/core';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { useMedia } from '../../../composables/useMedia';
@@ -15,18 +17,24 @@ const props = defineProps<{
 }>();
 const emit = defineEmits(["update:visible"]);
 
+const menuRef = ref<HTMLDivElement>();
+onClickOutside(menuRef, () => {
+    if (props.visible) {
+        emit("update:visible", false);
+    }
+});
+
 const handleClick = (action: string) => {
     resetState(isAddingHealth);
     if (action === "vaccine") isAddingHealth.vaccine = true;
     else if (action === "visit") isAddingHealth.visit = true;
     emit("update:visible", false);
 }
-
 </script>
 
 <template>
     <Transition name="toast">
-        <div v-if="visible" role="menu" class="absolute w-max flex gap-[5px] md:flex-col">
+        <div v-if="visible" ref="menuRef" role="menu" class="absolute w-max flex gap-[5px] md:flex-col">
             <Button variant="ghost" size="xxs" @click="handleClick('vaccine')" :aria-label="t('addMenu.vaccine')">
                 <span v-if="isMd">{{ t("addMenu.vaccine") }}</span>
                 <Syringe :size="18" />

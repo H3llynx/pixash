@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
 import Input from '../../../components/Input.vue';
-import LoadingPuppy from '../../../components/LoadingPuppy.vue';
+import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
 import Toggle from '../../../components/Toggle.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
@@ -217,11 +217,11 @@ watch(() => formData.given, () => {
                         <div class="flex gap-1 mt-1 items-center">
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name
-                                }} · {{
+                                    }} · {{
                                         showTypes(formData.types, selectedPet) }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.vaccineForm.dueDate")
-                                }}:
+                                    }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>

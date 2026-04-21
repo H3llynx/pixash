@@ -5,6 +5,9 @@ import AddMenu from './AddMenu.vue';
 
 const visible = ref<boolean>(false);
 const menuBtnRef = ref<HTMLButtonElement | null>(null);
+const props = withDefaults(defineProps<{
+    vet?: boolean
+}>(), { vet: false });
 </script>
 
 <template>
@@ -14,7 +17,7 @@ const menuBtnRef = ref<HTMLButtonElement | null>(null);
         <X v-if="visible" :size="32" />
         <Plus v-else :size="32" />
     </button>
-    <AddMenu v-model:visible="visible" :toggleRef="menuBtnRef" />
+    <AddMenu v-model:visible="visible" :toggleRef="menuBtnRef" :vet="props.vet" />
 </template>
 
 <style scoped>

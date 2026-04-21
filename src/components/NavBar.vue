@@ -21,7 +21,7 @@ const { isMd } = useMedia();
         <RouterLink :to="ROUTES.calendar" tabindex="0">
             <Calendar />Calendar
         </RouterLink>
-        <RouterLink to="/" tabindex="0">
+        <RouterLink :to="ROUTES.vet" tabindex="0">
             <MapPin />Vet
         </RouterLink>
         <RouterLink to="/" tabindex="0">

@@ -12,6 +12,12 @@ export default {
         },
         text: {
             noEventText: "You don't have any event scheduled."
+        },
+        header: {
+            greetings: "Welcome",
+            calendar: "Calendar",
+            vetH2: "Vet care",
+            vetSpan: "Clinics, treatments & visits",
         }
     },
     auth: {
@@ -28,7 +34,8 @@ export default {
     addMenu: {
         pet: "Add pet",
         vetVisit: "Vet visit",
-        vaccine: "New vaccine"
+        vaccine: "New vaccine",
+        vet: "Add vet"
     },
     userMenu: {
         logout: "Log out",
@@ -41,9 +48,6 @@ export default {
             petProfiles: "Pet profiles",
             upcoming: "Upcoming"
         }
-    },
-    calendar: {
-        header: "Calendar",
     },
     pet: {
         title: {

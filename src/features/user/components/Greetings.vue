@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { useAuth } from '../composables/useAuth';
 const { user } = useAuth();
+const { t } = useI18n();
 </script>
 
 <template>
     <div v-if="user">
-        <span class="tracking-wide font-extralight md:text-lg">Welcome</span>
+        <span class="tracking-wide font-extralight md:text-lg">{{ t("common.header.greetings") }}</span>
         <h2 class="text-2xl md:text-3xl">{{ user.firstName }}</h2>
     </div>
 </template>

@@ -3,6 +3,7 @@ import { useAuth } from '../features/user/composables/useAuth';
 import AuthView from '../views/AuthView.vue';
 import CalendarView from '../views/CalendarView.vue';
 import DashboardView from '../views/DashboardView.vue';
+import VetView from '../views/VetView.vue';
 import { ROUTES } from './config';
 
 const { user, authReady } = useAuth();
@@ -22,6 +23,11 @@ const router = createRouter({
     {
       path: ROUTES.calendar,
       component: CalendarView,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: ROUTES.vet,
+      component: VetView,
       meta: { requiresAuth: true }
     },
     {

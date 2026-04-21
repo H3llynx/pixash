@@ -3,8 +3,8 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { onBeforeRouteLeave } from 'vue-router';
 import AddButton from '../components/AddButton.vue';
-import DashboardSkeleton from '../components/DashboardSkeleton.vue';
 import Header from '../components/Header.vue';
+import DashboardSkeleton from '../components/loading/DashboardSkeleton.vue';
 import EventList from '../features/health/components/EventList.vue';
 import PetSummary from '../features/pets/components/PetSummary.vue';
 import { usePets } from '../features/pets/composables/usePet';
@@ -28,7 +28,7 @@ onBeforeRouteLeave(() => {
 </script>
 
 <template>
-  <Header type="dashboard" />
+  <Header />
   <main>
     <DashboardSkeleton v-if="loading" />
     <template v-else-if="hasPets">

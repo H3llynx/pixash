@@ -1,5 +1,6 @@
 export const ROUTES = {
     dashboard: "/dashboard",
     auth: "/auth",
-    calendar: "/calendar"
+    calendar: "/calendar",
+    vet: "/vet"
 } as const;
