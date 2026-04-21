@@ -3,8 +3,9 @@ import type { EventClickArg, EventInput } from '@fullcalendar/core/index.js';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from '@fullcalendar/vue3';
-import { computed } from 'vue';
+import { computed, reactive } from 'vue';
 import { usePets } from '../../pets/composables/usePet';
+import EventMenu from './EventMenu.vue';
 
 const props = defineProps<{
     events?: EventInput
@@ -16,6 +17,13 @@ const emit = defineEmits<{
 }>();
 
 const { selectVaccine, selectVisit, selectedDate, isAddingHealth } = usePets();
+
+const menu = reactive({
+    visible: false,
+    x: 0,
+    y: 0,
+    event: null
+})
 
 const calendarOptions = computed(() => ({
     plugins: [dayGridPlugin, interactionPlugin],
@@ -32,7 +40,11 @@ const calendarOptions = computed(() => ({
     },
     dateClick(info: any) {
         selectedDate.value = info.dateStr;
-        isAddingHealth.visit = true;
+        const rect = info.dayEl.getBoundingClientRect()
+        menu.x = rect.left
+        menu.y = rect.top + 25
+        menu.event = info.event
+        menu.visible = true
     },
     eventClick(info: EventClickArg) {
         if (info.event.extendedProps.event.eventType === "vaccine") selectVaccine(info.event.extendedProps.event);
@@ -43,6 +55,7 @@ const calendarOptions = computed(() => ({
 
 <template>
     <FullCalendar :options="calendarOptions" />
+    <EventMenu v-model:visible="menu.visible" :style="{ left: menu.x + 'px', top: menu.y + 'px' }" />
 </template>
 
 <style scoped>
@@ -68,9 +81,17 @@ const calendarOptions = computed(() => ({
     background-color: var(--color-brand-rgba);
 }
 
+:deep(.fc-daygrid-day, .fc-day-today) {
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--color-gold-rgba);
+    }
+}
+
 :deep(.fc-daygrid-day.fc-day-today) {
     background: var(--color-brand-rgba);
-    border-radius: 10px;
 }
 
 :deep(.fc-event) {

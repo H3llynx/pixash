@@ -124,7 +124,7 @@ export default {
         },
         vetVisitForm: {
             title: "Reason for visit",
-            date: "Date given",
+            date: "Date",
             vet: "Vet",
             notes: "Notes",
         },

@@ -92,6 +92,7 @@
   --color-brand: var(--color-purple);
   --color-brand-light: var(--color-purple-light);
   --color-brand-rgba: var(--color-purple-rgba);
+  
   --background-image-brand-gradient: linear-gradient(145deg, #bfb5f5 0%, var(--color-purple) 40%);
 
   --color-btn-hover: var(--color-brand-light);
@@ -122,6 +123,7 @@
 @layer base {
   body {
     max-width: 100vw;
+    overflow-x: hidden;
     min-height: 100dvh;
     font-family: var(--font-main);
     background: var(--color-bg);

@@ -40,7 +40,7 @@ onBeforeRouteLeave(() => {
 
 <template>
     <Header type="calendar" />
-    <main class="lg:my-auto">
+    <main>
         <div class="flex flex-col lg items-start gap-1.5 md:default-padding lg:grid lg:grid-cols-2">
             <Calendar :events="calendarEvents" @update-month="currentMonth = $event"
                 @update-monthName="currentMonthName = $event" />
