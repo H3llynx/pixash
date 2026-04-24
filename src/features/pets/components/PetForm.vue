@@ -6,6 +6,7 @@ import Dropdown from '../../../components/Dropdown.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
+import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
 import Toggle from '../../../components/Toggle.vue';
 import { useToast } from '../../../composables/useToast';
 import { shallowEqual } from '../../../utils';
@@ -109,50 +110,56 @@ watch(() => formData.species, () => {
 <template>
     <Transition name="panel">
         <FormWrapper v-if="isAddingPet || isUpdatingPet" :canClose="hasPets" :onClose="handleClose">
-            <div v-if="!hasPets" class="px-2 py-1 text-center">
-                <h2>{{ t("pet.title.addFirstPet") }}</h2>
-                <p class="text-text-secondary">{{ t("pet.addFirstPet") }}</p>
-            </div>
-            <h1 class="my-1 default-padding">
-                {{ isAddingPet
-                    ? t("pet.title.addPet")
-                    : t("pet.title.editPet", { name: selectedPet?.name })
-                }}
-            </h1>
-            <form @submit.prevent="handleSubmit">
-                <fieldset class="min-w-0">
-                    <legend class="default-padding">{{ t(species.label) }}</legend>
-                    <div class="pet-selector" ref="petSelectorRef">
-                        <Input v-model="formData.species" v-for="(option, index) in species.options" :id="option.id"
-                            :value="option.id" :key="option.id" :label="option.icon" :aria-label="t(option.name)"
-                            :type="species.type" :name="species.name" :required="index === 0" />
-                    </div>
-                </fieldset>
-                <div class="default-padding flex flex-col gap-1">
-                    <Input v-model="formData.name" :id="name.id" :type="name.type" :label="t(name.label)" required />
-                    <Dropdown v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="t(breed.label)" required>
-                        <option value="" disabled>{{ t(breed.placeholder) }}</option>
-                        <option v-for="option in getBreedOptions(formData.species)"
-                            :key="`${formData.species}-${option.value}`" :value="option.value">
-                            {{ option.name }}
-                        </option>
-                    </Dropdown>
-                    <div class="flex justify-between gap-1">
-                        <Input v-model="formData.birthDate" :id="birthDate.id" :type="birthDate.type"
-                            :label="t(birthDate.label)" required />
-                        <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
-                            <option v-for="option in sex.options" :value="option.id" :key="option.id">{{ t(option.label)
-                            }}
+            <LoadingPuppy v-if="loading" />
+            <div class="md:max-w-max" v-else>
+                <div v-if="!hasPets" class="px-2 py-1 text-center">
+                    <h2>{{ t("pet.title.addFirstPet") }}</h2>
+                    <p class="text-text-secondary">{{ t("pet.addFirstPet") }}</p>
+                </div>
+                <h1 class="my-1 default-padding">
+                    {{ isAddingPet
+                        ? t("pet.title.addPet")
+                        : t("pet.title.editPet", { name: selectedPet?.name })
+                    }}
+                </h1>
+                <form @submit.prevent="handleSubmit">
+                    <fieldset class="min-w-0">
+                        <legend class="default-padding">{{ t(species.label) }}</legend>
+                        <div class="pet-selector" ref="petSelectorRef">
+                            <Input v-model="formData.species" v-for="(option, index) in species.options" :id="option.id"
+                                :value="option.id" :key="option.id" :label="option.icon" :aria-label="t(option.name)"
+                                :type="species.type" :name="species.name" :required="index === 0" />
+                        </div>
+                    </fieldset>
+                    <div class="default-padding flex flex-col gap-1">
+                        <Input v-model="formData.name" :id="name.id" :type="name.type" :label="t(name.label)"
+                            required />
+                        <Dropdown v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="t(breed.label)"
+                            required>
+                            <option value="" disabled>{{ t(breed.placeholder) }}</option>
+                            <option v-for="option in getBreedOptions(formData.species)"
+                                :key="`${formData.species}-${option.value}`" :value="option.value">
+                                {{ option.name }}
                             </option>
                         </Dropdown>
+                        <div class="flex justify-between gap-1">
+                            <Input v-model="formData.birthDate" :id="birthDate.id" :type="birthDate.type"
+                                :label="t(birthDate.label)" required />
+                            <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
+                                <option v-for="option in sex.options" :value="option.id" :key="option.id">{{
+                                    t(option.label)
+                                }}
+                                </option>
+                            </Dropdown>
+                        </div>
+                        <Toggle v-model="formData.sterilized" :label="t(sterilized.label)" :id="sterilized.id" />
+                        <Toggle v-model="formData.microchipped" :label="t(microchipped.label)" :id="microchipped.id" />
+                        <Button :disabled="loading" class="md:ml-auto">{{ t("pet.cta.save", { name: formData.name }) }}
+                            <Paw class="w-1 -rotate-12" />
+                        </Button>
                     </div>
-                    <Toggle v-model="formData.sterilized" :label="t(sterilized.label)" :id="sterilized.id" />
-                    <Toggle v-model="formData.microchipped" :label="t(microchipped.label)" :id="microchipped.id" />
-                    <Button :disabled="loading" class="md:ml-auto">{{ t("pet.cta.save", { name: formData.name }) }}
-                        <Paw class="w-1 -rotate-12" />
-                    </Button>
-                </div>
-            </form>
+                </form>
+            </div>
         </FormWrapper>
     </Transition>
 </template>
