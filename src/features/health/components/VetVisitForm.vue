@@ -12,6 +12,7 @@ import { useToast } from '../../../composables/useToast';
 import { shallowEqual, tsToDate } from '../../../utils';
 import PetSelector from '../../pets/components/PetSelector.vue';
 import { usePets } from '../../pets/composables/usePet';
+import { getIcon } from '../../pets/utils';
 import { vetVisitFields } from '../config';
 
 const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedDate } = usePets();
@@ -95,21 +96,23 @@ watch(() => [isAddingHealth.visit],
 );
 
 watch(() => [selectedPet.value, selectedVisit.value] as const,
-    ([pet, vaccine]) => {
+    ([pet, visit]) => {
         if (!pet) {
             resetForm();
             return;
         };
-        if (vaccine) {
+        if (visit) {
             Object.assign(formData, {
-                title: vaccine.title,
-                date: tsToDate(vaccine.date, "input"),
-                vet: vaccine.vet,
-                notes: vaccine.notes ?? "",
+                title: visit.title,
+                date: tsToDate(visit.date, "input"),
+                vet: visit.vet,
+                notes: visit.notes ?? "",
             });
         }
-        else resetForm();
-        formData.date = selectedDate.value ?? ""
+        else {
+            resetForm();
+            formData.date = selectedDate.value ?? ""
+        }
     },
     { immediate: true }
 );
@@ -120,11 +123,15 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
         <FormWrapper v-if="isAddingHealth.visit || selectedVisit" :onClose="handleClose">
             <LoadingPuppy v-if="healthLoading" />
             <div v-else class="md:max-w-max">
-                <div class="flex gap-1 justify-between my-1 default-padding">
+                <div class="flex gap-1 justify-between my-1 default-padding items-center">
+                    <div v-if="selectedVisit && selectedPet"
+                        class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                        {{ getIcon(selectedPet) }}
+                    </div>
                     <h1>
                         {{ isAddingHealth.visit
                             ? t("health.title.addVetVisit")
-                            : t("health.title.editVetVisit")
+                            : t("health.title.editVetVisit", { name: selectedPet!.name })
                         }}
                     </h1>
                     <Button v-if="selectedVisit" class="ml-auto mb-auto" variant="ghost" size="xs"

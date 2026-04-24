@@ -105,7 +105,7 @@ export default {
             addVaccine: "Add vaccine",
             addVetVisit: "Add vet appointment",
             editVaccine: "Edit vaccine",
-            editVetVisit: "Edit vet appointment",
+            editVetVisit: "Edit {name}'s vet appointment",
         },
         cta: {
             saveVaccine: "Save vaccine",
@@ -157,7 +157,7 @@ export default {
                 vaccineDeleted: "{name}'s {type} has been successfully deleted",
                 visitAdded: "{name}'s {title} successfully added",
                 visitUpdated: "{name}'s {title} successfully updated",
-                visitDeleted: "{name}'s {title}has been  successfully deleted",
+                visitDeleted: "{name}'s {title} has been successfully deleted",
             },
         },
         error: {

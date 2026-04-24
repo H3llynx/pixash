@@ -16,7 +16,7 @@ const emit = defineEmits<{
     updateMonthName: [name: string]
 }>();
 
-const { selectVaccine, selectVisit, selectedDate } = usePets();
+const { pets, selectPet, selectVaccine, selectVisit, selectedDate } = usePets();
 
 const menu = reactive({
     visible: false,
@@ -54,6 +54,9 @@ const calendarOptions = computed(() => ({
         });
     },
     eventClick(info: EventClickArg) {
+        const petToSelect = pets.value.find(pet => pet.id === info.event.extendedProps.event.petId);
+        if (!petToSelect) return;
+        selectPet(petToSelect)
         if (info.event.extendedProps.event.eventType === "vaccine") selectVaccine(info.event.extendedProps.event);
         else if (info.event.extendedProps.event.eventType === "visit") selectVisit(info.event.extendedProps.event)
     }
