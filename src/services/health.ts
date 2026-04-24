@@ -1,7 +1,7 @@
 import { addDoc, collection, collectionGroup, deleteDoc, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { DB } from "../config/config";
-import type { VaccineExtended, VaccineRecord, VisitExtended, VisitRecord } from "../features/health/types";
 import { db } from "../config/firebase";
+import type { VaccineExtended, VaccineRecord, VisitExtended, VisitRecord } from "../features/health/types";
 import { tsFromInput } from "../utils";
 
 export const fetchVaccines = async (userId: string): Promise<VaccineExtended[]> => {
@@ -85,7 +85,7 @@ export const addVetVisit = async (visit: VisitRecord, petId: string, userId: str
         notes: visit.notes,
     };
     try {
-        const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.vetVisit), newVisit);
+        const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.vetVisits), newVisit);
         return docRef.id;
     } catch (error) {
         console.error("Error adding vaccine: ", error);
@@ -95,7 +95,7 @@ export const addVetVisit = async (visit: VisitRecord, petId: string, userId: str
 export const fetchVetVisits = async (userId: string): Promise<VisitExtended[]> => {
     try {
         const snapshot = await getDocs(query(
-            collectionGroup(db, DB.vetVisit),
+            collectionGroup(db, DB.vetVisits),
             where("userId", "==", userId)));
         if (snapshot.empty) {
             console.log("No visit found");
@@ -126,7 +126,7 @@ export const updateVetVisit = async (
         notes: data.notes,
     };
     try {
-        const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vetVisit, visitId);
+        const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vetVisits, visitId);
         await updateDoc(docRef, updated);
     } catch (error) {
         console.error("Error updating vet appointment: ", error);
@@ -135,7 +135,7 @@ export const updateVetVisit = async (
 
 export const deleteVisit = async (visitId: string, petId: string, userId: string) => {
     try {
-        const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vetVisit, visitId);
+        const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vetVisits, visitId);
         await deleteDoc(docRef);
     } catch (error) {
         console.error("Error deleting vet appointment: ", error);

@@ -1,7 +1,7 @@
-import { addDoc, collection, deleteDoc, deleteField, doc, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, deleteField, doc, DocumentReference, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { DB } from '../config/config';
-import type { Pet, PetExtended } from '../features/pets/types';
 import { db } from "../config/firebase";
+import type { Pet, PetExtended } from '../features/pets/types';
 
 export const fetchPets = async (userId: string): Promise<PetExtended[]> => {
   try {
@@ -53,15 +53,6 @@ export const updatePet = async (
   }
 };
 
-export const deletePet = async (petId: string, userId: string) => {
-  try {
-    const docRef = doc(db, DB.users, userId, DB.pets, petId);
-    await deleteDoc(docRef);
-  } catch (error) {
-    console.error("Error deleting pet: ", error);
-  }
-};
-
 export const deletePetField = async (
   petId: string,
   userId: string,
@@ -75,4 +66,33 @@ export const deletePetField = async (
   } catch (error) {
     console.error(`Error deleting ${field}: `, error);
   }
+};
+
+export const deletePet = async (petId: string, userId: string) => {
+  try {
+    const petRef = doc(db, DB.users, userId, DB.pets, petId);
+
+    await Promise.all([
+      deleteSubcollection(petRef, DB.vaccines),
+      deleteSubcollection(petRef, DB.vetVisits),
+    ]);
+
+    await deleteDoc(petRef);
+  } catch (error) {
+    console.error("Error deleting pet: ", error);
+    throw error;
+  }
+};
+
+const deleteSubcollection = async (
+  parentRef: DocumentReference,
+  subcollectionName: string
+) => {
+  const subcollectionRef = collection(parentRef, subcollectionName);
+  const snapshot = await getDocs(subcollectionRef);
+
+  if (snapshot.empty) return;
+
+  const deletePromises = snapshot.docs.map((doc) => deleteDoc(doc.ref));
+  await Promise.all(deletePromises);
 };

@@ -11,7 +11,6 @@ import { showTypes } from '../utils';
 const { pets, vaccines, vetVisits, selectPet, selectVaccine, selectVisit } = usePets();
 
 const props = defineProps<{ event: PetEvent }>();
-
 const pet = computed(() => pets.value.find(p => p.id === props.event.petId));
 const title = computed(() => props.event.eventType === "vaccine"
     ? showTypes(props.event.types!, pet.value!)
