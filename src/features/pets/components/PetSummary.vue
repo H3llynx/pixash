@@ -24,7 +24,7 @@ const nextVisitDue = computed(() => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-1.5 flex-1">
+    <div class="flex flex-col gap-1.5">
         <PetSelector v-if="selectedPet && !isMd" />
         <div v-if="(selectedPet?.nextVaccine || selectedPet?.nextVetVisit) && !isMd" class="flex gap-1 default-padding">
             <HealthCard v-if="selectedPet.nextVaccine" :pet="selectedPet" :data="selectedPet.nextVaccine"
