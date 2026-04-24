@@ -79,7 +79,7 @@ withDefaults(defineProps<{
 
     &:hover {
         color: var(--color-brand);
-        border-color: var(--color-brand-rgba);
+        border-color: var(--color-brand);
         transform: scale(1.02);
 
         &::before {

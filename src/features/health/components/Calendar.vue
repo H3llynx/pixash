@@ -93,7 +93,7 @@ const calendarOptions = computed(() => ({
     cursor: pointer;
 
     &:hover {
-        background-color: var(--color-gold-rgba);
+        background-color: var(--color-bg-2);
     }
 }
 
@@ -141,10 +141,9 @@ const calendarOptions = computed(() => ({
 
 @media (width >=48rem) {
     .fc {
-        background: var(--color-bg-3);
+        background: transparent;
         color: var(--color-text-text);
-        border-radius: 0.75rem;
-        border: 1px solid var(--color-border);
+        margin-inline: 2rem;
     }
 
     :deep(.fc-button) {

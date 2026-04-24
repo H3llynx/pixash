@@ -15,7 +15,7 @@ const { isMd } = useMedia();
 
         <!-- Stat row -->
         <div class="grid grid-cols-2 gap-1 md:max-w-xl md:h-6">
-            <div v-for="_n in 2" class="bg-bg-2 border border-border rounded-xl p-0.75 space-y-0.25">
+            <div v-for="i in 2" :key="i" class="bg-bg-2 border border-border rounded-xl p-0.75 space-y-0.25">
                 <div class="h-[10px] w-4 rounded bg-grey-light opacity-30"></div>
                 <div class="h-1.25 w-3 rounded bg-grey-light opacity-30"></div>
                 <div class="h-[10px] w-5 rounded bg-grey-light opacity-20"></div>
@@ -62,13 +62,15 @@ const { isMd } = useMedia();
         <div class="space-y-1 md:max-w-md">
             <div class="h-[10px] w-7 rounded bg-grey-light opacity-30"></div>
             <div v-for="i in 2" :key="i"
-                class="bg-bg-2 border border-border rounded-xl p-0.75 flex items-start gap-0.75 md:h-5">
-                <div class="h-full w-0.25 rounded-full bg-grey-light opacity-30 shrink-0"></div>
-                <div class="space-y-0.25 flex-1">
-                    <div class="h-0.75 w-8 rounded bg-grey-light opacity-30"></div>
-                    <div class="h-[10px] w-6 rounded bg-grey-light opacity-20"></div>
+                class="bg-bg-2 border border-border rounded-xl space-y-0.25 p-1 mb-1 w-full md:max-w-md flex justify-between">
+                <div>
+                    <div class="h-1 w-16 rounded bg-grey-light opacity-30 mb-0.5"></div>
+                    <div class="h-[10px] w-6 rounded bg-grey-light opacity-30"></div>
                 </div>
-                <div class="h-3 w-3 rounded-full bg-grey-light opacity-30 shrink-0"></div>
+                <div>
+                    <div class="h-3 w-3 rounded-full bg-grey-light opacity-30 m-auto"></div>
+                    <div class="h-[6px] w-2.5 mt-0.5 rounded bg-grey-light opacity-30 m-auto"></div>
+                </div>
             </div>
         </div>
 

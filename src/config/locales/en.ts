@@ -1,9 +1,8 @@
 export default {
     common: {
         button: {
-            addLabel: "Add {label}",
-            updateLabel: "Edit {label}",
-            saveLabel: "save {label}",
+            addChip: "Add",
+            allChip: "All",
             scrollRight: "scroll right",
             scrollLeft: "scroll left"
         },
@@ -46,7 +45,6 @@ export default {
         title: {
             petProfile: "{name}'s profile",
             petProfiles: "Pet profiles",
-            upcoming: "Upcoming"
         }
     },
     pet: {
@@ -136,6 +134,10 @@ export default {
             adult: "Adult",
             young: "Young",
         }
+    },
+    events: {
+        upcoming: "Upcoming",
+        thisMonth: "This month"
     },
     toast: {
         dismiss: "Dismiss notification",

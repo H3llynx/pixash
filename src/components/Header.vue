@@ -18,12 +18,12 @@ const route = useRoute();
 
 <template>
     <header
-        :class="{ 'md:pl-21': route.path !== ROUTES.auth, 'bg-brand-dark md:bg-transparent': route.path === ROUTES.calendar }">
+        :class="{ 'md:pl-21': route.path !== ROUTES.auth, 'bg-brand-dark md:bg-bg-2 md:border-b md:border-border': route.path === ROUTES.calendar }">
         <Greetings v-if="route.path === ROUTES.dashboard" />
         <VetHeaderTitle v-if="route.path === ROUTES.vet" />
         <h2 v-if="route.path === ROUTES.calendar && isMd" class="text-2xl md:text-3xl my-auto">{{
             t("common.header.calendar")
-        }}</h2>
+            }}</h2>
         <Logo v-if="route.path === ROUTES.auth || (route.path === ROUTES.calendar && !isMd)" />
         <div class="flex gap-0.5 relative z-2">
             <ThemeSwitcher />

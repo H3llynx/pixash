@@ -33,7 +33,7 @@ onBeforeRouteLeave(() => {
     <DashboardSkeleton v-if="loading" />
     <template v-else-if="hasPets">
       <PetSummary />
-      <EventList :title="t('dashboard.title.upcoming')" :events="upcomingEvents" />
+      <EventList :title="t('events.upcoming')" :events="upcomingEvents" />
       <AddButton />
     </template>
   </main>
