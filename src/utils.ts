@@ -1,5 +1,4 @@
 import { Timestamp } from "firebase/firestore";
-import type { DateFormatMode } from "./types";
 
 export const resetState = (state: any) => {
     Object.keys(state).forEach((key) => {
@@ -10,34 +9,69 @@ export const resetState = (state: any) => {
 export const shallowEqual = (a: any, b: any) =>
     Object.keys(a).every((key) => a[key] === b[key]);
 
-export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, month?: Date) => {
+type DateFormatMode = "date" | "daysUntil" | "input" | "upcoming" | "thatMonth" | "isThisWeek" | "isPast";
+type TFunction = (key: string, params?: Record<string, unknown>) => string;
+
+export const getTodayDayKey = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today.getTime();
+};
+
+export const tsToDayKey = (ts: Timestamp) => {
+    const d = ts.toDate();
+    d.setHours(0, 0, 0, 0);
+    return d.getTime();
+};
+
+const getCleanDates = (date: Date) => {
+    const eventDay = new Date(date);
+    eventDay.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const diffMs = eventDay.getTime() - today.getTime();
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+    return { eventDay, today, diffDays }
+}
+
+export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, t?: TFunction, month?: Date) => {
     if (!ts) return;
     const date = ts.toDate();
-    const now = new Date();
+    const { today, diffDays, eventDay } = getCleanDates(date);
     switch (mode) {
         case "date":
             return date.toLocaleDateString();
-        case "datetime":
-            return date.toLocaleString();
         case "input":
-            return date.toISOString().slice(0, 10);
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, "0");
+            const d = String(date.getDate()).padStart(2, "0");
+            return `${y}-${m}-${d}`;
         case "daysUntil": {
-            const diffMs = date.getTime() - now.getTime();
-            const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-            if (diffDays < 0) return `${Math.abs(diffDays)} day${Math.abs(diffDays) > 1 && "s"} ago`;
-            if (diffDays === 0) return "today";
-            if (diffDays === 1) return "tomorrow";
-            return `in ${diffDays} days`;
+            if (!t) {
+                return;
+            }
+            if (diffDays === -1) return t("tsToDate.yesterday");
+            if (diffDays === 0) return t("tsToDate.today");
+            if (diffDays === 1) return t("tsToDate.tomorrow");
+            if (diffDays > 1) return t("tsToDate.daysUntil", { number: diffDays });
+            return t("tsToDate.daysAgo", { number: Math.abs(diffDays) });
         }
-        case "isUpcoming": {
-            const inThreeMonths = new Date();
-            inThreeMonths.setMonth(now.getMonth() + 3);
-            return date >= now && date <= inThreeMonths;
+        case "upcoming": {
+            const end = new Date(today);
+            end.setMonth(end.getMonth() + 3);
+            end.setHours(23, 59, 59, 999);
+            return eventDay >= today && eventDay <= end;
         }
-        case "isThatMonth": {
+        case "thatMonth": {
             if (!month) return;
             return date.getMonth() === month.getMonth() &&
                 date.getFullYear() === month.getFullYear();
+        }
+        case "isThisWeek": {
+            return diffDays >= 0 && diffDays < 7;
+        }
+        case "isPast": {
+            return diffDays < 0;
         }
     }
 };

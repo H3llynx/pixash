@@ -5,10 +5,12 @@ import { onBeforeRouteLeave } from 'vue-router';
 import Header from '../components/Header.vue';
 import EventListSkeleton from '../components/loading/EventListSkeleton.vue';
 import Calendar from '../features/health/components/Calendar.vue';
+import CalendarLegend from '../features/health/components/CalendarLegend.vue';
 import EventList from '../features/health/components/EventList.vue';
 import { showTypes } from '../features/health/utils';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePet';
+import { getIcon } from '../features/pets/utils';
 import { tsToDate } from '../utils';
 
 const { pets, vaccines, vetVisits, selectedDate, loading } = usePets();
@@ -19,24 +21,28 @@ const currentMonthName = ref<string>("");
 const petId = ref<string>("");
 
 const calendarEvents = computed(() => [
-    ...vaccines.value.filter(vaccine => vaccine.dueOn)
-        .map(vaccine => ({
-            id: vaccine.id,
-            title: showTypes(vaccine.types, pets.value.find(pet => pet.id === vaccine.petId)),
-            date: tsToDate(vaccine.dueOn!, "input"),
-            event: vaccine,
-        })),
-    ...vetVisits.value.map(visit => ({
-        id: visit.id,
-        title: visit.title,
-        date: tsToDate(visit.date, "input"),
-        event: visit,
-    }))
+    ...vaccines.value.filter(vaccine => vaccine.dueOn && pets.value.some(pet => pet.id === vaccine.petId))
+        .map(vaccine => {
+            const pet = pets.value.find(pet => pet.id === vaccine.petId)!;
+            return {
+                id: vaccine.id,
+                title: `${getIcon(pet)} ${showTypes(vaccine.types, pet)}`,
+                date: tsToDate(vaccine.dueOn!, "input"),
+                event: vaccine,
+            };
+        }),
+    ...vetVisits.value.filter(visit => pets.value.some(pet => pet.id === visit.petId))
+        .map(visit => ({
+            id: visit.id,
+            title: `${getIcon(pets.value.find(pet => pet.id === visit.petId)!)} ${visit.title}`,
+            date: tsToDate(visit.date, "input"),
+            event: visit,
+        }))
 ]);
 
 const eventsThisMonth = computed(() => [
-    ...vaccines.value.filter(vaccine => tsToDate(vaccine.dueOn, "isThatMonth", currentMonth.value)),
-    ...vetVisits.value.filter(visit => tsToDate(visit.date, "isThatMonth", currentMonth.value))
+    ...vaccines.value.filter(vaccine => tsToDate(vaccine.dueOn, "thatMonth", undefined, currentMonth.value)),
+    ...vetVisits.value.filter(visit => tsToDate(visit.date, "thatMonth", undefined, currentMonth.value))
 ].sort((a, b) => a.ts.seconds - b.ts.seconds));
 
 const getTitle = () => {
@@ -67,9 +73,11 @@ onBeforeRouteLeave(() => {
             <Calendar :events="filteredCalendarEvents" @update-month="currentMonth = $event"
                 @update-monthName="currentMonthName = $event" />
         </section>
-        <section class="p-0 md:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
+        <section
+            class="flex flex-col-reverse p-0 h-full md:flex-col md:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
             <EventListSkeleton v-if="loading" />
             <EventList v-else :title="getTitle()" :events="filteredMonthEvents" mdLocation="right" />
+            <CalendarLegend />
         </section>
     </main>
 </template>

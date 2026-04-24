@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DatesSetArg, EventClickArg, EventInput } from '@fullcalendar/core/index.js';
+import type { DatesSetArg, EventClickArg, EventInput, EventMountArg } from '@fullcalendar/core/index.js';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { type DateClickArg } from "@fullcalendar/interaction";
 import FullCalendar from '@fullcalendar/vue3';
@@ -24,6 +24,11 @@ const menu = reactive({
     y: 0,
 });
 
+const eventColors: Record<string, string> = {
+    visit: "var(--color-brand-light)",
+    vaccine: "var(--color-gold)"
+};
+
 const calendarOptions = computed(() => ({
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: "dayGridMonth",
@@ -31,7 +36,12 @@ const calendarOptions = computed(() => ({
     height: "auto",
     headerToolbar: {
         left: "title",
-        right: "prev,next"
+        right: "today,prev,next"
+    },
+    eventDidMount(info: EventMountArg) {
+        const type = info.event.extendedProps.event.eventType;
+        info.el.style.backgroundColor = eventColors[type] || "gray";
+        info.el.style.opacity = info.isPast ? "0.5" : "1";
     },
     datesSet(info: DatesSetArg) {
         emit("updateMonth", info.view.currentStart);
@@ -46,8 +56,8 @@ const calendarOptions = computed(() => ({
         }
         selectedDate.value = info.dateStr;
         const rect = info.dayEl.getBoundingClientRect();
-        menu.x = rect.left - 15;
-        menu.y = rect.top + 25;
+        menu.x = rect.left + window.scrollX - 15;
+        menu.y = rect.top + window.scrollY + 25;
         menu.visible = false;
         nextTick(() => {
             menu.visible = true;
@@ -85,9 +95,15 @@ const calendarOptions = computed(() => ({
 
 :deep(.fc-button) {
     background: transparent;
+    text-transform: capitalize;
+
+    &:disabled {
+        background: transparent;
+        color: var(--color-text-secondary)
+    }
 }
 
-:deep(.fc-button:hover) {
+:deep(.fc-button:not(:disabled):hover) {
     background-color: var(--color-brand-rgba);
 }
 
@@ -105,7 +121,6 @@ const calendarOptions = computed(() => ({
 }
 
 :deep(.fc-event) {
-    background-color: var(--color-gold);
     border: none;
     border-radius: 4px;
     padding: 2px 4px;

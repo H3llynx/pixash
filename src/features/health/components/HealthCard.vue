@@ -5,6 +5,7 @@ import { tsToDate } from '../../../utils';
 import PetIndicator from '../../pets/components/PetIndicator.vue';
 import type { PetExtended } from '../../pets/types';
 import type { PetEvent } from '../types';
+import DateTag from './DateTag.vue';
 
 const { isMd } = useMedia();
 
@@ -25,6 +26,7 @@ const daysUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "
             <h3>{{ title }}</h3>
             <p class="text-lg font-medium">{{ date }}</p>
             <p class="text-xs text-brand-light">{{ daysUntil }}</p>
+            <DateTag :event="data" class="mt-0.5" />
         </div>
         <PetIndicator v-if="isMd" :pet="pet" />
     </div>

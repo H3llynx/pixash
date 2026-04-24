@@ -16,8 +16,8 @@ const { t } = useI18n();
 const { isMd } = useMedia();
 
 const upcomingEvents = computed(() => [
-  ...vaccines.value.filter(vaccine => tsToDate(vaccine.dueOn, "isUpcoming")),
-  ...vetVisits.value.filter(visit => tsToDate(visit.date, "isUpcoming"))
+  ...vaccines.value.filter(vaccine => tsToDate(vaccine.dueOn, "upcoming")),
+  ...vetVisits.value.filter(visit => tsToDate(visit.date, "upcoming"))
 ].sort((a, b) => a.ts.seconds - b.ts.seconds));
 
 const petUpcomingEvents = computed(() => {

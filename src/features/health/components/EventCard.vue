@@ -7,6 +7,7 @@ import PetIndicator from '../../pets/components/PetIndicator.vue';
 import { usePets } from '../../pets/composables/usePet';
 import type { PetEvent, VaccineExtended, VisitExtended } from '../types';
 import { showTypes } from '../utils';
+import DateTag from './DateTag.vue';
 
 const { pets, vaccines, vetVisits, selectPet, selectVaccine, selectVisit } = usePets();
 
@@ -31,12 +32,16 @@ const handleClick = (event: PetEvent) => {
 
 </script>
 <template>
-    <Button variant="card" size="card" @click="handleClick(event)">
-        <div class="flex gap-0.5">
+    <Button variant="card" size="card" @click="handleClick(event)"
+        :class="{ 'opacity-50': tsToDate(event.ts, 'isPast') }">
+        <div class="flex gap-0.5 w-full">
             <Syringe v-if="event.eventType === 'vaccine'" class="shrink-0 text-brand-light" :size="20" />
             <BriefcaseMedical v-else class="shrink-0 text-brand-light" :size="20" />
-            <div>
-                <h4>{{ title }}</h4>
+            <div class="flex-1">
+                <div class="flex gap-1 items-start">
+                    <h4>{{ title }}</h4>
+                    <DateTag :event="event" class="ml-auto" />
+                </div>
                 <p class="text-text-secondary">{{ tsToDate(event.ts, "date") }}</p>
                 <p v-if="event.vet" class="text-xs text-brand-light mt-0.75 flex items-center gap-[5px]">
                     <MapPinned :size="16" /> {{ event.vet }}

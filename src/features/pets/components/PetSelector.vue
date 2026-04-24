@@ -24,6 +24,16 @@ const handleClick = (pet: PetExtended) => {
     selectPet(pet)
     if (props.calendar) emit("update:petId", pet.id);
 }
+
+const getChipStyle = (pet: PetExtended) => ({
+    active:
+        (!props.calendar && selectedPet.value?.id === pet.id) ||
+        (props.calendar && props.petId === pet.id),
+    "active-calendar":
+        !isMd.value && props.calendar && props.petId === pet.id,
+    calendar:
+        !isMd.value && props.calendar && props.petId !== pet.id,
+});
 </script>
 
 <template>
@@ -33,11 +43,7 @@ const handleClick = (pet: PetExtended) => {
             @click="emit('update:petId', undefined)">
             <Paw class="w-1 -rotate-20" /> {{ t("common.button.allChip") }}
         </Button>
-        <Button variant="chip" size="sm" v-for="pet in pets" :class="{
-            active: (!calendar && selectedPet?.id === pet.id) || (calendar && petId === pet.id),
-            'active-calendar': !isMd && calendar && petId === pet.id,
-            'calendar': !isMd && calendar && petId !== pet.id
-        }" @click="handleClick(pet)">
+        <Button variant="chip" size="sm" v-for="pet in pets" :class="getChipStyle(pet)" @click="handleClick(pet)">
             <span aria-hidden>{{ getIcon(pet) }}</span>
             {{ pet.name }}</Button>
         <Button v-if="!form && !calendar" variant="chip" size="sm" :class="{ active: isAddingPet }"

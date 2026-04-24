@@ -137,7 +137,10 @@ export default {
     },
     events: {
         upcoming: "Upcoming",
-        thisMonth: "This month"
+        thisMonth: "This month",
+        legend: "Legend",
+        visits: "Visits",
+        vaccines: "Vaccines"
     },
     toast: {
         dismiss: "Dismiss notification",
@@ -182,5 +185,12 @@ export default {
             title: "Delete {title} ?",
             message: "This will remove {name}'s {title}. This action cannot be undone. Are you sure you'd like to proceed?",
         }
+    },
+    tsToDate: {
+        today: "Today",
+        tomorrow: "Tomorrow",
+        yesterday: "Yesterday",
+        daysAgo: "{number} days ago",
+        daysUntil: "in {number} days"
     }
 };

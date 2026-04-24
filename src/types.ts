@@ -1,1 +1,0 @@
-export type DateFormatMode = "date" | "datetime" | "daysUntil" | "input" | "isUpcoming" | "isThatMonth";
