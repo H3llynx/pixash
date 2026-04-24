@@ -61,13 +61,13 @@ onBeforeRouteLeave(() => {
 
 <template>
     <Header />
-    <main class="lg:grid lg:grid-cols-[1fr_35%]">
-        <section class="p-0 my-1">
+    <main class="lg:gap-0 lg:grid lg:grid-cols-[50%_50%] xl:grid-cols-[1fr_35%]">
+        <section class="p-0 bg-brand-dark md:bg-bg md:pt-0.5">
             <PetSelector calendar v-model:petId="petId" />
             <Calendar :events="filteredCalendarEvents" @update-month="currentMonth = $event"
                 @update-monthName="currentMonthName = $event" />
         </section>
-        <section class="p-0 md:default-padding lg:bg-bg-rgba lg:p-1.5 lg:border-l lg:border-border lg:h-full">
+        <section class="p-0 md:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
             <EventListSkeleton v-if="loading" />
             <EventList v-else :title="getTitle()" :events="filteredMonthEvents" mdLocation="right" />
         </section>

@@ -46,3 +46,13 @@ const handleClick = (event: PetEvent) => {
         <PetIndicator :pet="pet!" />
     </Button>
 </template>
+
+<style scoped>
+@media (width >=48rem) {
+
+    h4,
+    p {
+        font-size: clamp(0.9rem, 0.5vw, 1rem);
+    }
+}
+</style>

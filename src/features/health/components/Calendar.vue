@@ -96,12 +96,12 @@ const calendarOptions = computed(() => ({
     cursor: pointer;
 
     &:hover {
-        background-color: var(--color-bg-2);
+        background-color: var(--color-brand-rgba);
     }
 }
 
 :deep(.fc-daygrid-day.fc-day-today) {
-    background: var(--color-brand-rgba);
+    background: var(--color-bg-rgba);
 }
 
 :deep(.fc-event) {

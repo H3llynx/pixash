@@ -13,7 +13,7 @@
   --color-black: #1A1A1A;
   --color-charcoal: #19171A;
   --color-charcoal-lighter: #222024;
-  --color-charcoal-rgba: rgba(25, 23, 26, 0.4);
+  --color-charcoal-rgba: rgba(34, 32, 36, 0.4);
   --color-white-rgba: rgba(230, 230, 223, 0.3);
   --color-off-white: #E8E8F0;
   --color-grey-light: #E0DDD6;
@@ -92,7 +92,7 @@
   --color-brand: var(--color-purple);
   --color-brand-light: var(--color-purple-light);
   --color-brand-rgba: var(--color-purple-rgba);
-  
+
   --background-image-brand-gradient: linear-gradient(145deg, #bfb5f5 0%, var(--color-purple) 40%);
 
   --color-btn-hover: var(--color-brand-light);
@@ -124,7 +124,7 @@
   body {
     max-width: 100vw;
     overflow-x: hidden;
-    min-height: 100dvh;
+    height: 100dvh;
     font-family: var(--font-main);
     background: var(--color-bg);
     color: var(--color-text);
@@ -181,7 +181,7 @@
   }
 
   main {
-    @apply flex flex-col gap-1.5 pb-5 md:pl-18 md:pb-0;
+    @apply flex-1 flex flex-col gap-1.5 pb-5 md:pl-18 md:pb-0;
   }
 
   header {
