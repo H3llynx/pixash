@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarCheck, Trash2 } from '@lucide/vue';
-import { nextTick, reactive, Transition, watch } from 'vue';
+import { nextTick, reactive, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
@@ -14,13 +14,15 @@ import PetSelector from '../../pets/components/PetSelector.vue';
 import { usePets } from '../../pets/composables/usePet';
 import { getIcon } from '../../pets/utils';
 import { vetVisitFields } from '../config';
+import VetFormSelector from './VetFormSelector.vue';
 
-const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedDate, selectedVet } = usePets();
+const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedDate, selectedVet, vets } = usePets();
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
 
 const { title, date, vet, notes } = vetVisitFields;
+const vetTextInput = ref<boolean>(false);
 const defaultForm = {
     title: "",
     date: "",
@@ -90,7 +92,8 @@ watch(() => [isAddingHealth.visit],
         if (adding) {
             nextTick(() => {
                 if (selectedDate.value) formData.date = selectedDate.value;
-                if (selectedVet.value) formData.vet = selectedVet.value.name;
+                if (selectedVet.value) formData.vet = selectedVet.value.id;
+                if (vets.value && !selectedVet.value) formData.vet = vets.value[0].id;
             });
         }
     }
@@ -103,6 +106,8 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
             return;
         };
         if (visit) {
+            const isRegisteredVet = vets.value?.some(vet => vet.id === visit.vet);
+            vetTextInput.value = !isRegisteredVet;
             Object.assign(formData, {
                 title: visit.title,
                 date: tsToDate(visit.date, "input"),
@@ -113,6 +118,9 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
         else {
             resetForm();
             formData.date = selectedDate.value ?? ""
+            formData.vet = selectedVet.value
+                ? selectedVet.value.id
+                : vets.value ? vets.value[0].id : ""
         }
     },
     { immediate: true }
@@ -150,7 +158,8 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
-                        <Input v-model="formData.vet" :id="vet.id" :type="vet.type" :label="t(vet.label)" required />
+                        <VetFormSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput"
+                            required />
                         <label :for="notes.id">
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id" />

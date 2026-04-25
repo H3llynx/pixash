@@ -9,7 +9,7 @@ import type { PetEvent, VaccineExtended, VisitExtended } from '../types';
 import { showTypes } from '../utils';
 import DateTag from './DateTag.vue';
 
-const { pets, vaccines, vetVisits, selectPet, selectVaccine, selectVisit } = usePets();
+const { pets, vaccines, vetVisits, selectVaccine, selectVisit, vets } = usePets();
 
 const props = defineProps<{ event: PetEvent }>();
 const pet = computed(() => pets.value.find(p => p.id === props.event.petId));
@@ -18,6 +18,9 @@ const title = computed(() => props.event.eventType === "vaccine"
     : props.event.title
 );
 
+const vet = computed(() =>
+    vets.value?.find(vet => vet.id === props.event.vet)?.name ?? props.event.vet
+);
 const handleClick = (event: PetEvent) => {
     if (event.eventType === "vaccine") {
         const vaccine = vaccines.value.find(v => v.id === event.id) as VaccineExtended;
@@ -42,7 +45,7 @@ const handleClick = (event: PetEvent) => {
                 </div>
                 <p class="text-text-secondary">{{ tsToDate(event.ts, "date") }}</p>
                 <p v-if="event.vet" class="text-xs text-brand-light mt-0.75 flex items-center gap-[5px]">
-                    <MapPinned :size="16" /> {{ event.vet }}
+                    <MapPinned :size="16" /> {{ vet }}
                 </p>
             </div>
         </div>

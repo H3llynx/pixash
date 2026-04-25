@@ -16,15 +16,17 @@ import { getAge, getIcon } from '../../pets/utils';
 import { STAGE, VACCINE_TYPES, vaccineFields } from '../config';
 import type { VaccineTypes } from '../types';
 import { getVaccineTypes, showTypes } from '../utils';
+import VetFormSelector from './VetFormSelector.vue';
 
-const { selectedPet, isAddingHealth, selectedVaccine, selectVaccine, addNewVaccine, healthError, healthLoading, updateSelectedVaccine, deleteSelectedVaccine, selectedDate } = usePets();
+const { selectedPet, isAddingHealth, vets, selectedVet, selectedVaccine, selectVaccine, addNewVaccine, healthError, healthLoading, updateSelectedVaccine, deleteSelectedVaccine, selectedDate } = usePets();
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
 
 const { types, stage, given, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
 const vaccineTypes = ref<VaccineTypes[]>([]);
-const error = ref<boolean>(false)
+const error = ref<boolean>(false);
+const vetTextInput = ref<boolean>(false);
 const vaccineSelectorRef = ref<HTMLDivElement>();
 const defaultForm = {
     types: [VACCINE_TYPES.default[0].id],
@@ -105,7 +107,13 @@ watch(() => [isAddingHealth.vaccine, selectedVaccine.value],
             nextTick(() => {
                 const petInputs = vaccineSelectorRef.value?.querySelectorAll("input");
                 if (petInputs) petInputs[0].focus();
+            });
+        }
+        if (adding) {
+            nextTick(() => {
                 if (selectedDate.value) formData.dueOn = selectedDate.value;
+                if (selectedVet.value) formData.vet = selectedVet.value.id;
+                if (vets.value && !selectedVet.value) formData.vet = vets.value[0].id;
             });
         }
     }
@@ -121,6 +129,8 @@ watch(() => [selectedPet.value, selectedVaccine.value] as const,
         if (!options || !options.length) return;
         vaccineTypes.value = options;
         if (vaccine) {
+            const isRegisteredVet = vets.value?.some(vet => vet.id === vaccine.vet);
+            vetTextInput.value = !isRegisteredVet;
             Object.assign(formData, {
                 types: [...vaccine.types],
                 stage: vaccine.stage,
@@ -137,7 +147,10 @@ watch(() => [selectedPet.value, selectedVaccine.value] as const,
             Object.assign(formData, {
                 types: [vaccineTypes.value[0].id],
                 stage: getAge(pet)?.stage,
-                dueOn: selectedDate.value ?? ""
+                dueOn: selectedDate.value ?? "",
+                vet: selectedVet.value
+                    ? selectedVet.value.id
+                    : vets.value ? vets.value[0].id : ""
             });
         }
     },
@@ -209,7 +222,7 @@ watch(() => formData.given, () => {
                                 <CalendarClock class="mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
-                        <Input v-model="formData.vet" :id="vet.id" :type="vet.type" :label="t(vet.label)" />
+                        <VetFormSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput" />
                         <label :for="notes.id">
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id" />

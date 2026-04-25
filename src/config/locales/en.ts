@@ -146,6 +146,9 @@ export default {
             date: "Date",
             vet: "Vet",
             notes: "Notes",
+            other: "Other",
+            placeholderVet: "Type your vet's name...",
+            chooseExisting: "Pick from my vets"
         },
         stage: {
             adult: "Adult",

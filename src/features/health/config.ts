@@ -22,6 +22,12 @@ export const VACCINE_TYPES = {
 
 export const STAGE = [{ id: "young", label: "health.stage.young" }, { id: "adult", label: "health.stage.adult" }] as const;
 
+const vetFields = {
+    label: "health.vetVisitForm.vet",
+    type: "text",
+    placeholder: "health.vetVisitForm.placeholderVet"
+};
+
 export const vaccineFields = {
     types: {
         id: "vaccine-name",
@@ -56,8 +62,9 @@ export const vaccineFields = {
     },
     vet: {
         id: "vaccine-vet",
-        label: "health.vaccineForm.vet",
-        type: "text",
+        label: vetFields.label,
+        type: vetFields.type,
+        placeholder: vetFields.placeholder
     },
     notes: {
         id: "vaccine-notes",
@@ -78,8 +85,9 @@ export const vetVisitFields = {
     },
     vet: {
         id: "visit-vet",
-        label: "health.vetVisitForm.vet",
-        type: "text",
+        label: vetFields.label,
+        type: vetFields.type,
+        placeholder: vetFields.placeholder
     },
     notes: {
         id: "visit-notes",

@@ -69,3 +69,7 @@ export type Vet = {
     email?: string;
     hours?: string;
 }
+
+export type VetExtended = Vet & {
+    id: string;
+}
