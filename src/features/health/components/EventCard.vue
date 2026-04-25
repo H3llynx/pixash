@@ -19,8 +19,6 @@ const title = computed(() => props.event.eventType === "vaccine"
 );
 
 const handleClick = (event: PetEvent) => {
-    if (!pet.value) return;
-    selectPet(pet.value);
     if (event.eventType === "vaccine") {
         const vaccine = vaccines.value.find(v => v.id === event.id) as VaccineExtended;
         selectVaccine(vaccine);

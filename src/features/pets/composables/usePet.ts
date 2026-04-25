@@ -142,6 +142,20 @@ watch(vaccines, (_newVaccines) => {
   }
 });
 
+watch(selectedVaccine, (vaccine) => {
+  if (vaccine) {
+    const pet = pets.value.find(pet => pet.id === vaccine.petId);
+    if (pet) selectedPet.value = pet;
+  }
+});
+
+watch(selectedVisit, (visit) => {
+  if (visit) {
+    const pet = pets.value.find(pet => pet.id === visit.petId);
+    if (pet) selectedPet.value = pet;
+  }
+});
+
 export const usePets = () => {
   return {
     pets,
