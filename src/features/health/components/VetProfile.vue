@@ -86,8 +86,8 @@ const handleMaps = () => {
         </div>
         <span v-if="vet.notes" class="text-sm py-0.5 px-1 text-text-secondary bg-bg rounded-lg">{{
             vet.notes
-            }}</span>
-        <div class="flex gap-0.5 pt-1 border-t border-separator">
+        }}</span>
+        <div class="flex gap-0.5 mt-auto pt-1 border-t border-separator">
             <Button variant="vetOptions" size="vetOptions" @click="handleMaps">
                 {{ t("vet.cta.maps") }}
             </Button>
