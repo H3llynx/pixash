@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BriefcaseMedical, MapPinned, Syringe } from '@lucide/vue';
+import { MapPinned, Stethoscope, Syringe } from '@lucide/vue';
 import { computed } from 'vue';
 import Button from '../../../components/Button.vue';
 import { tsToDate } from '../../../utils';
@@ -34,7 +34,7 @@ const handleClick = (event: PetEvent) => {
         :class="{ 'opacity-50': tsToDate(event.ts, 'isPast') }">
         <div class="flex gap-0.5 w-full">
             <Syringe v-if="event.eventType === 'vaccine'" class="shrink-0 text-brand-light" :size="20" />
-            <BriefcaseMedical v-else class="shrink-0 text-brand-light" :size="20" />
+            <Stethoscope v-else class="shrink-0 text-brand-light" :size="20" />
             <div class="flex-1">
                 <div class="flex gap-1 items-start">
                     <h4>{{ title }}</h4>

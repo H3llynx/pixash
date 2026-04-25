@@ -10,7 +10,7 @@ const switchTheme = () => {
 </script>
 
 <template>
-    <Button variant="ghost" size="sm" @click="switchTheme"
+    <Button variant="ghost" size="sm" class="aspect-square" @click="switchTheme"
         :aria-label="theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'">
         <Moon v-if="theme === 'light'" />
         <Sun v-else />

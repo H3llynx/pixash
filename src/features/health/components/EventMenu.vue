@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BriefcaseMedical, Syringe } from '@lucide/vue';
+import { Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -41,7 +41,7 @@ const handleClick = (action: string) => {
             </Button>
             <Button variant="ghost" size="xxs" @click="handleClick('visit')" :aria-label="t('addMenu.vetVisit')">
                 <span v-if="isMd">{{ t("addMenu.vetVisit") }}</span>
-                <BriefcaseMedical :size="18" />
+                <Stethoscope :size="18" />
             </Button>
         </div>
     </Transition>

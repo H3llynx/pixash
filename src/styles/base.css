@@ -375,7 +375,7 @@
     border-radius: 10px;
     font-weight: 500;
     flex-shrink: 0;
-    font-size: 11px;
+    @apply text-xs;
   }
 
   .profile-row {

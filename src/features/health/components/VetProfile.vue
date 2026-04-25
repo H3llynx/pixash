@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Edit2, Mail, Plus, Stethoscope } from '@lucide/vue';
+import { BriefcaseMedical, Edit2, Mail, Plus } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
@@ -45,7 +45,7 @@ const handleMaps = () => {
     <div class="flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 max-w-full md:w-sm md:shrink-0">
         <div class="flex items-start gap-0.5 py-1">
             <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
-                <Stethoscope />
+                <BriefcaseMedical />
             </div>
             <div class="px-1 text-text-secondary text-sm">
                 <div class="flex gap-0.5 items-start">
@@ -86,7 +86,7 @@ const handleMaps = () => {
         </div>
         <span v-if="vet.notes" class="text-sm py-0.5 px-1 text-text-secondary bg-bg rounded-lg">{{
             vet.notes
-        }}</span>
+            }}</span>
         <div class="flex gap-0.5 pt-1 border-t border-separator">
             <Button variant="vetOptions" size="vetOptions" @click="handleMaps">
                 {{ t("vet.cta.maps") }}

@@ -9,7 +9,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-    <section class="pet-section p-0">
+    <section class="pet-section p-0 mb-4 md:mb-1">
         <h2 class="default-padding">{{ t("health.title.myVets") }}</h2>
         <Scrollable v-if="vets.length" :list="vets">
             <VetProfile v-for="vet in vets" :vet="vet" />
