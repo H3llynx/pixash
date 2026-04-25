@@ -12,23 +12,18 @@ const { isAddingHealth } = usePets();
 const { t } = useI18n();
 const { isMd } = useMedia();
 
-const props = defineProps<{
-    visible: boolean
-}>();
-const emit = defineEmits(["update:visible"]);
+const visible = defineModel<boolean>("visible")
 
 const menuRef = ref<HTMLDivElement>();
 onClickOutside(menuRef, () => {
-    if (props.visible) {
-        emit("update:visible", false);
-    }
+    if (visible.value) visible.value = false;
 });
 
 const handleClick = (action: string) => {
     resetState(isAddingHealth);
     if (action === "vaccine") isAddingHealth.vaccine = true;
     else if (action === "visit") isAddingHealth.visit = true;
-    emit("update:visible", false);
+    visible.value = false;
 }
 </script>
 

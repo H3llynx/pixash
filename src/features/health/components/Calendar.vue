@@ -16,7 +16,7 @@ const emit = defineEmits<{
     updateMonthName: [name: string]
 }>();
 
-const { pets, selectPet, selectVaccine, selectVisit, selectedDate } = usePets();
+const { selectVaccine, selectVisit, selectedDate } = usePets();
 
 const menu = reactive({
     visible: false,

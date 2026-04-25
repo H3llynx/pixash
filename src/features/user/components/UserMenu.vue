@@ -17,17 +17,14 @@ const handleLogout = async () => {
 };
 
 const props = defineProps<{
-    visible: boolean
     toggleRef: HTMLElement | null
 }>();
-const emit = defineEmits(["update:visible"]);
+const visible = defineModel<boolean>("visible");
 
 const menuRef = ref<HTMLUListElement | null>(null);
 
 onClickOutside(menuRef, () => {
-    if (props.visible) {
-        emit("update:visible", false);
-    }
+    if (visible.value) visible.value = false;
 }, { ignore: [toRef(props, "toggleRef")] });
 
 </script>

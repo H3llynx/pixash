@@ -13,18 +13,15 @@ const { t } = useI18n();
 const { isMd } = useMedia();
 
 const props = defineProps<{
-    visible: boolean
     toggleRef: HTMLElement | null
     vet?: boolean
 }>();
-const emit = defineEmits(["update:visible"]);
+const visible = defineModel<boolean>("visible");
 
 const menuRef = ref<HTMLUListElement | null>(null);
 
 onClickOutside(menuRef, () => {
-    if (props.visible) {
-        emit("update:visible", false);
-    }
+    if (visible.value) visible.value = false;
 }, { ignore: [toRef(props, "toggleRef")] });
 
 const handleClick = (action: string) => {
@@ -35,7 +32,7 @@ const handleClick = (action: string) => {
     else if (action === "pet") isAddingPet.value = true;
     else if (action === "visit") isAddingHealth.visit = true;
     else if (action === "vet") { };
-    emit("update:visible", false);
+    visible.value = false;
 }
 </script>
 
