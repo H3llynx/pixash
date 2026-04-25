@@ -55,3 +55,17 @@ export type PetEvent = {
     givenAt?: Timestamp;
     dueOn?: Timestamp;
 }
+
+export type Vet = {
+    name: string;
+    address1: string;
+    address2: string;
+    city: string;
+    postCode: string;
+    types: string[];
+    notes?: string;
+    assignedPets?: string[];
+    phone?: string;
+    email?: string;
+    hours?: string;
+}

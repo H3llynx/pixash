@@ -3,14 +3,15 @@ export default {
         button: {
             addChip: "Add",
             allChip: "All",
-            scrollRight: "scroll right",
-            scrollLeft: "scroll left"
+            scrollRight: "Scroll right",
+            scrollLeft: "Scroll left",
         },
         panel: {
             hide: "Close form"
         },
         text: {
-            noEventText: "You don't have any event scheduled."
+            noEventText: "You don't have any event scheduled.",
+            noVetText: "You have not registered any vet yet."
         },
         header: {
             greetings: "Welcome",
@@ -46,6 +47,21 @@ export default {
             petProfile: "{name}'s profile",
             petProfiles: "Pet profiles",
         }
+    },
+    vet: {
+        label: {
+            phone: "Phone",
+            hours: "Hours",
+            email: "Email",
+        },
+        cta: {
+            delete: "Delete {name}",
+            call: "📞 Call",
+            maps: "🗺️  Maps",
+            visit: "Visit",
+            email: "Email {name}",
+            edit: "Edit {name}"
+        },
     },
     pet: {
         title: {
@@ -106,6 +122,7 @@ export default {
             addVetVisit: "Add vet appointment",
             editVaccine: "Edit vaccine",
             editVetVisit: "Edit {name}'s vet appointment",
+            myVets: "My vets",
         },
         cta: {
             saveVaccine: "Save vaccine",

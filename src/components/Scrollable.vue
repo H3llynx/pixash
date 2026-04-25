@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight } from '@lucide/vue';
-import { nextTick, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -10,7 +10,7 @@ const props = defineProps<{ list: any[] }>();
 const cardSelector = ref<HTMLDivElement>();
 const showRightArrow = ref(false);
 const showLeftArrow = ref(false);
-const cardWidth = 384;
+const cardWidth = computed(() => cardSelector.value?.clientWidth || 384);
 
 const handleScroll = () => {
     if (!cardSelector.value) return;
@@ -27,7 +27,7 @@ const updateArrowState = async () => {
 const scrollLeft = () => {
     if (!cardSelector.value) return;
     cardSelector.value.scrollBy({
-        left: -cardWidth,
+        left: -cardWidth.value,
         behavior: "smooth"
     });
 };
@@ -35,7 +35,7 @@ const scrollLeft = () => {
 const scrollRight = () => {
     if (!cardSelector.value) return;
     cardSelector.value.scrollBy({
-        left: cardWidth,
+        left: cardWidth.value,
         behavior: "smooth"
     });
 };
@@ -50,14 +50,14 @@ watch(
 
 <template>
     <div class="relative">
-        <div class="pet-selector gap-1 pl-0" ref="cardSelector" @scroll="handleScroll">
+        <div class="pet-selector md:gap-1" ref="cardSelector" @scroll="handleScroll">
             <slot />
-            <button :class="{ 'left-arrow rounded-full': true, 'visible': showLeftArrow }" tabindex="0"
-                @click="scrollLeft" :aria-label="t('common.button.scrollLeft')">
+            <button :class="{ 'left-arrow rounded-full': true, 'visible': showLeftArrow, 'hidden md:block': true }"
+                tabindex="0" @click="scrollLeft" :aria-label="t('common.button.scrollLeft')">
                 <ChevronLeft :size="50" :class="{ visible: showLeftArrow }" />
             </button>
-            <button :class="{ 'right-arrow rounded-full': true, 'visible': showRightArrow }" tabindex="0"
-                @click="scrollRight" :aria-label="t('common.button.scrollRight')">
+            <button :class="{ 'right-arrow rounded-full': true, 'visible': showRightArrow, 'hidden md:block': true }"
+                tabindex="0" @click="scrollRight" :aria-label="t('common.button.scrollRight')">
                 <ChevronRight :size="50" />
             </button>
         </div>
@@ -77,11 +77,11 @@ watch(
 }
 
 .left-arrow {
-    left: -3rem;
+    left: 0rem;
 }
 
 .right-arrow {
-    right: 0.5rem;
+    right: 0rem;
 }
 
 .visible {

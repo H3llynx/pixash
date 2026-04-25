@@ -4,15 +4,44 @@ import { addVaccine, addVetVisit, deleteVaccine, deleteVisit, fetchVaccines, fet
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { VaccineExtended, VaccineRecord, VisitExtended, VisitRecord } from "../types";
+import type { VaccineExtended, VaccineRecord, Vet, VisitExtended, VisitRecord } from "../types";
 import { getNextVaccine, getNextVisit } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
     const { user } = useAuth();
     const vaccines = ref<VaccineExtended[]>([]);
     const vetVisits = ref<VisitExtended[]>([]);
+    const vets = ref([
+        {
+            name: "La maquinista Veterinaria",
+            address1: "Passatge Posoltega 1",
+            address2: "bajos",
+            city: "Barcelona",
+            postCode: "08033",
+            types: ["primary"],
+            notes: "Emergency number: 93 462 18 28",
+            assignedPets: ["2NTFmHHMSLeKysDuGn48"],
+            phone: "933 45 58 53",
+            email: "veterinarilamaquinista@gmail.com",
+            hours: "M-F: 10h - 20.30h\nS: 10h - 13:30h",
+        },
+        {
+            name: "La maquinista Veterinaria",
+            address1: "Passatge Posoltega 1",
+            address2: "bajos",
+            city: "Barcelona",
+            postCode: "08033",
+            types: ["primary"],
+            notes: "Emergency number: 93 462 18 28",
+            assignedPets: ["2NTFmHHMSLeKysDuGn48"],
+            phone: "933 45 58 53",
+            email: "veterinarilamaquinista@gmail.com",
+            hours: "M-F: 10h - 20.30h\nS: 10h - 13:30h",
+        }
+    ]);
     const selectedVaccine = ref<VaccineExtended | null>(null);
     const selectedVisit = ref<VisitExtended | null>(null);
+    const selectedVet = ref<Vet | null>(null);
     const selectedDate = ref<string | null>(null);
     const loading = ref<boolean>(false);
     const error = ref<string | null>(null);
@@ -149,5 +178,5 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         })
     };
 
-    return { error, loading, vaccines, vetVisits, selectedVaccine, selectedVisit, selectVaccine, selectVisit, isAddingHealth, fetchUserVaccines, addNewVaccine, updateSelectedVaccine, deleteSelectedVaccine, fetchUserVisits, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, selectedDate };
+    return { error, loading, vaccines, vetVisits, vets, selectedVaccine, selectedVisit, selectVaccine, selectVisit, isAddingHealth, fetchUserVaccines, addNewVaccine, updateSelectedVaccine, deleteSelectedVaccine, fetchUserVisits, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, selectedDate, selectedVet };
 };

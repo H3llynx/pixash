@@ -11,14 +11,14 @@ const { isMd } = useMedia();
 </script>
 
 <template>
-    <section class="pet-section md:pr-0">
+    <section class="pet-section md:p-0 md:pr-0">
         <template v-if="selectedPet && !isMd">
             <h2>{{ t("dashboard.title.petProfile", { name: selectedPet.name }) }}</h2>
             <PetProfile :pet="selectedPet" />
         </template>
 
         <template v-else>
-            <h2>{{ t("dashboard.title.petProfiles") }}</h2>
+            <h2 class="default-padding">{{ t("dashboard.title.petProfiles") }}</h2>
             <Scrollable :list="pets">
                 <PetProfile v-for="pet in pets" :pet="pet" />
             </Scrollable>

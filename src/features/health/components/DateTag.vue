@@ -13,8 +13,8 @@ const getTagStyle = () => {
     const isNotPast = !tsToDate(props.event.ts, "isPast");
 
     return {
-        "days-until w-max": true,
-        "tag": isNotPast,
+        "tag text-text-secondary": true,
+        "border border-border": isNotPast,
         "this-week": daysUntil !== t("tsToDate.today") && daysUntil !== t("tsToDate.tomorrow") && isThisWeek,
         "tomorrow": daysUntil === t("tsToDate.tomorrow"),
         "today": daysUntil === t("tsToDate.today")
@@ -27,20 +27,6 @@ const getTagStyle = () => {
 </template>
 
 <style scoped>
-.days-until {
-    font-size: x-small;
-    font-weight: 500;
-    display: flex;
-    flex-shrink: 0;
-    color: var(--color-text-secondary)
-}
-
-.tag {
-    padding: 2px 0.5rem;
-    border-radius: 10px;
-    border: 1px solid var(--color-text-secondary);
-}
-
 .today {
     background: rgba(190, 131, 79, 0.2);
     border: 1px solid rgba(190, 131, 79, 0.6);

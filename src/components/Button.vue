@@ -16,13 +16,15 @@ const button = tv({
             chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary capitalize",
             summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light",
             card: "btn-fill-card rounded-xl border border-border gap-1.5 justify-between items-start text-left",
+            vetOptions: "btn-hover-fill flex-1 rounded-xl border border-border bg-btn-vet"
         },
         size: {
             xxs: "text-xs p-0.5",
             xs: "px-0.5 text-sm py-0.5",
             sm: "px-1 py-0.5",
             md: "px-2 py-[10px]",
-            card: "p-1 mb-1 w-full md:max-w-md"
+            card: "p-1 mb-1 w-full md:max-w-md",
+            vetOptions: "px-0.5 py-1 text-sm"
         }
     },
     defaultVariants: {

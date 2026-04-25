@@ -51,7 +51,7 @@ const handleDelete = async () => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 relative md:min-w-sm">
+    <div class="flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 md:w-sm md:shrink-0">
         <div class="flex items-center gap-0.5">
             <div class="rounded-full w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                 {{ getIcon(pet) }}
@@ -77,20 +77,19 @@ const handleDelete = async () => {
             </Button>
         </div>
         <div class="text-sm">
-            <div class="row">
+            <div class="profile-row">
                 <span>{{ t("pet.profile.label.weight") }}</span>
                 <span v-if="pet.weight && !isUpdating.weight">{{ getWeight(pet) }}</span>
                 <UpdatePetDetail data="weight" :pet="pet" :isUpdating="isUpdating" />
             </div>
-            <div class="row">
+            <div class="profile-row">
                 <span>{{ t("pet.profile.label.nextVaccine") }}</span>
                 <Loading v-if="healthLoading && pet === selectedPet" />
-                <span v-else-if="pet.nextVaccine" class="text-brand font-medium">{{
-                    tsToDate(pet.nextVaccine.dueOn!, "date")
-                }}</span>
+                <span v-else-if="pet.nextVaccine" class="text-brand font-medium">
+                    {{ tsToDate(pet.nextVaccine.dueOn!, "date") }}</span>
                 <UpdatePetDetail v-if="!healthLoading" data="nextVaccine" :pet="pet" :isUpdating="isUpdating" />
             </div>
-            <div class="row">
+            <div class="profile-row">
                 <span>{{ t("pet.profile.label.microchip") }}</span>
                 <span v-if="pet.microchip && !isUpdating.microchip">{{ pet.microchip }}</span>
                 <UpdatePetDetail data="microchip" :pet="pet" :isUpdating="isUpdating" />
@@ -98,26 +97,3 @@ const handleDelete = async () => {
         </div>
     </div>
 </template>
-
-<style scoped>
-.row {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    align-items: center;
-    min-height: 2.25rem;
-    padding: 5px 0;
-
-    span:first-child {
-        color: var(--color-text-secondary);
-    }
-
-    span:nth-of-type(2) {
-        margin-left: auto;
-    }
-
-    &:not(:last-child) {
-        border-bottom: 1px solid var(--color-separator)
-    }
-}
-</style>

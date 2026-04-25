@@ -15,7 +15,7 @@ import { usePets } from '../../pets/composables/usePet';
 import { getIcon } from '../../pets/utils';
 import { vetVisitFields } from '../config';
 
-const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedDate } = usePets();
+const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedDate, selectedVet } = usePets();
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
@@ -90,6 +90,7 @@ watch(() => [isAddingHealth.visit],
         if (adding) {
             nextTick(() => {
                 if (selectedDate.value) formData.date = selectedDate.value;
+                if (selectedVet.value) formData.vet = selectedVet.value.name;
             });
         }
     }
