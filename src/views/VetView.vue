@@ -2,8 +2,8 @@
 import { onBeforeRouteLeave } from 'vue-router';
 import AddButton from '../components/AddButton.vue';
 import Header from '../components/Header.vue';
-import DashboardSkeleton from '../components/loading/DashboardSkeleton.vue';
 import LoadingPuppy from '../components/loading/LoadingPuppy.vue';
+import VetSkeleton from '../components/loading/VetSkeleton.vue';
 import VetForm from '../features/health/components/forms/VetForm.vue';
 import VetSummary from '../features/health/components/VetSummary.vue';
 import { usePets } from '../features/pets/composables/usePets';
@@ -19,7 +19,7 @@ onBeforeRouteLeave(() => {
 <template>
     <Header />
     <main>
-        <DashboardSkeleton v-if="loading" />
+        <VetSkeleton v-if="loading || healthLoading" />
         <LoadingPuppy v-else-if="healthLoading && !hasVets" />
         <template v-else>
             <VetSummary />
