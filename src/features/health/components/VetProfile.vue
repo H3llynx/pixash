@@ -77,26 +77,24 @@ const handleVetUpdate = () => {
             <PetTag v-for="pet in assignedPets" :pet="pet" />
             <VetTypeTag v-for="type in vet.types" :type="type" />
         </div>
-        <div class="text-sm">
-            <div class="profile-row">
-                <span>{{ t("vet.label.email") }}</span>
-                <Button v-if="vet.email" variant="ghost" size="xs" class="truncate" @click="handleMail"
-                    :aria-label="t('vet.cta.email', { name: vet.name })">
-                    <Mail :size="16" class="shrink-0" />
-                    <span :class="{ 'text-xs': isMd, truncate: true }">{{ vet.email }}</span>
-                </Button>
-                <AddVetDetail data="email" :vet="vet" v-else />
-            </div>
-            <div class="profile-row">
-                <span>{{ t("vet.label.phone") }}</span>
-                <span v-if="vet.phone" class="text-blue font-medium">{{ vet.phone }}</span>
-                <AddVetDetail data="phone" :vet="vet" v-else />
-            </div>
-            <div class="profile-row">
-                <span>{{ t("vet.label.hours") }}</span>
-                <span v-if="vet.hours" :class="{ 'text-xs': isMd, 'text-right': true }">{{ vet.hours }}</span>
-                <AddVetDetail data="hours" :vet="vet" v-else />
-            </div>
+        <div class="profile-row">
+            <span>{{ t("vet.label.email") }}</span>
+            <Button v-if="vet.email" variant="ghost" size="xs" class="truncate" @click="handleMail"
+                :aria-label="t('vet.cta.email', { name: vet.name })">
+                <Mail :size="16" class="shrink-0" />
+                <span :class="{ 'text-sm': isMd, truncate: true }">{{ vet.email }}</span>
+            </Button>
+            <AddVetDetail data="email" :vet="vet" v-else />
+        </div>
+        <div class="profile-row">
+            <span>{{ t("vet.label.phone") }}</span>
+            <span v-if="vet.phone" class="text-blue font-medium">{{ vet.phone }}</span>
+            <AddVetDetail data="phone" :vet="vet" v-else />
+        </div>
+        <div class="profile-row">
+            <span>{{ t("vet.label.hours") }}</span>
+            <span v-if="vet.hours" :class="{ 'text-sm': isMd, 'text-right': true }">{{ vet.hours }}</span>
+            <AddVetDetail data="hours" :vet="vet" v-else />
         </div>
         <div class="mt-auto flex flex-col gap-0.5">
             <VetNotes :vet="vet" />

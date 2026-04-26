@@ -76,24 +76,22 @@ const handleDelete = async () => {
                 <Trash2 :size="22" color="var(--color-border)" />
             </Button>
         </div>
-        <div class="text-sm">
-            <div class="profile-row">
-                <span>{{ t("pet.profile.label.weight") }}</span>
-                <span v-if="pet.weight && !isUpdating.weight">{{ getWeight(pet) }}</span>
-                <UpdatePetDetail data="weight" :pet="pet" :isUpdating="isUpdating" />
-            </div>
-            <div class="profile-row">
-                <span>{{ t("pet.profile.label.nextVaccine") }}</span>
-                <Loading v-if="healthLoading && pet === selectedPet" />
-                <span v-else-if="pet.nextVaccine" class="text-brand font-medium">
-                    {{ tsToDate(pet.nextVaccine.dueOn!, "date") }}</span>
-                <UpdatePetDetail v-if="!healthLoading" data="nextVaccine" :pet="pet" :isUpdating="isUpdating" />
-            </div>
-            <div class="profile-row">
-                <span>{{ t("pet.profile.label.microchip") }}</span>
-                <span v-if="pet.microchip && !isUpdating.microchip">{{ pet.microchip }}</span>
-                <UpdatePetDetail data="microchip" :pet="pet" :isUpdating="isUpdating" />
-            </div>
+        <div class="profile-row">
+            <span>{{ t("pet.profile.label.weight") }}</span>
+            <span v-if="pet.weight && !isUpdating.weight">{{ getWeight(pet) }}</span>
+            <UpdatePetDetail data="weight" :pet="pet" :isUpdating="isUpdating" />
+        </div>
+        <div class="profile-row">
+            <span>{{ t("pet.profile.label.nextVaccine") }}</span>
+            <Loading v-if="healthLoading && pet === selectedPet" />
+            <span v-else-if="pet.nextVaccine" class="text-brand font-medium">
+                {{ tsToDate(pet.nextVaccine.dueOn!, "date") }}</span>
+            <UpdatePetDetail v-if="!healthLoading" data="nextVaccine" :pet="pet" :isUpdating="isUpdating" />
+        </div>
+        <div class="profile-row">
+            <span>{{ t("pet.profile.label.microchip") }}</span>
+            <span v-if="pet.microchip && !isUpdating.microchip">{{ pet.microchip }}</span>
+            <UpdatePetDetail data="microchip" :pet="pet" :isUpdating="isUpdating" />
         </div>
     </div>
 </template>
