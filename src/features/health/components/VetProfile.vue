@@ -11,7 +11,7 @@ import PetTag from './PetTag.vue';
 import VetNotes from './VetNotes.vue';
 import VetTypeTag from './VetTypeTag.vue';
 
-const { pets, isAddingHealth, selectedVet, isUpdatingVet, updateSelectedVet } = usePets();
+const { pets, isAddingHealth, selectedVet, isUpdatingVet } = usePets();
 const { t } = useI18n();
 const { isMd } = useMedia();
 
