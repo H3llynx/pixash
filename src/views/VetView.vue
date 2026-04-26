@@ -4,7 +4,7 @@ import AddButton from '../components/AddButton.vue';
 import Header from '../components/Header.vue';
 import DashboardSkeleton from '../components/loading/DashboardSkeleton.vue';
 import LoadingPuppy from '../components/loading/LoadingPuppy.vue';
-import VetForm from '../features/health/components/VetForm.vue';
+import VetForm from '../features/health/components/forms/VetForm.vue';
 import VetSummary from '../features/health/components/VetSummary.vue';
 import { usePets } from '../features/pets/composables/usePets';
 

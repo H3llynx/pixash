@@ -53,13 +53,21 @@ export default {
             hours: "Hours",
             email: "Email",
         },
+        notesPlaceholder: "Add notes about this vet here…",
+        addProfileLabel: {
+            phone: "Add phone number",
+            hours: "Add working hours",
+            email: "Add email",
+        },
         cta: {
             delete: "Delete {name}",
             call: "📞 Call",
             maps: "🗺️  Maps",
             visit: "Visit",
             email: "Email {name}",
-            edit: "Edit {name}"
+            edit: "Edit {name}",
+            notes: "Edit notes",
+            saveNotes: "Stop editing notes"
         },
     },
     pet: {

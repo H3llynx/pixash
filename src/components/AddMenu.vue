@@ -3,14 +3,12 @@ import { BriefcaseMedical, PawPrint, Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useMedia } from '../composables/useMedia';
 import { usePets } from '../features/pets/composables/usePets';
 import { resetState } from '../utils';
 import Button from './Button.vue';
 
 const { isAddingPet, isAddingHealth, isUpdatingPet } = usePets();
 const { t } = useI18n();
-const { isMd } = useMedia();
 
 const props = defineProps<{
     toggleRef: HTMLElement | null

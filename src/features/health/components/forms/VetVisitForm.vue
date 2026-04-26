@@ -2,20 +2,20 @@
 import { CalendarCheck, Trash2 } from '@lucide/vue';
 import { reactive, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../../../components/Button.vue';
-import FormWrapper from '../../../components/FormWrapper.vue';
-import Paw from '../../../components/icons/Paw.vue';
-import Input from '../../../components/Input.vue';
-import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
-import { useDialog } from '../../../composables/useDialog';
-import { useToast } from '../../../composables/useToast';
-import { shallowEqual, tsToDate } from '../../../utils';
-import PetSelector from '../../pets/components/PetSelector.vue';
-import { usePets } from '../../pets/composables/usePets';
-import { getIcon } from '../../pets/utils';
-import { vetVisitFields } from '../config';
-import { resetForm } from '../utils';
-import VetFormSelector from './VetFormSelector.vue';
+import Button from '../../../../components/Button.vue';
+import FormWrapper from '../../../../components/FormWrapper.vue';
+import Paw from '../../../../components/icons/Paw.vue';
+import Input from '../../../../components/Input.vue';
+import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import { useDialog } from '../../../../composables/useDialog';
+import { useToast } from '../../../../composables/useToast';
+import { shallowEqual, tsToDate } from '../../../../utils';
+import PetSelector from '../../../pets/components/PetSelector.vue';
+import { usePets } from '../../../pets/composables/usePets';
+import { getIcon } from '../../../pets/utils';
+import { vetVisitFields } from '../../config';
+import { resetForm } from '../../utils';
+import VetFormSelector from '../VetFormSelector.vue';
 
 const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedDate, selectedVet, vets } = usePets();
 const { show } = useToast();
@@ -146,8 +146,7 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
                 <PetSelector v-if="isAddingHealth.visit" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-model="formData.title" :id="title.id" :label="t(title.label)" ref="titleInputRef"
-                            required />
+                        <Input v-model="formData.title" :id="title.id" :label="t(title.label)" required />
                         <Input v-model="formData.date" :id="date.id" :label="t(date.label)" :type="date.type" required>
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />

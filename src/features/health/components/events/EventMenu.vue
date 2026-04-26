@@ -3,10 +3,10 @@ import { Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../../../components/Button.vue';
-import { useMedia } from '../../../composables/useMedia';
-import { resetState } from '../../../utils';
-import { usePets } from '../../pets/composables/usePets';
+import Button from '../../../../components/Button.vue';
+import { useMedia } from '../../../../composables/useMedia';
+import { resetState } from '../../../../utils';
+import { usePets } from '../../../pets/composables/usePets';
 
 const { isAddingHealth } = usePets();
 const { t } = useI18n();

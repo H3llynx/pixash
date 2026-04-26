@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { tsToDate } from '../../../utils';
-import type { PetEvent } from '../types';
+import { tsToDate } from '../../../../utils';
+import type { PetEvent } from '../../types';
 
 const { t } = useI18n();
 

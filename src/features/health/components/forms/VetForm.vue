@@ -2,19 +2,19 @@
 import { Trash2 } from '@lucide/vue';
 import { reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../../../components/Button.vue';
-import FormWrapper from '../../../components/FormWrapper.vue';
-import Paw from '../../../components/icons/Paw.vue';
-import Input from '../../../components/Input.vue';
-import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
-import { useDialog } from '../../../composables/useDialog';
-import { useToast } from '../../../composables/useToast';
-import { shallowEqual } from '../../../utils';
-import { usePets } from '../../pets/composables/usePets';
-import { getIcon } from '../../pets/utils';
-import { vetFormFields } from '../config';
-import type { Vet } from '../types';
-import { resetForm } from '../utils';
+import Button from '../../../../components/Button.vue';
+import FormWrapper from '../../../../components/FormWrapper.vue';
+import Paw from '../../../../components/icons/Paw.vue';
+import Input from '../../../../components/Input.vue';
+import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import { useDialog } from '../../../../composables/useDialog';
+import { useToast } from '../../../../composables/useToast';
+import { shallowEqual } from '../../../../utils';
+import { usePets } from '../../../pets/composables/usePets';
+import { getIcon } from '../../../pets/utils';
+import { vetFormFields } from '../../config';
+import type { Vet } from '../../types';
+import { resetForm } from '../../utils';
 
 const { pets, isAddingHealth, selectedVet, isUpdatingVet, healthLoading, healthError, addNewVet, updateSelectedVet, deleteSelectedVet } = usePets();
 const { t } = useI18n();
@@ -139,8 +139,7 @@ watch(() => selectedVet.value,
                 </div>
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-model="formData.name" :id="name.id" :label="t(name.label)" ref="titleInputRef"
-                            required />
+                        <Input v-model="formData.name" :id="name.id" :label="t(name.label)" required />
                         <Input v-for="[key, field] in addressTopFields" v-model="formData[key as keyof typeof formData]"
                             :key="field.id" :id="field.id" :label="t(field.label)" :required="field.required" />
                         <div class="flex gap-1">

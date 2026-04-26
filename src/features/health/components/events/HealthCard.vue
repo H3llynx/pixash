@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useMedia } from '../../../composables/useMedia';
-import { tsToDate } from '../../../utils';
-import PetIndicator from '../../pets/components/PetIndicator.vue';
-import type { PetExtended } from '../../pets/types';
-import type { PetEvent } from '../types';
+import { useMedia } from '../../../../composables/useMedia';
+import { tsToDate } from '../../../../utils';
+import PetIndicator from '../../../pets/components/PetIndicator.vue';
+import type { PetExtended } from '../../../pets/types';
+import type { PetEvent } from '../../types';
 import DateTag from './DateTag.vue';
 
 const { isMd } = useMedia();

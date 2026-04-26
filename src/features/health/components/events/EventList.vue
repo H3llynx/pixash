@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import type { PetEvent } from '../types';
+import type { PetEvent } from '../../types';
 import EventCard from './EventCard.vue';
 
 withDefaults(defineProps<{

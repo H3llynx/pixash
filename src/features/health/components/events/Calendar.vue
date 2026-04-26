@@ -4,7 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { type DateClickArg } from "@fullcalendar/interaction";
 import FullCalendar from '@fullcalendar/vue3';
 import { computed, nextTick, reactive } from 'vue';
-import { usePets } from '../../pets/composables/usePets';
+import { usePets } from '../../../pets/composables/usePets';
 import EventMenu from './EventMenu.vue';
 
 const props = defineProps<{

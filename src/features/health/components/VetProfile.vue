@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { BriefcaseMedical, Edit2, Mail, PenLine, Plus } from '@lucide/vue';
+import { BriefcaseMedical, CheckCircle, Edit2, Mail, PenLine, Plus } from '@lucide/vue';
+import { onClickOutside } from '@vueuse/core';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { useMedia } from '../../../composables/useMedia';
 import { resetState } from '../../../utils';
 import { usePets } from '../../pets/composables/usePets';
-import AddVetDetail from './AddVetDetail.vue';
+import AddVetDetail from './forms/AddVetDetail.vue';
 import PetTag from './PetTag.vue';
 import VetTypeTag from './VetTypeTag.vue';
 
@@ -18,10 +19,16 @@ const props = defineProps<{ vet: any }>();
 
 const isUpdatingNotes = ref<boolean>(false);
 const notesData = ref<string>(props.vet.notes);
+const notesRef = ref<HTMLTextAreaElement>();
+const toggleRef = ref<HTMLButtonElement>();
 
 const assignedPets = computed(() => {
     return pets.value.filter(pet => props.vet.assignedPets.includes(pet.id));
 });
+
+onClickOutside(notesRef, () => {
+    if (isUpdatingNotes.value) isUpdatingNotes.value = false;
+}, { ignore: [toggleRef] });
 
 const handleVisit = () => {
     selectedVet.value = props.vet;
@@ -46,6 +53,14 @@ const handleMaps = () => {
     window.open(mapsUrl, '_blank');
 };
 
+const toggleNoteEdit = () => {
+    isUpdatingNotes.value = !isUpdatingNotes.value;
+    if (isUpdatingNotes.value) {
+        notesRef.value?.focus();
+        notesRef.value?.setSelectionRange(notesData.value.length, notesData.value.length);
+
+    }
+};
 const handleVetUpdate = () => {
     resetState(isAddingHealth);
     selectedVet.value = props.vet;
@@ -105,24 +120,28 @@ const handleNoteEdit = async () => {
                 <AddVetDetail data="hours" :vet="vet" v-else />
             </div>
         </div>
-
-        <Button variant="ghost" size="xs" @click="isUpdatingNotes = !isUpdatingNotes">
-            <PenLine />
-        </Button>
-        <textarea v-model="notesData" :readonly="!isUpdatingNotes"
-            class="text-sm mt-auto italic py-0.5 px-1 text-text-secondary" @change="handleNoteEdit" />
-
-        <div class="flex gap-0.5 pt-1 mt-auto border-t border-separator">
-            <Button variant="vetOptions" size="vetOptions" @click="handleMaps">
-                {{ t("vet.cta.maps") }}
+        <div class="mt-auto flex flex-col gap-0.5">
+            <Button variant="vetOptions" size="xs" @click="toggleNoteEdit"
+                :class="isUpdatingNotes ? 'bg-brand-rgba' : 'bg-bg'"
+                :aria-label="isUpdatingNotes ? t('vet.cta.saveNotes') : t('vet.cta.notes')" ref="toggleRef">
+                <CheckCircle v-if="isUpdatingNotes" />
+                <PenLine v-else />
             </Button>
-            <Button variant="vetOptions" size="vetOptions" @click="handleCall">
-                {{ t("vet.cta.call") }}
-            </Button>
-            <Button variant="vetOptions" size="vetOptions" @click="handleVisit">
-                <Plus :size="18" />
-                {{ t("vet.cta.visit") }}
-            </Button>
+            <textarea v-model="notesData" :readonly="!isUpdatingNotes" ref="notesRef"
+                :placeholder="t('vet.notesPlaceholder')" class="italic py-0.5 px-1 text-text-secondary border-0"
+                @change="handleNoteEdit" />
+            <div class="flex gap-0.5 pt-1 border-t border-separator">
+                <Button variant="vetOptions" size="vetOptions" @click="handleMaps">
+                    {{ t("vet.cta.maps") }}
+                </Button>
+                <Button variant="vetOptions" size="vetOptions" @click="handleCall">
+                    {{ t("vet.cta.call") }}
+                </Button>
+                <Button variant="vetOptions" size="vetOptions" @click="handleVisit">
+                    <Plus :size="18" />
+                    {{ t("vet.cta.visit") }}
+                </Button>
+            </div>
         </div>
     </div>
 </template>
