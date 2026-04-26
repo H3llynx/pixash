@@ -13,7 +13,8 @@ const menuBtnRef = ref<HTMLButtonElement | null>(null);
     <div class="relative">
         <button tabindex="0" @click="visible = !visible" v-if="user" ref="menuBtnRef"
             class="rounded-full w-3.5 h-3.5 shrink-0 overflow-hidden bg-brand flex items-center justify-center">
-            <img v-if="user.photo" :src="user.photo" :alt="user.firstName ?? 'user avatar'" />
+            <img v-if="user.photo" :src="user.photo" :alt="user.firstName ?? 'user avatar'"
+                class="w-full h-full object-cover" />
             <p v-else class="text-text-chip capitalize text-3xl">{{ user.firstName.slice(0, 1) }}
             </p>
         </button>

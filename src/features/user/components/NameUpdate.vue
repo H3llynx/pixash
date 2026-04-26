@@ -34,12 +34,12 @@ const handleSubmit = async () => {
     <Transition name="overlay">
         <div v-if="visible" class="fixed inset-0 w-full h-dvh bg-black/60 flex items-center justify-center">
             <Transition name="toast" appear>
-                <div class="dialog-box">
-                    <form class="flex flex-col gap-1 w-sm " @submit.prevent="handleSubmit">
+                <div class="dialog-box w-[80%] max-w-sm">
+                    <form class="flex flex-col gap-1" @submit.prevent="handleSubmit">
                         <Input v-model="formData" :label="t('auth.nameLabel')" :placeholder="t('auth.namePlaceholder')"
                             id="user-name" required />
                         <Button type="button" variant="secondary" @click="visible = false">{{ t("dialog.common.cancel")
-                        }}</Button>
+                            }}</Button>
                         <Button>{{ t("dialog.common.confirm") }}</Button>
                     </form>
                 </div>

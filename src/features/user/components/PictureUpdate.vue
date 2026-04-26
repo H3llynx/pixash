@@ -72,7 +72,7 @@ const handleCancel = () => {
     <Transition name="overlay">
         <div v-if="visible" class="fixed inset-0 w-full h-dvh bg-black/60 flex items-center justify-center">
             <Transition name="toast" appear>
-                <div class="dialog-box">
+                <div class="dialog-box w-[80%] max-w-sm">
                     <LoadingPuppy v-if="loading" class="max-w-xs" />
                     <template v-else>
                         <div v-if="previewUrl" class="mx-auto relative">
@@ -84,7 +84,7 @@ const handleCancel = () => {
                                     class="object-cover h-full w-full relative" />
                             </div>
                         </div>
-                        <form class="flex flex-col gap-1 w-sm " @submit.prevent="handleSubmit">
+                        <form class="flex flex-col gap-1" @submit.prevent="handleSubmit">
                             <label for="profile-picture" :aria-label="t('common.fileInputLabel')">
                                 <input id="profile-picture" type="file" accept="image/*" class="sr-only"
                                     ref="fileInputRef" @change="onFileChange" />
