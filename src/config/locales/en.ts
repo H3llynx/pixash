@@ -33,7 +33,6 @@ export default {
         nameLabel: "How should we call you?",
         namePlaceholder: "Sasha's owner",
         emailLabel: "Email address",
-        emailPlaceholder: "ilovemypet@mail.com",
         passwordLabel: "Password",
     },
     addMenu: {
