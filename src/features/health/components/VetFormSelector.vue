@@ -3,13 +3,13 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Dropdown from '../../../components/Dropdown.vue';
 import Input from '../../../components/Input.vue';
-import { usePets } from '../../pets/composables/usePet';
+import { usePets } from '../../pets/composables/usePets';
 
 const { t } = useI18n();
 const { vets, selectedVet } = usePets();
 
 withDefaults(defineProps<{
-    vet: any
+    vet: Record<string, string>,
     required?: boolean
 }>(), { required: false });
 
@@ -32,7 +32,7 @@ const onVetChange = () => {
         </option>
         <option value="other">{{ t("health.vetVisitForm.other") }}</option>
     </Dropdown>
-    <Input v-else v-model="model" :id="vet.id" :type="vet.type" :label="t(vet.label)" :placeholder="t(vet.placeholder)"
+    <Input v-else v-model="model" :id="vet.id" :label="t(vet.label)" :placeholder="t(vet.placeholder)"
         :required="required">
         <template #addon>
             <Button variant="ghost" size="xs" type="button"

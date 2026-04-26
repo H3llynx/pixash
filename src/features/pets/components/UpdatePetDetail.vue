@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { resetState } from '../../../utils';
 import type { VaccineExtended } from '../../health/types';
-import { usePets } from '../composables/usePet';
+import { usePets } from '../composables/usePets';
 import type { Pet, PetExtended } from '../types';
 import { getUnit, kgToGrams } from '../utils';
 

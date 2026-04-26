@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarCheck, Trash2 } from '@lucide/vue';
-import { nextTick, reactive, ref, Transition, watch } from 'vue';
+import { reactive, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import FormWrapper from '../../../components/FormWrapper.vue';
@@ -11,9 +11,10 @@ import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
 import { shallowEqual, tsToDate } from '../../../utils';
 import PetSelector from '../../pets/components/PetSelector.vue';
-import { usePets } from '../../pets/composables/usePet';
+import { usePets } from '../../pets/composables/usePets';
 import { getIcon } from '../../pets/utils';
 import { vetVisitFields } from '../config';
+import { resetForm } from '../utils';
 import VetFormSelector from './VetFormSelector.vue';
 
 const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedDate, selectedVet, vets } = usePets();
@@ -30,9 +31,6 @@ const defaultForm = {
     notes: "",
 };
 const formData = reactive({ ...defaultForm });
-const resetForm = () => {
-    Object.assign(formData, defaultForm)
-};
 
 const handleClose = () => {
     selectedDate.value = null;
@@ -62,7 +60,7 @@ const handleSubmit = async () => {
         }
     }
     catch (e) {
-        show({ type: "error", title: "Error", message: healthError.value || "" });
+        show({ type: "error", title: t("error.genericTitle"), message: healthError.value || "" });
     };
 };
 
@@ -82,7 +80,9 @@ const handleDelete = async () => {
                     title: t("toast.success.title.generic"),
                     message: t("toast.success.message.visitDeleted", { name: pet.name, title: visit.title }),
                 });
-            } catch (error) { console.log(error) }
+            } catch (error) {
+                show({ type: "error", title: t("error.genericTitle"), message: healthError.value || "" });
+            }
         }
     });
 };
@@ -90,11 +90,8 @@ const handleDelete = async () => {
 watch(() => [isAddingHealth.visit],
     ([adding]) => {
         if (adding) {
-            nextTick(() => {
-                if (selectedDate.value) formData.date = selectedDate.value;
-                if (selectedVet.value) formData.vet = selectedVet.value.id;
-                if (vets.value && !selectedVet.value) formData.vet = vets.value[0].id;
-            });
+            formData.date = selectedDate.value ?? ""
+            formData.vet = selectedVet.value?.id ?? vets.value?.[0]?.id ?? "";
         }
     }
 );
@@ -102,7 +99,7 @@ watch(() => [isAddingHealth.visit],
 watch(() => [selectedPet.value, selectedVisit.value] as const,
     ([pet, visit]) => {
         if (!pet) {
-            resetForm();
+            resetForm(formData, defaultForm);
             return;
         };
         if (visit) {
@@ -116,12 +113,10 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
             });
         }
         else {
-            resetForm();
-            formData.date = selectedDate.value ?? ""
-            formData.vet = selectedVet.value
-                ? selectedVet.value.id
-                : vets.value ? vets.value[0].id : ""
-        }
+            resetForm(formData, defaultForm);
+            formData.date = selectedDate.value ?? "";
+            formData.vet = selectedVet.value?.id ?? vets.value?.[0]?.id ?? "";
+        };
     },
     { immediate: true }
 );
@@ -151,8 +146,8 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
                 <PetSelector v-if="isAddingHealth.visit" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-model="formData.title" :id="title.id" :type="title.type" :label="t(title.label)"
-                            ref="titleInputRef" required />
+                        <Input v-model="formData.title" :id="title.id" :label="t(title.label)" ref="titleInputRef"
+                            required />
                         <Input v-model="formData.date" :id="date.id" :label="t(date.label)" :type="date.type" required>
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
@@ -183,13 +178,5 @@ legend,
 
 :deep(fieldset label p) {
     font-size: 14px;
-}
-
-:deep(label:has(input[type="text"]:not(:required)) p::after),
-label:has(textarea) p::after {
-    content: "(optional)";
-    margin-left: 10px;
-    color: var(--color-text-secondary);
-    font-size: small;
 }
 </style>

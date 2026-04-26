@@ -11,7 +11,6 @@ export default {
         },
         text: {
             noEventText: "You don't have any event scheduled.",
-            noVetText: "You have not registered any vet yet."
         },
         header: {
             greetings: "Welcome",
@@ -122,6 +121,8 @@ export default {
             addVetVisit: "Add vet appointment",
             editVaccine: "Edit vaccine",
             editVetVisit: "Edit {name}'s vet appointment",
+            addVet: "Add vet",
+            editVet: "Edit {name}",
             myVets: "My vets",
         },
         cta: {
@@ -129,6 +130,8 @@ export default {
             deleteVaccine: "Delete vaccine",
             saveVisit: "Save vet visit",
             deleteVisit: "Delete vet visit",
+            saveVet: "Save {name}",
+            deleteVet: "Delete vet"
         },
         vaccineForm: {
             types: "Vaccine",
@@ -150,10 +153,28 @@ export default {
             placeholderVet: "Type your vet's name...",
             chooseExisting: "Pick from my vets"
         },
+        vetForm: {
+            name: "Name",
+            address1: "Address line 1",
+            address2: "Address line 2",
+            city: "Town/City",
+            postCode: "Postcode",
+            types: "Vet role(s)",
+            assignedPets: "Assigned pet(s)",
+            notes: "Notes",
+            phone: "Phone number",
+            email: "Email",
+            hours: "Working hours"
+        },
         stage: {
             adult: "Adult",
             young: "Young",
-        }
+        },
+        vetTypes: {
+            primary: "Primary",
+            secondary: "Secondary",
+            emergency: "Emergency"
+        },
     },
     events: {
         upcoming: "Upcoming",
@@ -172,9 +193,9 @@ export default {
             },
             message: {
                 userAuthenticated: "You have been successfully logged in.",
-                petAdded: "{name} has been successfully added",
-                petUpdated: "{name} has been successfully updated",
-                petDeleted: "{name} has been successfully deleted",
+                nameAdded: "{name} has been successfully added",
+                nameUpdated: "{name} has been successfully updated",
+                nameDeleted: "{name} has been successfully deleted",
                 vaccineAdded: "{name}'s {type} successfully added",
                 vaccineUpdated: "{name}'s {type} successfully updated",
                 vaccineDeleted: "{name}'s {type} has been successfully deleted",
@@ -204,7 +225,11 @@ export default {
         deleteVetVisit: {
             title: "Delete {title} ?",
             message: "This will remove {name}'s {title}. This action cannot be undone. Are you sure you'd like to proceed?",
-        }
+        },
+        deleteVet: {
+            title: "Delete {name} ?",
+            message: "This will remove {name}'s contact information. This action cannot be undone. Are you sure you'd like to proceed?",
+        },
     },
     tsToDate: {
         today: "Today",

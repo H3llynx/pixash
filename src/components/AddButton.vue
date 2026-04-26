@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Plus, X } from '@lucide/vue';
+import { Plus } from '@lucide/vue';
 import { ref } from 'vue';
 import AddMenu from './AddMenu.vue';
 
@@ -14,8 +14,7 @@ const props = withDefaults(defineProps<{
     <button tabindex="0"
         class="fixed bottom-6 md:bottom-2 right-1 md:right-1.5 z-1 w-3.5 h-3.5 rounded-full shadow-lg text-bg flex items-center gap-[5px] justify-center"
         ref="menuBtnRef" @click="visible = !visible">
-        <X v-if="visible" :size="32" />
-        <Plus v-else :size="32" />
+        <Plus :size="32" :class="{ 'rotate-45': visible, 'default-transition': true }" />
     </button>
     <AddMenu v-model:visible="visible" :toggleRef="menuBtnRef" :vet="props.vet" />
 </template>

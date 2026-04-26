@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useMedia } from '../../../composables/useMedia';
 import HealthCard from '../../health/components/HealthCard.vue';
-import { usePets } from '../composables/usePet';
+import { usePets } from '../composables/usePets';
 import PetSelector from './PetSelector.vue';
 import ProfileSection from './ProfileSection.vue';
 

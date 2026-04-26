@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { useMedia } from '../../../composables/useMedia';
 import { resetState } from '../../../utils';
-import { usePets } from '../../pets/composables/usePet';
+import { usePets } from '../../pets/composables/usePets';
 
 const { isAddingHealth } = usePets();
 const { t } = useI18n();

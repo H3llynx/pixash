@@ -11,11 +11,11 @@ import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
 import { dateFromInput, getOneYearLaterInput, shallowEqual, tsToDate } from '../../../utils';
 import PetSelector from '../../pets/components/PetSelector.vue';
-import { usePets } from '../../pets/composables/usePet';
+import { usePets } from '../../pets/composables/usePets';
 import { getAge, getIcon } from '../../pets/utils';
 import { STAGE, VACCINE_TYPES, vaccineFields } from '../config';
 import type { VaccineTypes } from '../types';
-import { getVaccineTypes, showTypes } from '../utils';
+import { getVaccineTypes, resetForm, showTypes } from '../utils';
 import VetFormSelector from './VetFormSelector.vue';
 
 const { selectedPet, isAddingHealth, vets, selectedVet, selectedVaccine, selectVaccine, addNewVaccine, healthError, healthLoading, updateSelectedVaccine, deleteSelectedVaccine, selectedDate } = usePets();
@@ -39,9 +39,6 @@ const defaultForm = {
     notes: "",
 };
 const formData = reactive({ ...defaultForm });
-const resetForm = () => {
-    Object.assign(formData, defaultForm)
-};
 
 const handleClose = () => {
     error.value = false;
@@ -76,7 +73,7 @@ const handleSubmit = async () => {
         }
     }
     catch (e) {
-        show({ type: "error", title: "Error", message: healthError.value || "" });
+        show({ type: "error", title: t("error.genericTitle"), message: healthError.value || "" });
     };
 };
 
@@ -96,25 +93,23 @@ const handleDelete = async () => {
                     title: t("toast.success.title.generic"),
                     message: t("toast.success.message.vaccineDeleted", { name: pet.name, type: showTypes(vaccine.types, pet) }),
                 });
-            } catch (error) { console.log(error) }
+            } catch (error) {
+                show({ type: "error", title: t("error.genericTitle"), message: healthError.value || "" });
+            }
         }
     });
 };
 
-watch(() => [isAddingHealth.vaccine, selectedVaccine.value],
-    ([adding, editing]) => {
+watch([() => isAddingHealth.vaccine, selectedVaccine],
+    async ([adding, editing]) => {
         if (editing || adding) {
-            nextTick(() => {
-                const petInputs = vaccineSelectorRef.value?.querySelectorAll("input");
-                if (petInputs) petInputs[0].focus();
-            });
+            await nextTick();
+            const firstInput = vaccineSelectorRef.value?.querySelector("input") as HTMLInputElement | null;
+            firstInput?.focus();
         }
         if (adding) {
-            nextTick(() => {
-                if (selectedDate.value) formData.dueOn = selectedDate.value;
-                if (selectedVet.value) formData.vet = selectedVet.value.id;
-                if (vets.value && !selectedVet.value) formData.vet = vets.value[0].id;
-            });
+            formData.dueOn = selectedDate.value ?? "";
+            formData.vet = selectedVet.value?.id ?? vets.value?.[0]?.id ?? "";
         }
     }
 );
@@ -122,7 +117,7 @@ watch(() => [isAddingHealth.vaccine, selectedVaccine.value],
 watch(() => [selectedPet.value, selectedVaccine.value] as const,
     ([pet, vaccine]) => {
         if (!pet) {
-            resetForm();
+            resetForm(formData, defaultForm);
             return;
         };
         const options = getVaccineTypes(pet.species);
@@ -143,14 +138,12 @@ watch(() => [selectedPet.value, selectedVaccine.value] as const,
             });
         }
         else {
-            resetForm();
+            resetForm(formData, defaultForm);
             Object.assign(formData, {
                 types: [vaccineTypes.value[0].id],
                 stage: getAge(pet)?.stage,
                 dueOn: selectedDate.value ?? "",
-                vet: selectedVet.value
-                    ? selectedVet.value.id
-                    : vets.value ? vets.value[0].id : ""
+                vet: selectedVet.value?.id ?? vets.value?.[0]?.id ?? ""
             });
         }
     },
@@ -257,13 +250,5 @@ legend,
 
 :deep(fieldset label p) {
     font-size: 14px;
-}
-
-:deep(label:has(input[type="text"]:not(:required)) p::after),
-label:has(textarea) p::after {
-    content: "(optional)";
-    margin-left: 10px;
-    color: var(--color-text-secondary);
-    font-size: small;
 }
 </style>

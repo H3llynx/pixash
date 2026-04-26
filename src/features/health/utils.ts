@@ -4,6 +4,10 @@ import type { PetExtended } from "../pets/types";
 import { VACCINE_TYPES } from "./config";
 import type { VaccineExtended, VaccineTypes, VisitExtended } from "./types";
 
+export const resetForm = <T extends object>(formData: T, defaultForm: T) => {
+    Object.assign(formData, defaultForm)
+};
+
 export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default") => {
     if (!species) return;
     const specific = VACCINE_TYPES[species as keyof typeof VACCINE_TYPES] ?? [];

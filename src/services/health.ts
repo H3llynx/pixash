@@ -1,8 +1,10 @@
-import { addDoc, collection, collectionGroup, deleteDoc, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, collectionGroup, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where } from "firebase/firestore";
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
-import type { VaccineExtended, VaccineRecord, VisitExtended, VisitRecord } from "../features/health/types";
+import type { VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../features/health/types";
 import { tsFromInput } from "../utils";
+
+const getVaccineDoc = (userId: string, petId: string, vaccineId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
 
 export const fetchVaccines = async (userId: string): Promise<VaccineExtended[]> => {
     try {
@@ -59,7 +61,7 @@ export const updateVaccine = async (
         notes: data.notes,
     };
     try {
-        const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
+        const docRef = getVaccineDoc(userId, petId, vaccineId);
         await updateDoc(docRef, updated);
     } catch (error) {
         console.error("Error updating vaccine: ", error);
@@ -68,12 +70,14 @@ export const updateVaccine = async (
 
 export const deleteVaccine = async (vaccineId: string, petId: string, userId: string) => {
     try {
-        const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
-        await deleteDoc(docRef);
+        await deleteDoc(getVaccineDoc(userId, petId, vaccineId));
     } catch (error) {
         console.error("Error deleting vaccine: ", error);
     }
 };
+
+
+const getVisitDoc = (userId: string, petId: string, visitId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.vetVisits, visitId);
 
 export const addVetVisit = async (visit: VisitRecord, petId: string, userId: string) => {
     const newVisit = {
@@ -126,7 +130,7 @@ export const updateVetVisit = async (
         notes: data.notes,
     };
     try {
-        const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vetVisits, visitId);
+        const docRef = getVisitDoc(userId, petId, visitId);
         await updateDoc(docRef, updated);
     } catch (error) {
         console.error("Error updating vet appointment: ", error);
@@ -135,9 +139,74 @@ export const updateVetVisit = async (
 
 export const deleteVisit = async (visitId: string, petId: string, userId: string) => {
     try {
-        const docRef = doc(db, DB.users, userId, DB.pets, petId, DB.vetVisits, visitId);
-        await deleteDoc(docRef);
+        await deleteDoc(getVisitDoc(userId, petId, visitId));
     } catch (error) {
         console.error("Error deleting vet appointment: ", error);
+    }
+};
+
+const getVetCollection = (userId: string) => collection(db, DB.users, userId, DB.vets);
+const getVetDoc = (userId: string, vetId: string) => doc(db, DB.users, userId, DB.vets, vetId);
+
+export const fetchVets = async (userId: string): Promise<VetExtended[]> => {
+    try {
+        const snapshot = await getDocs(getVetCollection(userId));
+        if (snapshot.empty) {
+            console.log("No vets found");
+            return [];
+        }
+        return snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data() as Omit<VetExtended, "id">
+        }));
+    } catch (error) {
+        console.error("Fetch vets error:", error);
+        return [];
+    }
+};
+
+export const addVet = async (vet: Vet, userId: string) => {
+    const newPet = {
+        name: vet.name,
+        address1: vet.address1,
+        address2: vet.address2,
+        city: vet.city,
+        postCode: vet.postCode,
+        types: vet.types,
+        notes: vet.notes,
+        assignedPets: vet.assignedPets,
+        phone: vet.phone,
+        email: vet.email,
+        hours: vet.hours,
+        ownerUid: userId,
+        createdAt: serverTimestamp()
+    };
+    try {
+        const docRef = await addDoc(getVetCollection(userId), newPet);
+        return docRef.id;
+    } catch (error) {
+        console.error("Error adding vet: ", error);
+    }
+};
+
+export const updateVet = async (
+    vetId: string,
+    userId: string,
+    data: Partial<Vet>
+) => {
+    try {
+        const docRef = getVetDoc(userId, vetId);
+        await updateDoc(docRef, data);
+    } catch (error) {
+        console.error("Error updating vet: ", error);
+    }
+};
+
+export const deleteVet = async (vetId: string, userId: string) => {
+    try {
+        await deleteDoc(getVetDoc(userId, vetId));
+    } catch (error) {
+        console.error("Error deleting vet: ", error);
+        throw error;
     }
 };

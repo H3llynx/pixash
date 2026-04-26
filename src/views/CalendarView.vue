@@ -9,7 +9,7 @@ import CalendarLegend from '../features/health/components/CalendarLegend.vue';
 import EventList from '../features/health/components/EventList.vue';
 import { showTypes } from '../features/health/utils';
 import PetSelector from '../features/pets/components/PetSelector.vue';
-import { usePets } from '../features/pets/composables/usePet';
+import { usePets } from '../features/pets/composables/usePets';
 import { getIcon } from '../features/pets/utils';
 import { tsToDate } from '../utils';
 

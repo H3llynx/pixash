@@ -3,9 +3,12 @@ import { DB } from '../config/config';
 import { db } from "../config/firebase";
 import type { Pet, PetExtended } from '../features/pets/types';
 
+const getCollection = (userId: string) => collection(db, DB.users, userId, DB.pets)
+const getDoc = (userId: string, petId: string) => doc(db, DB.users, userId, DB.pets, petId);
+
 export const fetchPets = async (userId: string): Promise<PetExtended[]> => {
   try {
-    const snapshot = await getDocs(collection(db, DB.users, userId, DB.pets));
+    const snapshot = await getDocs(getCollection(userId));
     if (snapshot.empty) {
       console.log("No pets found");
       return [];
@@ -33,7 +36,7 @@ export const addPet = async (pet: Pet, userId: string) => {
     createdAt: serverTimestamp()
   };
   try {
-    const docRef = await addDoc(collection(db, DB.users, userId, DB.pets), newPet);
+    const docRef = await addDoc(getCollection(userId), newPet);
     return docRef.id;
   } catch (error) {
     console.error("Error adding pet: ", error);
@@ -46,7 +49,7 @@ export const updatePet = async (
   data: Partial<Pet>
 ) => {
   try {
-    const docRef = doc(db, DB.users, userId, DB.pets, petId);
+    const docRef = getDoc(userId, petId);
     await updateDoc(docRef, data);
   } catch (error) {
     console.error("Error updating pet: ", error);
@@ -59,7 +62,7 @@ export const deletePetField = async (
   field: keyof Pet
 ) => {
   try {
-    const docRef = doc(db, DB.users, userId, DB.pets, petId);
+    const docRef = getDoc(userId, petId);
     await updateDoc(docRef, {
       [field]: deleteField()
     });
@@ -70,7 +73,7 @@ export const deletePetField = async (
 
 export const deletePet = async (petId: string, userId: string) => {
   try {
-    const petRef = doc(db, DB.users, userId, DB.pets, petId);
+    const petRef = getDoc(userId, petId);
 
     await Promise.all([
       deleteSubcollection(petRef, DB.vaccines),

@@ -8,7 +8,7 @@ import DashboardSkeleton from '../components/loading/DashboardSkeleton.vue';
 import { useMedia } from '../composables/useMedia';
 import EventList from '../features/health/components/EventList.vue';
 import PetSummary from '../features/pets/components/PetSummary.vue';
-import { usePets } from '../features/pets/composables/usePet';
+import { usePets } from '../features/pets/composables/usePets';
 import { resetState, tsToDate } from '../utils';
 
 const { loading, hasPets, selectedPet, vaccines, vetVisits, isAddingPet, isAddingHealth, isUpdatingPet, selectVaccine, selectVisit } = usePets();

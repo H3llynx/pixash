@@ -4,7 +4,7 @@ import { computed } from 'vue';
 import Button from '../../../components/Button.vue';
 import { tsToDate } from '../../../utils';
 import PetIndicator from '../../pets/components/PetIndicator.vue';
-import { usePets } from '../../pets/composables/usePet';
+import { usePets } from '../../pets/composables/usePets';
 import type { PetEvent, VaccineExtended, VisitExtended } from '../types';
 import { showTypes } from '../utils';
 import DateTag from './DateTag.vue';

@@ -59,10 +59,10 @@ export type PetEvent = {
 export type Vet = {
     name: string;
     address1: string;
-    address2: string;
+    address2?: string;
     city: string;
     postCode: string;
-    types: string[];
+    types?: string[];
     notes?: string;
     assignedPets?: string[];
     phone?: string;

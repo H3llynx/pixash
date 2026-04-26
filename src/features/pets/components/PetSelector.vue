@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import { useMedia } from '../../../composables/useMedia';
-import { usePets } from '../composables/usePet';
+import { usePets } from '../composables/usePets';
 import type { PetExtended } from '../types';
 import { getIcon } from '../utils';
 

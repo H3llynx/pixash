@@ -75,6 +75,7 @@
 
   --color-logo-bg: var(--color-green-mid);
   --color-logo-text: var(--color-gold);
+  --color-blue: #185fa5;
 }
 
 [data-theme="dark"] {
@@ -107,6 +108,7 @@
 
   --color-logo-bg: var(--color-gold);
   --color-logo-text: var(--color-purple-dark);
+  --color-blue: rgb(140, 188, 236);
 }
 
 @utility default-transition {
@@ -201,6 +203,12 @@
   }
 
   label {
+    &:not(:has(input[type="radio"], input[type="checkbox"])) {
+      width: 100%
+    }
+
+    ;
+
     &:has(input[type="radio"], input[type="checkbox"]) {
       cursor: pointer;
 
@@ -228,11 +236,26 @@
     &:has(input[type="radio"]:checked, input[type="checkbox"]:checked) p {
       background: var(--color-brand-light);
     }
+
+    &:has(input:not(input[type="radio"], input[type="checkbox"]):not(:required)) p::after,
+    &:has(textarea) p::after {
+      content: "(optional)";
+      margin-left: 10px;
+      color: var(--color-text-secondary);
+      font-size: small;
+    }
   }
 
   fieldset {
     display: flex;
     gap: 0 5px;
+
+    &:has(input:not(required)) legend::after {
+      content: "(optional)";
+      margin-left: 10px;
+      color: var(--color-text-secondary);
+      font-size: small;
+    }
   }
 
   h1,

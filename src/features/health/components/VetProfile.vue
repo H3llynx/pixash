@@ -4,7 +4,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { useMedia } from '../../../composables/useMedia';
-import { usePets } from '../../pets/composables/usePet';
+import { usePets } from '../../pets/composables/usePets';
 import PetTag from './PetTag.vue';
 import VetTypeTag from './VetTypeTag.vue';
 
@@ -42,7 +42,7 @@ const handleMaps = () => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 max-w-full md:w-sm md:shrink-0">
+    <div class="flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 w-full md:w-sm shrink-0">
         <div class="flex items-start gap-0.5 py-1">
             <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                 <BriefcaseMedical />
@@ -50,7 +50,8 @@ const handleMaps = () => {
             <div class="px-1 text-text-secondary text-sm">
                 <div class="flex gap-0.5 items-start">
                     <h1>{{ vet.name }}</h1>
-                    <Button variant="ghost" size="xs" :aria-label="t('vet.cta.edit', { name: vet.name })">
+                    <Button variant="ghost" size="xs" :aria-label="t('vet.cta.edit', { name: vet.name })"
+                        @click="selectedVet = vet">
                         <Edit2 :size="14" />
                     </Button>
                 </div>
@@ -67,27 +68,27 @@ const handleMaps = () => {
             <VetTypeTag v-for="type in vet.types" :type="type" />
         </div>
         <div class="text-sm">
-            <div class="profile-row" v-if="vet.email">
+            <div class="profile-row">
                 <span>{{ t("vet.label.email") }}</span>
-                <Button variant="ghost" size="xs" class="truncate" @click="handleMail"
+                <Button v-if="vet.email" variant="ghost" size="xs" class="truncate" @click="handleMail"
                     :aria-label="t('vet.cta.email', { name: vet.name })">
                     <Mail :size="16" class="shrink-0" />
                     <span :class="{ 'text-xs': isMd, truncate: true }">{{ vet.email }}</span>
                 </Button>
             </div>
-            <div class="profile-row" v-if="vet.phone">
+            <div class="profile-row">
                 <span>{{ t("vet.label.phone") }}</span>
-                <span class="text-brand-light font-medium">{{ vet.phone }}</span>
+                <span v-if="vet.phone" class="text-blue font-medium">{{ vet.phone }}</span>
             </div>
-            <div class="profile-row" v-if="vet.hours">
+            <div class="profile-row">
                 <span>{{ t("vet.label.hours") }}</span>
-                <span :class="{ 'text-xs': isMd, 'text-right': true }">{{ vet.hours }}</span>
+                <span v-if="vet.hours" :class="{ 'text-xs': isMd, 'text-right': true }">{{ vet.hours }}</span>
             </div>
         </div>
-        <span v-if="vet.notes" class="text-sm py-0.5 px-1 text-text-secondary bg-bg rounded-lg">{{
+        <span v-if="vet.notes" class="text-sm mt-auto italic py-0.5 px-1 text-text-secondary bg-bg rounded-lg">{{
             vet.notes
-        }}</span>
-        <div class="flex gap-0.5 mt-auto pt-1 border-t border-separator">
+            }}</span>
+        <div class="flex gap-0.5 pt-1 mt-auto border-t border-separator">
             <Button variant="vetOptions" size="vetOptions" @click="handleMaps">
                 {{ t("vet.cta.maps") }}
             </Button>

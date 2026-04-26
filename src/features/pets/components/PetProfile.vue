@@ -7,7 +7,7 @@ import Loading from '../../../components/loading/Loading.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
 import { tsToDate } from '../../../utils';
-import { usePets } from '../composables/usePet';
+import { usePets } from '../composables/usePets';
 import type { PetExtended } from '../types';
 import { getAge, getIcon, getWeight } from '../utils';
 import UpdatePetDetail from './UpdatePetDetail.vue';
@@ -42,7 +42,7 @@ const handleDelete = async () => {
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.petDeleted", { name: props.pet.name }),
+                    message: t("toast.success.message.nameDeleted", { name: props.pet.name }),
                 });
             } catch (error) { console.log(error) }
         }

@@ -88,7 +88,6 @@ export const petFields = {
     name: {
         id: "pet-name",
         label: "pet.form.name",
-        type: "text",
     },
     species: {
         id: "pet-species",

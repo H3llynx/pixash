@@ -10,7 +10,8 @@ import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
 import Toggle from '../../../components/Toggle.vue';
 import { useToast } from '../../../composables/useToast';
 import { shallowEqual } from '../../../utils';
-import { usePets } from '../composables/usePet';
+import { resetForm } from '../../health/utils';
+import { usePets } from '../composables/usePets';
 import { petFields } from '../config';
 import type { Pet } from '../types';
 
@@ -34,9 +35,7 @@ const defaultForm: Pet = {
     microchipped: false,
 };
 const formData = reactive<Pet>({ ...defaultForm });
-const resetForm = () => {
-    Object.assign(formData, defaultForm)
-};
+
 const getBreedOptions = (species: string) => {
     if (species === "dog") return breed.dogOptions;
     if (species === "cat") return breed.catOptions;
@@ -54,7 +53,7 @@ const handleSubmit = async () => {
             show({
                 type: "success",
                 title: t("toast.success.title.generic"),
-                message: t("toast.success.message.petAdded", { name: formData.name }),
+                message: t("toast.success.message.nameAdded", { name: formData.name }),
             });
         } else if (selectedPet.value && !shallowEqual(formData, selectedPet.value)) {
             await updateSelectedPet(selectedPet.value, formData);
@@ -63,11 +62,11 @@ const handleSubmit = async () => {
             show({
                 type: "success",
                 title: t("toast.success.title.generic"),
-                message: t("toast.success.message.petUpdated", { name: formData.name }),
+                message: t("toast.success.message.nameUpdated", { name: formData.name }),
             });
         }
     } catch (e) {
-        show({ type: "error", title: "Error", message: error.value || "" });
+        show({ type: "error", title: t("error.genericTitle"), message: error.value || "" });
     }
 };
 
@@ -88,7 +87,7 @@ watch(() => [isAddingPet.value, isUpdatingPet.value],
 
 watch(existingPet, (pet) => {
     if (!pet) {
-        resetForm();
+        resetForm(formData, defaultForm);
         return;
     }
     Object.assign(formData, {
@@ -132,8 +131,7 @@ watch(() => formData.species, () => {
                         </div>
                     </fieldset>
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-model="formData.name" :id="name.id" :type="name.type" :label="t(name.label)"
-                            required />
+                        <Input v-model="formData.name" :id="name.id" :label="t(name.label)" required />
                         <Dropdown v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="t(breed.label)"
                             required>
                             <option value="" disabled>{{ t(breed.placeholder) }}</option>

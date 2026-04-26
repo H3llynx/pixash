@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n';
 import Scrollable from '../../../components/Scrollable.vue';
 import { useMedia } from '../../../composables/useMedia';
-import { usePets } from '../composables/usePet';
+import { usePets } from '../composables/usePets';
 import PetProfile from './PetProfile.vue';
 
 const { selectedPet, pets } = usePets();

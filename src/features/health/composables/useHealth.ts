@@ -1,46 +1,17 @@
 import { FirebaseError } from "firebase/app";
 import { reactive, ref, type Ref } from "vue";
-import { addVaccine, addVetVisit, deleteVaccine, deleteVisit, fetchVaccines, fetchVetVisits, updateVaccine, updateVetVisit } from "../../../services/health";
+import { addVaccine, addVet, addVetVisit, deleteVaccine, deleteVet, deleteVisit, fetchVaccines, fetchVets, fetchVetVisits, updateVaccine, updateVet, updateVetVisit } from "../../../services/health";
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { VaccineExtended, VaccineRecord, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getNextVaccine, getNextVisit } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
     const { user } = useAuth();
     const vaccines = ref<VaccineExtended[]>([]);
     const vetVisits = ref<VisitExtended[]>([]);
-    const vets = ref<VetExtended[]>([
-        {
-            id: "1",
-            name: "ExoTik",
-            address1: "Passatge Posoltega 1",
-            address2: "bajos",
-            city: "Barcelona",
-            postCode: "08033",
-            types: ["secondary"],
-            notes: "Emergency number: 93 462 18 28",
-            assignedPets: [],
-            phone: "933 45 58 53",
-            email: "veterinarilamaquinista@gmail.com",
-            hours: "M-F: 10h - 20.30h\nS: 10h - 13:30h",
-        },
-        {
-            id: "2",
-            name: "La maquinista Veterinaria",
-            address1: "Passatge Posoltega 1",
-            address2: "bajos",
-            city: "Barcelona",
-            postCode: "08033",
-            types: ["primary"],
-            notes: "Emergency number: 93 462 18 28",
-            assignedPets: ["2NTFmHHMSLeKysDuGn48"],
-            phone: "933 45 58 53",
-            email: "veterinarilamaquinista@gmail.com",
-            hours: "M-F: 10h - 20.30h\nS: 10h - 13:30h",
-        }
-    ]);
+    const vets = ref<VetExtended[]>([]);
     const selectedVaccine = ref<VaccineExtended | null>(null);
     const selectedVisit = ref<VisitExtended | null>(null);
     const selectedVet = ref<VetExtended | null>(null);
@@ -48,6 +19,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const loading = ref<boolean>(false);
     const error = ref<string | null>(null);
     const isAddingHealth = reactive({
+        vet: false,
         vaccine: false,
         visit: false,
         treatment: false
@@ -180,5 +152,47 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         })
     };
 
-    return { error, loading, vaccines, vetVisits, vets, selectedVaccine, selectedVisit, selectVaccine, selectVisit, isAddingHealth, fetchUserVaccines, addNewVaccine, updateSelectedVaccine, deleteSelectedVaccine, fetchUserVisits, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, selectedDate, selectedVet };
+    const fetchUserVets = async () => {
+        await handleHealthAction(async () => {
+            loading.value = true;
+            vets.value = await fetchVets(user.value!.uid);
+        },
+            () => loading.value = false
+        );
+    };
+
+    const addNewVet = async (newVet: Vet) => {
+        await handleHealthAction(async () => {
+            loading.value = true;
+            await addVet(newVet, user.value!.uid);
+            await fetchUserVets();
+        }, () => {
+            loading.value = false;
+            isAddingHealth.vet = false
+        });
+    };
+
+    const updateSelectedVet = async (vet: VetExtended, data: Partial<Vet>) => {
+        await handleHealthAction(async () => {
+            await updateVet(vet.id, user.value!.uid, data)
+            const index = vets.value.findIndex(v => v.id === vet.id);
+            const updatedVet: VetExtended = {
+                ...vets.value[index],
+                ...data,
+            };
+            vets.value.splice(index, 1, updatedVet);
+        });
+    };
+
+    const deleteSelectedVet = async (vet: VetExtended) => {
+        await handleHealthAction(async () => {
+            loading.value = true;
+            if (selectedVet.value) selectedVet.value = null;
+            await deleteVet(vet.id, user.value!.uid);
+            await fetchUserVets();
+        }, () => loading.value = false
+        );
+    };
+
+    return { error, loading, vaccines, vetVisits, vets, selectedVaccine, selectedVisit, selectVaccine, selectVisit, isAddingHealth, fetchUserVaccines, addNewVaccine, updateSelectedVaccine, deleteSelectedVaccine, fetchUserVisits, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, selectedDate, selectedVet, fetchUserVets, addNewVet, updateSelectedVet, deleteSelectedVet };
 };

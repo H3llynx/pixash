@@ -36,7 +36,13 @@ const {
   selectedDate,
   vets,
   selectedVet,
+  fetchUserVets,
+  addNewVet,
+  updateSelectedVet,
+  deleteSelectedVet
 } = useHealth(pets);
+
+const hasVets = computed(() => vets.value.length > 0);
 
 const selectPet = (pet: PetExtended | null) => {
   isAddingPet.value = false;
@@ -130,10 +136,13 @@ const deleteSelectedPetField = async (pet: PetExtended, data: keyof Pet) => {
 watch(user, async (newUser) => {
   if (!newUser) {
     pets.value = [];
+    vets.value = [];
     vaccines.value = [];
+    vetVisits.value = [];
     selectPet(null);
   } else {
     await fetchUserPets();
+    await fetchUserVets();
   }
 }, { immediate: true });
 
@@ -191,6 +200,10 @@ export const usePets = () => {
     deleteSelectedVisit,
     selectedDate,
     vets,
-    selectedVet
+    selectedVet,
+    addNewVet,
+    updateSelectedVet,
+    hasVets,
+    deleteSelectedVet,
   };
 };
