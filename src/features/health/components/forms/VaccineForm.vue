@@ -73,7 +73,7 @@ const handleSubmit = async () => {
         }
     }
     catch (e) {
-        show({ type: "error", title: t("error.genericTitle"), message: healthError.value || "" });
+        show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
     };
 };
 
@@ -94,7 +94,7 @@ const handleDelete = async () => {
                     message: t("toast.success.message.vaccineDeleted", { name: pet.name, type: showTypes(vaccine.types, pet) }),
                 });
             } catch (error) {
-                show({ type: "error", title: t("error.genericTitle"), message: healthError.value || "" });
+                show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
             }
         }
     });
@@ -223,11 +223,11 @@ watch(() => formData.given, () => {
                         <div class="flex gap-1 mt-1 items-center">
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name
-                                    }} · {{
+                                }} · {{
                                         showTypes(formData.types, selectedPet) }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.vaccineForm.dueDate")
-                                    }}:
+                                }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>

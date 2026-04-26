@@ -94,9 +94,10 @@ export default {
                 generalInformation: "información general",
             },
             edit: {
-                weight: "actualizar el peso de {name}",
-                microchip: "editar el microchip de {name}",
-                generalInformation: "editar la información general de {name}",
+                weight: "Actualizar el peso de {name}",
+                microchip: "Editar el microchip de {name}",
+                generalInformation: "Editar la información general de {name}",
+                nextVaccine: "Editar o añadir próxima vacuna",
             }
         },
         form: {

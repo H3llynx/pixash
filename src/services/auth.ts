@@ -6,6 +6,7 @@ import {
     updateProfile
 } from "firebase/auth"
 import { auth } from '../config/firebase'
+import type { ProfileData } from "../features/user/types"
 
 type Auth = {
     name?: string
@@ -28,4 +29,12 @@ export const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
     const userCredential = await signInWithPopup(auth, provider);
     return userCredential.user;
+}
+
+export async function updateUserProfile(item: ProfileData, data: string) {
+    const user = auth.currentUser;
+    if (!user) {
+        throw new Error("No authenticated user");
+    }
+    await updateProfile(user, { [item]: data });
 }

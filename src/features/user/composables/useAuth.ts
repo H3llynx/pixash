@@ -2,7 +2,8 @@ import { FirebaseError } from 'firebase/app';
 import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { computed, ref } from 'vue';
 import { auth } from "../../../config/firebase";
-import { handleEmailLogin, handleEmailRegister, handleGoogleLogin } from "../../../services/auth";
+import { handleEmailLogin, handleEmailRegister, handleGoogleLogin, updateUserProfile } from "../../../services/auth";
+import type { ProfileData } from '../types';
 
 const firebaseUser = ref<User | null>(null);
 const loading = ref<boolean>(true);
@@ -54,9 +55,23 @@ export const useAuth = () => {
         await handleAuthAction(() => handleGoogleLogin());
     };
 
-    async function logout() {
+    const logout = async () => {
         await signOut(auth);
     };
 
-    return { authReady, user, loading, error, loginWithEmail, registerWithEmail, loginWithGoogle, logout }
+    const updateUser = async (item: ProfileData, data: string) => {
+        if (!firebaseUser.value) return;
+        try {
+            await updateUserProfile(item, data);
+            firebaseUser.value = {
+                ...firebaseUser.value,
+                [item]: data,
+            };
+        } catch (e) {
+            if (e instanceof FirebaseError) error.value = e.message;
+            else error.value = "An unexpected error occurred";
+        }
+    };
+
+    return { authReady, user, firebaseUser, updateUser, loading, error, loginWithEmail, registerWithEmail, loginWithGoogle, logout }
 }

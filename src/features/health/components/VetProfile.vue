@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { BriefcaseMedical, CheckCircle, Edit2, Mail, PenLine, Plus } from '@lucide/vue';
-import { onClickOutside } from '@vueuse/core';
-import { computed, ref } from 'vue';
+import { BriefcaseMedical, Edit2, Mail, Plus } from '@lucide/vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { useMedia } from '../../../composables/useMedia';
@@ -9,6 +8,7 @@ import { resetState } from '../../../utils';
 import { usePets } from '../../pets/composables/usePets';
 import AddVetDetail from './forms/AddVetDetail.vue';
 import PetTag from './PetTag.vue';
+import VetNotes from './VetNotes.vue';
 import VetTypeTag from './VetTypeTag.vue';
 
 const { pets, isAddingHealth, selectedVet, isUpdatingVet, updateSelectedVet } = usePets();
@@ -17,18 +17,9 @@ const { isMd } = useMedia();
 
 const props = defineProps<{ vet: any }>();
 
-const isUpdatingNotes = ref<boolean>(false);
-const notesData = ref<string>(props.vet.notes);
-const notesRef = ref<HTMLTextAreaElement>();
-const toggleRef = ref<HTMLButtonElement>();
-
 const assignedPets = computed(() => {
     return pets.value.filter(pet => props.vet.assignedPets.includes(pet.id));
 });
-
-onClickOutside(notesRef, () => {
-    if (isUpdatingNotes.value) isUpdatingNotes.value = false;
-}, { ignore: [toggleRef] });
 
 const handleVisit = () => {
     selectedVet.value = props.vet;
@@ -53,24 +44,11 @@ const handleMaps = () => {
     window.open(mapsUrl, '_blank');
 };
 
-const toggleNoteEdit = () => {
-    isUpdatingNotes.value = !isUpdatingNotes.value;
-    if (isUpdatingNotes.value) {
-        notesRef.value?.focus();
-        notesRef.value?.setSelectionRange(notesData.value.length, notesData.value.length);
-
-    }
-};
 const handleVetUpdate = () => {
     resetState(isAddingHealth);
     selectedVet.value = props.vet;
     isUpdatingVet.value = true;
 };
-
-const handleNoteEdit = async () => {
-    if (notesData.value === props.vet.notes) return;
-    await updateSelectedVet(props.vet, { notes: notesData.value });
-}
 </script>
 
 <template>
@@ -121,15 +99,7 @@ const handleNoteEdit = async () => {
             </div>
         </div>
         <div class="mt-auto flex flex-col gap-0.5">
-            <Button variant="vetOptions" size="xs" @click="toggleNoteEdit"
-                :class="isUpdatingNotes ? 'bg-brand-rgba' : 'bg-bg'"
-                :aria-label="isUpdatingNotes ? t('vet.cta.saveNotes') : t('vet.cta.notes')" ref="toggleRef">
-                <CheckCircle v-if="isUpdatingNotes" />
-                <PenLine v-else />
-            </Button>
-            <textarea v-model="notesData" :readonly="!isUpdatingNotes" ref="notesRef"
-                :placeholder="t('vet.notesPlaceholder')" class="italic py-0.5 px-1 text-text-secondary border-0"
-                @change="handleNoteEdit" />
+            <VetNotes :vet="vet" />
             <div class="flex gap-0.5 pt-1 border-t border-separator">
                 <Button variant="vetOptions" size="vetOptions" @click="handleMaps">
                     {{ t("vet.cta.maps") }}

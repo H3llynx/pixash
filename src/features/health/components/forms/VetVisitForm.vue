@@ -60,7 +60,7 @@ const handleSubmit = async () => {
         }
     }
     catch (e) {
-        show({ type: "error", title: t("error.genericTitle"), message: healthError.value || "" });
+        show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
     };
 };
 
@@ -81,7 +81,7 @@ const handleDelete = async () => {
                     message: t("toast.success.message.visitDeleted", { name: pet.name, title: visit.title }),
                 });
             } catch (error) {
-                show({ type: "error", title: t("error.genericTitle"), message: healthError.value || "" });
+                show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
             }
         }
     });

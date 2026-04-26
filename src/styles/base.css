@@ -419,6 +419,10 @@
       border-bottom: 1px solid var(--color-separator)
     }
   }
+
+  .dialog-box {
+    @apply bg-bg-3 p-1.5 rounded-2xl border border-border flex flex-col gap-1;
+  }
 }
 
 

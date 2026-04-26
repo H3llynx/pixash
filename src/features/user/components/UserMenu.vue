@@ -7,26 +7,39 @@ import Button from '../../../components/Button.vue';
 import { ROUTES } from '../../../router/config';
 import router from '../../../router/router';
 import { useAuth } from '../composables/useAuth';
+import NameUpdate from './NameUpdate.vue';
+import PictureUpdate from './PictureUpdate.vue';
 
 const { logout } = useAuth();
 const { t } = useI18n();
+
+const props = defineProps<{
+    toggleRef: HTMLElement | null
+}>();
+
+const visible = defineModel<boolean>("visible");
+const menuRef = ref<HTMLUListElement | null>(null);
+const isEditingName = ref<boolean>(false);
+const isEditingPicture = ref<boolean>(false);
+
+onClickOutside(menuRef, () => {
+    if (visible.value) visible.value = false;
+}, { ignore: [toRef(props, "toggleRef")] });
 
 const handleLogout = async () => {
     await logout();
     router.push(ROUTES.auth);
 };
 
-const props = defineProps<{
-    toggleRef: HTMLElement | null
-}>();
-const visible = defineModel<boolean>("visible");
+const handleEditName = () => {
+    isEditingName.value = true;
+    visible.value = false;
+};
 
-const menuRef = ref<HTMLUListElement | null>(null);
-
-onClickOutside(menuRef, () => {
-    if (visible.value) visible.value = false;
-}, { ignore: [toRef(props, "toggleRef")] });
-
+const handleEditPicture = () => {
+    isEditingPicture.value = true;
+    visible.value = false;
+}
 </script>
 
 <template>
@@ -39,17 +52,19 @@ onClickOutside(menuRef, () => {
                 </Button>
             </li>
             <li role="none">
-                <Button role="menuitem" variant="ghost" size="xs">
+                <Button role="menuitem" variant="ghost" size="xs" @click="handleEditPicture">
                     <Camera :size="20" /> {{ t("userMenu.updatePicture") }}
                 </Button>
             </li>
             <li role="none">
-                <Button role="menuitem" variant="ghost" size="xs">
+                <Button role="menuitem" variant="ghost" size="xs" @click="handleEditName">
                     <Edit2 :size="18" /> {{ t("userMenu.updateName") }}
                 </Button>
             </li>
         </ul>
     </Transition>
+    <NameUpdate v-model:nameVisible="isEditingName" />
+    <PictureUpdate v-model:picVisible="isEditingPicture" />
 </template>
 
 <style scoped>

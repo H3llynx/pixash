@@ -17,7 +17,8 @@ export default {
             calendar: "Calendar",
             vetH2: "Vet care",
             vetSpan: "Clinics, treatments & visits",
-        }
+        },
+        fileInputLabel: "Upload a picture from your device."
     },
     auth: {
         password: {
@@ -28,7 +29,12 @@ export default {
         loginWithGoogle: "Login with Google",
         register: "Register",
         switchToLogin: "I already have an account",
-        logOut: "Sign out"
+        logOut: "Sign out",
+        nameLabel: "How should we call you?",
+        namePlaceholder: "Sasha's owner",
+        emailLabel: "Email address",
+        emailPlaceholder: "ilovemypet@mail.com",
+        passwordLabel: "Password",
     },
     addMenu: {
         pet: "Add pet",
@@ -94,9 +100,10 @@ export default {
                 generalInformation: "general information",
             },
             edit: {
-                weight: "update {name}'s weight",
-                microchip: "edit {name}'s microchip",
-                generalInformation: "edit {name}'s general information",
+                weight: "Update {name}'s weight",
+                microchip: "Edit {name}'s microchip",
+                generalInformation: "Edit {name}'s general information",
+                nextVaccine: "Edit next vaccine",
             }
         },
         form: {
@@ -201,6 +208,8 @@ export default {
             },
             message: {
                 userAuthenticated: "You have been successfully logged in.",
+                usernameUpdated: "Your name has successfully be changed to {name}",
+                userPictureUpdated: "Your profile picture has been successfully updated",
                 nameAdded: "{name} has been successfully added",
                 nameUpdated: "{name} has been successfully updated",
                 nameDeleted: "{name} has been successfully deleted",
@@ -215,6 +224,7 @@ export default {
         error: {
             genericTitle: "Error",
             generic: "An unexpected error occurred",
+            userPicture: "Your picture could not be loaded. Please try again",
         }
     },
     dialog: {
