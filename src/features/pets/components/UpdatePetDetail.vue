@@ -17,7 +17,7 @@ const { t } = useI18n();
 const props = defineProps<{
     pet: PetExtended
     data: "weight" | "microchip" | "nextVaccine"
-    isUpdating: any;
+    isUpdating: Record<string, unknown>
 }>();
 
 const updateForm = ref<HTMLFormElement>();
@@ -115,8 +115,8 @@ watch(() => formData.unit,
             <Plus v-else :size="18" />
         </Button>
         <form @submit.prevent="handleSubmit(data)" @keydown.enter.exact="handleSubmit(data)"
-            v-else-if="pet === selectedPet" :aria-label="t('pet.profile.edit.' + data)" class="flex gap-0.5"
-            ref="updateForm">
+            v-else-if="pet === selectedPet" :aria-label="t('pet.profile.edit.' + data)"
+            class="profile-mini-form flex gap-0.5" ref="updateForm">
             <input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
                 :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="inputRef"
                 class="text-base">

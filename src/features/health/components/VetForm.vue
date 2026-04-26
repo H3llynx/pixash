@@ -16,7 +16,7 @@ import { vetFormFields } from '../config';
 import type { Vet } from '../types';
 import { resetForm } from '../utils';
 
-const { pets, isAddingHealth, selectedVet, healthLoading, healthError, addNewVet, updateSelectedVet, deleteSelectedVet } = usePets();
+const { pets, isAddingHealth, selectedVet, isUpdatingVet, healthLoading, healthError, addNewVet, updateSelectedVet, deleteSelectedVet } = usePets();
 const { t } = useI18n();
 const { show } = useToast();
 const { open } = useDialog();
@@ -42,8 +42,9 @@ const defaultForm: Vet = {
 const formData = reactive({ ...defaultForm });
 
 const handleClose = () => {
-    selectedVet.value = null;
+    isUpdatingVet.value = false;
     isAddingHealth.vet = false;
+    selectedVet.value = null;
 };
 
 const handleSubmit = async () => {
@@ -57,7 +58,8 @@ const handleSubmit = async () => {
             });
         } else if (selectedVet.value && !shallowEqual(formData, selectedVet.value)) {
             await updateSelectedVet(selectedVet.value, formData);
-            selectedVet.value = null;
+            isUpdatingVet.value = false;
+            selectedVet.value = null
             show({
                 type: "success",
                 title: t("toast.success.title.generic"),
@@ -120,7 +122,7 @@ watch(() => selectedVet.value,
 
 <template>
     <Transition name="panel" appear>
-        <FormWrapper v-if="isAddingHealth.vet || selectedVet" :onClose="handleClose">
+        <FormWrapper v-if="isAddingHealth.vet || (selectedVet && isUpdatingVet)" :onClose="handleClose">
             <LoadingPuppy v-if="healthLoading" />
             <div v-else class="md:max-w-max">
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">

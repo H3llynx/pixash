@@ -24,18 +24,19 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         visit: false,
         treatment: false
     });
+    const isUpdatingVet = ref<boolean>(false);
 
     const selectVaccine = (vaccine: VaccineExtended | null) => {
         resetState(isAddingHealth);
         selectedVisit.value = null;
         selectedVaccine.value = vaccine;
-    }
+    };
 
     const selectVisit = (visit: VisitExtended | null) => {
         resetState(isAddingHealth);
         selectedVaccine.value = null;
         selectedVisit.value = visit;
-    }
+    };
 
     const assignHealth = () => {
         pets.value = pets.value.map(pet => {
@@ -174,7 +175,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
 
     const updateSelectedVet = async (vet: VetExtended, data: Partial<Vet>) => {
         await handleHealthAction(async () => {
-            await updateVet(vet.id, user.value!.uid, data)
+            await updateVet(vet.id, user.value!.uid, data);
             const index = vets.value.findIndex(v => v.id === vet.id);
             const updatedVet: VetExtended = {
                 ...vets.value[index],
@@ -187,12 +188,38 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const deleteSelectedVet = async (vet: VetExtended) => {
         await handleHealthAction(async () => {
             loading.value = true;
-            if (selectedVet.value) selectedVet.value = null;
+            if (selectedVet.value === vet) selectedVet.value = null;
             await deleteVet(vet.id, user.value!.uid);
             await fetchUserVets();
         }, () => loading.value = false
         );
     };
 
-    return { error, loading, vaccines, vetVisits, vets, selectedVaccine, selectedVisit, selectVaccine, selectVisit, isAddingHealth, fetchUserVaccines, addNewVaccine, updateSelectedVaccine, deleteSelectedVaccine, fetchUserVisits, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, selectedDate, selectedVet, fetchUserVets, addNewVet, updateSelectedVet, deleteSelectedVet };
+    return {
+        error,
+        loading,
+        vaccines,
+        vetVisits,
+        selectedVaccine,
+        selectedVisit,
+        selectVaccine,
+        selectVisit,
+        isAddingHealth,
+        fetchUserVaccines,
+        addNewVaccine,
+        updateSelectedVaccine,
+        deleteSelectedVaccine,
+        fetchUserVisits,
+        addNewVetVisit,
+        updateSelectedVisit,
+        deleteSelectedVisit,
+        selectedDate,
+        fetchUserVets,
+        addNewVet,
+        vets,
+        isUpdatingVet,
+        selectedVet,
+        updateSelectedVet,
+        deleteSelectedVet,
+    };
 };

@@ -1,18 +1,23 @@
 <script setup lang="ts">
-import { BriefcaseMedical, Edit2, Mail, Plus } from '@lucide/vue';
-import { computed } from 'vue';
+import { BriefcaseMedical, Edit2, Mail, PenLine, Plus } from '@lucide/vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { useMedia } from '../../../composables/useMedia';
+import { resetState } from '../../../utils';
 import { usePets } from '../../pets/composables/usePets';
+import AddVetDetail from './AddVetDetail.vue';
 import PetTag from './PetTag.vue';
 import VetTypeTag from './VetTypeTag.vue';
 
-const { pets, isAddingHealth, selectedVet } = usePets();
+const { pets, isAddingHealth, selectedVet, isUpdatingVet, updateSelectedVet } = usePets();
 const { t } = useI18n();
 const { isMd } = useMedia();
 
 const props = defineProps<{ vet: any }>();
+
+const isUpdatingNotes = ref<boolean>(false);
+const notesData = ref<string>(props.vet.notes);
 
 const assignedPets = computed(() => {
     return pets.value.filter(pet => props.vet.assignedPets.includes(pet.id));
@@ -20,6 +25,7 @@ const assignedPets = computed(() => {
 
 const handleVisit = () => {
     selectedVet.value = props.vet;
+    isUpdatingVet.value = false;
     isAddingHealth.visit = true;
 }
 
@@ -39,6 +45,17 @@ const handleMaps = () => {
     const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(address)}`;
     window.open(mapsUrl, '_blank');
 };
+
+const handleVetUpdate = () => {
+    resetState(isAddingHealth);
+    selectedVet.value = props.vet;
+    isUpdatingVet.value = true;
+};
+
+const handleNoteEdit = async () => {
+    if (notesData.value === props.vet.notes) return;
+    await updateSelectedVet(props.vet, { notes: notesData.value });
+}
 </script>
 
 <template>
@@ -47,11 +64,11 @@ const handleMaps = () => {
             <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                 <BriefcaseMedical />
             </div>
-            <div class="px-1 text-text-secondary text-sm">
-                <div class="flex gap-0.5 items-start">
+            <div class="px-1 text-text-secondary text-sm w-full">
+                <div class="flex gap-0.5 items-start justify-between">
                     <h1>{{ vet.name }}</h1>
                     <Button variant="ghost" size="xs" :aria-label="t('vet.cta.edit', { name: vet.name })"
-                        @click="selectedVet = vet">
+                        @click="handleVetUpdate">
                         <Edit2 :size="14" />
                     </Button>
                 </div>
@@ -75,19 +92,26 @@ const handleMaps = () => {
                     <Mail :size="16" class="shrink-0" />
                     <span :class="{ 'text-xs': isMd, truncate: true }">{{ vet.email }}</span>
                 </Button>
+                <AddVetDetail data="email" :vet="vet" v-else />
             </div>
             <div class="profile-row">
                 <span>{{ t("vet.label.phone") }}</span>
                 <span v-if="vet.phone" class="text-blue font-medium">{{ vet.phone }}</span>
+                <AddVetDetail data="phone" :vet="vet" v-else />
             </div>
             <div class="profile-row">
                 <span>{{ t("vet.label.hours") }}</span>
                 <span v-if="vet.hours" :class="{ 'text-xs': isMd, 'text-right': true }">{{ vet.hours }}</span>
+                <AddVetDetail data="hours" :vet="vet" v-else />
             </div>
         </div>
-        <span v-if="vet.notes" class="text-sm mt-auto italic py-0.5 px-1 text-text-secondary bg-bg rounded-lg">{{
-            vet.notes
-            }}</span>
+
+        <Button variant="ghost" size="xs" @click="isUpdatingNotes = !isUpdatingNotes">
+            <PenLine />
+        </Button>
+        <textarea v-model="notesData" :readonly="!isUpdatingNotes"
+            class="text-sm mt-auto italic py-0.5 px-1 text-text-secondary" @change="handleNoteEdit" />
+
         <div class="flex gap-0.5 pt-1 mt-auto border-t border-separator">
             <Button variant="vetOptions" size="vetOptions" @click="handleMaps">
                 {{ t("vet.cta.maps") }}
