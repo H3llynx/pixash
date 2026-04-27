@@ -96,9 +96,10 @@ Current progress:
 - [x] Pet profile creation
 - [x] Vaccine creation and management
 - [x] Vet visit creation and management
+- [x] Vet view and management
 - [ IN PROGRESS ] Calendar with reminders
+- [ ] Medical treatment creation and management
 - [ ] Google Calendar sync
-- [ ] Vet view and management
 - [ ] History view and management
 
 ---
