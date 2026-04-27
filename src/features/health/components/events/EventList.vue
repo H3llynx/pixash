@@ -15,7 +15,9 @@ const { t } = useI18n();
 <template>
     <section :class="{ 'md:px-0': mdLocation === 'right', 'pet-section mb-4 md:mb-1': true }">
         <h2>{{ title }}</h2>
-        <EventCard v-if="events.length" v-for="event in events" :event="event" :key="event.id" />
-        <p v-else class="text-text-secondary text-sm">{{ t("common.text.noEventText") }}</p>
+        <div class="grid grid-cols-1 gap-1 auto-rows-fr">
+            <EventCard v-if="events.length" v-for="event in events" :event="event" :key="event.id" />
+            <p v-else class="text-text-secondary text-sm">{{ t("common.text.noEventText") }}</p>
+        </div>
     </section>
 </template>

@@ -5,7 +5,7 @@ const { isMd } = useMedia();
 </script>
 
 <template>
-    <div class="animate-pulse flex flex-col gap-1.5 default-padding py-1">
+    <div class="animate-pulse flex flex-col gap-1.5 default-padding py-1 max-w-full overflow-hidden">
 
         <!-- Pet switcher chips -->
         <div class="flex gap-0.5 md:hidden">
@@ -24,9 +24,10 @@ const { isMd } = useMedia();
 
         <!-- Pet profile card -->
         <div class="h-[10px] w-7 rounded bg-grey-light opacity-30"></div>
-        <div class="flex gap-1 max-w-2xl">
-            <div class="bg-bg-2 border border-border rounded-2xl p-0.75 space-y-0.5 w-full md:w-1/2 md:h-15">
-                <div class="flex items-center gap-0.75">
+        <div class="flex gap-1 w-full">
+            <div
+                class="flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 md:w-sm w-full h-20 md:shrink-0 md:h-15">
+                <div class="flex items-center gap-1">
                     <div class="h-3 w-3 rounded-full bg-grey-light opacity-30 shrink-0"></div>
                     <div class="space-y-0.25 flex-1">
                         <div class="h-[14px] w-6 rounded bg-grey-light opacity-30"></div>
@@ -41,8 +42,9 @@ const { isMd } = useMedia();
                 </div>
             </div>
 
-            <div v-if="isMd" class="bg-bg-2 border border-border rounded-2xl p-0.75 space-y-0.5 md:w-1/2 md:h-15">
-                <div class="flex items-center gap-0.75">
+            <div v-if="isMd"
+                class="flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 w-sm shrink-0 h-15">
+                <div class="flex items-center gap-1">
                     <div class="h-3 w-3 rounded-full bg-grey-light opacity-30 shrink-0"></div>
                     <div class="space-y-0.25 flex-1">
                         <div class="h-[14px] w-6 rounded bg-grey-light opacity-30"></div>

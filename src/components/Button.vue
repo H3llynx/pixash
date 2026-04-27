@@ -23,7 +23,7 @@ const button = tv({
             xs: "px-0.5 text-sm py-0.5",
             sm: "px-1 py-0.5",
             md: "px-2 py-[10px]",
-            card: "p-1 mb-1 w-full md:max-w-md",
+            card: "p-1 w-full md:max-w-md",
             vetOptions: "px-0.5 py-1 text-sm"
         }
     },

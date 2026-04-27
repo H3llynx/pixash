@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { BriefcaseMedical, Edit2, Mail, Plus } from '@lucide/vue';
+import { BriefcaseMedical, Edit2, Plus } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
-import { useMedia } from '../../../composables/useMedia';
 import { resetState } from '../../../utils';
 import { usePets } from '../../pets/composables/usePets';
-import AddVetDetail from './forms/AddVetDetail.vue';
 import PetTag from './PetTag.vue';
 import VetNotes from './VetNotes.vue';
+import VetProfileRow from './VetProfileRow.vue';
 import VetTypeTag from './VetTypeTag.vue';
 
 const { pets, isAddingHealth, selectedVet, isUpdatingVet } = usePets();
 const { t } = useI18n();
-const { isMd } = useMedia();
 
 const props = defineProps<{ vet: any }>();
 
@@ -31,11 +29,6 @@ const handleCall = () => {
     if (!props.vet.phone) return;
     window.location.href = `tel:${props.vet.phone}`;
 }
-const handleMail = () => {
-    if (!props.vet.email) return;
-    window.location.href = `mailto:${props.vet.email}`;
-}
-
 const handleMaps = () => {
     const address = [props.vet.name, props.vet.address1, props.vet.address2, props.vet.postCode, props.vet.city]
         .filter(Boolean)
@@ -77,25 +70,9 @@ const handleVetUpdate = () => {
             <PetTag v-for="pet in assignedPets" :pet="pet" />
             <VetTypeTag v-for="type in vet.types" :type="type" />
         </div>
-        <div class="profile-row">
-            <span>{{ t("vet.label.email") }}</span>
-            <Button v-if="vet.email" variant="ghost" size="xs" class="truncate" @click="handleMail"
-                :aria-label="t('vet.cta.email', { name: vet.name })">
-                <Mail :size="16" class="shrink-0" />
-                <span :class="{ 'text-sm': isMd, truncate: true }">{{ vet.email }}</span>
-            </Button>
-            <AddVetDetail data="email" :vet="vet" v-else />
-        </div>
-        <div class="profile-row">
-            <span>{{ t("vet.label.phone") }}</span>
-            <span v-if="vet.phone" class="text-blue font-medium">{{ vet.phone }}</span>
-            <AddVetDetail data="phone" :vet="vet" v-else />
-        </div>
-        <div class="profile-row">
-            <span>{{ t("vet.label.hours") }}</span>
-            <span v-if="vet.hours" :class="{ 'text-sm': isMd, 'text-right': true }">{{ vet.hours }}</span>
-            <AddVetDetail data="hours" :vet="vet" v-else />
-        </div>
+        <VetProfileRow data="email" :vet="vet" />
+        <VetProfileRow data="phone" :vet="vet" />
+        <VetProfileRow data="hours" :vet="vet" />
         <div class="mt-auto flex flex-col gap-0.5">
             <VetNotes :vet="vet" />
             <div class="flex gap-0.5 pt-1 border-t border-separator">

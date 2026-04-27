@@ -17,15 +17,16 @@ const { t } = useI18n();
 const props = defineProps<{
     pet: PetExtended
     data: "weight" | "microchip" | "nextVaccine"
-    isUpdating: Record<string, unknown>
 }>();
+
+const isUpdating = defineModel();
 
 const updateForm = ref<HTMLFormElement>();
 const inputRef = ref<HTMLInputElement>();
 
 onClickOutside(updateForm, () => {
-    if (props.isUpdating) {
-        props.isUpdating[props.data] = false;
+    if (isUpdating.value) {
+        isUpdating.value = false;
     }
 });
 
@@ -43,7 +44,8 @@ const formData = reactive<{
 
 const startUpdating = () => {
     selectPet(props.pet);
-    props.isUpdating[props.data] = true;
+    formData.data = "";
+    isUpdating.value = true;
     const existing = props.pet[props.data];
     if (props.data === "weight" && typeof existing === "number") {
         formData.data = preferredUnit.value === "kg"
@@ -57,6 +59,7 @@ const startUpdating = () => {
             selectVaccine(existing as VaccineExtended);
         }
         else isAddingHealth.vaccine = true;
+        isUpdating.value = false;
     }
 };
 
@@ -79,13 +82,14 @@ const handleSubmit = async (field: "weight" | "microchip") => {
         update = { microchipped: true, microchip: microchip };
     }
     await updateSelectedPet(selectedPet.value, update);
-    props.isUpdating[props.data] = false;
+    isUpdating.value = false;
 };
 
 const handleDelete = async () => {
     if (!selectedPet.value) return;
     await deleteSelectedPetField(selectedPet.value, props.data as keyof Pet);
     if (props.data === "microchip") await updateSelectedPet(selectedPet.value, { microchipped: false });
+
 };
 
 watch(preferredUnit, (unit) => {
@@ -109,28 +113,28 @@ watch(() => formData.unit,
 
 <template>
     <div class="flex h-2 gap-[3px]">
-        <Button v-if="!isUpdating[data] || data === 'nextVaccine'" variant="summaryCta" size="xxs"
-            @click="startUpdating" :aria-label="t('pet.profile.edit.' + data)">
+        <Button v-if="!isUpdating || data === 'nextVaccine'" variant="summaryCta" size="xxs" @click="startUpdating"
+            :aria-label="t('pet.profile.edit.' + data)">
             <Edit2 v-if="pet[data]" :size="16" />
             <Plus v-else :size="18" />
         </Button>
         <form @submit.prevent="handleSubmit(data)" @keydown.enter.exact="handleSubmit(data)"
-            v-else-if="pet === selectedPet" class="profile-mini-form flex gap-0.5" ref="updateForm">
+            v-else-if="pet === selectedPet" class="profile-mini-form flex gap-[3px]" ref="updateForm">
             <input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
                 :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="inputRef"
                 class="text-base">
-            <div class="input-container">
+            <div class="input-container" v-if="data === 'weight'">
                 <select v-model="formData.unit" v-if="data === 'weight'" @change="handleUnitChange">
                     <option>kg</option>
                     <option>g</option>
                 </select>
             </div>
         </form>
-        <Button v-if="isUpdating[data] && data !== 'nextVaccine' && pet === selectedPet" size="xs" variant="ghost"
-            @click="isUpdating[data] = false">
+        <Button v-if="isUpdating && data !== 'nextVaccine' && pet === selectedPet" size="xxs" variant="ghost"
+            @click="isUpdating = false">
             <X :size="18" color="var(--color-brand-light)" />
         </Button>
-        <Button v-if="isUpdating[data] && data !== 'nextVaccine' && pet === selectedPet" size="xs" variant="ghost"
+        <Button v-if="isUpdating && data !== 'nextVaccine' && pet === selectedPet" size="xxs" variant="ghost"
             @click="handleDelete">
             <Trash2 :size="18" color="var(--color-brand-light)" />
         </Button>
@@ -141,7 +145,7 @@ watch(() => formData.unit,
 input,
 select {
     border-radius: 0.5rem;
-    padding: 5px 0.5rem;
+    padding: 3px 0.5rem;
 }
 
 input {
