@@ -4,13 +4,11 @@ import { onClickOutside } from '@vueuse/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
-import { useMedia } from '../../../composables/useMedia';
 import { usePets } from '../../pets/composables/usePets';
 import type { VetExtended } from '../types';
 
 const { updateSelectedVet } = usePets();
 const { t } = useI18n();
-const { isMd } = useMedia();
 
 const props = defineProps<{ vet: VetExtended }>();
 
