@@ -80,7 +80,7 @@ const calendarOptions = computed(() => ({
     max-width: 100%;
     background: var(--color-brand-dark);
     color: var(--color-brand-light);
-    padding: 1rem 1rem 0rem 1rem;
+    padding-top: 1rem;
     position: relative;
     z-index: 0;
 }
@@ -88,6 +88,7 @@ const calendarOptions = computed(() => ({
 :deep(.fc-toolbar-title) {
     font-size: x-large;
     color: var(--color-gold);
+    padding-inline: 1rem;
 }
 
 :deep(.fc-button) {
@@ -119,9 +120,10 @@ const calendarOptions = computed(() => ({
 
 :deep(.fc-event) {
     border: none;
-    border-radius: 4px;
+    border-radius: 0.75rem;
     padding: 2px 4px;
     cursor: pointer;
+    font-size: smaller;
 }
 
 :deep(.fc-event-title) {

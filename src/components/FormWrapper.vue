@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import Button from './Button.vue';
 
 withDefaults(defineProps<{
     canClose?: boolean
     onClose: () => void
 }>(), { canClose: true });
+
+onMounted(() => {
+    document.documentElement.scrollTop = 0;
+})
 </script>
 
 
