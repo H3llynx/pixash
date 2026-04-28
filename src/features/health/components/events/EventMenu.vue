@@ -29,7 +29,7 @@ const handleClick = (action: string) => {
 
 <template>
     <Transition name="toast">
-        <div v-if="visible" ref="menuRef" role="menu" class="absolute w-max flex gap-[5px] md:flex-col">
+        <div v-if="visible" ref="menuRef" role="menu" class="absolute -translate-x-1/2 w-max flex gap-[3px] flex-col">
             <Button variant="ghost" size="xxs" @click="handleClick('vaccine')" :aria-label="t('addMenu.vaccine')">
                 <span v-if="isMd">{{ t("addMenu.vaccine") }}</span>
                 <Syringe :size="18" />

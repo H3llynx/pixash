@@ -56,7 +56,7 @@ const calendarOptions = computed(() => ({
         }
         selectedDate.value = info.dateStr;
         const rect = info.dayEl.getBoundingClientRect();
-        menu.x = rect.left + window.scrollX - 15;
+        menu.x = rect.left + window.scrollX + rect.width / 2;
         menu.y = rect.top + window.scrollY + 25;
         menu.visible = false;
         nextTick(() => {
