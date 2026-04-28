@@ -65,6 +65,7 @@
   --background-image-brand-gradient: linear-gradient(145deg, var(--color-green-pale) 0%, var(--color-green-mid) 40%);
 
   --color-btn-vet: var(--color-beige);
+  --color-border-btn-vet: var(--color-border);
   --color-btn-hover: var(--color-green-mid);
   --color-btn-hover-text: var(--color-white);
   --color-btn-ghost-text: var(--color-green-dark);
@@ -98,6 +99,7 @@
   --background-image-brand-gradient: linear-gradient(145deg, #bfb5f5 0%, var(--color-purple) 40%);
 
   --color-btn-vet: var(--color-purple-rgba);
+  --color-border-btn-vet: var(--color-brand-light);
   --color-btn-hover: var(--color-brand-light);
   --color-btn-hover-text: var(--color-white);
   --color-btn-ghost-text: var(--color-text);

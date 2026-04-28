@@ -23,7 +23,7 @@ const isUpdating = defineModel();
         <span>{{ t("pet.profile.label." + data) }}</span>
         <Loading v-if="data === 'nextVaccine' && pet === selectedPet && healthLoading" class="ml-auto" />
         <template v-else>
-            <span v-if="pet[data] && !isUpdating" class="text-brand font-medium">
+            <span v-if="pet[data] && !isUpdating" class="font-medium">
                 {{ data === "nextVaccine"
                     ? pet.nextVaccine ? tsToDate(pet.nextVaccine.dueOn!, "date") : ""
                     : data === "weight" ? getWeight(pet) : pet[data]

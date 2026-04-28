@@ -16,7 +16,7 @@ const button = tv({
             chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary capitalize",
             summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light",
             card: "btn-fill-card rounded-xl border border-border gap-1.5 justify-between items-start text-left",
-            vetOptions: "btn-hover-fill flex-1 rounded-xl border border-border bg-btn-vet"
+            vetOptions: "btn-hover-fill flex-1 rounded-xl border border-border-btn-vet bg-btn-vet"
         },
         size: {
             xxs: "text-xs p-0.5",
