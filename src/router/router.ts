@@ -10,6 +10,9 @@ const { user, authReady } = useAuth();
 
 const router = createRouter({
   history: createWebHashHistory(),
+  scrollBehavior() {
+    return { top: 0, behavior: 'smooth' }
+  },
   routes: [
     {
       path: "/",

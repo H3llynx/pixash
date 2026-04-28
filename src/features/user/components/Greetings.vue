@@ -7,7 +7,7 @@ const { t } = useI18n();
 
 <template>
     <div v-if="user">
-        <span class="tracking-wide font-extralight md:text-lg">{{ t("common.header.greetings") }}</span>
-        <h2 class="text-2xl md:text-3xl">{{ user.firstName }}</h2>
+        <span class="tracking-wide font-extralight text-lg">{{ t("common.header.greetings") }}</span>
+        <h2 class="text-3xl">{{ user.firstName }}</h2>
     </div>
 </template>
