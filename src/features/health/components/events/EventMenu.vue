@@ -32,11 +32,11 @@ const handleClick = (action: string) => {
         <div v-if="visible" ref="menuRef" role="menu" class="absolute -translate-x-1/2 w-max flex gap-[3px] flex-col">
             <Button variant="ghost" size="xxs" @click="handleClick('vaccine')" :aria-label="t('addMenu.vaccine')">
                 <span v-if="isMd">{{ t("addMenu.vaccine") }}</span>
-                <Syringe :size="18" />
+                <Syringe :size="isMd ? 18 : 20" />
             </Button>
             <Button variant="ghost" size="xxs" @click="handleClick('visit')" :aria-label="t('addMenu.vetVisit')">
                 <span v-if="isMd">{{ t("addMenu.vetVisit") }}</span>
-                <Stethoscope :size="18" />
+                <Stethoscope :size="isMd ? 18 : 20" />
             </Button>
         </div>
     </Transition>
