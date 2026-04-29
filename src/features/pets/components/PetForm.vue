@@ -146,7 +146,7 @@ watch(() => formData.species, () => {
                             <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
                                 <option v-for="option in sex.options" :value="option.id" :key="option.id">{{
                                     t(option.label)
-                                    }}
+                                }}
                                 </option>
                             </Dropdown>
                         </div>

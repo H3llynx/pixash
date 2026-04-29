@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Dropdown from '../../../components/Dropdown.vue';
@@ -15,6 +16,7 @@ withDefaults(defineProps<{
 
 const model = defineModel<string>();
 const vetTextInput = defineModel<boolean>('vetTextInput');
+const readonly = inject("readonly", ref(false));
 
 const onVetChange = () => {
     if (model.value === "other") {
@@ -26,7 +28,7 @@ const onVetChange = () => {
 
 <template>
     <Dropdown v-if="vets.length && !vetTextInput" v-model="model" :id="vet.id" :label="t(vet.label)"
-        @change="onVetChange" required>
+        @change="onVetChange" :disabled="readonly" required>
         <option v-for="v in vets" :key="v.id" :value="v.id">
             {{ v.name }}
         </option>

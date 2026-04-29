@@ -91,9 +91,9 @@ const handleCancel = () => {
                                 <Camera />
                             </label>
                             <Button type="button" variant="secondary" @click="handleCancel">{{
-                                t("dialog.common.cancel")
-                                }}</Button>
-                            <Button v-if="previewUrl">{{ t("dialog.common.confirm") }}</Button>
+                                t("common.button.cancel")
+                            }}</Button>
+                            <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
                         </form>
                     </template>
                 </div>

@@ -238,7 +238,7 @@
     }
 
     &:has(input:not(input[type="radio"], input[type="checkbox"]):not(:required)) p::after,
-    &:has(textarea) p::after {
+    &:has(textarea:not(:read-only)) p::after {
       content: "(optional)";
       margin-left: 10px;
       color: var(--color-text-secondary);
@@ -249,13 +249,6 @@
   fieldset {
     display: flex;
     gap: 0 5px;
-
-    &:has(input:not(required)) legend::after {
-      content: "(optional)";
-      margin-left: 10px;
-      color: var(--color-text-secondary);
-      font-size: small;
-    }
   }
 
   h1,

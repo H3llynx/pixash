@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarCheck, Trash2 } from '@lucide/vue';
-import { reactive, ref, Transition, watch } from 'vue';
+import { provide, reactive, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FormWrapper from '../../../../components/FormWrapper.vue';
@@ -8,12 +8,14 @@ import Paw from '../../../../components/icons/Paw.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import { useDialog } from '../../../../composables/useDialog';
+import { useFormMode } from '../../../../composables/useFormMode';
 import { useToast } from '../../../../composables/useToast';
 import { shallowEqual, tsToDate } from '../../../../utils';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
 import { getIcon } from '../../../pets/utils';
 import { vetVisitFields } from '../../config';
+import type { VisitExtended } from '../../types';
 import { resetForm } from '../../utils';
 import VetFormSelector from '../VetFormSelector.vue';
 
@@ -21,6 +23,8 @@ const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, 
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
+const { mode, isReadonly } = useFormMode();
+provide('readonly', isReadonly);
 
 const { title, date, vet, notes } = vetVisitFields;
 const vetTextInput = ref<boolean>(false);
@@ -30,6 +34,17 @@ const defaultForm = {
     vet: "",
     notes: "",
 };
+const fillVisitData = (visit: Partial<VisitExtended>) => {
+    const isRegisteredVet = vets.value?.some(vet => vet.id === visit.vet);
+    vetTextInput.value = !isRegisteredVet;
+    Object.assign(formData, {
+        title: visit.title,
+        date: tsToDate(visit.date, "input"),
+        vet: visit.vet,
+        notes: visit.notes ?? "",
+    })
+};
+
 const formData = reactive({ ...defaultForm });
 
 const handleClose = () => {
@@ -50,7 +65,8 @@ const handleSubmit = async () => {
                 message: t("toast.success.message.visitAdded", { name: selectedPet.value.name, title: titleSnapshot }),
             });
         }
-        else if (selectedVisit.value && !shallowEqual(formData, selectedVisit.value)) {
+        else if (selectedVisit.value && !shallowEqual(formData,
+            { ...selectedVisit.value, date: tsToDate(selectedVisit.value.date, "input") })) {
             await updateSelectedVisit(selectedVisit.value, selectedPet.value.id, { ...formData });
             show({
                 type: "success",
@@ -103,14 +119,8 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
             return;
         };
         if (visit) {
-            const isRegisteredVet = vets.value?.some(vet => vet.id === visit.vet);
-            vetTextInput.value = !isRegisteredVet;
-            Object.assign(formData, {
-                title: visit.title,
-                date: tsToDate(visit.date, "input"),
-                vet: visit.vet,
-                notes: visit.notes ?? "",
-            });
+            mode.value = 'view';
+            fillVisitData(visit);
         }
         else {
             resetForm(formData, defaultForm);
@@ -120,6 +130,10 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
     },
     { immediate: true }
 );
+
+watch(() => mode.value, (mode) => {
+    if (mode === "view") fillVisitData(selectedVisit.value!);
+})
 </script>
 
 <template>
@@ -132,12 +146,11 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
                         class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
                         {{ getIcon(selectedPet) }}
                     </div>
-                    <h1>
-                        {{ isAddingHealth.visit
-                            ? t("health.title.addVetVisit")
-                            : t("health.title.editVetVisit", { name: selectedPet!.name })
-                        }}
-                    </h1>
+                    <h1 v-if="isAddingHealth.visit">{{ t("health.title.addVetVisit") }}</h1>
+                    <h1 v-else-if="selectedVisit && mode === 'edit'">{{ t("health.title.editVetVisit", {
+                        name: selectedPet!.name
+                    }) }}</h1>
+                    <h1 v-else-if="selectedVisit && mode === 'view'">{{ selectedVisit.title }}</h1>
                     <Button v-if="selectedVisit" class="ml-auto mb-auto" variant="ghost" size="xs"
                         :aria-label="t('health.cta.deleteVisit')" @click="handleDelete">
                         <Trash2 :size="22" color="var(--color-brand-light)" />
@@ -146,7 +159,8 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
                 <PetSelector v-if="isAddingHealth.visit" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-model="formData.title" :id="title.id" :label="t(title.label)" required />
+                        <Input v-if="isAddingHealth.visit || mode === 'edit'" v-model="formData.title" :id="title.id"
+                            :label="t(title.label)" required />
                         <Input v-model="formData.date" :id="date.id" :label="t(date.label)" :type="date.type" required>
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
@@ -156,10 +170,22 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
                             required />
                         <label :for="notes.id">
                             <p>{{ t(notes.label) }}</p>
-                            <textarea v-model="formData.notes" :id="notes.id" />
+                            <textarea v-model="formData.notes" :id="notes.id"
+                                :readonly="!!selectedVisit && mode === 'view'" />
                         </label>
-                        <Button size="sm" :disabled="healthLoading" class="md:ml-auto">{{ t("health.cta.saveVisit") }}
-                            <Paw class="w-1 -rotate-12" />
+                        <div class="flex gap-1 mt-1 items-center ml-auto" v-if="!selectedVisit || mode === 'edit'">
+                            <Button v-if="selectedVisit && mode === 'edit'" variant="secondary" size="sm" type="button"
+                                :disabled="healthLoading" @click="mode = 'view'">
+                                {{ t("common.button.cancel") }}
+                            </Button>
+                            <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit")
+                                }}
+                                <Paw class="w-1 -rotate-12" />
+                            </Button>
+                        </div>
+                        <Button v-if="selectedVisit && mode === 'view'" size="sm" class="md:ml-auto"
+                            @click="mode = 'edit'">
+                            {{ t("health.title.editVetVisit") }}
                         </Button>
                     </div>
                 </form>

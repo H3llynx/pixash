@@ -7,7 +7,13 @@ export const resetState = (state: any) => {
 };
 
 export const shallowEqual = (a: any, b: any) =>
-    Object.keys(a).every((key) => a[key] === b[key]);
+    Object.keys(a).every((key) => {
+        if (Array.isArray(a[key]) && Array.isArray(b[key])) {
+            return a[key].length === b[key].length &&
+                a[key].every((v: any, i: number) => v === b[key][i]);
+        }
+        return a[key] === b[key];
+    });
 
 type DateFormatMode = "date" | "daysUntil" | "input" | "upcoming" | "thatMonth" | "isThisWeek" | "isPast";
 type TFunction = (key: string, params?: Record<string, unknown>) => string;

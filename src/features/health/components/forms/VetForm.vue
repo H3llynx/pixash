@@ -180,3 +180,12 @@ watch(() => selectedVet.value,
         </FormWrapper>
     </Transition>
 </template>
+
+<style scoped>
+fieldset:has(input:not(required)) legend::after {
+    content: "(optional)";
+    margin-left: 10px;
+    color: var(--color-text-secondary);
+    font-size: small;
+}
+</style>

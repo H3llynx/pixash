@@ -1,6 +1,8 @@
 export default {
     common: {
         button: {
+            cancel: "Cancel",
+            confirm: "Confirm",
             addChip: "Add",
             allChip: "All",
             scrollRight: "Scroll right",
@@ -227,10 +229,6 @@ export default {
         }
     },
     dialog: {
-        common: {
-            cancel: "Cancel",
-            confirm: "Confirm",
-        },
         deletePet: {
             title: "Delete {name} ?",
             message: "This will remove {name}'s profile and tracked information. This action cannot be undone. Are you sure you'd like to proceed?",

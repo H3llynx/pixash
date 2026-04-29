@@ -53,10 +53,10 @@ watch(dialog, (newVal) => {
                 <div class="flex justify-center gap-0.5 mt-0.5">
                     <Button @click="closeDialog" variant="secondary">{{
                         dialog.cancelText ?
-                            dialog.cancelText : t("dialog.common.cancel")
+                            dialog.cancelText : t("common.button.cancel")
                     }}</Button>
                     <Button @click="handleConfirm" size="md" class="relative">{{ dialog.confirmText ?
-                        dialog.confirmText : t("dialog.common.confirm") }}
+                        dialog.confirmText : t("common.button.confirm") }}
                         <PawPrint class="absolute -top-0.75 -right-0.5" fill="var(--color-bg-rgba)"
                             color="var(--color-brand-light)" :size="28" stroke-width="1.5" />
                     </Button>

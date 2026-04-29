@@ -38,9 +38,9 @@ const handleSubmit = async () => {
                     <form class="flex flex-col gap-1" @submit.prevent="handleSubmit">
                         <Input v-model="formData" :label="t('auth.nameLabel')" :placeholder="t('auth.namePlaceholder')"
                             id="user-name" required />
-                        <Button type="button" variant="secondary" @click="visible = false">{{ t("dialog.common.cancel")
+                        <Button type="button" variant="secondary" @click="visible = false">{{ t("common.button.cancel")
                             }}</Button>
-                        <Button>{{ t("dialog.common.confirm") }}</Button>
+                        <Button>{{ t("common.button.confirm") }}</Button>
                     </form>
                 </div>
             </Transition>

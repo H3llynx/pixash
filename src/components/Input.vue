@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { AlertCircle } from '@lucide/vue';
-import { computed, useAttrs } from 'vue';
+import { computed, inject, ref, useAttrs } from 'vue';
 
 defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<{
@@ -15,6 +15,9 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits(["update:modelValue"]);
 const $attrs = useAttrs();
 
+const readonly = inject("readonly", ref(false));
+const isTextLike = computed(() => !["checkbox", "radio"].includes(props.type))
+const isChoiceLike = computed(() => ["checkbox", "radio"].includes(props.type))
 
 const inputValue = computed(() => {
     if (props.type === "radio" || props.type === "checkbox") return $attrs.value as string;
@@ -55,7 +58,9 @@ const handleChange = (event: Event) => {
         <p v-if="label">{{ label }}</p>
         <div class="input-container">
             <input v-bind="$attrs" :id="id" :type="type" :placeholder="placeholder" :value="inputValue"
-                :checked="inputChecked" class="font-medium pl-1 pr-2.5 py-0.5" tabindex="0" @change="handleChange" />
+                :checked="inputChecked" class="font-medium pl-1 pr-2.5 py-0.5" tabindex="0" @change="handleChange"
+                @click="readonly ? $event.preventDefault() : null" :readonly="isTextLike && readonly"
+                :disabled="isChoiceLike && readonly" />
             <div class="absolute right-0.5 top-1/2 -translate-y-1/2 flex items-center">
                 <slot name="addon"></slot>
                 <AlertCircle class="error-icon" />
