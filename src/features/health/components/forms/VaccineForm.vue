@@ -6,6 +6,7 @@ import Button from '../../../../components/Button.vue';
 import FormWrapper from '../../../../components/FormWrapper.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import Selector from '../../../../components/Selector.vue';
 import Toggle from '../../../../components/Toggle.vue';
 import { useDialog } from '../../../../composables/useDialog';
 import { useFormMode } from '../../../../composables/useFormMode';
@@ -32,7 +33,7 @@ const error = ref<boolean>(false);
 const vetTextInput = ref<boolean>(false);
 const vaccineSelectorRef = ref<HTMLDivElement>();
 const defaultForm = {
-    types: [VACCINE_TYPES.default[0].id],
+    types: [VACCINE_TYPES.default[0].id] as VaccineTypes["id"][],
     stage: "adult" as typeof STAGE[number]["id"],
     given: false,
     givenAt: "",
@@ -185,7 +186,7 @@ watch(() => formData.given, () => {
                     <h1 v-if="isAddingHealth.vaccine">{{ t("health.title.addVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'edit'">{{ t("health.title.editVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'view'" class="font-medium">{{ getIcon(selectedPet!)
-                    }} {{
+                        }} {{
                             selectedPet!.name
                         }} · {{ showTypes(formData.types, selectedPet!) }}</h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
@@ -197,20 +198,20 @@ watch(() => formData.given, () => {
                 </div>
                 <PetSelector v-if="isAddingHealth.vaccine" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">
-                    <fieldset ref="vaccineSelectorRef" class="default-padding flex-wrap">
-                        <legend>{{ t(types.label) }}</legend>
-                        <Input v-model="formData.types" v-for="option in vaccineTypes" :id="option.id"
-                            :value="option.id" :key="option.id" :label="option.label" :type="types.type"
+                    <Selector :legend="t(types.label)">
+                        <Input v-model="formData.types"
+                            v-for="option in isReadonly ? vaccineTypes.filter(o => formData.types.includes(o.id)) : vaccineTypes"
+                            :id="option.id" :value="option.id" :key="option.id" :label="option.label" :type="types.type"
                             @input="error = false" />
                         <p v-if="error" class="text-sm w-full text-error pb-0.5">{{
                             t("health.vaccineForm.validationTypes") }}</p>
-                    </fieldset>
-                    <fieldset class="default-padding capitalize my-0.5">
-                        <legend>{{ t(stage.label) }}</legend>
-                        <Input v-model="formData.stage" v-for="(option, index) in stage.options" :id="option.id"
-                            :value="option.id" :key="option.id" :label="t(option.label)" :type="stage.type"
-                            :name="stage.name" :required="index === 0" />
-                    </fieldset>
+                    </Selector>
+                    <Selector :legend="t(stage.label)" class="my-0.5">
+                        <Input v-model="formData.stage"
+                            v-for="(option, index) in isReadonly ? stage.options.filter(o => formData.stage.includes(o.id)) : stage.options"
+                            :id="option.id" :value="option.id" :key="option.id" :label="t(option.label)"
+                            :type="stage.type" :name="stage.name" :required="index === 0" />
+                    </Selector>
                     <div class="default-padding flex flex-col gap-1">
                         <Toggle v-if="isVisible" v-model="formData.given"
                             :label="t(given.label, { name: selectedPet!.name })" :id="given.id" />
@@ -242,7 +243,7 @@ watch(() => formData.given, () => {
                         <div v-else-if="selectedVaccine?.vet && mode === 'view'">
                             <p>{{ t(vet.label) }}</p>
                             <p class="read-only">{{vets?.find(vet => vet.id === selectedVaccine!.vet)?.name ??
-                                selectedVaccine.vet }}</p>
+                                selectedVaccine.vet}}</p>
                         </div>
                         <label :for="notes.id" v-if="isVisible">
                             <p>{{ t(notes.label) }}</p>
@@ -256,20 +257,22 @@ watch(() => formData.given, () => {
                         <div class="flex gap-1 mt-1 items-center" v-if="!selectedVaccine || mode === 'edit'">
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name
-                                    }} · {{
+                                }} · {{
                                         showTypes(formData.types, selectedPet) }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.vaccineForm.dueDate")
-                                    }}:
+                                }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
                             </div>
-                            <Button type="button" v-if="selectedVaccine && mode === 'edit'" variant="secondary"
-                                size="sm" :disabled="healthLoading" @click="mode = 'view'">
-                                {{ t("common.button.cancel") }}
-                            </Button>
-                            <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVaccine") }}</Button>
+                            <div class="flex gap-0.5 flex-col md:flex-row">
+                                <Button type="button" v-if="selectedVaccine && mode === 'edit'" variant="secondary"
+                                    size="sm" :disabled="healthLoading" @click="mode = 'view'">
+                                    {{ t("common.button.cancel") }}
+                                </Button>
+                                <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVaccine") }}</Button>
+                            </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="md:ml-auto"
                             @click="mode = 'edit'">

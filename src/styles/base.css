@@ -365,10 +365,6 @@
     scroll-snap-type: x proximity;
     touch-action: pan-x;
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
     >* {
       scroll-snap-align: center;
     }
@@ -382,6 +378,15 @@
       align-items: center;
       border-radius: 0.75rem;
     }
+  }
+
+  .profile-card {
+    @apply flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 overflow-x-scroll;
+  }
+
+  .profile-card::-webkit-scrollbar,
+  .pet-selector::-webkit-scrollbar {
+    display: none;
   }
 
   .tag {

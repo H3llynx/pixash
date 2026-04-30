@@ -7,6 +7,7 @@ import FormWrapper from '../../../../components/FormWrapper.vue';
 import Paw from '../../../../components/icons/Paw.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import Selector from '../../../../components/Selector.vue';
 import { useDialog } from '../../../../composables/useDialog';
 import { useToast } from '../../../../composables/useToast';
 import { shallowEqual } from '../../../../utils';
@@ -149,16 +150,14 @@ watch(() => selectedVet.value,
                                 :inputmode="(field as any).inputmode" />
                         </div>
                     </div>
-                    <fieldset class="default-padding my-1">
-                        <legend>{{ t(types.label) }}</legend>
+                    <Selector :legend="t(types.label)" class="my-1">
                         <Input v-model="formData.types" v-for="option in types.options" :id="option.id"
                             :value="option.id" :key="option.id" :label="t(option.label)" :type="types.type" />
-                    </fieldset>
-                    <fieldset class="default-padding mb-1">
-                        <legend>{{ t(assignedPets.label) }}</legend>
+                    </Selector>
+                    <Selector :legend="t(assignedPets.label)" class="mb-1">
                         <Input v-model="formData.assignedPets" v-for="pet in pets" :id="pet.id" :value="pet.id"
                             :key="pet.id" :label="`${getIcon(pet)} ${pet.name}`" :type="assignedPets.type" />
-                    </fieldset>
+                    </Selector>
                     <div class="default-padding flex flex-col gap-1">
                         <label :for="notes.id">
                             <p>{{ t(notes.label) }}</p>
@@ -182,7 +181,7 @@ watch(() => selectedVet.value,
 </template>
 
 <style scoped>
-fieldset:has(input:not(required)) legend::after {
+:deep(fieldset:has(input:not(required))) legend::after {
     content: "(optional)";
     margin-left: 10px;
     color: var(--color-text-secondary);

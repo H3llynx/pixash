@@ -193,13 +193,13 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit")
-                                }}
+                            }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>
                         <Button v-if="selectedVisit && mode === 'view'" size="sm" class="md:ml-auto"
                             @click="mode = 'edit'">
-                            {{ t("health.title.editVetVisit") }}
+                            {{ t("health.cta.editVetVisit") }}
                         </Button>
                     </div>
                 </form>

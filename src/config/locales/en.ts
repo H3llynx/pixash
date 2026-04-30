@@ -147,7 +147,8 @@ export default {
             saveVisit: "Save vet visit",
             deleteVisit: "Delete vet visit",
             saveVet: "Save {name}",
-            deleteVet: "Delete vet"
+            deleteVet: "Delete vet",
+            editVetVisit: "Edit vet appointment"
         },
         vaccineForm: {
             types: "Vaccine",

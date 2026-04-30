@@ -49,8 +49,7 @@ const handleDelete = async () => {
 </script>
 
 <template>
-    <div
-        class="flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 md:w-sm md:shrink-0 overflow-x-scroll">
+    <div class="profile-card md:w-sm md:shrink-0">
         <div class="flex items-center gap-0.5">
             <div class="rounded-full w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                 {{ getIcon(pet) }}
