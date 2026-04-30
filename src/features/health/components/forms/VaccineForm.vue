@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarCheck, CalendarClock, Trash2 } from '@lucide/vue';
-import { computed, nextTick, provide, reactive, ref, watch } from 'vue';
+import { computed, provide, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FormWrapper from '../../../../components/FormWrapper.vue';
@@ -31,7 +31,6 @@ const { types, stage, given, givenDate, dueDate, nextDose, vet, notes } = vaccin
 const vaccineTypes = ref<VaccineTypes[]>([]);
 const error = ref<boolean>(false);
 const vetTextInput = ref<boolean>(false);
-const vaccineSelectorRef = ref<HTMLDivElement>();
 const defaultForm = {
     types: [VACCINE_TYPES.default[0].id] as VaccineTypes["id"][],
     stage: "adult" as typeof STAGE[number]["id"],
@@ -120,17 +119,12 @@ const handleDelete = async () => {
 
 watch([() => isAddingHealth.vaccine, selectedVaccine],
     async ([adding, editing]) => {
-        if (editing || adding) {
-            await nextTick();
-            const firstInput = vaccineSelectorRef.value?.querySelector("input") as HTMLInputElement | null;
-            firstInput?.focus();
-        }
         if (adding) {
             formData.dueOn = selectedDate.value ?? "";
             formData.vet = selectedVet.value?.id ?? vets.value?.[0]?.id ?? "";
         }
         if (editing) {
-            mode.value = selectedVaccine.value ? "view" : "edit";
+            mode.value = "view";
         }
     }
 );
@@ -186,7 +180,7 @@ watch(() => formData.given, () => {
                     <h1 v-if="isAddingHealth.vaccine">{{ t("health.title.addVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'edit'">{{ t("health.title.editVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'view'" class="font-medium">{{ getIcon(selectedPet!)
-                        }} {{
+                    }} {{
                             selectedPet!.name
                         }} · {{ showTypes(formData.types, selectedPet!) }}</h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
@@ -256,11 +250,12 @@ watch(() => formData.given, () => {
                         </div>
                         <div class="flex gap-1 mt-1 items-center" v-if="!selectedVaccine || mode === 'edit'">
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
-                                <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name
+                                <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{
+                                    selectedPet.name
                                 }} · {{
                                         showTypes(formData.types, selectedPet) }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
-                                    t("health.vaccineForm.dueDate")
+                                    t("health.sharedDateFields.dueDate")
                                 }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
@@ -271,10 +266,11 @@ watch(() => formData.given, () => {
                                     size="sm" :disabled="healthLoading" @click="mode = 'view'">
                                     {{ t("common.button.cancel") }}
                                 </Button>
-                                <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVaccine") }}</Button>
+                                <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVaccine")
+                                }}</Button>
                             </div>
                         </div>
-                        <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="md:ml-auto"
+                        <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
                             @click="mode = 'edit'">
                             {{ t("health.title.editVaccine") }}
                         </Button>

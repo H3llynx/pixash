@@ -187,17 +187,17 @@ watch(() => mode.value, (mode) => {
                             <p>{{ t(notes.label) }}</p>
                             <p class="read-only">{{ selectedVisit.notes }}</p>
                         </div>
-                        <div class="flex gap-1 mt-1 items-center ml-auto" v-if="!selectedVisit || mode === 'edit'">
+                        <div class="flex gap-0.5 mt-1 items-center ml-auto" v-if="!selectedVisit || mode === 'edit'">
                             <Button v-if="selectedVisit && mode === 'edit'" variant="secondary" size="sm" type="button"
                                 :disabled="healthLoading" @click="mode = 'view'">
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit")
-                            }}
+                                }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>
-                        <Button v-if="selectedVisit && mode === 'view'" size="sm" class="md:ml-auto"
+                        <Button v-if="selectedVisit && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
                             @click="mode = 'edit'">
                             {{ t("health.cta.editVetVisit") }}
                         </Button>

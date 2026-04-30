@@ -1,7 +1,8 @@
 import { Timestamp } from "firebase/firestore";
-import type { STAGE, VACCINE_TYPES } from "./config";
+import type { ANTIPARASITE_TYPES, STAGE, VACCINE_TYPES } from "./config";
 
 export type VaccineTypes = (typeof VACCINE_TYPES)[keyof typeof VACCINE_TYPES][number];
+export type AntiparasiteTypes = (typeof ANTIPARASITE_TYPES)[keyof typeof ANTIPARASITE_TYPES][number];
 
 export type VaccineRecord = {
     types: VaccineTypes["id"][];
@@ -72,4 +73,22 @@ export type Vet = {
 
 export type VetExtended = Vet & {
     id: string;
+}
+
+export type AntiparasiteRecord = {
+    treated: AntiparasiteTypes["id"][];
+    givenAt: string;
+    nextDose?: boolean;
+    dueOn?: string;
+    product?: string;
+}
+
+export type AntiparasiteExtended = Omit<AntiparasiteRecord, "dueOn"> & {
+    id: string;
+    petId: string;
+    userId: string;
+    givenAt: Timestamp;
+    dueOn: Timestamp;
+    eventType: string;
+    ts: Timestamp;
 }

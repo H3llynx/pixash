@@ -1,7 +1,7 @@
 import { getTodayDayKey, tsToDayKey } from "../../utils";
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
-import { VACCINE_TYPES } from "./config";
+import { ANTIPARASITE_TYPES, VACCINE_TYPES } from "./config";
 import type { VaccineExtended, VaccineTypes, VisitExtended } from "./types";
 
 export const resetForm = <T extends object>(formData: T, defaultForm: T) => {
@@ -44,4 +44,10 @@ export const showTypes = (vaccineType: VaccineTypes["id"][], pet?: PetExtended) 
         }
     })
     return labels.join(" + ");
-} 
+}
+
+export const getAntiparasites = (species: typeof SPECIES[number]["id"] | "default") => {
+    if (!species) return;
+    const specific = ANTIPARASITE_TYPES[species as keyof typeof ANTIPARASITE_TYPES] ?? [];
+    return [...specific, ...ANTIPARASITE_TYPES.default];
+};

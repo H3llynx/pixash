@@ -4,7 +4,7 @@ import { addVaccine, addVet, addVetVisit, deleteVaccine, deleteVet, deleteVisit,
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { AntiparasiteExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getNextVaccine, getNextVisit } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
@@ -16,12 +16,18 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const selectedVisit = ref<VisitExtended | null>(null);
     const selectedVet = ref<VetExtended | null>(null);
     const selectedDate = ref<string | null>(null);
+    const selectedLog = reactive<{
+        antiparasitic: AntiparasiteExtended | null;
+    }>({
+        antiparasitic: null,
+    })
     const loading = ref<boolean>(false);
     const error = ref<string | null>(null);
     const isAddingHealth = reactive({
         vet: false,
         vaccine: false,
         visit: false,
+        antiparasitic: false,
         treatment: false
     });
     const isUpdatingVet = ref<boolean>(false);
@@ -221,5 +227,6 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         selectedVet,
         updateSelectedVet,
         deleteSelectedVet,
+        selectedLog,
     };
 };

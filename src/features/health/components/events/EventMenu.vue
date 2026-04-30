@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Stethoscope, Syringe } from '@lucide/vue';
+import { Pill, Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -23,6 +23,7 @@ const handleClick = (action: string) => {
     resetState(isAddingHealth);
     if (action === "vaccine") isAddingHealth.vaccine = true;
     else if (action === "visit") isAddingHealth.visit = true;
+    else if (action === "antiparasitic") isAddingHealth.antiparasitic = true;
     visible.value = false;
 }
 </script>
@@ -37,6 +38,11 @@ const handleClick = (action: string) => {
             <Button variant="ghost" size="xxs" @click="handleClick('visit')" :aria-label="t('addMenu.vetVisit')">
                 <span v-if="isMd">{{ t("addMenu.vetVisit") }}</span>
                 <Stethoscope :size="isMd ? 18 : 20" />
+            </Button>
+            <Button variant="ghost" size="xxs" @click="handleClick('antiparasitic')"
+                :aria-label="t('addMenu.antiparasitic')">
+                <span v-if="isMd">{{ t("addMenu.antiparasitic") }}</span>
+                <Pill :size="isMd ? 18 : 20" />
             </Button>
         </div>
     </Transition>

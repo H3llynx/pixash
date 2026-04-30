@@ -1,3 +1,4 @@
+
 export default {
     common: {
         button: {
@@ -41,7 +42,8 @@ export default {
         pet: "Add pet",
         vetVisit: "Vet visit",
         vaccine: "New vaccine",
-        vet: "Add vet"
+        vet: "Add vet",
+        antiparasitic: "Log antiparasitic"
     },
     userMenu: {
         logout: "Log out",
@@ -140,6 +142,7 @@ export default {
             addVet: "Add vet",
             editVet: "Edit {name}",
             myVets: "My vets",
+            logAntiparasitic: "Log antiparasitic"
         },
         cta: {
             saveVaccine: "Save vaccine",
@@ -148,15 +151,24 @@ export default {
             deleteVisit: "Delete vet visit",
             saveVet: "Save {name}",
             deleteVet: "Delete vet",
-            editVetVisit: "Edit vet appointment"
+            editVetVisit: "Edit vet appointment",
+            saveTreatment: "Log treatment",
+            editLog: "Edit log"
+        },
+        sharedDateFields: {
+            givenDate: "Date given",
+            nextDose: "Next dose scheduled?",
+            dueDate: "Next due",
+        },
+        antiparasiteForm: {
+            treated: "What did you treat?",
+            product: "Product name",
+            validationTypes: "You must select what was treated",
         },
         vaccineForm: {
             types: "Vaccine",
             stage: "Stage",
             given: "{name} has already received this vaccine",
-            givenDate: "Date given",
-            nextDose: "Next dose scheduled?",
-            dueDate: "Next due",
             vet: "Vet",
             notes: "Notes",
             validationTypes: "You must select a vaccine type",
@@ -191,6 +203,16 @@ export default {
             primary: "Primary",
             secondary: "Secondary",
             emergency: "Emergency"
+        },
+        parasites: {
+            worms: "Intestinal worms",
+            fleas: "Fleas",
+            ticks: "Ticks",
+            heartworms: "Heartworms",
+            mites: "Mites",
+            lice: "Lice",
+            protozoa: "Protozoa",
+            other: "Other treatment"
         },
     },
     events: {

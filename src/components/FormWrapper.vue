@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { inject, onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import Button from './Button.vue';
 
 withDefaults(defineProps<{
     canClose?: boolean
     onClose: () => void
 }>(), { canClose: true });
-
-const readonly = inject("readonly", ref(false));
 
 onMounted(() => {
     document.documentElement.scrollTop = 0;

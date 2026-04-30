@@ -2,6 +2,7 @@
 import Dialog from './components/Dialog.vue';
 import NavBar from './components/NavBar.vue';
 import Toast from './components/Toast.vue';
+import AntiparasiticForm from './features/health/components/forms/AntiparasiticForm.vue';
 import VaccineForm from './features/health/components/forms/VaccineForm.vue';
 import VetVisitForm from './features/health/components/forms/VetVisitForm.vue';
 import PetForm from './features/pets/components/PetForm.vue';
@@ -16,6 +17,7 @@ const { loading, user } = useAuth();
   <RouterView v-else />
   <VaccineForm />
   <VetVisitForm />
+  <AntiparasiticForm />
   <PetForm />
   <NavBar v-if="user" />
   <Toast />
