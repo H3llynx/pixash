@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarCheck, CalendarClock, Trash2 } from '@lucide/vue';
-import { nextTick, provide, reactive, ref, watch } from 'vue';
+import { computed, nextTick, provide, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FormWrapper from '../../../../components/FormWrapper.vue';
@@ -17,7 +17,7 @@ import { getAge, getIcon } from '../../../pets/utils';
 import { STAGE, VACCINE_TYPES, vaccineFields } from '../../config';
 import type { VaccineExtended, VaccineTypes } from '../../types';
 import { getVaccineTypes, resetForm, showTypes } from '../../utils';
-import VetFormSelector from '../VetFormSelector.vue';
+import VetFormSelector from './VetFormSelector.vue';
 
 const { selectedPet, isAddingHealth, vets, selectedVet, selectedVaccine, selectVaccine, addNewVaccine, healthError, healthLoading, updateSelectedVaccine, deleteSelectedVaccine, selectedDate } = usePets();
 const { show } = useToast();
@@ -56,7 +56,7 @@ const fillVaccineData = (vaccine: VaccineExtended) => {
     })
 };
 const formData = reactive({ ...defaultForm });
-
+const isVisible = computed(() => isAddingHealth.vaccine || mode.value === 'edit');
 const handleClose = () => {
     error.value = false;
     selectedDate.value = null;
@@ -185,7 +185,7 @@ watch(() => formData.given, () => {
                     <h1 v-if="isAddingHealth.vaccine">{{ t("health.title.addVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'edit'">{{ t("health.title.editVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'view'" class="font-medium">{{ getIcon(selectedPet!)
-                        }} {{
+                    }} {{
                             selectedPet!.name
                         }} · {{ showTypes(formData.types, selectedPet!) }}</h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
@@ -212,36 +212,55 @@ watch(() => formData.given, () => {
                             :name="stage.name" :required="index === 0" />
                     </fieldset>
                     <div class="default-padding flex flex-col gap-1">
-                        <Toggle v-if="isAddingHealth.vaccine || mode === 'edit'" v-model="formData.given"
+                        <Toggle v-if="isVisible" v-model="formData.given"
                             :label="t(given.label, { name: selectedPet!.name })" :id="given.id" />
-                        <Input v-if="formData.given" v-model="formData.givenAt" :id="givenDate.id"
+                        <Input v-if="formData.given && isVisible" v-model="formData.givenAt" :id="givenDate.id"
                             :label="t(givenDate.label)" :type="givenDate.type" required>
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
-                        <Toggle v-if="formData.given && isAddingHealth.vaccine || mode === 'edit'"
-                            v-model="formData.nextDose" :label="t(nextDose.label)" :id="nextDose.id" />
-                        <Input v-if="!formData.given || formData.nextDose" v-model="formData.dueOn" :id="dueDate.id"
-                            :label="t(dueDate.label)" :type="dueDate.type" :min="formData.givenAt" required>
+                        <div v-else-if="selectedVaccine?.givenAt && mode === 'view'">
+                            <p>{{ t(givenDate.label) }}</p>
+                            <p class="read-only">{{ tsToDate(selectedVaccine.givenAt, "date") }}</p>
+                        </div>
+                        <Toggle v-if="formData.given && isVisible" v-model="formData.nextDose"
+                            :label="t(nextDose.label)" :id="nextDose.id" />
+                        <Input v-if="(!formData.given || formData.nextDose) && isVisible" v-model="formData.dueOn"
+                            :id="dueDate.id" :label="t(dueDate.label)" :type="dueDate.type" :min="formData.givenAt"
+                            required>
                             <template #addon>
                                 <CalendarClock class="mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
-                        <VetFormSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput" />
-                        <label :for="notes.id">
+                        <div v-else-if="selectedVaccine?.dueOn && mode === 'view'">
+                            <p>{{ t(dueDate.label) }}</p>
+                            <p class="read-only">{{ tsToDate(selectedVaccine.dueOn, "date") }}</p>
+                        </div>
+                        <VetFormSelector v-if="isVisible" :vet="vet" v-model="formData.vet"
+                            v-model:vetTextInput="vetTextInput" />
+                        <div v-else-if="selectedVaccine?.vet && mode === 'view'">
+                            <p>{{ t(vet.label) }}</p>
+                            <p class="read-only">{{vets?.find(vet => vet.id === selectedVaccine!.vet)?.name ??
+                                selectedVaccine.vet }}</p>
+                        </div>
+                        <label :for="notes.id" v-if="isVisible">
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id"
                                 :readonly="!!selectedVaccine && mode === 'view'" />
                         </label>
+                        <div v-else-if="selectedVaccine?.notes && mode === 'view'">
+                            <p>{{ t(notes.label) }}</p>
+                            <p class="read-only">{{ selectedVaccine.notes }}</p>
+                        </div>
                         <div class="flex gap-1 mt-1 items-center" v-if="!selectedVaccine || mode === 'edit'">
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{ selectedPet.name
-                                }} · {{
+                                    }} · {{
                                         showTypes(formData.types, selectedPet) }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.vaccineForm.dueDate")
-                                }}:
+                                    }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>

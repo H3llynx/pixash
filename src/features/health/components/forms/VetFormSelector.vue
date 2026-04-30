@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../../../components/Button.vue';
-import Dropdown from '../../../components/Dropdown.vue';
-import Input from '../../../components/Input.vue';
-import { usePets } from '../../pets/composables/usePets';
+import Button from '../../../../components/Button.vue';
+import Dropdown from '../../../../components/Dropdown.vue';
+import Input from '../../../../components/Input.vue';
+import { usePets } from '../../../pets/composables/usePets';
 
 const { t } = useI18n();
 const { vets, selectedVet } = usePets();
@@ -16,7 +15,6 @@ withDefaults(defineProps<{
 
 const model = defineModel<string>();
 const vetTextInput = defineModel<boolean>('vetTextInput');
-const readonly = inject("readonly", ref(false));
 
 const onVetChange = () => {
     if (model.value === "other") {
@@ -28,7 +26,7 @@ const onVetChange = () => {
 
 <template>
     <Dropdown v-if="vets.length && !vetTextInput" v-model="model" :id="vet.id" :label="t(vet.label)"
-        @change="onVetChange" :disabled="readonly" required>
+        @change="onVetChange" required>
         <option v-for="v in vets" :key="v.id" :value="v.id">
             {{ v.name }}
         </option>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarCheck, Trash2 } from '@lucide/vue';
-import { provide, reactive, ref, Transition, watch } from 'vue';
+import { computed, provide, reactive, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FormWrapper from '../../../../components/FormWrapper.vue';
@@ -17,7 +17,7 @@ import { getIcon } from '../../../pets/utils';
 import { vetVisitFields } from '../../config';
 import type { VisitExtended } from '../../types';
 import { resetForm } from '../../utils';
-import VetFormSelector from '../VetFormSelector.vue';
+import VetFormSelector from './VetFormSelector.vue';
 
 const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedDate, selectedVet, vets } = usePets();
 const { show } = useToast();
@@ -46,7 +46,7 @@ const fillVisitData = (visit: Partial<VisitExtended>) => {
 };
 
 const formData = reactive({ ...defaultForm });
-
+const isVisible = computed(() => isAddingHealth.visit || mode.value === 'edit');
 const handleClose = () => {
     selectedDate.value = null;
     isAddingHealth.visit = false;
@@ -159,20 +159,34 @@ watch(() => mode.value, (mode) => {
                 <PetSelector v-if="isAddingHealth.visit" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-if="isAddingHealth.visit || mode === 'edit'" v-model="formData.title" :id="title.id"
-                            :label="t(title.label)" required />
-                        <Input v-model="formData.date" :id="date.id" :label="t(date.label)" :type="date.type" required>
+                        <Input v-if="isVisible" v-model="formData.title" :id="title.id" :label="t(title.label)"
+                            required />
+                        <Input v-if="isVisible" v-model="formData.date" :id="date.id" :label="t(date.label)"
+                            :type="date.type" required>
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
-                        <VetFormSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput"
-                            required />
-                        <label :for="notes.id">
+                        <div v-else-if="selectedVisit && mode === 'view'">
+                            <p>{{ t(date.label) }}</p>
+                            <p class="read-only">{{ tsToDate(selectedVisit.date, "date") }}</p>
+                        </div>
+                        <VetFormSelector v-if="isVisible" :vet="vet" v-model="formData.vet"
+                            v-model:vetTextInput="vetTextInput" required />
+                        <div v-else-if="selectedVisit && mode === 'view'">
+                            <p>{{ t(vet.label) }}</p>
+                            <p class="read-only">{{vets?.find(vet => vet.id === selectedVisit!.vet)?.name ??
+                                selectedVisit.vet}}</p>
+                        </div>
+                        <label :for="notes.id" v-if="isVisible">
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id"
                                 :readonly="!!selectedVisit && mode === 'view'" />
                         </label>
+                        <div v-else-if="selectedVisit?.notes && mode === 'view'">
+                            <p>{{ t(notes.label) }}</p>
+                            <p class="read-only">{{ selectedVisit.notes }}</p>
+                        </div>
                         <div class="flex gap-1 mt-1 items-center ml-auto" v-if="!selectedVisit || mode === 'edit'">
                             <Button v-if="selectedVisit && mode === 'edit'" variant="secondary" size="sm" type="button"
                                 :disabled="healthLoading" @click="mode = 'view'">
