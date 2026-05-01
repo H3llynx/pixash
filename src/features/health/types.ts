@@ -78,12 +78,12 @@ export type VetExtended = Vet & {
 export type AntiparasiteRecord = {
     treated: AntiparasiteTypes["id"][];
     givenAt: string;
-    nextDose?: boolean;
     dueOn?: string;
-    product?: string;
-}
+    other?: string;
+};
 
-export type AntiparasiteExtended = Omit<AntiparasiteRecord, "dueOn"> & {
+export type Log = AntiparasiteRecord & { type: string };
+export type LogExtended = Omit<Log, "givenAt" | "dueOn"> & {
     id: string;
     petId: string;
     userId: string;
@@ -91,4 +91,4 @@ export type AntiparasiteExtended = Omit<AntiparasiteRecord, "dueOn"> & {
     dueOn: Timestamp;
     eventType: string;
     ts: Timestamp;
-}
+};

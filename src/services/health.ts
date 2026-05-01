@@ -1,7 +1,7 @@
 import { addDoc, collection, collectionGroup, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where } from "firebase/firestore";
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
-import type { VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../features/health/types";
+import type { Log, LogExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../features/health/types";
 import { tsFromInput } from "../utils";
 
 const getVaccineDoc = (userId: string, petId: string, vaccineId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
@@ -208,5 +208,73 @@ export const deleteVet = async (vetId: string, userId: string) => {
     } catch (error) {
         console.error("Error deleting vet: ", error);
         throw error;
+    }
+};
+
+const getLogDoc = (userId: string, petId: string, logId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.logs, logId);
+export const addLog = async (log: Log, petId: string, userId: string) => {
+    const newLog = {
+        petId: petId,
+        userId: userId,
+        type: log.type,
+        treated: log.treated,
+        givenAt: log.givenAt ? tsFromInput(log.givenAt) : null,
+        dueOn: log.dueOn ? tsFromInput(log.dueOn) : null,
+        other: log.other ?? null,
+    };
+    try {
+        const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.logs), newLog);
+        return docRef.id;
+    } catch (error) {
+        console.error("Error adding vaccine: ", error);
+    }
+};
+
+export const fetchLogs = async (userId: string): Promise<LogExtended[]> => {
+    try {
+        const snapshot = await getDocs(query(
+            collectionGroup(db, DB.logs),
+            where("userId", "==", userId)));
+        if (snapshot.empty) {
+            console.log("No logs found");
+            return [];
+        }
+        return snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data() as Omit<LogExtended, "id">
+        }));
+    } catch (error) {
+        console.error("Fetch log error:", error);
+        return [];
+    }
+};
+
+export const updateLog = async (
+    logId: string,
+    petId: string,
+    userId: string,
+    data: Log
+) => {
+    const updated = {
+        petId: petId,
+        userId: userId,
+        treated: data.treated,
+        givenAt: tsFromInput(data.givenAt),
+        dueOn: data.dueOn ? tsFromInput(data.dueOn) : null,
+        other: data.other,
+    };
+    try {
+        const docRef = getLogDoc(userId, petId, logId);
+        await updateDoc(docRef, updated);
+    } catch (error) {
+        console.error("Error updating log: ", error);
+    }
+};
+
+export const deleteLog = async (logId: string, petId: string, userId: string) => {
+    try {
+        await deleteDoc(getLogDoc(userId, petId, logId));
+    } catch (error) {
+        console.error("Error deleting log: ", error);
     }
 };

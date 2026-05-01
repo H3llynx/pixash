@@ -3,5 +3,6 @@ export const DB = {
     pets: "pets",
     vets: "vets",
     vaccines: "vaccines",
-    vetVisits: "vetVisits"
+    vetVisits: "vetVisits",
+    logs: "logs"
 } as const;

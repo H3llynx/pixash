@@ -4,16 +4,20 @@ export default {
         button: {
             cancel: "Cancel",
             confirm: "Confirm",
+            update: "Update",
             addChip: "Add",
             allChip: "All",
             scrollRight: "Scroll right",
             scrollLeft: "Scroll left",
+            backDash: "Back to dashboard",
+            backCal: "Back to calendar"
         },
         panel: {
             hide: "Close form"
         },
         text: {
             noEventText: "You don't have any event scheduled.",
+            done: "Done!",
         },
         header: {
             greetings: "Welcome",
@@ -162,7 +166,7 @@ export default {
         },
         antiparasiteForm: {
             treated: "What did you treat?",
-            product: "Product name",
+            other: "Other information",
             validationTypes: "You must select what was treated",
         },
         vaccineForm: {
@@ -243,6 +247,7 @@ export default {
                 visitAdded: "{name}'s {title} successfully added",
                 visitUpdated: "{name}'s {title} successfully updated",
                 visitDeleted: "{name}'s {title} has been successfully deleted",
+                logDeleted: "{type} deleted",
             },
         },
         error: {
@@ -267,6 +272,10 @@ export default {
         deleteVet: {
             title: "Delete {name} ?",
             message: "This will remove {name}'s contact information. This action cannot be undone. Are you sure you'd like to proceed?",
+        },
+        deleteLog: {
+            title: "Delete {type} ?",
+            message: "This action cannot be undone. Are you sure you'd like to proceed?",
         },
     },
     tsToDate: {

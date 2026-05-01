@@ -41,7 +41,12 @@ const {
   addNewVet,
   updateSelectedVet,
   deleteSelectedVet,
-  selectedLog
+  selectedLog,
+  logs,
+  fetchUserLogs,
+  addNewLog,
+  updateSelectedLog,
+  deleteSelectedLog
 } = useHealth(pets);
 
 const hasVets = computed(() => vets.value.length > 0);
@@ -79,6 +84,7 @@ const fetchUserPets = async () => {
     pets.value = await fetchPets(user.value!.uid);
     await fetchUserVaccines();
     await fetchUserVisits();
+    await fetchUserLogs();
     if (!selectedPet.value && pets.value.length) {
       selectPet(pets.value[0]);
     } else if (!pets.value.length) isAddingPet.value = true;
@@ -208,6 +214,10 @@ export const usePets = () => {
     hasVets,
     deleteSelectedVet,
     isUpdatingVet,
-    selectedLog
+    selectedLog,
+    logs,
+    addNewLog,
+    updateSelectedLog,
+    deleteSelectedLog
   };
 };

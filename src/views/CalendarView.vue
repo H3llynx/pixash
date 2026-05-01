@@ -13,7 +13,7 @@ import { usePets } from '../features/pets/composables/usePets';
 import { getIcon } from '../features/pets/utils';
 import { tsToDate } from '../utils';
 
-const { pets, vaccines, vetVisits, selectedDate, loading } = usePets();
+const { pets, vaccines, vetVisits, logs, selectedDate, loading } = usePets();
 const { t } = useI18n();
 
 const currentMonth = ref<Date>(new Date());
@@ -37,6 +37,13 @@ const calendarEvents = computed(() => [
             title: `${getIcon(pets.value.find(pet => pet.id === visit.petId)!)} ${visit.title}`,
             date: tsToDate(visit.date, "input"),
             event: visit,
+        })),
+    ...logs.value.filter(log => pets.value.some(pet => pet.id === log.petId))
+        .map(log => ({
+            id: log.id,
+            title: `💊 ${log.type}`,
+            date: tsToDate(log.givenAt, "input"),
+            event: log,
         }))
 ]);
 

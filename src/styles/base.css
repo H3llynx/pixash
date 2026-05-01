@@ -29,7 +29,7 @@
   --color-green-dark: #1C3A2A;
   --color-green-mid: #2D5240;
   --color-green-pale: #8FAF8F;
-  --color-green-rgba: rgba(143, 175, 143, 0.3);
+  --color-green-rgba: rgba(143, 175, 143, 0.2);
   --color-purple-rgba: rgba(124, 111, 205, 0.3);
   --background-image-dark-green-gradient: linear-gradient(180deg, var(--color-green-dark) 0%, #2A5C3F 100%);
   --background-image-light-green-gradient: linear-gradient(120deg, var(--color-green-rgba), rgba(224, 170, 110, 0.1), rgba(100, 140, 130, 0.2), var(--color-white));

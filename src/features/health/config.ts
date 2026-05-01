@@ -66,9 +66,9 @@ export const antiparasiteFields = {
         label: "health.sharedDateFields.dueDate",
         type: "date",
     },
-    product: {
-        id: "antiparasite-product",
-        label: "health.antiparasiteForm.product",
+    other: {
+        id: "antiparasite-other",
+        label: "health.antiparasiteForm.other",
         type: "text",
     },
 }

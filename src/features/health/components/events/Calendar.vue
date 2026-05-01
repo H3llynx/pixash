@@ -16,7 +16,7 @@ const emit = defineEmits<{
     updateMonthName: [name: string]
 }>();
 
-const { selectVaccine, selectVisit, selectedDate } = usePets();
+const { selectVaccine, selectVisit, selectedDate, selectedLog } = usePets();
 
 const menu = reactive({
     visible: false,
@@ -26,7 +26,8 @@ const menu = reactive({
 
 const eventColors: Record<string, string> = {
     visit: "var(--color-brand-light)",
-    vaccine: "var(--color-gold)"
+    vaccine: "var(--color-gold)",
+    log: "var(--color-separator)"
 };
 
 const calendarOptions = computed(() => ({
@@ -65,7 +66,11 @@ const calendarOptions = computed(() => ({
     },
     eventClick(info: EventClickArg) {
         if (info.event.extendedProps.event.eventType === "vaccine") selectVaccine(info.event.extendedProps.event);
-        else if (info.event.extendedProps.event.eventType === "visit") selectVisit(info.event.extendedProps.event)
+        else if (info.event.extendedProps.event.eventType === "visit") selectVisit(info.event.extendedProps.event);
+        else if (info.event.extendedProps.event.eventType === "log") {
+            if (info.event.extendedProps.event.type === "antiparasitic")
+                selectedLog.antiparasitic = info.event.extendedProps.event;
+        }
     }
 }));
 </script>

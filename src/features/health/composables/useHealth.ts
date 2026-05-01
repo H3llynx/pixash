@@ -1,10 +1,10 @@
 import { FirebaseError } from "firebase/app";
 import { reactive, ref, type Ref } from "vue";
-import { addVaccine, addVet, addVetVisit, deleteVaccine, deleteVet, deleteVisit, fetchVaccines, fetchVets, fetchVetVisits, updateVaccine, updateVet, updateVetVisit } from "../../../services/health";
+import { addLog, addVaccine, addVet, addVetVisit, deleteLog, deleteVaccine, deleteVet, deleteVisit, fetchLogs, fetchVaccines, fetchVets, fetchVetVisits, updateLog, updateVaccine, updateVet, updateVetVisit } from "../../../services/health";
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { AntiparasiteExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { Log, LogExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getNextVaccine, getNextVisit } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
@@ -12,12 +12,13 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const vaccines = ref<VaccineExtended[]>([]);
     const vetVisits = ref<VisitExtended[]>([]);
     const vets = ref<VetExtended[]>([]);
+    const logs = ref<LogExtended[]>([]);
     const selectedVaccine = ref<VaccineExtended | null>(null);
     const selectedVisit = ref<VisitExtended | null>(null);
     const selectedVet = ref<VetExtended | null>(null);
     const selectedDate = ref<string | null>(null);
     const selectedLog = reactive<{
-        antiparasitic: AntiparasiteExtended | null;
+        antiparasitic: LogExtended | null
     }>({
         antiparasitic: null,
     })
@@ -48,10 +49,12 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         pets.value = pets.value.map(pet => {
             const petVaccines = vaccines.value.filter(vaccine => vaccine.petId === pet.id);
             const petVisits = vetVisits.value.filter(visit => visit.petId === pet.id);
+            const petLogs = logs.value.filter(log => log.petId === pet.id);
             return {
                 ...pet,
                 vaccines: petVaccines,
                 vetVisits: petVisits,
+                logs: petLogs,
                 nextVaccine: getNextVaccine(petVaccines),
                 nextVetVisit: getNextVisit(petVisits),
             }
@@ -201,6 +204,45 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         );
     };
 
+    const fetchUserLogs = async () => {
+        await handleHealthAction(async () => {
+            const l = await fetchLogs(user.value!.uid);
+            logs.value = l.map(l => ({ ...l, ts: l.dueOn ?? null, eventType: "log" }));
+            assignHealth();
+        });
+    };
+
+    const addNewLog = async (newLog: Log, petId: string) => {
+        await handleHealthAction(async () => {
+            loading.value = true;
+            await addLog(newLog, petId, user.value!.uid);
+            await fetchUserLogs();
+        }, () => {
+            loading.value = false;
+        })
+    };
+
+    const updateSelectedLog = async (log: LogExtended, petId: string, data: Log) => {
+        await handleHealthAction(async () => {
+            loading.value = true;
+            await updateLog(log.id, petId, user.value!.uid, data);
+            await fetchUserLogs();
+        }, () => {
+            loading.value = false;
+        })
+    };
+
+    const deleteSelectedLog = async (log: LogExtended, petId: string,) => {
+        await handleHealthAction(async () => {
+            loading.value = true;
+            resetState(selectedLog);
+            await deleteLog(log.id, petId, user.value!.uid);
+            await fetchUserLogs();
+        }, () => {
+            loading.value = false;
+        })
+    };
+
     return {
         error,
         loading,
@@ -228,5 +270,10 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         updateSelectedVet,
         deleteSelectedVet,
         selectedLog,
+        logs,
+        fetchUserLogs,
+        addNewLog,
+        updateSelectedLog,
+        deleteSelectedLog
     };
 };
