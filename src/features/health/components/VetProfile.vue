@@ -10,7 +10,7 @@ import VetNotes from './VetNotes.vue';
 import VetProfileRow from './VetProfileRow.vue';
 import VetTypeTag from './VetTypeTag.vue';
 
-const { pets, isAddingHealth, selectedVet, isUpdatingVet } = usePets();
+const { pets, selectPet, isAddingHealth, selectedVet, isUpdatingVet } = usePets();
 const { t } = useI18n();
 
 const props = defineProps<{ vet: any }>();
@@ -20,7 +20,10 @@ const assignedPets = computed(() => {
 });
 
 const handleVisit = () => {
+    resetState(isAddingHealth);
     selectedVet.value = props.vet;
+    const pet = pets.value.find(p => props.vet.assignedPets.includes(p.id));
+    if (pet) selectPet(pet);
     isUpdatingVet.value = false;
     isAddingHealth.visit = true;
 }

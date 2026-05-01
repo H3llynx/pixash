@@ -29,6 +29,7 @@ const { treated, givenDate, dueDate, other } = antiparasiteFields;
 const antiparasitics = ref<AntiparasiteTypes[]>([]);
 const error = ref<boolean>(false);
 const success = ref<boolean>(false);
+const givenAt = computed(() => selectedDate.value ?? new Date().toISOString().slice(0, 10));
 const fillLogData = (log: LogExtended) => {
     Object.assign(formData, {
         treated: [...log.treated],
@@ -38,10 +39,9 @@ const fillLogData = (log: LogExtended) => {
     })
 };
 const isVisible = computed(() => isAddingHealth.antiparasitic || mode.value === 'edit');
-const today = new Date().toISOString().slice(0, 10);
 const defaultForm = {
     treated: [ANTIPARASITE_TYPES.default[0].id] as AntiparasiteTypes["id"][],
-    givenAt: today,
+    givenAt: givenAt.value,
     dueOn: "",
     other: "",
 };
@@ -95,13 +95,13 @@ const handleSubmit = async () => {
     };
 };
 
-watch(() => [isAddingHealth.antiparasitic, selectedLog.antiparasitic],
-    (adding, editing) => {
-        if (adding) formData.givenAt = selectedDate.value ?? "";
-        if (editing) mode.value = "view";
-    }
+watch(() => selectedLog.antiparasitic, (log) => {
+    mode.value = log ? "view" : "edit";
+});
 
-);
+watch(() => mode.value, (mode) => {
+    if (mode === "view") fillLogData(selectedLog.antiparasitic!)
+})
 
 watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
     ([pet, log]) => {
@@ -113,11 +113,10 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
         if (!options || !options.length) return;
         antiparasitics.value = options;
         if (log) fillLogData(log);
-        else {
+        else if (!selectedLog.antiparasitic) {
             resetForm(formData, defaultForm);
             Object.assign(formData, {
                 treated: [antiparasitics.value[0].id],
-                givenAt: selectedDate.value ?? "",
             });
         }
     },
@@ -141,7 +140,7 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
                 </div>
                 <PetSelector v-if="isAddingHealth.antiparasitic" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">
-                    <Selector :legend="t(treated.label)" class="treated-selector">
+                    <Selector :legend="t(treated.label)" class="mb-0.5">
                         <Input v-model="formData.treated"
                             v-for="option in isReadonly ? antiparasitics.filter(o => formData.treated.includes(o.id)) : antiparasitics"
                             :id="option.id" :value="option.id" :key="option.id" :label="t(option.label)"
@@ -157,17 +156,19 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
                             </template>
                         </Input>
                         <div v-else-if="selectedLog.antiparasitic && mode === 'view'">
-                            <p>{{ t(givenDate.label) }}</p>
+                            <p class="read-only-label">{{ t(givenDate.label) }}</p>
                             <p class="read-only">{{ tsToDate(selectedLog.antiparasitic.givenAt, "date") }}</p>
                         </div>
                         <Input v-if="isVisible" v-model="formData.dueOn" :id="dueDate.id" :label="t(dueDate.label)"
                             :type="dueDate.type" :min="formData.givenAt">
                             <template #addon>
-                                <CalendarClock class="mr-0.5" color="var(--color-border)" />
+                                <CalendarClock v-if="!formData.dueOn" class="mr-0.5" color="var(--color-border)" />
+                                <Button v-else type="button" variant="ghost" size="xs" @click="formData.dueOn = ''">{{
+                                    t("common.button.clear") }}</Button>
                             </template>
                         </Input>
                         <div v-else-if="selectedLog.antiparasitic?.dueOn && mode === 'view'">
-                            <p>{{ t(dueDate.label) }}</p>
+                            <p class="read-only-label">{{ t(dueDate.label) }}</p>
                             <p class="read-only">{{ tsToDate(selectedLog.antiparasitic.dueOn, "date") }}</p>
                         </div>
                         <Input v-model="formData.other" :id="other.id" :label="t(other.label)" :type="other.type" />
@@ -194,7 +195,8 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
 
 <style scoped>
 :deep(label:not(:has(input[type="checkbox"]))) p,
-:deep(legend) {
+:deep(legend),
+.read-only-label {
     text-transform: uppercase;
     color: var(--color-text-secondary);
     font-weight: 500;

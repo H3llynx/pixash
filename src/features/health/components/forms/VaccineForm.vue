@@ -31,11 +31,21 @@ const { types, stage, given, givenDate, dueDate, nextDose, vet, notes } = vaccin
 const vaccineTypes = ref<VaccineTypes[]>([]);
 const error = ref<boolean>(false);
 const vetTextInput = ref<boolean>(false);
+const date = computed(() => selectedDate.value ?? new Date().toISOString().slice(0, 10));
+const givenBy = computed(() => {
+    if (selectedVet.value) return selectedVet.value.id;
+    const pet = selectedPet.value;
+    if (pet) {
+        const vetForPet = vets.value?.find(v => v.assignedPets?.includes(pet.id));
+        if (vetForPet) return vetForPet.id;
+    }
+    return vets.value?.[0]?.id ?? "";
+});
 const defaultForm = {
     types: [VACCINE_TYPES.default[0].id] as VaccineTypes["id"][],
     stage: "adult" as typeof STAGE[number]["id"],
     given: false,
-    givenAt: "",
+    givenAt: date.value,
     nextDose: false,
     dueOn: "",
     vet: "",
@@ -117,21 +127,19 @@ const handleDelete = async () => {
     });
 };
 
-watch([() => isAddingHealth.vaccine, selectedVaccine],
-    async ([adding, editing]) => {
-        if (adding) {
-            formData.dueOn = selectedDate.value ?? "";
-            formData.vet = selectedVet.value?.id ?? vets.value?.[0]?.id ?? "";
-        }
-        if (editing) {
-            mode.value = "view";
-        }
-    }
-);
+watch(() => selectedVaccine.value, (vaccine) => {
+    mode.value = vaccine ? "view" : "edit";
+});
 
 watch(() => mode.value, (mode) => {
     if (mode === "view") fillVaccineData(selectedVaccine.value!)
 })
+
+watch(() => isAddingHealth.vaccine, (adding) => {
+    if (adding) {
+        formData.vet = givenBy.value;
+    }
+});
 
 watch(() => [selectedPet.value, selectedVaccine.value] as const,
     ([pet, vaccine]) => {
@@ -149,7 +157,7 @@ watch(() => [selectedPet.value, selectedVaccine.value] as const,
                 types: [vaccineTypes.value[0].id],
                 stage: getAge(pet)?.stage,
                 dueOn: selectedDate.value ?? "",
-                vet: selectedVet.value?.id ?? vets.value?.[0]?.id ?? ""
+                vet: givenBy.value
             });
         }
     },
@@ -164,10 +172,13 @@ watch(() => formData.nextDose, () => {
 });
 
 watch(() => formData.given, () => {
-    if (!formData.given) formData.givenAt = "";
+    if (!formData.given) {
+        formData.givenAt = "";
+        formData.dueOn = date.value;
+    }
     else formData.givenAt = selectedVaccine.value?.givenAt
         ? tsToDate(selectedVaccine.value.givenAt, "input") as string
-        : ""
+        : date.value
 });
 </script>
 

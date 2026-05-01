@@ -164,6 +164,10 @@
     background: var(--color-bg-rgba);
     width: 100%;
     border-radius: 0.75rem;
+
+    &[readonly]:focus-visible {
+      outline: none;
+    }
   }
 
   textarea {
@@ -425,7 +429,7 @@
   }
 
   .read-only {
-    @apply font-medium px-1 py-0.5 rounded-lg bg-brand-rgba;
+    @apply font-medium px-1 py-0.5 rounded-lg bg-brand-rgba mt-0.5;
   }
 }
 

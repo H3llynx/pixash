@@ -175,6 +175,14 @@ watch(selectedVisit, (visit) => {
   }
 });
 
+watch(selectedLog, (log) => {
+  const antiparasitic = log.antiparasitic
+  if (antiparasitic) {
+    const pet = pets.value.find(pet => pet.id === antiparasitic.petId);
+    if (pet) selectedPet.value = pet;
+  }
+});
+
 export const usePets = () => {
   return {
     pets,

@@ -235,11 +235,11 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const deleteSelectedLog = async (log: LogExtended, petId: string,) => {
         await handleHealthAction(async () => {
             loading.value = true;
-            resetState(selectedLog);
             await deleteLog(log.id, petId, user.value!.uid);
             await fetchUserLogs();
         }, () => {
             loading.value = false;
+            resetState(selectedLog);
         })
     };
 

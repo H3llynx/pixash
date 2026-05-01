@@ -28,9 +28,19 @@ provide('readonly', isReadonly);
 
 const { title, date, vet, notes } = vetVisitFields;
 const vetTextInput = ref<boolean>(false);
+const visitDate = computed(() => selectedDate.value ?? "");
+const assignedVet = computed(() => {
+    if (selectedVet.value) return selectedVet.value.id;
+    const pet = selectedPet.value;
+    if (pet) {
+        const vetForPet = vets.value?.find(v => v.assignedPets?.includes(pet.id));
+        if (vetForPet) return vetForPet.id;
+    }
+    return vets.value?.[0]?.id ?? "";
+});
 const defaultForm = {
     title: "",
-    date: "",
+    date: visitDate.value,
     vet: "",
     notes: "",
 };
@@ -103,14 +113,11 @@ const handleDelete = async () => {
     });
 };
 
-watch(() => [isAddingHealth.visit],
-    ([adding]) => {
-        if (adding) {
-            formData.date = selectedDate.value ?? ""
-            formData.vet = selectedVet.value?.id ?? vets.value?.[0]?.id ?? "";
-        }
+watch(() => isAddingHealth.visit, (adding) => {
+    if (adding) {
+        formData.vet = assignedVet.value;
     }
-);
+});
 
 watch(() => [selectedPet.value, selectedVisit.value] as const,
     ([pet, visit]) => {
@@ -124,8 +131,7 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
         }
         else {
             resetForm(formData, defaultForm);
-            formData.date = selectedDate.value ?? "";
-            formData.vet = selectedVet.value?.id ?? vets.value?.[0]?.id ?? "";
+            formData.vet = assignedVet.value;
         };
     },
     { immediate: true }

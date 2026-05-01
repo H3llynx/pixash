@@ -132,7 +132,7 @@ const calendarOptions = computed(() => ({
 }
 
 :deep(.fc-event-title) {
-    color: var(--color-brand-dark);
+    color: var(--color-text);
 }
 
 :deep(.fc-scrollgrid-section-header th) {

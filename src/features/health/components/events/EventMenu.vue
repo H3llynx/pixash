@@ -8,7 +8,7 @@ import { useMedia } from '../../../../composables/useMedia';
 import { resetState } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';
 
-const { isAddingHealth } = usePets();
+const { isAddingHealth, selectedLog, selectVaccine, selectVisit } = usePets();
 const { t } = useI18n();
 const { isMd } = useMedia();
 
@@ -21,6 +21,9 @@ onClickOutside(menuRef, () => {
 
 const handleClick = (action: string) => {
     resetState(isAddingHealth);
+    resetState(selectedLog);
+    selectVaccine(null);
+    selectVisit(null);
     if (action === "vaccine") isAddingHealth.vaccine = true;
     else if (action === "visit") isAddingHealth.visit = true;
     else if (action === "antiparasitic") isAddingHealth.antiparasitic = true;

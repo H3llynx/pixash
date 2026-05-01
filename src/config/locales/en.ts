@@ -5,6 +5,7 @@ export default {
             cancel: "Cancel",
             confirm: "Confirm",
             update: "Update",
+            clear: "Clear",
             addChip: "Add",
             allChip: "All",
             scrollRight: "Scroll right",
