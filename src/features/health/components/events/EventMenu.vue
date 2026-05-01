@@ -4,6 +4,7 @@ import { onClickOutside } from '@vueuse/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
+import FormWrapper from '../../../../components/FormWrapper.vue';
 import { useMedia } from '../../../../composables/useMedia';
 import { resetState } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';
@@ -24,41 +25,82 @@ const handleClick = (action: string) => {
     resetState(selectedLog);
     selectVaccine(null);
     selectVisit(null);
+    visible.value = false;
     if (action === "vaccine") isAddingHealth.vaccine = true;
     else if (action === "visit") isAddingHealth.visit = true;
     else if (action === "antiparasitic") isAddingHealth.antiparasitic = true;
+}
+
+const handleClose = () => {
     visible.value = false;
 }
 </script>
 
 <template>
-    <Transition name="toast">
-        <div v-if="visible" ref="menuRef" role="menu" class="absolute -translate-x-1/2 w-max flex gap-[3px] flex-col">
+    <Transition name="toast" v-if="isMd">
+        <div v-if="visible" ref="menuRef" role="menu"
+            class="absolute -translate-x-1/2 w-max flex gap-[3px] flex-col z-1">
             <Button variant="ghost" size="xxs" @click="handleClick('vaccine')" :aria-label="t('addMenu.vaccine')">
-                <span v-if="isMd">{{ t("addMenu.vaccine") }}</span>
+                <span>{{ t("addMenu.vaccine") }}</span>
                 <Syringe :size="isMd ? 18 : 20" />
             </Button>
             <Button variant="ghost" size="xxs" @click="handleClick('visit')" :aria-label="t('addMenu.vetVisit')">
-                <span v-if="isMd">{{ t("addMenu.vetVisit") }}</span>
+                <span>{{ t("addMenu.vetVisit") }}</span>
                 <Stethoscope :size="isMd ? 18 : 20" />
             </Button>
             <Button variant="ghost" size="xxs" @click="handleClick('antiparasitic')"
                 :aria-label="t('addMenu.antiparasitic')">
-                <span v-if="isMd">{{ t("addMenu.antiparasitic") }}</span>
+                <span>{{ t("addMenu.antiparasitic") }}</span>
                 <Pill :size="isMd ? 18 : 20" />
             </Button>
         </div>
+    </Transition>
+
+    <Transition name="panel" v-else>
+        <FormWrapper :onClose="handleClose" v-if="visible">
+            <div class="flex flex-col gap-1 p-1">
+                <Button variant="secondary" size="sm" @click="handleClick('vaccine')"
+                    :aria-label="t('addMenu.vaccine')">
+                    <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+                        <Syringe :size="isMd ? 18 : 20" />
+                    </div>
+                    <span>{{ t("addMenu.vaccine") }}</span>
+                </Button>
+                <Button variant="secondary" size="sm" @click="handleClick('visit')" :aria-label="t('addMenu.vetVisit')">
+                    <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+                        <Stethoscope :size="isMd ? 18 : 20" />
+                    </div>
+                    <span>{{ t("addMenu.vetVisit") }}</span>
+                </Button>
+                <Button variant="secondary" size="sm" @click="handleClick('antiparasitic')"
+                    :aria-label="t('addMenu.antiparasitic')">
+                    <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+                        <Pill :size="isMd ? 18 : 20" />
+                    </div>
+                    <span>{{ t("addMenu.antiparasitic") }}</span>
+                </Button>
+            </div>
+        </FormWrapper>
     </Transition>
 </template>
 
 <style scoped>
 button {
     justify-content: space-between;
-
     border: 1px solid var(--color-border);
 
     &:hover {
         background: var(--color-brand-rgba)
+    }
+}
+
+@media (width < 48rem) {
+    button {
+        justify-content: flex-start;
+        gap: 1rem;
+        border-radius: 0.75rem;
+        border-color: var(--color-border);
+        color: var(--color-text);
     }
 }
 </style>

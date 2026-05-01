@@ -3,9 +3,8 @@ import type { DatesSetArg, EventClickArg, EventInput, EventMountArg } from '@ful
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { type DateClickArg } from "@fullcalendar/interaction";
 import FullCalendar from '@fullcalendar/vue3';
-import { computed, nextTick, reactive } from 'vue';
+import { computed } from 'vue';
 import { usePets } from '../../../pets/composables/usePets';
-import EventMenu from './EventMenu.vue';
 
 const props = defineProps<{
     events?: EventInput
@@ -14,15 +13,10 @@ const props = defineProps<{
 const emit = defineEmits<{
     updateMonth: [date: Date]
     updateMonthName: [name: string]
+    dateClick: [date: string, x: number, y: number]
 }>();
 
 const { selectVaccine, selectVisit, selectedDate, selectedLog } = usePets();
-
-const menu = reactive({
-    visible: false,
-    x: 0,
-    y: 0,
-});
 
 const eventColors: Record<string, string> = {
     visit: "var(--color-brand-light)",
@@ -50,19 +44,15 @@ const calendarOptions = computed(() => ({
     },
     dateClick(info: DateClickArg) {
         const isSameDay = selectedDate.value === info.dateStr;
-        if (menu.visible && isSameDay) {
-            menu.visible = false;
-            selectedDate.value = null;
+        if (isSameDay) {
+            emit('dateClick', info.dateStr, 0, 0);  // parent handles toggle
             return;
         }
         selectedDate.value = info.dateStr;
         const rect = info.dayEl.getBoundingClientRect();
-        menu.x = rect.left + window.scrollX + rect.width / 2;
-        menu.y = rect.top + window.scrollY + 25;
-        menu.visible = false;
-        nextTick(() => {
-            menu.visible = true;
-        });
+        const x = rect.left + window.scrollX + rect.width / 2;
+        const y = rect.top + window.scrollY + 25;
+        emit('dateClick', info.dateStr, x, y);
     },
     eventClick(info: EventClickArg) {
         if (info.event.extendedProps.event.eventType === "vaccine") selectVaccine(info.event.extendedProps.event);
@@ -77,7 +67,6 @@ const calendarOptions = computed(() => ({
 
 <template>
     <FullCalendar :options="calendarOptions" />
-    <EventMenu v-model:visible="menu.visible" :style="{ left: menu.x + 'px', top: menu.y + 'px' }" />
 </template>
 
 <style scoped>
