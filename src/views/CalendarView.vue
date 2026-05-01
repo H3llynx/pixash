@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { onBeforeRouteLeave } from 'vue-router';
 import Header from '../components/Header.vue';
 import EventListSkeleton from '../components/loading/EventListSkeleton.vue';
+import { useMedia } from '../composables/useMedia';
 import Calendar from '../features/health/components/events/Calendar.vue';
 import CalendarLegend from '../features/health/components/events/CalendarLegend.vue';
 import EventList from '../features/health/components/events/EventList.vue';
@@ -16,6 +17,7 @@ import { tsToDate } from '../utils';
 
 const { pets, vaccines, vetVisits, logs, selectedDate, loading, healthLoading } = usePets();
 const { t } = useI18n();
+const { isMd } = useMedia();
 
 const currentMonth = ref<Date>(new Date());
 const currentMonthName = ref<string>("");
@@ -101,5 +103,5 @@ onBeforeRouteLeave(() => {
             <CalendarLegend />
         </section>
     </main>
-    <EventMenu v-model:visible="menu.visible" :style="{ left: menu.x + 'px', top: menu.y + 'px' }" />
+    <EventMenu v-model:visible="menu.visible" :style="isMd ? { left: menu.x + 'px', top: menu.y + 'px' } : {}" />
 </template>
