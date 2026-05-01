@@ -9,8 +9,8 @@ import { useMedia } from '../../../../composables/useMedia';
 import { resetState } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';
 
-const { isAddingHealth, selectedLog, selectVaccine, selectVisit } = usePets();
-const { t } = useI18n();
+const { isAddingHealth, selectedLog, selectVaccine, selectVisit, selectedDate } = usePets();
+const { t, locale } = useI18n();
 const { isMd } = useMedia();
 
 const visible = defineModel<boolean>("visible")
@@ -57,24 +57,29 @@ const handleClose = () => {
     </Transition>
 
     <Transition name="panel" v-else>
-        <FormWrapper :onClose="handleClose" v-if="visible">
+        <FormWrapper :onClose="handleClose" v-if="visible" class="bg-bg-rgba filter-blur">
             <div class="flex flex-col gap-1 p-1">
+                <h2 class="mb-1" v-if="selectedDate">{{ new Date(selectedDate).toLocaleDateString(locale, {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long"
+                }) }}</h2>
                 <Button variant="secondary" size="sm" @click="handleClick('vaccine')"
                     :aria-label="t('addMenu.vaccine')">
-                    <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+                    <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
                         <Syringe :size="isMd ? 18 : 20" />
                     </div>
                     <span>{{ t("addMenu.vaccine") }}</span>
                 </Button>
                 <Button variant="secondary" size="sm" @click="handleClick('visit')" :aria-label="t('addMenu.vetVisit')">
-                    <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+                    <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
                         <Stethoscope :size="isMd ? 18 : 20" />
                     </div>
                     <span>{{ t("addMenu.vetVisit") }}</span>
                 </Button>
                 <Button variant="secondary" size="sm" @click="handleClick('antiparasitic')"
                     :aria-label="t('addMenu.antiparasitic')">
-                    <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+                    <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
                         <Pill :size="isMd ? 18 : 20" />
                     </div>
                     <span>{{ t("addMenu.antiparasitic") }}</span>
@@ -99,7 +104,6 @@ button {
         justify-content: flex-start;
         gap: 1rem;
         border-radius: 0.75rem;
-        border-color: var(--color-border);
         color: var(--color-text);
     }
 }

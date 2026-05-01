@@ -1,8 +1,8 @@
 import { getTodayDayKey, tsToDayKey } from "../../utils";
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
-import { ANTIPARASITE_TYPES, VACCINE_TYPES } from "./config";
-import type { VaccineExtended, VaccineTypes, VisitExtended } from "./types";
+import { ANTIPARASITE_TYPES, PARASITES, VACCINE_TYPES } from "./config";
+import type { AntiparasiteTypes, VaccineExtended, VaccineTypes, VisitExtended } from "./types";
 
 export const resetForm = <T extends object>(formData: T, defaultForm: T) => {
     Object.assign(formData, defaultForm)
@@ -39,9 +39,7 @@ export const showTypes = (vaccineType: VaccineTypes["id"][], pet?: PetExtended) 
     const labels: string[] = [];
     vaccineType.forEach(type => {
         const vaccine = vaccines.find(t => t.id === type);
-        if (vaccine) {
-            labels.push(vaccine.label);
-        }
+        if (vaccine) labels.push(vaccine.label);
     })
     return labels.join(" + ");
 }
@@ -51,3 +49,12 @@ export const getAntiparasites = (species: typeof SPECIES[number]["id"] | "defaul
     const specific = ANTIPARASITE_TYPES[species as keyof typeof ANTIPARASITE_TYPES] ?? [];
     return [...specific, ...ANTIPARASITE_TYPES.default];
 };
+
+export const showAntiparasites = (treated: AntiparasiteTypes["id"][], locale: string, t: (key: string) => string) => {
+    const labels: string[] = [];
+    treated.forEach(parasite => {
+        const item = Object.values(PARASITES).find(p => p.id === parasite);
+        if (item) labels.push(item.label);
+    })
+    return new Intl.ListFormat(locale).format(labels.map(l => t(l).toLowerCase()));
+}

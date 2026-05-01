@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BriefcaseMedical, PawPrint, Stethoscope, Syringe } from '@lucide/vue';
+import { BriefcaseMedical, PawPrint, Pill, Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -29,7 +29,8 @@ const handleClick = (action: string) => {
     if (action === "vaccine") isAddingHealth.vaccine = true;
     else if (action === "pet") isAddingPet.value = true;
     else if (action === "visit") isAddingHealth.visit = true;
-    else if (action === "vet") { isAddingHealth.vet = true };
+    else if (action === "vet") isAddingHealth.vet = true;
+    else if (action === "antiparasitic") isAddingHealth.antiparasitic = true;
     visible.value = false;
 }
 </script>
@@ -53,6 +54,10 @@ const handleClick = (action: string) => {
                     <div class="row">
                         <Button @click="handleClick('pet')">{{ t("addMenu.pet") }}</Button>
                         <PawPrint class="btn-icon default-transition filter-blur" :size="40" />
+                    </div>
+                    <div class="row">
+                        <Button @click="handleClick('antiparasitic')">{{ t("addMenu.antiparasitic2") }}</Button>
+                        <Pill class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
                         <Button @click="handleClick('vaccine')">{{ t("addMenu.vaccine") }}</Button>

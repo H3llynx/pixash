@@ -20,7 +20,7 @@ export const VACCINE_TYPES = {
     ],
 } as const;
 
-const PARASITES = {
+export const PARASITES = {
     worms: { id: "worms", label: "health.parasites.worms" },
     fleas: { id: "fleas", label: "health.parasites.fleas" },
     lice: { id: "lice", label: "health.parasites.lice" },

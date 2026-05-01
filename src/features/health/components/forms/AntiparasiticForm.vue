@@ -41,7 +41,7 @@ const fillLogData = (log: LogExtended) => {
 const isVisible = computed(() => isAddingHealth.antiparasitic || mode.value === 'edit');
 const defaultForm = {
     treated: [ANTIPARASITE_TYPES.default[0].id] as AntiparasiteTypes["id"][],
-    givenAt: givenAt.value,
+    givenAt: "",
     dueOn: "",
     other: "",
 };
@@ -103,6 +103,12 @@ watch(() => mode.value, (mode) => {
     if (mode === "view") fillLogData(selectedLog.antiparasitic!)
 })
 
+watch(() => isAddingHealth.antiparasitic, (adding) => {
+    if (adding) {
+        formData.givenAt = givenAt.value;
+    }
+});
+
 watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
     ([pet, log]) => {
         if (!pet) {
@@ -117,6 +123,7 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
             resetForm(formData, defaultForm);
             Object.assign(formData, {
                 treated: [antiparasitics.value[0].id],
+                givenAt: givenAt.value
             });
         }
     },
@@ -171,15 +178,15 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
                             <p class="read-only-label">{{ t(dueDate.label) }}</p>
                             <p class="read-only">{{ tsToDate(selectedLog.antiparasitic.dueOn, "date") }}</p>
                         </div>
-                        <Input v-model="formData.other" :id="other.id" :label="t(other.label)" :type="other.type" />
-                        <div class="flex gap-1 mt-1 items-center" v-if="!selectedLog.antiparasitic || mode === 'edit'">
-                            <div class="flex gap-0.5 flex-col md:flex-row  ml-auto">
-                                <Button type="button" v-if="selectedLog.antiparasitic && mode === 'edit'"
-                                    variant="secondary" size="sm" :disabled="healthLoading" @click="mode = 'view'">
-                                    {{ t("common.button.cancel") }}
-                                </Button>
-                                <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveTreatment") }}</Button>
-                            </div>
+                        <Input v-if="selectedLog.antiparasitic?.other || isVisible" v-model="formData.other"
+                            :id="other.id" :label="t(other.label)" :type="other.type" />
+                        <div class="flex gap-0.5 mt-1 items-center ml-auto"
+                            v-if="!selectedLog.antiparasitic || mode === 'edit'">
+                            <Button type="button" v-if="selectedLog.antiparasitic && mode === 'edit'"
+                                variant="secondary" size="sm" :disabled="healthLoading" @click="mode = 'view'">
+                                {{ t("common.button.cancel") }}
+                            </Button>
+                            <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveTreatment") }}</Button>
                         </div>
                         <Button v-if="selectedLog.antiparasitic && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
                             @click="mode = 'edit'">
@@ -188,7 +195,7 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
                     </div>
                 </form>
             </div>
-            <LogSuccess v-else-if="success" :onClose="handleClose" />
+            <LogSuccess v-else-if="success" :onClose="handleClose" :pet="selectedPet!" :treated="formData.treated" />
         </FormWrapper>
     </Transition>
 </template>

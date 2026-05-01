@@ -19,6 +19,7 @@ export default {
         text: {
             noEventText: "You don't have any event scheduled.",
             done: "Done!",
+            antiparasiticLogged: "Antiparasitic against {parasites} logged for {name}."
         },
         header: {
             greetings: "Welcome",
@@ -48,7 +49,8 @@ export default {
         vetVisit: "Vet visit",
         vaccine: "New vaccine",
         vet: "Add vet",
-        antiparasitic: "Log antiparasitic"
+        antiparasitic: "Log antiparasitic",
+        antiparasitic2: "Antiparasitic"
     },
     userMenu: {
         logout: "Log out",

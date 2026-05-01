@@ -40,7 +40,7 @@ const assignedVet = computed(() => {
 });
 const defaultForm = {
     title: "",
-    date: visitDate.value,
+    date: "",
     vet: "",
     notes: "",
 };
@@ -116,6 +116,7 @@ const handleDelete = async () => {
 watch(() => isAddingHealth.visit, (adding) => {
     if (adding) {
         formData.vet = assignedVet.value;
+        formData.date = visitDate.value;
     }
 });
 
@@ -132,6 +133,7 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
         else {
             resetForm(formData, defaultForm);
             formData.vet = assignedVet.value;
+            formData.date = visitDate.value;
         };
     },
     { immediate: true }
@@ -199,7 +201,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit")
-                                }}
+                            }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>

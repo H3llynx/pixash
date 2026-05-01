@@ -44,15 +44,12 @@ const calendarOptions = computed(() => ({
     },
     dateClick(info: DateClickArg) {
         const isSameDay = selectedDate.value === info.dateStr;
-        if (isSameDay) {
-            emit('dateClick', info.dateStr, 0, 0);  // parent handles toggle
-            return;
-        }
+        if (isSameDay) return;
         selectedDate.value = info.dateStr;
         const rect = info.dayEl.getBoundingClientRect();
         const x = rect.left + window.scrollX + rect.width / 2;
         const y = rect.top + window.scrollY + 25;
-        emit('dateClick', info.dateStr, x, y);
+        emit("dateClick", info.dateStr, x, y);
     },
     eventClick(info: EventClickArg) {
         if (info.event.extendedProps.event.eventType === "vaccine") selectVaccine(info.event.extendedProps.event);
