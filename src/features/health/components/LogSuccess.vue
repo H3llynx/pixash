@@ -5,15 +5,16 @@ import { useRoute } from 'vue-router';
 import Button from '../../../components/Button.vue';
 import { ROUTES } from '../../../router/config';
 import type { PetExtended } from '../../pets/types';
-import type { AntiparasiteTypes } from '../types';
+import type { PetEvent } from '../types';
 import { showAntiparasites } from '../utils';
+import HealthCard from './events/HealthCard.vue';
 
 const { t, locale } = useI18n();
 const route = useRoute();
 
 defineProps<{
     pet: PetExtended
-    treated: AntiparasiteTypes["id"][]
+    logged: PetEvent
     onClose: () => void
 }>();
 </script>
@@ -24,9 +25,13 @@ defineProps<{
             <Check :size="30" />
         </div>
         <h1>{{ t("common.text.done") }}</h1>
-        <p class="w-2/3 mx-auto">{{ t("common.text.antiparasiticLogged", {
-            parasites: t(showAntiparasites(treated, locale, t)), name: pet.name
-        }) }}</p>
+        <p v-if="logged.treated" class="w-2/3 mx-auto">
+            {{ t("common.text.antiparasiticLogged", {
+                parasites: showAntiparasites(logged.treated, locale, t),
+                name: pet.name
+            }) }}
+        </p>
+        <HealthCard v-if="logged.dueOn" title="Next antiparasitic due" :pet="pet" :data="logged" />
         <Button @click="onClose">{{ route.path === ROUTES.calendar ? t("common.button.backCal") :
             t("common.button.backDash") }}</Button>
     </div>

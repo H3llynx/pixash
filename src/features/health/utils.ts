@@ -4,8 +4,19 @@ import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, PARASITES, VACCINE_TYPES } from "./config";
 import type { AntiparasiteTypes, VaccineExtended, VaccineTypes, VisitExtended } from "./types";
 
-export const resetForm = <T extends object>(formData: T, defaultForm: T) => {
-    Object.assign(formData, defaultForm)
+export const resetForm = <T extends object>(
+    formData: T,
+    defaultForm: T,
+    options?: { exclude?: (keyof T)[] }
+) => {
+    const exclude = options?.exclude ?? [];
+    const entries = Object.entries(defaultForm) as [keyof T, T[keyof T]][];
+
+    for (const [key, value] of entries) {
+        if (!exclude.includes(key)) {
+            formData[key] = value;
+        }
+    }
 };
 
 export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default") => {

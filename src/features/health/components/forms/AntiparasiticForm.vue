@@ -14,11 +14,11 @@ import { resetState, tsToDate } from '../../../../utils';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
 import { ANTIPARASITE_TYPES, antiparasiteFields } from '../../config';
-import type { AntiparasiteTypes, LogExtended } from '../../types';
+import type { AntiparasiteTypes, LogExtended, PetEvent } from '../../types';
 import { getAntiparasites, resetForm } from '../../utils';
 import LogSuccess from '../LogSuccess.vue';
 
-const { isAddingHealth, healthLoading, healthError, selectedLog, selectedDate, selectedPet, addNewLog, updateSelectedLog, deleteSelectedLog } = usePets();
+const { logs, isAddingHealth, healthLoading, healthError, selectedLog, selectedDate, selectedPet, addNewLog, updateSelectedLog, deleteSelectedLog } = usePets();
 const { t } = useI18n();
 const { show } = useToast();
 const { open } = useDialog();
@@ -28,7 +28,7 @@ provide('readonly', isReadonly);
 const { treated, givenDate, dueDate, other } = antiparasiteFields;
 const antiparasitics = ref<AntiparasiteTypes[]>([]);
 const error = ref<boolean>(false);
-const success = ref<boolean>(false);
+const newLog = ref<PetEvent | null>(null);
 const givenAt = computed(() => selectedDate.value ?? new Date().toISOString().slice(0, 10));
 const fillLogData = (log: LogExtended) => {
     Object.assign(formData, {
@@ -46,9 +46,8 @@ const defaultForm = {
     other: "",
 };
 const formData = reactive({ ...defaultForm });
-
 const handleClose = () => {
-    success.value = false;
+    newLog.value = null;
     error.value = false;
     selectedDate.value = null;
     isAddingHealth.antiparasitic = false;
@@ -86,9 +85,14 @@ const handleSubmit = async () => {
     };
     const log = { ...formData, type: "antiparasitic" }
     try {
-        if (isAddingHealth.antiparasitic) await addNewLog(log, selectedPet.value.id);
-        else if (selectedLog.antiparasitic) await updateSelectedLog(selectedLog.antiparasitic, selectedPet.value.id, log);
-        success.value = true;
+        if (isAddingHealth.antiparasitic) {
+            const logId = await addNewLog(log, selectedPet.value.id);
+            if (logId) newLog.value = logs.value.find(l => l.id === logId) ?? null
+        }
+        else if (selectedLog.antiparasitic) {
+            await updateSelectedLog(selectedLog.antiparasitic, selectedPet.value.id, log);
+            newLog.value = selectedLog.antiparasitic;
+        };
     }
     catch (e) {
         show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
@@ -135,7 +139,7 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
     <Transition name="panel">
         <FormWrapper v-if="isAddingHealth.antiparasitic || selectedLog.antiparasitic" :onClose="handleClose">
             <LoadingPuppy v-if="healthLoading" />
-            <div class="md:max-w-max" v-else-if="!success">
+            <div class="md:max-w-max" v-else-if="!newLog">
                 <div class="flex gap-1 justify-between my-1 default-padding">
                     <h1>{{ t("health.title.logAntiparasitic") }}</h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
@@ -195,7 +199,7 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
                     </div>
                 </form>
             </div>
-            <LogSuccess v-else-if="success" :onClose="handleClose" :pet="selectedPet!" :treated="formData.treated" />
+            <LogSuccess v-else-if="newLog" :onClose="handleClose" :pet="selectedPet!" :logged="newLog" />
         </FormWrapper>
     </Transition>
 </template>

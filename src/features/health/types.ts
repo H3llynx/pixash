@@ -50,7 +50,9 @@ export type PetEvent = {
     title?: string;
     vet?: string;
     notes?: string;
+    other?: string;
     types?: VaccineTypes["id"][];
+    treated?: AntiparasiteTypes["id"][];
     stage?: typeof STAGE[number]["id"];
     date?: Timestamp;
     givenAt?: Timestamp;

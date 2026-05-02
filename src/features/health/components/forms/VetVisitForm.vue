@@ -87,7 +87,7 @@ const handleSubmit = async () => {
     }
     catch (e) {
         show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-    };
+    } finally { resetForm(formData, defaultForm) };
 };
 
 const handleDelete = async () => {
@@ -115,6 +115,7 @@ const handleDelete = async () => {
 
 watch(() => isAddingHealth.visit, (adding) => {
     if (adding) {
+        mode.value = "edit";
         formData.vet = assignedVet.value;
         formData.date = visitDate.value;
     }
@@ -127,11 +128,11 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
             return;
         };
         if (visit) {
-            mode.value = 'view';
+            mode.value = "view";
             fillVisitData(visit);
         }
         else {
-            resetForm(formData, defaultForm);
+            resetForm(formData, defaultForm, { exclude: ['title'] });
             formData.vet = assignedVet.value;
             formData.date = visitDate.value;
         };

@@ -61,14 +61,14 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         });
     };
 
-    const handleHealthAction = async (
-        action: () => Promise<void> | void,
+    const handleHealthAction = async <T>(
+        action: () => Promise<T>,
         onFinal?: () => void
     ) => {
         if (!user.value) return;
         error.value = null;
         try {
-            await action();
+            return await action();
         } catch (e) {
             if (e instanceof FirebaseError) {
                 error.value = e.message;
@@ -213,10 +213,11 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     };
 
     const addNewLog = async (newLog: Log, petId: string) => {
-        await handleHealthAction(async () => {
+        return await handleHealthAction(async () => {
             loading.value = true;
-            await addLog(newLog, petId, user.value!.uid);
+            const logId = await addLog(newLog, petId, user.value!.uid);
             await fetchUserLogs();
+            return logId;
         }, () => {
             loading.value = false;
         })

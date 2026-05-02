@@ -21,8 +21,8 @@ const daysUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "
 </script>
 
 <template>
-    <div class="p-1 rounded-xl border border-border bg-bg-2 w-1/2 max-w-3xs flex gap-0.5 justify-between">
-        <div>
+    <div class="p-1 rounded-xl border border-border bg-bg-2 flex gap-0.5 justify-between w-1/2 md:max-w-2xs">
+        <div class="text-left">
             <h3>{{ title }}</h3>
             <p class="text-lg font-medium">{{ date }}</p>
             <p class="text-xs text-brand-light">{{ daysUntil }}</p>
