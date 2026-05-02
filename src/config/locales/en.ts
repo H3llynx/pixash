@@ -228,7 +228,7 @@ export default {
         legend: "Legend",
         visits: "Vet visits",
         vaccines: "Vaccines",
-        antiparasitic: "Antiparasitics"
+        antiparasitics: "Antiparasitics"
     },
     toast: {
         dismiss: "Dismiss notification",

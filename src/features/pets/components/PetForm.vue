@@ -175,4 +175,14 @@ legend,
     letter-spacing: 1px;
     padding-bottom: 10px;
 }
+
+:deep(.pet-selector) p {
+    width: 5rem;
+    aspect-ratio: 1/1;
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.75rem;
+}
 </style>

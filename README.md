@@ -20,9 +20,9 @@ The name comes from my two pets: **Pixie** (a chubby affectionate tabby cat) and
 - **Tailwind CSS v4** — utility-first styling with custom design tokens
 - **Tailwind Variants** — variant-based component styling
 - **Vue Router** — client-side routing with navigation guards
-- **VueUse** — composable utilities (`useLocalStorage`, `onClickOutside`, `useSwipe`, `useFocusTrap`)
+- **VueUse** — composable utilities (`useLocalStorage`, `onClickOutside`, `useSwipe`)
 - **Lucide Vue** — icon library
-- **FullCalendar** — calendar component with Google Calendar sync
+- **FullCalendar** — calendar component
 - **Vue I18n** - internationalization plugin to make the app multi-languages
 
 ---
@@ -94,12 +94,10 @@ Current progress:
 - [x] Authentication (Google + email/password)
 - [x] Protected routing
 - [x] Pet profile creation
-- [x] Vaccine creation and management
+- [x] Vaccine and antiparasitic logs and management
 - [x] Vet visit creation and management
 - [x] Vet view and management
-- [ IN PROGRESS ] Calendar with reminders
-- [ ] Medical treatment creation and management
-- [ ] Google Calendar sync
+- [ IN PROGRESS ] Medical treatment creation and management
 - [ ] History view and management
 
 ---

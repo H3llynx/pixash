@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useMedia } from '../../../../composables/useMedia';
 import { tsToDate } from '../../../../utils';
 import PetIndicator from '../../../pets/components/PetIndicator.vue';
 import type { PetExtended } from '../../../pets/types';
 import type { PetEvent } from '../../types';
 import DateTag from './DateTag.vue';
 
-const { isMd } = useMedia();
-
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     title: string
     data: PetEvent
     pet: PetExtended
-}>();
+    icon?: boolean
+}>(), { icon: true });
 
 const date = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "date") : tsToDate(props.data.date, "date"));
 const daysUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "daysUntil") : tsToDate(props.data.date, "daysUntil"))
@@ -21,14 +19,14 @@ const daysUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "
 </script>
 
 <template>
-    <div class="p-1 rounded-xl border border-border bg-bg-2 flex gap-0.5 justify-between w-1/2 md:max-w-2xs">
+    <div class="p-1 rounded-xl border border-border bg-bg-2 flex gap-0.5 justify-between min-w-1/2 md:min-w-3xs">
         <div class="text-left">
             <h3>{{ title }}</h3>
             <p class="text-lg font-medium">{{ date }}</p>
             <p class="text-xs text-brand-light">{{ daysUntil }}</p>
             <DateTag :event="data" class="mt-0.5" />
         </div>
-        <PetIndicator v-if="isMd" :pet="pet" />
+        <PetIndicator v-if="icon" :pet="pet" />
     </div>
 </template>
 

@@ -26,17 +26,19 @@ const nextVisitDue = computed(() => {
 <template>
     <div class="flex flex-col gap-1.5">
         <PetSelector v-if="selectedPet && !isMd" />
-        <div v-if="(selectedPet?.nextVaccine || selectedPet?.nextVetVisit) && !isMd" class="flex gap-1 default-padding">
-            <HealthCard v-if="selectedPet.nextVaccine" :pet="selectedPet" :data="selectedPet.nextVaccine"
-                :title="t('pet.profile.label.nextVaccine')" />
-            <HealthCard v-if="selectedPet.nextVetVisit" :pet="selectedPet" :data="selectedPet.nextVetVisit"
-                :title="t('pet.profile.label.nextVetVisit')" />
-        </div>
-        <div v-else-if="(nextVaccineDue || nextVisitDue) && isMd" class="flex gap-1 default-padding">
-            <HealthCard v-if="nextVaccineDue" :pet="nextVaccineDue" :data="nextVaccineDue.nextVaccine!"
-                :title="t('pet.profile.label.nextVaccine')" />
-            <HealthCard v-if="nextVisitDue" :pet="nextVisitDue" :data="nextVisitDue.nextVetVisit!"
-                :title="t('pet.profile.label.nextVetVisit')" />
+        <div class="pet-selector md:gap-1">
+            <template v-if="(selectedPet?.nextVaccine || selectedPet?.nextVetVisit) && !isMd">
+                <HealthCard v-if="selectedPet.nextVaccine" :pet="selectedPet" :data="selectedPet.nextVaccine"
+                    :title="t('pet.profile.label.nextVaccine')" :icon="false" />
+                <HealthCard v-if="selectedPet.nextVetVisit" :pet="selectedPet" :data="selectedPet.nextVetVisit"
+                    :title="t('pet.profile.label.nextVetVisit')" :icon="false" />
+            </template>
+            <template v-else-if="(nextVaccineDue || nextVisitDue) && isMd">
+                <HealthCard v-if="nextVaccineDue" :pet="nextVaccineDue" :data="nextVaccineDue.nextVaccine!"
+                    :title="t('pet.profile.label.nextVaccine')" />
+                <HealthCard v-if="nextVisitDue" :pet="nextVisitDue" :data="nextVisitDue.nextVetVisit!"
+                    :title="t('pet.profile.label.nextVetVisit')" />
+            </template>
         </div>
         <ProfileSection />
     </div>

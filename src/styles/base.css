@@ -372,16 +372,6 @@
     >* {
       scroll-snap-align: center;
     }
-
-    p {
-      width: 5rem;
-      aspect-ratio: 1/1;
-      font-size: xx-large;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 0.75rem;
-    }
   }
 
   .profile-card {
