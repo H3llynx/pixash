@@ -122,7 +122,7 @@ export const vetVisitFields = {
     date: {
         id: "visit-date",
         label: "health.vetVisitForm.date",
-        type: "date",
+        type: "datetime-local",
     },
     vet: {
         id: "visit-vet",

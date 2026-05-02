@@ -1,104 +1,27 @@
 <script setup lang="ts">
 import { CalendarCheck, CalendarClock, Trash2 } from '@lucide/vue';
-import { computed, provide, reactive, ref, watch } from 'vue';
+import { provide, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FormWrapper from '../../../../components/FormWrapper.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import Selector from '../../../../components/Selector.vue';
-import { useDialog } from '../../../../composables/useDialog';
 import { useFormMode } from '../../../../composables/useFormMode';
-import { useToast } from '../../../../composables/useToast';
-import { resetState, tsToDate } from '../../../../utils';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
-import { useEvents } from '../../composables/useEvents';
-import { ANTIPARASITE_TYPES, antiparasiteFields } from '../../config';
-import type { AntiparasiteTypes, LogExtended, PetEvent } from '../../types';
-import { getAntiparasites, resetForm } from '../../utils';
+import { useAntiparasiticForm } from '../../composables/useAntiparasiticForm';
+import { antiparasiteFields } from '../../config';
 import LogSuccess from '../LogSuccess.vue';
 
-const { loading, logs, isAddingHealth, healthLoading, healthError, selectedLog, selectedPet, addNewLog, updateSelectedLog, deleteSelectedLog } = usePets();
-const { selectedDate } = useEvents();
+const { loading, isAddingHealth, healthLoading, selectedLog, selectedPet } = usePets();
+const { formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error } = useAntiparasiticForm();
 const { t } = useI18n();
-const { show } = useToast();
-const { open } = useDialog();
 const { mode, isReadonly } = useFormMode();
+const today = new Date().toISOString().slice(0, 10);
 provide('readonly', isReadonly);
 
 const { treated, givenDate, dueDate, other } = antiparasiteFields;
-const antiparasitics = ref<AntiparasiteTypes[]>([]);
-const error = ref<boolean>(false);
-const newLog = ref<PetEvent | null>(null);
-const givenAt = computed(() => selectedDate.value ?? new Date().toISOString().slice(0, 10));
-const fillLogData = (log: LogExtended) => {
-    Object.assign(formData, {
-        treated: [...log.treated],
-        givenAt: tsToDate(log.givenAt, "input"),
-        dueOn: tsToDate(log.dueOn, "input"),
-        other: log.other ?? "",
-    })
-};
-const defaultForm = {
-    treated: [ANTIPARASITE_TYPES.default[0].id] as AntiparasiteTypes["id"][],
-    givenAt: "",
-    dueOn: "",
-    other: "",
-};
-const formData = reactive({ ...defaultForm });
-const handleClose = () => {
-    newLog.value = null;
-    error.value = false;
-    selectedDate.value = null;
-    isAddingHealth.antiparasitic = false;
-    resetState(selectedLog);
-};
-
-const handleDelete = async () => {
-    const pet = selectedPet.value;
-    const log = selectedLog.antiparasitic;
-    if (!log || !pet) return;
-    open({
-        title: t("dialog.deleteLog.title", { type: log.type }),
-        message: t("dialog.deleteLog.message"),
-        isDelete: true,
-        onConfirm: async () => {
-            try {
-                await deleteSelectedLog(log, pet.id);
-                show({
-                    type: "success",
-                    title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.logDeleted", { type: log.type }),
-                });
-            } catch (error) {
-                show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-            }
-        }
-    });
-};
-
-const handleSubmit = async () => {
-    if (!selectedPet.value) return;
-    if (!formData.treated.length) {
-        error.value = true;
-        return;
-    };
-    const log = { ...formData, type: "antiparasitic" }
-    try {
-        if (isAddingHealth.antiparasitic) {
-            const logId = await addNewLog(log, selectedPet.value.id);
-            if (logId) newLog.value = logs.value.find(l => l.id === logId) ?? null
-        }
-        else if (selectedLog.antiparasitic) {
-            await updateSelectedLog(selectedLog.antiparasitic, selectedPet.value.id, log);
-            newLog.value = selectedLog.antiparasitic;
-        };
-    }
-    catch (e) {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-    };
-};
 
 watch(() => selectedLog.antiparasitic, (log) => {
     mode.value = log ? "view" : "edit";
@@ -107,33 +30,6 @@ watch(() => selectedLog.antiparasitic, (log) => {
 watch(() => mode.value, (mode) => {
     if (mode === "view") fillLogData(selectedLog.antiparasitic!)
 })
-
-watch(() => isAddingHealth.antiparasitic, (adding) => {
-    if (adding) {
-        formData.givenAt = givenAt.value;
-    }
-});
-
-watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
-    ([pet, log]) => {
-        if (!pet) {
-            resetForm(formData, defaultForm);
-            return;
-        };
-        const options = getAntiparasites(pet.species);
-        if (!options || !options.length) return;
-        antiparasitics.value = options;
-        if (log) fillLogData(log);
-        else if (!selectedLog.antiparasitic) {
-            resetForm(formData, defaultForm);
-            Object.assign(formData, {
-                treated: [antiparasitics.value[0].id],
-                givenAt: givenAt.value
-            });
-        }
-    },
-    { immediate: true }
-);
 </script>
 
 <template>
@@ -161,28 +57,22 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
                             t("health.antiparasiteForm.validationTypes") }}</p>
                     </Selector>
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-if="mode === 'edit'" v-model="formData.givenAt" :id="givenDate.id"
-                            class="bg-brand-rgba" :label="t(givenDate.label)" :type="givenDate.type" required>
+                        <Input v-model="formData.givenAt" :id="givenDate.id" :label="t(givenDate.label)"
+                            :type="givenDate.type" :max="today"
+                            :class="{ 'pointer-event-none': mode === 'view', 'bg-brand-rgba': true }" required>
                             <template #addon>
                                 <CalendarCheck class="mr-0.5" color="var(--color-brand)" />
                             </template>
                         </Input>
-                        <div v-else-if="selectedLog.antiparasitic && mode === 'view'">
-                            <p class="read-only-label">{{ t(givenDate.label) }}</p>
-                            <p class="read-only">{{ tsToDate(selectedLog.antiparasitic.givenAt, "date") }}</p>
-                        </div>
-                        <Input v-if="mode === 'edit'" v-model="formData.dueOn" :id="dueDate.id"
-                            :label="t(dueDate.label)" :type="dueDate.type" :min="formData.givenAt">
+                        <Input v-if="selectedLog.antiparasitic?.dueOn || mode === 'edit'" v-model="formData.dueOn"
+                            :id="dueDate.id" :class="{ 'pointer-event-none bg-brand-rgba': mode === 'view' }"
+                            :label="t(dueDate.label)" :type="dueDate.type" :min="formData.givenAt || today">
                             <template #addon>
                                 <CalendarClock v-if="!formData.dueOn" class="mr-0.5" color="var(--color-border)" />
                                 <Button v-else type="button" variant="ghost" size="xs" @click="formData.dueOn = ''">{{
                                     t("common.button.clear") }}</Button>
                             </template>
                         </Input>
-                        <div v-else-if="selectedLog.antiparasitic?.dueOn && mode === 'view'">
-                            <p class="read-only-label">{{ t(dueDate.label) }}</p>
-                            <p class="read-only">{{ tsToDate(selectedLog.antiparasitic.dueOn, "date") }}</p>
-                        </div>
                         <Input v-if="selectedLog.antiparasitic?.other || mode === 'edit'" v-model="formData.other"
                             :id="other.id" :label="t(other.label)" :type="other.type" />
                         <div class="flex gap-0.5 mt-1 items-center ml-auto"

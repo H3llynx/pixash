@@ -112,11 +112,11 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const deleteSelectedVaccine = async (vaccine: VaccineExtended, petId: string,) => {
         await handleHealthAction(async () => {
             loading.value = true;
-            selectVaccine(null);
             await deleteVaccine(vaccine.id, petId, user.value!.uid);
             await fetchUserVaccines();
         }, () => {
             loading.value = false;
+            selectVaccine(null);
         })
     };
 

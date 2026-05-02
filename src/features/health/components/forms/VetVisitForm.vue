@@ -51,7 +51,7 @@ const fillVisitData = (visit: Partial<VisitExtended>) => {
     vetTextInput.value = !isRegisteredVet;
     Object.assign(formData, {
         title: visit.title,
-        date: tsToDate(visit.date, "input"),
+        date: tsToDate(visit.date, "datetime"),
         vet: visit.vet,
         notes: visit.notes ?? "",
     })
@@ -172,18 +172,14 @@ watch(() => mode.value, (mode) => {
                 <PetSelector v-if="isAddingHealth.visit" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-if="isVisible" v-model="formData.title" :id="title.id" :label="t(title.label)"
+                        <Input v-if="mode === 'edit'" v-model="formData.title" :id="title.id" :label="t(title.label)"
                             required />
-                        <Input v-if="isVisible" v-model="formData.date" :id="date.id" :label="t(date.label)"
-                            :type="date.type" required>
+                        <Input v-model="formData.date" :id="date.id" :label="t(date.label)" :type="date.type" required
+                            :class="{ 'pointer-events-none bg-brand-rgba': mode === 'view' }">
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
-                        <div v-else-if="selectedVisit && mode === 'view'">
-                            <p>{{ t(date.label) }}</p>
-                            <p class="read-only">{{ tsToDate(selectedVisit.date, "date") }}</p>
-                        </div>
                         <VetFormSelector v-if="isVisible" :vet="vet" v-model="formData.vet"
                             v-model:vetTextInput="vetTextInput" required />
                         <div v-else-if="selectedVisit && mode === 'view'">

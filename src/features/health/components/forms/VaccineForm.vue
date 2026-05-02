@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarCheck, CalendarClock, Trash2 } from '@lucide/vue';
-import { computed, provide, reactive, ref, watch } from 'vue';
+import { provide, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FormWrapper from '../../../../components/FormWrapper.vue';
@@ -8,127 +8,22 @@ import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import Selector from '../../../../components/Selector.vue';
 import Toggle from '../../../../components/Toggle.vue';
-import { useDialog } from '../../../../composables/useDialog';
 import { useFormMode } from '../../../../composables/useFormMode';
-import { useToast } from '../../../../composables/useToast';
-import { dateFromInput, getOneYearLaterInput, tsToDate } from '../../../../utils';
+import { dateFromInput } from '../../../../utils';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
-import { getAge, getIcon } from '../../../pets/utils';
-import { useEvents } from '../../composables/useEvents';
-import { STAGE, VACCINE_TYPES, vaccineFields } from '../../config';
-import type { VaccineExtended, VaccineTypes } from '../../types';
-import { getVaccineTypes, resetForm, showTypes } from '../../utils';
+import { getIcon } from '../../../pets/utils';
+import { useVaccineForm } from '../../composables/useVaccineForm';
+import { vaccineFields } from '../../config';
+import { showTypes } from '../../utils';
 import VetFormSelector from './VetFormSelector.vue';
 
-const { loading, selectedPet, isAddingHealth, vets, selectedVet, selectedVaccine, selectVaccine, addNewVaccine, healthError, healthLoading, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
-const { selectedDate } = useEvents();
-const { show } = useToast();
-const { open } = useDialog();
+const { loading, selectedPet, isAddingHealth, selectedVaccine, healthLoading } = usePets();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
+const { vetTextInput, today, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete } = useVaccineForm();
 provide('readonly', isReadonly);
-
 const { types, stage, given, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
-const vaccineTypes = ref<VaccineTypes[]>([]);
-const error = ref<boolean>(false);
-const vetTextInput = ref<boolean>(false);
-const date = computed(() => selectedDate.value ?? new Date().toISOString().slice(0, 10));
-const givenBy = computed(() => {
-    if (selectedVet.value) return selectedVet.value.id;
-    const pet = selectedPet.value;
-    if (pet) {
-        const vetForPet = vets.value?.find(v => v.assignedPets?.includes(pet.id));
-        if (vetForPet) return vetForPet.id;
-    }
-    return vets.value?.[0]?.id ?? "";
-});
-const defaultForm = {
-    types: [VACCINE_TYPES.default[0].id] as VaccineTypes["id"][],
-    stage: "adult" as typeof STAGE[number]["id"],
-    given: false,
-    givenAt: "",
-    nextDose: false,
-    dueOn: "",
-    vet: "",
-    notes: "",
-};
-const fillVaccineData = (vaccine: VaccineExtended) => {
-    const isRegisteredVet = vets.value?.some(vet => vet.id === vaccine.vet);
-    vetTextInput.value = !isRegisteredVet;
-    Object.assign(formData, {
-        types: [...vaccine.types],
-        stage: vaccine.stage,
-        given: vaccine.givenAt ? true : false,
-        givenAt: tsToDate(vaccine.givenAt, "input"),
-        nextDose: vaccine.dueOn ? true : false,
-        dueOn: tsToDate(vaccine.dueOn, "input"),
-        vet: vaccine.vet ?? "",
-        notes: vaccine.notes ?? "",
-    })
-};
-const formData = reactive({ ...defaultForm });
-const isVisible = computed(() => isAddingHealth.vaccine || mode.value === "edit");
-const handleClose = () => {
-    error.value = false;
-    selectedDate.value = null;
-    isAddingHealth.vaccine = false;
-    selectVaccine(null);
-};
-
-const handleSubmit = async () => {
-    if (!selectedPet.value) return;
-    if (!formData.types.length) {
-        error.value = true;
-        return;
-    };
-    const typesSnapshot = [...formData.types];
-    try {
-        if (isAddingHealth.vaccine) {
-            await addNewVaccine({ ...formData }, selectedPet.value.id);
-            show({
-                type: "success",
-                title: t("toast.success.title.generic"),
-                message: t("toast.success.message.vaccineAdded", { name: selectedPet.value.name, type: showTypes(typesSnapshot, selectedPet.value) }),
-            });
-        }
-        else if (selectedVaccine.value) {
-            await updateSelectedVaccine(selectedVaccine.value, selectedPet.value.id, { ...formData });
-            show({
-                type: "success",
-                title: t("toast.success.title.generic"),
-                message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showTypes(typesSnapshot, selectedPet.value) }),
-            });
-        }
-    }
-    catch (e) {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-    };
-};
-
-const handleDelete = async () => {
-    const pet = selectedPet.value;
-    const vaccine = selectedVaccine.value;
-    if (!vaccine || !pet) return;
-    open({
-        title: t("dialog.deleteVaccine.title", { type: showTypes(vaccine.types, pet) }),
-        message: t("dialog.deleteVaccine.message", { name: pet.name, type: showTypes(vaccine.types, pet) }),
-        isDelete: true,
-        onConfirm: async () => {
-            try {
-                await deleteSelectedVaccine(vaccine, pet.id);
-                show({
-                    type: "success",
-                    title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.vaccineDeleted", { name: pet.name, type: showTypes(vaccine.types, pet) }),
-                });
-            } catch (error) {
-                show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-            }
-        }
-    });
-};
-
 watch(() => selectedVaccine.value, (vaccine) => {
     mode.value = vaccine ? "view" : "edit";
 });
@@ -143,46 +38,6 @@ watch(() => isAddingHealth.vaccine, (adding) => {
         formData.vet = givenBy.value;
         formData.dueOn = date.value;
     }
-});
-
-watch(() => [selectedPet.value, selectedVaccine.value] as const,
-    ([pet, vaccine]) => {
-        if (!pet) {
-            resetForm(formData, defaultForm);
-            return;
-        };
-        const options = getVaccineTypes(pet.species);
-        if (!options || !options.length) return;
-        vaccineTypes.value = options;
-        if (vaccine) fillVaccineData(vaccine);
-        else {
-            resetForm(formData, defaultForm);
-            Object.assign(formData, {
-                types: [vaccineTypes.value[0].id],
-                stage: getAge(pet)?.stage,
-                dueOn: formData.dueOn = date.value,
-                vet: givenBy.value
-            });
-        }
-    },
-    { immediate: true }
-);
-
-watch(() => formData.nextDose, () => {
-    if (formData.givenAt && !formData.nextDose) formData.dueOn = "";
-    else formData.dueOn = selectedVaccine.value?.dueOn
-        ? tsToDate(selectedVaccine.value.dueOn, "input") as string
-        : getOneYearLaterInput(formData.givenAt) ?? ""
-});
-
-watch(() => formData.given, () => {
-    if (!formData.given) {
-        formData.givenAt = "";
-        formData.dueOn = date.value;
-    }
-    else formData.givenAt = selectedVaccine.value?.givenAt
-        ? tsToDate(selectedVaccine.value.givenAt, "input") as string
-        : date.value
 });
 </script>
 
@@ -222,47 +77,33 @@ watch(() => formData.given, () => {
                             :type="stage.type" :name="stage.name" :required="index === 0" />
                     </Selector>
                     <div class="default-padding flex flex-col gap-1">
-                        <Toggle v-if="isVisible" v-model="formData.given"
+                        <Toggle v-if="mode === 'edit'" v-model="formData.given" :max="today"
                             :label="t(given.label, { name: selectedPet!.name })" :id="given.id" />
-                        <Input v-if="formData.given && isVisible" v-model="formData.givenAt" :id="givenDate.id"
-                            :label="t(givenDate.label)" :type="givenDate.type" required>
+                        <Input v-if="formData.given" v-model="formData.givenAt" :id="givenDate.id" :max="today"
+                            :class="{ 'pointer-event-none bg-brand-rgba': mode === 'view' }" :label="t(givenDate.label)"
+                            :type="givenDate.type" required>
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
-                        <div v-else-if="selectedVaccine?.givenAt && mode === 'view'">
-                            <p>{{ t(givenDate.label) }}</p>
-                            <p class="read-only">{{ tsToDate(selectedVaccine.givenAt, "date") }}</p>
-                        </div>
-                        <Toggle v-if="formData.given && isVisible" v-model="formData.nextDose"
+                        <Toggle v-if="formData.given && mode === 'edit'" v-model="formData.nextDose"
                             :label="t(nextDose.label)" :id="nextDose.id" />
-                        <Input v-if="(!formData.given || formData.nextDose) && isVisible" v-model="formData.dueOn"
-                            :id="dueDate.id" :label="t(dueDate.label)" :type="dueDate.type" :min="formData.givenAt"
-                            required>
+                        <Input v-if="(!formData.given || formData.nextDose)"
+                            :class="{ 'pointer-event-none bg-brand-rgba': mode === 'view' }" v-model="formData.dueOn"
+                            :id="dueDate.id" :label="t(dueDate.label)" :type="dueDate.type"
+                            :min="formData.givenAt || today" required>
                             <template #addon>
                                 <CalendarClock class="mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
-                        <div v-else-if="selectedVaccine?.dueOn && mode === 'view'">
-                            <p>{{ t(dueDate.label) }}</p>
-                            <p class="read-only">{{ tsToDate(selectedVaccine.dueOn, "date") }}</p>
-                        </div>
-                        <VetFormSelector v-if="isVisible" :vet="vet" v-model="formData.vet"
-                            v-model:vetTextInput="vetTextInput" />
-                        <div v-else-if="selectedVaccine?.vet && mode === 'view'">
-                            <p>{{ t(vet.label) }}</p>
-                            <p class="read-only">{{vets?.find(vet => vet.id === selectedVaccine!.vet)?.name ??
-                                selectedVaccine.vet}}</p>
-                        </div>
-                        <label :for="notes.id" v-if="isVisible">
+                        <VetFormSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput" />
+                        <label :for="notes.id" v-if="selectedVaccine?.notes || mode === 'edit'">
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id"
-                                :readonly="!!selectedVaccine && mode === 'view'" />
+                                :readonly="!!selectedVaccine && mode === 'view'"
+                                :class="{ 'bg-brand-rgba': mode === 'view' }" />
                         </label>
-                        <div v-else-if="selectedVaccine?.notes && mode === 'view'">
-                            <p>{{ t(notes.label) }}</p>
-                            <p class="read-only">{{ selectedVaccine.notes }}</p>
-                        </div>
+
                         <div class="flex gap-1 mt-1 items-center" v-if="!selectedVaccine || mode === 'edit'">
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{
