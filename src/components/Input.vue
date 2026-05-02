@@ -48,13 +48,13 @@ const handleChange = (event: Event) => {
         emit("update:modelValue", value);
     }
 };
-
 </script>
 
 <template>
     <label :for="id">
         <p v-if="label">{{ label }}</p>
-        <div class="input-container">
+        <div :class="{ 'input-container': true, 'hidden': readonly && (type === 'date' || type === 'datetime-local') }"
+            :aria-hidden="readonly && (type === 'date' || type === 'datetime-local')">
             <input v-bind="$attrs" :id="id" :type="type" :placeholder="placeholder" :value="inputValue"
                 :checked="inputChecked" class="font-medium pl-1 pr-2.5 py-0.5" @change="handleChange"
                 @click="readonly && $event.preventDefault()" :readonly="readonly" :aria-readonly="readonly"
@@ -64,5 +64,19 @@ const handleChange = (event: Event) => {
                 <AlertCircle class="error-icon" />
             </div>
         </div>
+        <span :id="id" class="flex font-medium bg-brand-rgba py-0.5 px-1 rounded-xl w-full border border-border"
+            v-if="readonly && (type === 'date' || type === 'datetime-local')">{{
+                inputValue ? type === 'date'
+                    ? new Date(inputValue as string).toLocaleDateString()
+                    : new Date(inputValue as string).toLocaleString(undefined, {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit'
+            })
+            : ""
+            }}
+        </span>
     </label>
 </template>

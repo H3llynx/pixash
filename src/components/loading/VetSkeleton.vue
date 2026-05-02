@@ -6,7 +6,7 @@ const { isMd } = useMedia();
 
 <template>
     <div class="animate-pulse flex flex-col gap-1.5 default-padding py-1 max-w-full overflow-hidden">
-        <div class="h-[10px] w-7 rounded bg-grey-light opacity-30"></div>
+        <div class="h-1 w-7 rounded bg-grey-light opacity-30"></div>
         <div class="flex gap-1 w-full">
             <div v-for="i in isMd ? 2 : 1" :key="i"
                 class="flex flex-col gap-0.5 px-1 pt-2 pb-1 rounded-xl border border-border bg-bg-2 w-full md:w-sm shrink-0">
