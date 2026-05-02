@@ -67,15 +67,19 @@ const handleChange = (event: Event) => {
         <span :id="id" class="flex font-medium bg-brand-rgba py-0.5 px-1 rounded-xl w-full border border-border"
             v-if="readonly && (type === 'date' || type === 'datetime-local')">{{
                 inputValue ? type === 'date'
-                    ? new Date(inputValue as string).toLocaleDateString()
+                    ? new Date(inputValue as string).toLocaleDateString(undefined, {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    })
                     : new Date(inputValue as string).toLocaleString(undefined, {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
                         hour: '2-digit',
                         minute: '2-digit'
-            })
-            : ""
+                    })
+                    : ""
             }}
         </span>
     </label>
