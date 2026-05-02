@@ -19,7 +19,7 @@ import type { AntiparasiteTypes, LogExtended, PetEvent } from '../../types';
 import { getAntiparasites, resetForm } from '../../utils';
 import LogSuccess from '../LogSuccess.vue';
 
-const { logs, isAddingHealth, healthLoading, healthError, selectedLog, selectedPet, addNewLog, updateSelectedLog, deleteSelectedLog } = usePets();
+const { loading, logs, isAddingHealth, healthLoading, healthError, selectedLog, selectedPet, addNewLog, updateSelectedLog, deleteSelectedLog } = usePets();
 const { selectedDate } = useEvents();
 const { t } = useI18n();
 const { show } = useToast();
@@ -139,7 +139,7 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
 <template>
     <Transition name="panel">
         <FormWrapper v-if="isAddingHealth.antiparasitic || selectedLog.antiparasitic" :onClose="handleClose">
-            <LoadingPuppy v-if="healthLoading" />
+            <LoadingPuppy v-if="loading || healthLoading" />
             <div class="md:max-w-max" v-else-if="!newLog">
                 <div class="flex gap-1 justify-between my-1 default-padding">
                     <h1>{{ t("health.title.logAntiparasitic") }}</h1>

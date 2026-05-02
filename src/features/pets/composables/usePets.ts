@@ -153,34 +153,25 @@ watch(user, async (newUser) => {
   }
 }, { immediate: true });
 
-watch(vaccines, (_newVaccines) => {
+const resyncSelectedPet = () => {
   if (selectedPet.value) {
     const updated = pets.value.find(pet => pet.id === selectedPet.value!.id);
     if (updated) selectPet(updated);
   }
-});
+};
 
-watch(selectedVaccine, (vaccine) => {
-  if (vaccine) {
-    const pet = pets.value.find(pet => pet.id === vaccine.petId);
-    if (pet) selectedPet.value = pet;
-  }
-});
+const syncPetFromEvent = (petId: string | undefined) => {
+  if (!petId) return;
+  const pet = pets.value.find(p => p.id === petId);
+  if (pet) selectedPet.value = pet;
+};
 
-watch(selectedVisit, (visit) => {
-  if (visit) {
-    const pet = pets.value.find(pet => pet.id === visit.petId);
-    if (pet) selectedPet.value = pet;
-  }
-});
+watch(vaccines, resyncSelectedPet);
+watch(vetVisits, resyncSelectedPet);
 
-watch(selectedLog, (log) => {
-  const antiparasitic = log.antiparasitic
-  if (antiparasitic) {
-    const pet = pets.value.find(pet => pet.id === antiparasitic.petId);
-    if (pet) selectedPet.value = pet;
-  }
-});
+watch(selectedVaccine, (vaccine) => syncPetFromEvent(vaccine?.petId));
+watch(selectedVisit, (visit) => syncPetFromEvent(visit?.petId));
+watch(selectedLog, (log) => syncPetFromEvent(log.antiparasitic?.petId));
 
 export const usePets = () => {
   return {

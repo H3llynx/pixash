@@ -20,7 +20,7 @@ import type { VisitExtended } from '../../types';
 import { resetForm } from '../../utils';
 import VetFormSelector from './VetFormSelector.vue';
 
-const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedVet, vets } = usePets();
+const { loading, selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedVet, vets } = usePets();
 const { selectedDate } = useEvents();
 const { show } = useToast();
 const { open } = useDialog();
@@ -152,7 +152,7 @@ watch(() => mode.value, (mode) => {
 <template>
     <Transition name="panel" appear>
         <FormWrapper v-if="isAddingHealth.visit || selectedVisit" :onClose="handleClose">
-            <LoadingPuppy v-if="healthLoading" />
+            <LoadingPuppy v-if="loading || healthLoading" />
             <div v-else class="md:max-w-max">
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">
                     <div v-if="selectedVisit && selectedPet"
@@ -206,7 +206,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit")
-                            }}
+                                }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>

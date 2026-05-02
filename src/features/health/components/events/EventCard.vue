@@ -3,6 +3,7 @@ import { MapPinned, Stethoscope, Syringe } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
+import EventCardSkeleton from '../../../../components/loading/EventCardSkeleton.vue';
 import Loading from '../../../../components/loading/Loading.vue';
 import { tsToDate } from '../../../../utils';
 import PetIndicator from '../../../pets/components/PetIndicator.vue';
@@ -11,7 +12,7 @@ import type { PetEvent, VaccineExtended, VisitExtended } from '../../types';
 import { showTypes } from '../../utils';
 import DateTag from './DateTag.vue';
 
-const { pets, vaccines, vetVisits, selectVaccine, selectVisit, vets } = usePets();
+const { pets, vaccines, vetVisits, selectVaccine, selectVisit, vets, healthLoading } = usePets();
 const { locale } = useI18n();
 
 const props = defineProps<{ event: PetEvent }>();
@@ -38,7 +39,8 @@ const handleClick = (event: PetEvent) => {
 
 </script>
 <template>
-    <Button variant="card" size="card" @click="handleClick(event)"
+    <EventCardSkeleton v-if="healthLoading" />
+    <Button v-else variant="card" size="card" @click="handleClick(event)"
         :class="{ 'opacity-50': tsToDate(event.ts, 'isPast') }">
         <div class="flex gap-0.5 w-full min-w-0 h-full">
             <Syringe v-if="event.eventType === 'vaccine'" class="shrink-0 text-brand-light" :size="20" />
