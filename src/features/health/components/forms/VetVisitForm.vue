@@ -14,12 +14,14 @@ import { shallowEqual, tsToDate } from '../../../../utils';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
 import { getIcon } from '../../../pets/utils';
+import { useEvents } from '../../composables/useEvents';
 import { vetVisitFields } from '../../config';
 import type { VisitExtended } from '../../types';
 import { resetForm } from '../../utils';
 import VetFormSelector from './VetFormSelector.vue';
 
-const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedDate, selectedVet, vets } = usePets();
+const { selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedVet, vets } = usePets();
+const { selectedDate } = useEvents();
 const { show } = useToast();
 const { open } = useDialog();
 const { t } = useI18n();
@@ -204,7 +206,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit")
-                                }}
+                            }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>

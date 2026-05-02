@@ -16,7 +16,6 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const selectedVaccine = ref<VaccineExtended | null>(null);
     const selectedVisit = ref<VisitExtended | null>(null);
     const selectedVet = ref<VetExtended | null>(null);
-    const selectedDate = ref<string | null>(null);
     const selectedLog = reactive<{
         antiparasitic: LogExtended | null
     }>({
@@ -262,7 +261,6 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         addNewVetVisit,
         updateSelectedVisit,
         deleteSelectedVisit,
-        selectedDate,
         fetchUserVets,
         addNewVet,
         vets,

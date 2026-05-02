@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { MapPinned, Stethoscope, Syringe } from '@lucide/vue';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Loading from '../../../../components/loading/Loading.vue';
 import { tsToDate } from '../../../../utils';
@@ -11,6 +12,7 @@ import { showTypes } from '../../utils';
 import DateTag from './DateTag.vue';
 
 const { pets, vaccines, vetVisits, selectVaccine, selectVisit, vets } = usePets();
+const { locale } = useI18n();
 
 const props = defineProps<{ event: PetEvent }>();
 const pet = computed(() => pets.value.find(p => p.id === props.event.petId));
@@ -46,7 +48,12 @@ const handleClick = (event: PetEvent) => {
                     <h4>{{ title }}</h4>
                     <DateTag :event="event" class="ml-auto" />
                 </div>
-                <p class="text-text-secondary mb-0.75">{{ tsToDate(event.ts, "date") }}</p>
+                <p class="text-text-secondary mb-0.75">
+                    {{ event.ts.toDate().toLocaleDateString(locale, {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    }) }}</p>
                 <p v-if="event.vet" class="mt-auto text-xs text-brand-light flex items-center gap-[5px]">
                     <Loading v-if="!vets.length" />
                     <MapPinned v-else :size="16" /> {{ vet }}

@@ -15,6 +15,10 @@ const { t } = useI18n();
             <div class="w-1 h-1 rounded-md border border-gold bg-gold-rgba"></div>
             <span>{{ t("events.vaccines") }}</span>
         </div>
+        <div class="row">
+            <div class="w-1 h-1 rounded-md border border-border bg-separator"></div>
+            <span>{{ t("events.vaccines") }}</span>
+        </div>
     </div>
 </template>
 

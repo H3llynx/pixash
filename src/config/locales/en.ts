@@ -46,11 +46,10 @@ export default {
     },
     addMenu: {
         pet: "Add pet",
-        vetVisit: "Vet visit",
+        vetVisit: "New vet visit",
         vaccine: "New vaccine",
         vet: "Add vet",
         antiparasitic: "Log antiparasitic",
-        antiparasitic2: "Antiparasitic"
     },
     userMenu: {
         logout: "Log out",
@@ -225,9 +224,11 @@ export default {
     events: {
         upcoming: "Upcoming",
         thisMonth: "This month",
+        nextAntiparasitic: "Next antiparasitic due",
         legend: "Legend",
-        visits: "Visits",
-        vaccines: "Vaccines"
+        visits: "Vet visits",
+        vaccines: "Vaccines",
+        antiparasitic: "Antiparasitics"
     },
     toast: {
         dismiss: "Dismiss notification",

@@ -31,7 +31,7 @@ defineProps<{
                 name: pet.name
             }) }}
         </p>
-        <HealthCard v-if="logged.dueOn" title="Next antiparasitic due" :pet="pet" :data="logged" />
+        <HealthCard v-if="logged.dueOn" :title="t('events.nextAntiparasitic')" :pet="pet" :data="logged" />
         <Button @click="onClose">{{ route.path === ROUTES.calendar ? t("common.button.backCal") :
             t("common.button.backDash") }}</Button>
     </div>

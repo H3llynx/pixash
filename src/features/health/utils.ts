@@ -68,4 +68,4 @@ export const showAntiparasites = (treated: AntiparasiteTypes["id"][], locale: st
         if (item) labels.push(item.label);
     })
     return new Intl.ListFormat(locale).format(labels.map(l => t(l).toLowerCase()));
-}
+};

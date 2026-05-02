@@ -13,12 +13,14 @@ import { useToast } from '../../../../composables/useToast';
 import { resetState, tsToDate } from '../../../../utils';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
+import { useEvents } from '../../composables/useEvents';
 import { ANTIPARASITE_TYPES, antiparasiteFields } from '../../config';
 import type { AntiparasiteTypes, LogExtended, PetEvent } from '../../types';
 import { getAntiparasites, resetForm } from '../../utils';
 import LogSuccess from '../LogSuccess.vue';
 
-const { logs, isAddingHealth, healthLoading, healthError, selectedLog, selectedDate, selectedPet, addNewLog, updateSelectedLog, deleteSelectedLog } = usePets();
+const { logs, isAddingHealth, healthLoading, healthError, selectedLog, selectedPet, addNewLog, updateSelectedLog, deleteSelectedLog } = usePets();
+const { selectedDate } = useEvents();
 const { t } = useI18n();
 const { show } = useToast();
 const { open } = useDialog();
@@ -38,7 +40,6 @@ const fillLogData = (log: LogExtended) => {
         other: log.other ?? "",
     })
 };
-const isVisible = computed(() => isAddingHealth.antiparasitic || mode.value === "edit");
 const defaultForm = {
     treated: [ANTIPARASITE_TYPES.default[0].id] as AntiparasiteTypes["id"][],
     givenAt: "",
@@ -160,8 +161,8 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
                             t("health.antiparasiteForm.validationTypes") }}</p>
                     </Selector>
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-if="isVisible" v-model="formData.givenAt" :id="givenDate.id" class="bg-brand-rgba"
-                            :label="t(givenDate.label)" :type="givenDate.type" required>
+                        <Input v-if="mode === 'edit'" v-model="formData.givenAt" :id="givenDate.id"
+                            class="bg-brand-rgba" :label="t(givenDate.label)" :type="givenDate.type" required>
                             <template #addon>
                                 <CalendarCheck class="mr-0.5" color="var(--color-brand)" />
                             </template>
@@ -170,8 +171,8 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
                             <p class="read-only-label">{{ t(givenDate.label) }}</p>
                             <p class="read-only">{{ tsToDate(selectedLog.antiparasitic.givenAt, "date") }}</p>
                         </div>
-                        <Input v-if="isVisible" v-model="formData.dueOn" :id="dueDate.id" :label="t(dueDate.label)"
-                            :type="dueDate.type" :min="formData.givenAt">
+                        <Input v-if="mode === 'edit'" v-model="formData.dueOn" :id="dueDate.id"
+                            :label="t(dueDate.label)" :type="dueDate.type" :min="formData.givenAt">
                             <template #addon>
                                 <CalendarClock v-if="!formData.dueOn" class="mr-0.5" color="var(--color-border)" />
                                 <Button v-else type="button" variant="ghost" size="xs" @click="formData.dueOn = ''">{{
@@ -182,7 +183,7 @@ watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
                             <p class="read-only-label">{{ t(dueDate.label) }}</p>
                             <p class="read-only">{{ tsToDate(selectedLog.antiparasitic.dueOn, "date") }}</p>
                         </div>
-                        <Input v-if="selectedLog.antiparasitic?.other || isVisible" v-model="formData.other"
+                        <Input v-if="selectedLog.antiparasitic?.other || mode === 'edit'" v-model="formData.other"
                             :id="other.id" :label="t(other.label)" :type="other.type" />
                         <div class="flex gap-0.5 mt-1 items-center ml-auto"
                             v-if="!selectedLog.antiparasitic || mode === 'edit'">

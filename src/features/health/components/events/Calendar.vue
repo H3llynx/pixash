@@ -5,6 +5,7 @@ import interactionPlugin, { type DateClickArg } from "@fullcalendar/interaction"
 import FullCalendar from '@fullcalendar/vue3';
 import { computed } from 'vue';
 import { usePets } from '../../../pets/composables/usePets';
+import { useEvents } from '../../composables/useEvents';
 
 const props = defineProps<{
     events?: EventInput
@@ -16,7 +17,8 @@ const emit = defineEmits<{
     dateClick: [date: string, x: number, y: number]
 }>();
 
-const { selectVaccine, selectVisit, selectedDate, selectedLog } = usePets();
+const { selectVaccine, selectVisit, selectedLog } = usePets();
+const { selectedDate } = useEvents();
 
 const eventColors: Record<string, string> = {
     visit: "var(--color-brand-light)",
@@ -36,7 +38,7 @@ const calendarOptions = computed(() => ({
     eventDidMount(info: EventMountArg) {
         const type = info.event.extendedProps.event.eventType;
         info.el.style.backgroundColor = eventColors[type] || "gray";
-        info.el.style.opacity = info.isPast ? "0.5" : "1";
+        info.el.style.opacity = info.isPast ? "0.4" : "1";
     },
     datesSet(info: DatesSetArg) {
         emit("updateMonth", info.view.currentStart);

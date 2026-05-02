@@ -8,8 +8,10 @@ import FormWrapper from '../../../../components/FormWrapper.vue';
 import { useMedia } from '../../../../composables/useMedia';
 import { resetState } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';
+import { useEvents } from '../../composables/useEvents';
 
-const { isAddingHealth, selectedLog, selectVaccine, selectVisit, selectedDate } = usePets();
+const { isAddingHealth, selectedLog, selectVaccine, selectVisit } = usePets();
+const { selectedDate } = useEvents();
 const { t, locale } = useI18n();
 const { isMd } = useMedia();
 
@@ -25,10 +27,10 @@ const handleClick = (action: string) => {
     resetState(selectedLog);
     selectVaccine(null);
     selectVisit(null);
-    visible.value = false;
     if (action === "vaccine") isAddingHealth.vaccine = true;
     else if (action === "visit") isAddingHealth.visit = true;
     else if (action === "antiparasitic") isAddingHealth.antiparasitic = true;
+    visible.value = false;
 }
 
 const handleClose = () => {

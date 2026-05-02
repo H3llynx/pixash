@@ -56,7 +56,7 @@ const handleClick = (action: string) => {
                         <PawPrint class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button @click="handleClick('antiparasitic')">{{ t("addMenu.antiparasitic2") }}</Button>
+                        <Button @click="handleClick('antiparasitic')">{{ t("addMenu.antiparasitic") }}</Button>
                         <Pill class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
