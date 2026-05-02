@@ -1,36 +1,33 @@
 <script setup lang="ts">
 import { CalendarCheck, Trash2 } from '@lucide/vue';
-import { computed, provide, reactive, ref, Transition, watch } from 'vue';
+import { computed, provide, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FormWrapper from '../../../../components/FormWrapper.vue';
 import Paw from '../../../../components/icons/Paw.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
-import { useDialog } from '../../../../composables/useDialog';
 import { useFormMode } from '../../../../composables/useFormMode';
-import { useToast } from '../../../../composables/useToast';
-import { shallowEqual, tsToDate } from '../../../../utils';
+import { tsToDate } from '../../../../utils';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
 import { getIcon } from '../../../pets/utils';
 import { useEvents } from '../../composables/useEvents';
+import { useVetVisitForm } from '../../composables/useVetVisitForm';
 import { vetVisitFields } from '../../config';
 import type { VisitExtended } from '../../types';
 import { resetForm } from '../../utils';
 import VetFormSelector from './VetFormSelector.vue';
 
-const { loading, selectedPet, selectedVisit, selectVisit, isAddingHealth, healthLoading, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError, selectedVet, vets } = usePets();
-const { selectedDate } = useEvents();
-const { show } = useToast();
-const { open } = useDialog();
-const { t } = useI18n();
+const { loading, selectedPet, selectedVisit, isAddingHealth, healthLoading, selectedVet, vets } = usePets();
 const { mode, isReadonly } = useFormMode();
+const { selectedDate } = useEvents();
+const { t } = useI18n();
+const { formData, defaultForm, handleClose, handleSubmit, handleDelete } = useVetVisitForm();
+const { title, date, vet, notes } = vetVisitFields;
 provide('readonly', isReadonly);
 
-const { title, date, vet, notes } = vetVisitFields;
 const vetTextInput = ref<boolean>(false);
-const visitDate = computed(() => selectedDate.value ?? "");
 const assignedVet = computed(() => {
     if (selectedVet.value) return selectedVet.value.id;
     const pet = selectedPet.value;
@@ -40,12 +37,13 @@ const assignedVet = computed(() => {
     }
     return vets.value?.[0]?.id ?? "";
 });
-const defaultForm = {
-    title: "",
-    date: "",
-    vet: "",
-    notes: "",
-};
+const visitDate = computed(() => {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, "0");
+    const min = String(now.getMinutes()).padStart(2, "0");
+    return selectedDate.value ? `${selectedDate.value}T${h}:${min}` : ""
+});
+
 const fillVisitData = (visit: Partial<VisitExtended>) => {
     const isRegisteredVet = vets.value?.some(vet => vet.id === visit.vet);
     vetTextInput.value = !isRegisteredVet;
@@ -55,66 +53,6 @@ const fillVisitData = (visit: Partial<VisitExtended>) => {
         vet: visit.vet,
         notes: visit.notes ?? "",
     })
-};
-
-const formData = reactive({ ...defaultForm });
-const isVisible = computed(() => isAddingHealth.visit || mode.value === "edit");
-
-const handleClose = () => {
-    resetForm(formData, defaultForm);
-    selectedDate.value = null;
-    isAddingHealth.visit = false;
-    selectVisit(null);
-};
-
-const handleSubmit = async () => {
-    if (!selectedPet.value) return;
-    const titleSnapshot = formData.title;
-    try {
-        if (isAddingHealth.visit) {
-            await addNewVetVisit({ ...formData }, selectedPet.value.id);
-            show({
-                type: "success",
-                title: t("toast.success.title.generic"),
-                message: t("toast.success.message.visitAdded", { name: selectedPet.value.name, title: titleSnapshot }),
-            });
-        }
-        else if (selectedVisit.value && !shallowEqual(formData,
-            { ...selectedVisit.value, date: tsToDate(selectedVisit.value.date, "input") })) {
-            await updateSelectedVisit(selectedVisit.value, selectedPet.value.id, { ...formData });
-            show({
-                type: "success",
-                title: t("toast.success.title.generic"),
-                message: t("toast.success.message.visitUpdated", { name: selectedPet.value.name, title: titleSnapshot }),
-            });
-        }
-    }
-    catch (e) {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-    } finally { resetForm(formData, defaultForm) };
-};
-
-const handleDelete = async () => {
-    const pet = selectedPet.value;
-    const visit = selectedVisit.value;
-    if (!visit || !pet) return;
-    open({
-        title: t("dialog.deleteVetVisit.title", { title: visit.title }),
-        message: t("dialog.deleteVetVisit.message", { name: pet.name, title: visit.title }),
-        isDelete: true,
-        onConfirm: async () => {
-            try {
-                await deleteSelectedVisit(visit, pet.id);
-                show({
-                    type: "success",
-                    title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.visitDeleted", { name: pet.name, title: visit.title }),
-                });
-            } catch (error) {
-                show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-            }
-        }
-    });
 };
 
 watch(() => isAddingHealth.visit, (adding) => {
@@ -174,28 +112,18 @@ watch(() => mode.value, (mode) => {
                     <div class="default-padding flex flex-col gap-1">
                         <Input v-if="mode === 'edit'" v-model="formData.title" :id="title.id" :label="t(title.label)"
                             required />
-                        <Input v-model="formData.date" :id="date.id" :label="t(date.label)" :type="date.type" required
-                            :class="{ 'pointer-events-none bg-brand-rgba': mode === 'view' }">
+                        <Input v-model="formData.date" :id="date.id" :label="t(date.label)" :type="date.type" required>
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
-                        <VetFormSelector v-if="isVisible" :vet="vet" v-model="formData.vet"
-                            v-model:vetTextInput="vetTextInput" required />
-                        <div v-else-if="selectedVisit && mode === 'view'">
-                            <p>{{ t(vet.label) }}</p>
-                            <p class="read-only">{{vets?.find(vet => vet.id === selectedVisit!.vet)?.name ??
-                                selectedVisit.vet}}</p>
-                        </div>
-                        <label :for="notes.id" v-if="isVisible">
+                        <VetFormSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput"
+                            required />
+                        <label :for="notes.id" v-if="selectedVisit?.notes || mode === 'edit'">
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id"
                                 :readonly="!!selectedVisit && mode === 'view'" />
                         </label>
-                        <div v-else-if="selectedVisit?.notes && mode === 'view'">
-                            <p>{{ t(notes.label) }}</p>
-                            <p class="read-only">{{ selectedVisit.notes }}</p>
-                        </div>
                         <div class="flex gap-0.5 mt-1 items-center ml-auto" v-if="!selectedVisit || mode === 'edit'">
                             <Button v-if="selectedVisit && mode === 'edit'" variant="secondary" size="sm" type="button"
                                 :disabled="healthLoading" @click="mode = 'view'">

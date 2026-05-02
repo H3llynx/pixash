@@ -44,6 +44,6 @@ const handleNoteEdit = async () => {
         <PenLine v-else />
     </Button>
     <textarea v-model="notesData" :readonly="!isUpdatingNotes" ref="notesRef" :placeholder="t('vet.notesPlaceholder')"
-        :class="{ 'italic py-0.5 px-1 border-0': true, 'text-text-secondary': !isUpdatingNotes }"
+        :class="{ 'italic py-0.5 px-1 border-0 bg-bg': true, 'text-text-secondary': !isUpdatingNotes }"
         @change="handleNoteEdit" />
 </template>

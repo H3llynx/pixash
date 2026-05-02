@@ -80,18 +80,15 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                         <Toggle v-if="mode === 'edit'" v-model="formData.given" :max="today"
                             :label="t(given.label, { name: selectedPet!.name })" :id="given.id" />
                         <Input v-if="formData.given" v-model="formData.givenAt" :id="givenDate.id" :max="today"
-                            :class="{ 'pointer-event-none bg-brand-rgba': mode === 'view' }" :label="t(givenDate.label)"
-                            :type="givenDate.type" required>
+                            :label="t(givenDate.label)" :type="givenDate.type" required>
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
                         <Toggle v-if="formData.given && mode === 'edit'" v-model="formData.nextDose"
                             :label="t(nextDose.label)" :id="nextDose.id" />
-                        <Input v-if="(!formData.given || formData.nextDose)"
-                            :class="{ 'pointer-event-none bg-brand-rgba': mode === 'view' }" v-model="formData.dueOn"
-                            :id="dueDate.id" :label="t(dueDate.label)" :type="dueDate.type"
-                            :min="formData.givenAt || today" required>
+                        <Input v-if="(!formData.given || formData.nextDose)" v-model="formData.dueOn" :id="dueDate.id"
+                            :label="t(dueDate.label)" :type="dueDate.type" :min="formData.givenAt || today" required>
                             <template #addon>
                                 <CalendarClock class="mr-0.5" color="var(--color-border)" />
                             </template>
@@ -100,8 +97,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                         <label :for="notes.id" v-if="selectedVaccine?.notes || mode === 'edit'">
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id"
-                                :readonly="!!selectedVaccine && mode === 'view'"
-                                :class="{ 'bg-brand-rgba': mode === 'view' }" />
+                                :readonly="!!selectedVaccine && mode === 'view'" />
                         </label>
 
                         <div class="flex gap-1 mt-1 items-center" v-if="!selectedVaccine || mode === 'edit'">

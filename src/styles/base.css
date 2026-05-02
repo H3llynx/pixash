@@ -250,6 +250,13 @@
     }
   }
 
+  input:read-only,
+  select:read-only,
+  textarea:read-only {
+    background: var(--color-brand-rgba);
+    pointer-events: none;
+  }
+
   fieldset {
     display: flex;
     gap: 0 5px;

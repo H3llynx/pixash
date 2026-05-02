@@ -58,15 +58,14 @@ watch(() => mode.value, (mode) => {
                     </Selector>
                     <div class="default-padding flex flex-col gap-1">
                         <Input v-model="formData.givenAt" :id="givenDate.id" :label="t(givenDate.label)"
-                            :type="givenDate.type" :max="today"
-                            :class="{ 'pointer-event-none': mode === 'view', 'bg-brand-rgba': true }" required>
+                            :type="givenDate.type" :max="today" required>
                             <template #addon>
                                 <CalendarCheck class="mr-0.5" color="var(--color-brand)" />
                             </template>
                         </Input>
                         <Input v-if="selectedLog.antiparasitic?.dueOn || mode === 'edit'" v-model="formData.dueOn"
-                            :id="dueDate.id" :class="{ 'pointer-event-none bg-brand-rgba': mode === 'view' }"
-                            :label="t(dueDate.label)" :type="dueDate.type" :min="formData.givenAt || today">
+                            :id="dueDate.id" :label="t(dueDate.label)" :type="dueDate.type"
+                            :min="formData.givenAt || today">
                             <template #addon>
                                 <CalendarClock v-if="!formData.dueOn" class="mr-0.5" color="var(--color-border)" />
                                 <Button v-else type="button" variant="ghost" size="xs" @click="formData.dueOn = ''">{{
