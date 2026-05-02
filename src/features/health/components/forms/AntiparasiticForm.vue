@@ -38,7 +38,7 @@ const fillLogData = (log: LogExtended) => {
         other: log.other ?? "",
     })
 };
-const isVisible = computed(() => isAddingHealth.antiparasitic || mode.value === 'edit');
+const isVisible = computed(() => isAddingHealth.antiparasitic || mode.value === "edit");
 const defaultForm = {
     treated: [ANTIPARASITE_TYPES.default[0].id] as AntiparasiteTypes["id"][],
     givenAt: "",

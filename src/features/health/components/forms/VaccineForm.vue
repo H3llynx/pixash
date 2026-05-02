@@ -66,7 +66,7 @@ const fillVaccineData = (vaccine: VaccineExtended) => {
     })
 };
 const formData = reactive({ ...defaultForm });
-const isVisible = computed(() => isAddingHealth.vaccine || mode.value === 'edit');
+const isVisible = computed(() => isAddingHealth.vaccine || mode.value === "edit");
 const handleClose = () => {
     error.value = false;
     selectedDate.value = null;
@@ -193,7 +193,7 @@ watch(() => formData.given, () => {
                     <h1 v-if="isAddingHealth.vaccine">{{ t("health.title.addVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'edit'">{{ t("health.title.editVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'view'" class="font-medium">{{ getIcon(selectedPet!)
-                    }} {{
+                        }} {{
                             selectedPet!.name
                         }} · {{ showTypes(formData.types, selectedPet!) }}</h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
@@ -265,11 +265,11 @@ watch(() => formData.given, () => {
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{
                                     selectedPet.name
-                                }} · {{
+                                    }} · {{
                                         showTypes(formData.types, selectedPet) }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.sharedDateFields.dueDate")
-                                }}:
+                                    }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
@@ -280,7 +280,7 @@ watch(() => formData.given, () => {
                                     {{ t("common.button.cancel") }}
                                 </Button>
                                 <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVaccine")
-                                }}</Button>
+                                    }}</Button>
                             </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"

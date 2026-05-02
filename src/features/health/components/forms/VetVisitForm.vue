@@ -56,8 +56,10 @@ const fillVisitData = (visit: Partial<VisitExtended>) => {
 };
 
 const formData = reactive({ ...defaultForm });
-const isVisible = computed(() => isAddingHealth.visit || mode.value === 'edit');
+const isVisible = computed(() => isAddingHealth.visit || mode.value === "edit");
+
 const handleClose = () => {
+    resetForm(formData, defaultForm);
     selectedDate.value = null;
     isAddingHealth.visit = false;
     selectVisit(null);
@@ -202,7 +204,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit")
-                            }}
+                                }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>
