@@ -249,22 +249,22 @@ export const fetchLogs = async (userId: string): Promise<LogExtended[]> => {
                 where("userId", "==", userId)
             )
         );
-
         if (snapshot.empty) {
             console.log("No logs found");
             return [];
         }
-
         const logs: LogExtended[] = snapshot.docs.map((doc) => {
             const data = doc.data();
-
+            const base = {
+                id: doc.id,
+                petId: data.petId,
+                userId: data.userId,
+                eventType: data.eventType,
+                ts: data.ts,
+            }
             if (data.type === "antiparasite") {
                 const log: AntiparasiteLogExtended = {
-                    id: doc.id,
-                    petId: data.petId,
-                    userId: data.userId,
-                    eventType: data.eventType ?? "log",
-                    ts: data.ts,
+                    ...base,
                     type: "antiparasite",
                     treated: data.treated,
                     givenAt: data.givenAt,
@@ -273,14 +273,9 @@ export const fetchLogs = async (userId: string): Promise<LogExtended[]> => {
                 };
                 return log;
             }
-
             if (data.type === "weight") {
                 const log: WeightLogExtended = {
-                    id: doc.id,
-                    petId: data.petId,
-                    userId: data.userId,
-                    eventType: data.eventType ?? "log",
-                    ts: data.ts,
+                    ...base,
                     type: "weight",
                     weight: data.weight,
                     measuredAt: data.measuredAt,
@@ -289,7 +284,6 @@ export const fetchLogs = async (userId: string): Promise<LogExtended[]> => {
             }
             throw new Error(`Unknown log type: ${data.type}`);
         });
-
         return logs;
     } catch (error) {
         console.error("Fetch log error:", error);
