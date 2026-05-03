@@ -5,7 +5,7 @@ import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
 import type { Log, LogExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
-import { getNextVaccine, getNextVisit } from "../utils";
+import { getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
     const { user } = useAuth();
@@ -56,6 +56,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
                 logs: petLogs,
                 nextVaccine: getNextVaccine(petVaccines),
                 nextVetVisit: getNextVisit(petVisits),
+                nextAntiparasitic: getNextAntiparasitic(petLogs)
             }
         });
     };

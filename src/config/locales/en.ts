@@ -6,6 +6,7 @@ export default {
             confirm: "Confirm",
             update: "Update",
             clear: "Clear",
+            back: "Back",
             addChip: "Add",
             allChip: "All",
             scrollRight: "Scroll right",
@@ -49,6 +50,7 @@ export default {
         vetVisit: "New vet visit",
         vaccine: "New vaccine",
         vet: "Add vet",
+        log: "New log",
         antiparasitic: "Log antiparasitic",
     },
     userMenu: {
@@ -106,6 +108,7 @@ export default {
                 microchip: "Microchip",
                 nextVaccine: "Next Vaccine",
                 nextVetVisit: "Next vet visit",
+                nextAntiparasitic: "Next antiparasitic",
                 generalInformation: "general information",
             },
             edit: {

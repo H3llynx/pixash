@@ -49,7 +49,11 @@ export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, t?: TF
     const d = String(date.getDate()).padStart(2, "0");
     switch (mode) {
         case "date":
-            return date.toLocaleDateString();
+            return date.toLocaleDateString(undefined, {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            });
         case "input":
             return `${y}-${m}-${d}`;
         case "datetime":

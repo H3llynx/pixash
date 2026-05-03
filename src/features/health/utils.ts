@@ -2,7 +2,7 @@ import { getTodayDayKey, tsToDayKey } from "../../utils";
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, PARASITES, VACCINE_TYPES } from "./config";
-import type { AntiparasiteTypes, VaccineExtended, VaccineTypes, VisitExtended } from "./types";
+import type { AntiparasiteTypes, LogExtended, VaccineExtended, VaccineTypes, VisitExtended } from "./types";
 
 export const resetForm = <T extends object>(
     formData: T,
@@ -30,7 +30,7 @@ export const getNextVaccine = (vaccines: VaccineExtended[]) => {
     return (
         vaccines
             .filter(vaccine => vaccine.dueOn && tsToDayKey(vaccine.dueOn) >= todayKey)
-            .sort((a, b) => tsToDayKey(a.dueOn!) - tsToDayKey(b.dueOn!),)[0] ?? null
+            .sort((a, b) => tsToDayKey(a.dueOn) - tsToDayKey(b.dueOn),)[0] ?? null
     );
 };
 
@@ -40,6 +40,15 @@ export const getNextVisit = (visits: VisitExtended[]) => {
         visits
             .filter(visit => visit.date && tsToDayKey(visit.date) >= todayKey)
             .sort((a, b) => tsToDayKey(a.date) - tsToDayKey(b.date),)[0] ?? null
+    );
+};
+
+export const getNextAntiparasitic = (logs: LogExtended[]) => {
+    const todayKey = getTodayDayKey();
+    return (
+        logs
+            .filter(log => log.type === "antiparasitic" && log.dueOn && tsToDayKey(log.dueOn) >= todayKey)
+            .sort((a, b) => tsToDayKey(a.dueOn) - tsToDayKey(b.dueOn),)[0] ?? null
     );
 };
 

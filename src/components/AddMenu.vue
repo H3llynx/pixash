@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BriefcaseMedical, PawPrint, Pill, Stethoscope, Syringe } from '@lucide/vue';
+import { BriefcaseMedical, BugOff, PawPrint, Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -57,7 +57,7 @@ const handleClick = (action: string) => {
                     </div>
                     <div class="row">
                         <Button @click="handleClick('antiparasitic')">{{ t("addMenu.antiparasitic") }}</Button>
-                        <Pill class="btn-icon default-transition filter-blur" :size="40" />
+                        <BugOff class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
                         <Button @click="handleClick('vaccine')">{{ t("addMenu.vaccine") }}</Button>

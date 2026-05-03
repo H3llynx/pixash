@@ -20,5 +20,6 @@ export type PetExtended = Pet & {
     vaccines: VaccineExtended[];
     nextVaccine?: VaccineExtended;
     nextVetVisit?: VisitExtended;
+    nextAntiparasitic?: LogExtended;
     logs: LogExtended[];
 }

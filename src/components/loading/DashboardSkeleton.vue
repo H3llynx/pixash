@@ -15,8 +15,9 @@ const { isMd } = useMedia();
         </div>
 
         <!-- Stat row -->
-        <div class="grid grid-cols-2 gap-1 md:max-w-xl md:h-6">
-            <div v-for="i in 2" :key="i" class="bg-bg-2 border border-border rounded-xl p-1 flex flex-col gap-0.5">
+        <div class="flex gap-0.5 md:gap-1 md:w-xl md:h-6">
+            <div v-for="i in 2" :key="i"
+                class="bg-bg-2 border border-border rounded-xl p-1 flex flex-col gap-0.5 min-w-1/2 md:min-w-2xs">
                 <div class="h-0.75 w-2/3 rounded bg-grey-light opacity-30"></div>
                 <div class="h-1.25 w-2/3 rounded bg-grey-light opacity-30"></div>
                 <div class="h-0.75 w-1/3 rounded-full bg-grey-light opacity-20"></div>

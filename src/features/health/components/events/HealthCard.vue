@@ -19,12 +19,12 @@ const daysUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "
 </script>
 
 <template>
-    <div class="p-1 rounded-xl border border-border bg-bg-2 flex gap-0.5 justify-between min-w-1/2 md:min-w-3xs">
-        <div class="text-left">
+    <div class="p-1 rounded-xl border border-border bg-bg-2 flex gap-0.5 justify-between min-w-1/2 md:min-w-2xs">
+        <div class="text-left flex flex-col h-full">
             <h3>{{ title }}</h3>
             <p class="text-lg font-medium">{{ date }}</p>
-            <p class="text-xs text-brand-light">{{ daysUntil }}</p>
-            <DateTag :event="data" class="mt-0.5" />
+            <p class="text-xs text-brand-light mb-0.5">{{ daysUntil }}</p>
+            <DateTag :event="data" class="mt-auto" />
         </div>
         <PetIndicator v-if="icon" :pet="pet" />
     </div>
@@ -36,6 +36,6 @@ h3 {
     color: var(--color-text-secondary);
     margin-bottom: 5px;
     letter-spacing: 1px;
-    font-size: smaller;
+    font-size: clamp(0.75rem, 0.5vw, 1rem);
 }
 </style>
