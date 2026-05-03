@@ -5,7 +5,6 @@ import interactionPlugin, { type DateClickArg } from "@fullcalendar/interaction"
 import FullCalendar from '@fullcalendar/vue3';
 import { computed } from 'vue';
 import { usePets } from '../../../pets/composables/usePets';
-import { useEvents } from '../../composables/useEvents';
 
 const props = defineProps<{
     events?: EventInput
@@ -18,7 +17,6 @@ const emit = defineEmits<{
 }>();
 
 const { selectVaccine, selectVisit, selectedLog } = usePets();
-const { selectedDate } = useEvents();
 
 const eventColors: Record<string, string> = {
     visit: "var(--color-brand-light)",
