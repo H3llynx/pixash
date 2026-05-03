@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, reactive } from 'vue';
+import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { onBeforeRouteLeave } from 'vue-router';
 import Header from '../components/Header.vue';
@@ -26,15 +26,15 @@ const getTitle = () => {
 const menu = reactive({ visible: false, x: 0, y: 0 });
 
 const handleDateClick = (date: string, x: number, y: number) => {
-    const isSameDay = selectedDate.value === date;
-    if (isSameDay && menu.visible) {
+    if (selectedDate.value === date) {
         menu.visible = false;
         selectedDate.value = null;
         return;
     }
+    selectedDate.value = date;
     menu.x = x;
     menu.y = y;
-    nextTick(() => { menu.visible = true; });
+    menu.visible = true;
 };
 
 onBeforeRouteLeave(() => {

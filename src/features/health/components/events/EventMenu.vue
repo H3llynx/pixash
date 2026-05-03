@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BugOff, ChevronLeft, ChevronUp, NotebookPen, Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FormWrapper from '../../../../components/FormWrapper.vue';
@@ -18,10 +18,10 @@ const { isMd } = useMedia();
 const visible = defineModel<boolean>("visible")
 const submenu = ref<boolean>(false);
 const menuRef = ref<HTMLDivElement>();
+
 onClickOutside(menuRef, () => {
     if (visible.value) visible.value = false;
     submenu.value = false;
-    selectedDate.value = null;
 });
 
 const handleClick = (action: string) => {
@@ -40,6 +40,15 @@ const handleClose = () => {
     submenu.value = false;
     selectedDate.value = null;
 }
+
+watch(() => visible.value, (visible) => {
+    if (visible) {
+        resetState(isAddingHealth);
+        resetState(selectedLog);
+        selectVaccine(null);
+        selectVisit(null);
+    }
+});
 </script>
 
 <template>

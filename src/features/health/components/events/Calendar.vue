@@ -45,9 +45,6 @@ const calendarOptions = computed(() => ({
         emit("updateMonthName", info.view.title);
     },
     dateClick(info: DateClickArg) {
-        const isSameDay = selectedDate.value === info.dateStr;
-        if (isSameDay) return;
-        selectedDate.value = info.dateStr;
         const rect = info.dayEl.getBoundingClientRect();
         const x = rect.left + window.scrollX + rect.width / 2;
         const y = rect.top + window.scrollY + 25;
