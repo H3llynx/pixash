@@ -105,7 +105,7 @@ const addNewPet = async (newPet: Pet) => {
   });
 };
 
-const updateSelectedPet = async (pet: PetExtended, data: Partial<Pick<Pet, "weight" | "microchip" | "microchipped">>) => {
+const updateSelectedPet = async (pet: PetExtended, data: Partial<Pick<Pet, "microchip" | "microchipped">>) => {
   await handlePetAction(async () => {
     await updatePet(pet.id, user.value!.uid, data);
     const index = pets.value.findIndex(p => p.id === pet.id);
@@ -215,6 +215,6 @@ export const usePets = () => {
     logs,
     addNewLog,
     updateSelectedLog,
-    deleteSelectedLog
+    deleteSelectedLog,
   };
 };

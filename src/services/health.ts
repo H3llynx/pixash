@@ -212,21 +212,32 @@ export const deleteVet = async (vetId: string, userId: string) => {
 };
 
 const getLogDoc = (userId: string, petId: string, logId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.logs, logId);
+
 export const addLog = async (log: Log, petId: string, userId: string) => {
-    const newLog = {
-        petId: petId,
-        userId: userId,
-        type: log.type,
-        treated: log.treated,
-        givenAt: log.givenAt ? tsFromInput(log.givenAt) : null,
-        dueOn: log.dueOn ? tsFromInput(log.dueOn) : null,
-        other: log.other ?? null,
-    };
+    let newLog;
+    if (log.type === "antiparasite")
+        newLog = {
+            petId: petId,
+            userId: userId,
+            type: log.type,
+            treated: log.treated,
+            givenAt: log.givenAt ? tsFromInput(log.givenAt) : null,
+            dueOn: log.dueOn ? tsFromInput(log.dueOn) : null,
+            other: log.other ?? null,
+        };
+    else if (log.type === "weight")
+        newLog = {
+            petId: petId,
+            userId: userId,
+            type: log.type,
+            weight: log.weight,
+            mesuredAt: serverTimestamp()
+        }
     try {
         const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.logs), newLog);
         return docRef.id;
     } catch (error) {
-        console.error("Error adding vaccine: ", error);
+        console.error("Error adding log: ", error);
     }
 };
 
@@ -253,16 +264,29 @@ export const updateLog = async (
     logId: string,
     petId: string,
     userId: string,
-    data: Log
+    log: Log
 ) => {
-    const updated = {
-        petId: petId,
-        userId: userId,
-        treated: data.treated,
-        givenAt: tsFromInput(data.givenAt),
-        dueOn: data.dueOn ? tsFromInput(data.dueOn) : null,
-        other: data.other,
-    };
+    let updated;
+    if (log.type === "antiparasite")
+        updated = {
+            petId: petId,
+            userId: userId,
+            treated: log.treated,
+            givenAt: tsFromInput(log.givenAt),
+            dueOn: log.dueOn ? tsFromInput(log.dueOn) : null,
+            other: log.other,
+        };
+    else if (log.type === "weight")
+        updated = {
+            petId: petId,
+            userId: userId,
+            type: log.type,
+            weight: log.weight,
+            mesuredAt: log.measuredAt
+        };
+    else {
+        throw new Error("Unsupported log type");
+    }
     try {
         const docRef = getLogDoc(userId, petId, logId);
         await updateDoc(docRef, updated);

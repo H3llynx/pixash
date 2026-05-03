@@ -36,7 +36,9 @@ export const useEvents = () => {
                 date: tsToDate(visit.date, "input"),
                 event: visit,
             })),
-        ...logs.value.filter(log => pets.value.some(pet => pet.id === log.petId))
+        ...logs.value
+            .filter(log => pets.value.some(pet => pet.id === log.petId))
+            .filter(log => log.type === "antiparasite")
             .flatMap(log => {
                 const events = [];
                 if (log.givenAt) events.push({

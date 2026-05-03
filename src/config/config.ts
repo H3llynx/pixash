@@ -4,5 +4,6 @@ export const DB = {
     vets: "vets",
     vaccines: "vaccines",
     vetVisits: "vetVisits",
-    logs: "logs"
+    logs: "logs",
+    weightLogs: "weightLogs"
 } as const;

@@ -5,7 +5,7 @@ import { useToast } from "../../../composables/useToast";
 import { resetState, tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import { ANTIPARASITE_TYPES } from "../config";
-import type { AntiparasiteTypes, LogExtended, PetEvent } from "../types";
+import type { AntiparasiteLogExtended, AntiparasiteTypes, Log, PetEvent } from "../types";
 import { getAntiparasites, resetForm } from "../utils";
 import { useEvents } from "./useEvents";
 
@@ -19,7 +19,7 @@ export const useAntiparasiticForm = () => {
     const error = ref<boolean>(false);
     const newLog = ref<PetEvent | null>(null);
     const givenAt = computed(() => selectedDate.value ?? new Date().toISOString().slice(0, 10));
-    const fillLogData = (log: LogExtended) => {
+    const fillLogData = (log: AntiparasiteLogExtended) => {
         Object.assign(formData, {
             treated: [...log.treated],
             givenAt: tsToDate(log.givenAt, "input"),
@@ -71,7 +71,7 @@ export const useAntiparasiticForm = () => {
             error.value = true;
             return;
         };
-        const log = { ...formData, type: "antiparasitic" }
+        const log: Log = { ...formData, type: "antiparasite" };
         try {
             if (isAddingHealth.antiparasitic) {
                 const logId = await addNewLog(log, selectedPet.value.id);

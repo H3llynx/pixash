@@ -77,6 +77,8 @@ export type VetExtended = Vet & {
     id: string;
 }
 
+export type LogTypes = "antiparasite" | "weight";
+
 export type AntiparasiteRecord = {
     treated: AntiparasiteTypes["id"][];
     givenAt: string;
@@ -84,13 +86,36 @@ export type AntiparasiteRecord = {
     other?: string;
 };
 
-export type Log = AntiparasiteRecord & { type: string };
-export type LogExtended = Omit<Log, "givenAt" | "dueOn"> & {
+export type WeightRecord = {
+    weight: number;
+};
+
+export type Log =
+    | (AntiparasiteRecord & { type: "antiparasite" })
+    | (WeightRecord & { type: "weight" });
+
+export type AntiparasiteLogExtended = {
     id: string;
     petId: string;
     userId: string;
-    givenAt: Timestamp;
-    dueOn: Timestamp;
     eventType: string;
     ts: Timestamp;
+    type: "antiparasite";
+    treated: AntiparasiteTypes["id"][];
+    givenAt: Timestamp;
+    dueOn?: Timestamp;
+    other?: string;
 };
+
+export type WeightLogExtended = {
+    id: string;
+    petId: string;
+    userId: string;
+    eventType: string;
+    ts: Timestamp;
+    type: "weight";
+    weight: number;
+    measuredAt: Timestamp;
+};
+
+export type LogExtended = AntiparasiteLogExtended | WeightLogExtended;

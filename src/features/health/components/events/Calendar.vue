@@ -52,7 +52,7 @@ const calendarOptions = computed(() => ({
         if (info.event.extendedProps.event.eventType === "vaccine") selectVaccine(info.event.extendedProps.event);
         else if (info.event.extendedProps.event.eventType === "visit") selectVisit(info.event.extendedProps.event);
         else if (info.event.extendedProps.event.eventType === "log") {
-            if (info.event.extendedProps.event.type === "antiparasitic")
+            if (info.event.extendedProps.event.type === "antiparasite")
                 selectedLog.antiparasitic = info.event.extendedProps.event;
         }
     }

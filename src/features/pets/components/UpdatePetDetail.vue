@@ -6,12 +6,12 @@ import { reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { resetState } from '../../../utils';
-import type { VaccineExtended } from '../../health/types';
+import type { Log, VaccineExtended } from '../../health/types';
 import { usePets } from '../composables/usePets';
 import type { Pet, PetExtended } from '../types';
 import { getUnit, kgToGrams } from '../utils';
 
-const { updateSelectedPet, deleteSelectedPetField, selectedPet, selectPet, selectVaccine, isAddingHealth } = usePets();
+const { addNewLog, updateSelectedPet, deleteSelectedPetField, selectedPet, selectPet, selectVaccine, isAddingHealth } = usePets();
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -69,13 +69,18 @@ const handleUnitChange = () => {
 
 const handleSubmit = async (field: "weight" | "microchip") => {
     if (!selectedPet.value || !formData.data) return;
-    let update: Partial<Pick<Pet, "weight" | "microchip" | "microchipped">> = {};
+    let update = {};
     if (field === "weight") {
         const numeric = Number(formData.data);
         if (Number.isNaN(numeric) || numeric <= 0) return;
         const grams = formData.unit === "kg" ? kgToGrams(numeric) : numeric;
         if (selectedPet.value.weight === grams) return;
         update = { weight: grams };
+        const log: Log = {
+            type: "weight",
+            weight: grams,
+        };
+        await addNewLog(log, selectedPet.value.id)
     } else {
         const microchip = formData.data;
         if (selectedPet.value.microchip === microchip) return;

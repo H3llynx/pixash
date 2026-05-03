@@ -2,7 +2,7 @@ import { getTodayDayKey, tsToDayKey } from "../../utils";
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, PARASITES, VACCINE_TYPES } from "./config";
-import type { AntiparasiteTypes, LogExtended, VaccineExtended, VaccineTypes, VisitExtended } from "./types";
+import type { AntiparasiteLogExtended, AntiparasiteTypes, VaccineExtended, VaccineTypes, VisitExtended } from "./types";
 
 export const resetForm = <T extends object>(
     formData: T,
@@ -43,12 +43,12 @@ export const getNextVisit = (visits: VisitExtended[]) => {
     );
 };
 
-export const getNextAntiparasitic = (logs: LogExtended[]) => {
+export const getNextAntiparasitic = (logs: AntiparasiteLogExtended[]) => {
     const todayKey = getTodayDayKey();
     return (
         logs
-            .filter(log => log.type === "antiparasitic" && log.dueOn && tsToDayKey(log.dueOn) >= todayKey)
-            .sort((a, b) => tsToDayKey(a.dueOn) - tsToDayKey(b.dueOn),)[0] ?? null
+            .filter(log => log.type === "antiparasite" && log.dueOn && tsToDayKey(log.dueOn) >= todayKey)
+            .sort((a, b) => tsToDayKey(a.dueOn!) - tsToDayKey(b.dueOn!),)[0] ?? null
     );
 };
 

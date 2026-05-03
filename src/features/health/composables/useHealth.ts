@@ -4,7 +4,7 @@ import { addLog, addVaccine, addVet, addVetVisit, deleteLog, deleteVaccine, dele
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { Log, LogExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { AntiparasiteLogExtended, Log, LogExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
@@ -17,7 +17,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const selectedVisit = ref<VisitExtended | null>(null);
     const selectedVet = ref<VetExtended | null>(null);
     const selectedLog = reactive<{
-        antiparasitic: LogExtended | null
+        antiparasitic: AntiparasiteLogExtended | null;
     }>({
         antiparasitic: null,
     })
@@ -207,7 +207,10 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const fetchUserLogs = async () => {
         await handleHealthAction(async () => {
             const l = await fetchLogs(user.value!.uid);
-            logs.value = l.map(l => ({ ...l, ts: l.dueOn ?? null, eventType: "log" }));
+            logs.value = l.map((log): LogExtended => {
+                if (log.type === "antiparasite") return { ...log, ts: log.dueOn ?? log.givenAt, eventType: "log" };
+                else return { ...log, ts: log.measuredAt, eventType: "log" };
+            });
             assignHealth();
         });
     };
