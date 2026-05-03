@@ -1,7 +1,7 @@
 import { addDoc, collection, collectionGroup, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where } from "firebase/firestore";
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
-import type { Log, LogExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../features/health/types";
+import type { AntiparasiteLogExtended, Log, LogExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/health/types";
 import { tsFromInput } from "../utils";
 
 const getVaccineDoc = (userId: string, petId: string, vaccineId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
@@ -231,7 +231,7 @@ export const addLog = async (log: Log, petId: string, userId: string) => {
             userId: userId,
             type: log.type,
             weight: log.weight,
-            mesuredAt: serverTimestamp()
+            measuredAt: serverTimestamp()
         }
     try {
         const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.logs), newLog);
@@ -243,17 +243,54 @@ export const addLog = async (log: Log, petId: string, userId: string) => {
 
 export const fetchLogs = async (userId: string): Promise<LogExtended[]> => {
     try {
-        const snapshot = await getDocs(query(
-            collectionGroup(db, DB.logs),
-            where("userId", "==", userId)));
+        const snapshot = await getDocs(
+            query(
+                collectionGroup(db, DB.logs),
+                where("userId", "==", userId)
+            )
+        );
+
         if (snapshot.empty) {
             console.log("No logs found");
             return [];
         }
-        return snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data() as Omit<LogExtended, "id">
-        }));
+
+        const logs: LogExtended[] = snapshot.docs.map((doc) => {
+            const data = doc.data();
+
+            if (data.type === "antiparasite") {
+                const log: AntiparasiteLogExtended = {
+                    id: doc.id,
+                    petId: data.petId,
+                    userId: data.userId,
+                    eventType: data.eventType ?? "log",
+                    ts: data.ts,
+                    type: "antiparasite",
+                    treated: data.treated,
+                    givenAt: data.givenAt,
+                    dueOn: data.dueOn,
+                    other: data.other,
+                };
+                return log;
+            }
+
+            if (data.type === "weight") {
+                const log: WeightLogExtended = {
+                    id: doc.id,
+                    petId: data.petId,
+                    userId: data.userId,
+                    eventType: data.eventType ?? "log",
+                    ts: data.ts,
+                    type: "weight",
+                    weight: data.weight,
+                    measuredAt: data.measuredAt,
+                };
+                return log;
+            }
+            throw new Error(`Unknown log type: ${data.type}`);
+        });
+
+        return logs;
     } catch (error) {
         console.error("Fetch log error:", error);
         return [];
@@ -281,8 +318,7 @@ export const updateLog = async (
             petId: petId,
             userId: userId,
             type: log.type,
-            weight: log.weight,
-            mesuredAt: log.measuredAt
+            weight: log.weight
         };
     else {
         throw new Error("Unsupported log type");
