@@ -19,6 +19,8 @@ export default {
         },
         text: {
             noEventText: "You don't have any event scheduled.",
+            noWeightLog: "No weight log registered.",
+            lastLogged: "Last logged",
             done: "Done!",
             antiparasiticLogged: "Antiparasitic against {parasites} logged for {name}."
         },
@@ -27,6 +29,13 @@ export default {
             calendar: "Calendar",
             vetH2: "Vet care",
             vetSpan: "Clinics, treatments & visits",
+        },
+        navbar: {
+            home: "Home",
+            calendar: "Calendar",
+            vet: "Vet",
+            history: "History",
+            myPets: "My pets"
         },
         fileInputLabel: "Upload a picture from your device."
     },
@@ -61,7 +70,11 @@ export default {
     dashboard: {
         title: {
             petProfile: "{name}'s profile",
-            petProfiles: "Pet profiles",
+            upcoming: "Upcoming",
+            nextVaccine: "Next Vaccine",
+            nextVetVisit: "Next vet visit",
+            nextAntiparasitic: "Next antiparasitic",
+            weightTracking: "Weight tracking",
         }
     },
     vet: {
@@ -99,17 +112,15 @@ export default {
             delete: "Delete {name}",
         },
         profile: {
-            label: {
+            labels: {
                 sterilized: {
                     male: "Neutered",
                     female: "Spayed"
                 },
                 weight: "Weight",
                 microchip: "Microchip",
-                nextVaccine: "Next Vaccine",
-                nextVetVisit: "Next vet visit",
-                nextAntiparasitic: "Next antiparasitic",
-                generalInformation: "general information",
+                generalInformation: "General information",
+                nextVaccine: "Next vaccine"
             },
             edit: {
                 weight: "Update {name}'s weight",
@@ -225,7 +236,6 @@ export default {
         },
     },
     events: {
-        upcoming: "Upcoming",
         thisMonth: "This month",
         nextAntiparasitic: "Next antiparasitic due",
         legend: "Legend",

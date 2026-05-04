@@ -7,7 +7,7 @@ export const getIcon = (pet: Pet) => {
     return SPECIES.find(s => s.id === pet.species)?.icon;
 }
 
-export const getUnit = (pet: Pet) => {
+export const prefersKg = (pet: Pet) => {
     if (!pet) return;
     return SPECIES.find(s => s.id === pet.species)?.prefersKg;
 }
@@ -56,3 +56,6 @@ export const getWeight = (pet: Pet) => {
     if (pet.species === "dog" || pet.species === "cat") return `${gramsToKg(pet.weight)} kg`;
     else return `${pet.weight} g`;
 };
+
+export const getChartColor = (variable: string) =>
+    getComputedStyle(document.documentElement).getPropertyValue(variable).trim();

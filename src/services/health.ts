@@ -259,27 +259,25 @@ export const fetchLogs = async (userId: string): Promise<LogExtended[]> => {
                 id: doc.id,
                 petId: data.petId,
                 userId: data.userId,
-                eventType: data.eventType,
-                ts: data.ts,
             }
             if (data.type === "antiparasite") {
-                const log: AntiparasiteLogExtended = {
+                const log = {
                     ...base,
                     type: "antiparasite",
                     treated: data.treated,
                     givenAt: data.givenAt,
                     dueOn: data.dueOn,
                     other: data.other,
-                };
+                } as AntiparasiteLogExtended;
                 return log;
             }
             if (data.type === "weight") {
-                const log: WeightLogExtended = {
+                const log = {
                     ...base,
                     type: "weight",
                     weight: data.weight,
                     measuredAt: data.measuredAt,
-                };
+                } as WeightLogExtended;
                 return log;
             }
             throw new Error(`Unknown log type: ${data.type}`);

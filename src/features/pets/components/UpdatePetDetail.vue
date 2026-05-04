@@ -9,7 +9,7 @@ import { resetState } from '../../../utils';
 import type { Log, VaccineExtended } from '../../health/types';
 import { usePets } from '../composables/usePets';
 import type { Pet, PetExtended } from '../types';
-import { getUnit, kgToGrams } from '../utils';
+import { kgToGrams, prefersKg } from '../utils';
 
 const { addNewLog, updateSelectedPet, deleteSelectedPetField, selectedPet, selectPet, selectVaccine, isAddingHealth } = usePets();
 const { t } = useI18n();
@@ -30,9 +30,7 @@ onClickOutside(updateForm, () => {
     }
 });
 
-const preferredUnit = computed(() => {
-    return getUnit(props.pet) ? "kg" : "g"
-});
+const preferredUnit = computed(() => prefersKg(props.pet) ? "kg" : "g");
 
 const formData = reactive<{
     data: string;
@@ -123,8 +121,8 @@ watch(() => formData.unit,
             <Edit2 v-if="pet[data]" :size="16" />
             <Plus v-else :size="18" />
         </Button>
-        <form @submit.prevent="handleSubmit(data)" @keydown.enter.exact="handleSubmit(data)"
-            v-else-if="pet === selectedPet" class="profile-mini-form flex gap-[3px]" ref="updateForm">
+        <form @submit.prevent="handleSubmit(data)" v-else-if="pet === selectedPet"
+            class="profile-mini-form flex gap-[3px]" ref="updateForm">
             <input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
                 :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="inputRef"
                 class="text-base">
