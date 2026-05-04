@@ -15,11 +15,11 @@ const { loading, user } = useAuth();
 <template>
   <LoadingView v-if="loading" />
   <RouterView v-else />
+  <NavBar v-if="user" />
   <VaccineForm />
   <VetVisitForm />
   <AntiparasiticForm />
   <PetForm />
-  <NavBar v-if="user" />
   <Toast />
   <Dialog />
 </template>

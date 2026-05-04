@@ -44,16 +44,16 @@ onBeforeRouteLeave(() => {
 
 <template>
     <Header />
-    <main class="pb-3 md:pb-0 lg:gap-0 lg:grid lg:grid-cols-[50%_50%] xl:grid-cols-[1fr_35%]">
+    <main class="lg:gap-0 lg:grid lg:grid-cols-[50%_50%] xl:grid-cols-[1fr_35%]">
         <section class="p-0 bg-brand-dark md:bg-bg md:pt-0.5">
-            <PetSelector calendar v-model:petId="petId" />
+            <PetSelector v-if="!isMd" calendar v-model:petId="petId" />
             <Calendar :events="filteredCalendarEvents" @update-month="currentMonth = $event"
                 @update-monthName="currentMonthName = $event" @date-click="handleDateClick" />
         </section>
         <section
             class="flex flex-col-reverse p-0 h-full md:flex-col md:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
             <EventListSkeleton v-if="isMd && (loading || healthLoading)" />
-            <EventList v-else :title="getTitle()" :events="filteredMonthEvents" mdLocation="right" />
+            <EventList v-else :title="getTitle()" :events="filteredMonthEvents" />
             <CalendarLegend />
         </section>
     </main>

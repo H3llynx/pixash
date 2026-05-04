@@ -28,7 +28,7 @@ const getHeaderStyle = () => {
         <VetHeaderTitle v-if="route.path === ROUTES.vet" />
         <h2 v-if="route.path === ROUTES.calendar && isMd" class="text-2xl md:text-3xl my-auto">{{
             t("common.header.calendar")
-        }}</h2>
+            }}</h2>
         <Logo v-if="route.path === ROUTES.auth || (route.path === ROUTES.calendar && !isMd)" />
         <div class="flex gap-0.5 relative z-2 items-start">
             <ThemeSwitcher />

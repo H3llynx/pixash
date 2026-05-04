@@ -115,8 +115,7 @@ const updateSelectedPet = async (pet: PetExtended, data: Partial<Pick<Pet, "micr
     };
     pets.value.splice(index, 1, updatedPet);
     selectPet(updatedPet);
-  }
-  );
+  });
 };
 
 const deleteSelectedPet = async (pet: PetExtended) => {

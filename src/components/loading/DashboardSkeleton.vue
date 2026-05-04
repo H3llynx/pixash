@@ -6,8 +6,8 @@ const { isMd } = useMedia();
 </script>
 
 <template>
-    <div class="animate-pulse flex flex-col gap-1.5 default-padding py-1 max-w-full overflow-hidden">
-
+    <div
+        class="animate-pulse flex flex-col gap-1.5 default-padding py-1 max-w-full overflow-hidden pb-6 md:pb-0 md:pl-21">
         <!-- Pet switcher chips -->
         <div class="flex gap-0.5 md:hidden">
             <div class="h-2 w-5 rounded-full bg-grey-light opacity-30"></div>

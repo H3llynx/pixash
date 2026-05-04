@@ -49,7 +49,7 @@ const handleDelete = async () => {
 </script>
 
 <template>
-    <div class="profile-card md:w-sm md:shrink-0">
+    <div class="profile-card md:max-w-sm">
         <div class="flex items-center gap-0.5">
             <div class="rounded-full w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                 {{ getIcon(pet) }}
@@ -67,7 +67,7 @@ const handleDelete = async () => {
                 <span>{{ getAge(pet)?.text }} · </span>
                 <span class="capitalize">{{ pet.sex }}</span>
                 <span class="capitalize" v-if="pet.sterilized"> · {{ pet.sex === "male" ?
-                    t("pet.profile.label.sterilized.male") : t("pet.profile.label.sterilized.female") }}</span>
+                    t("pet.profile.labels.sterilized.male") : t("pet.profile.labels.sterilized.female") }}</span>
             </div>
             <Button class="ml-auto mb-auto" variant="ghost" size="xs"
                 :aria-label="t('pet.cta.delete', { name: pet.name })" @click="handleDelete">

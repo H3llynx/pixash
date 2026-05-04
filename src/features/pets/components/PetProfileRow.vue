@@ -20,7 +20,7 @@ const isUpdating = defineModel();
 
 <template>
     <div class="profile-row">
-        <span>{{ t("pet.profile.label." + data) }}</span>
+        <span>{{ t("pet.profile.labels." + data) }}</span>
         <Loading v-if="data === 'nextVaccine' && pet === selectedPet && healthLoading" class="ml-auto" />
         <template v-else>
             <span v-if="pet[data] && !isUpdating" class="font-medium">

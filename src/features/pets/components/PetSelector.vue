@@ -4,32 +4,21 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Paw from '../../../components/icons/Paw.vue';
-import { useMedia } from '../../../composables/useMedia';
 import { usePets } from '../composables/usePets';
 import type { PetExtended } from '../types';
 import { getIcon } from '../utils';
 
 const { pets, selectPet, selectedPet, selectedVet, isAddingPet } = usePets();
 const { t } = useI18n();
-const { isMd } = useMedia();
 
 const props = withDefaults(defineProps<{
     form?: boolean
+    nav?: boolean
     calendar?: boolean
     petId?: string
-}>(), { form: false, calendar: false });
+}>(), { form: false, calendar: false, nav: false });
 
 const emit = defineEmits(["update:petId"]);
-
-const getChipStyle = (pet: PetExtended) => ({
-    active:
-        (!props.calendar && selectedPet.value?.id === pet.id) ||
-        (props.calendar && props.petId === pet.id),
-    "active-calendar":
-        !isMd.value && props.calendar && props.petId === pet.id,
-    calendar:
-        !isMd.value && props.calendar && props.petId !== pet.id,
-});
 
 const filteredPets = computed(() => props.form && selectedVet.value
     ? pets.value.filter(pet => selectedVet.value?.assignedPets?.includes(pet.id))
@@ -39,20 +28,41 @@ const handleClick = (pet: PetExtended) => {
     selectPet(pet)
     if (props.calendar) emit("update:petId", pet.id);
 };
+
+const getPetChipStyle = (pet: PetExtended) => {
+    if (props.nav) {
+        if (props.calendar) return props.petId === pet.id ? "nav-active" : "nav-base";
+        else return selectedPet.value?.id === pet.id ? "nav-active" : "nav-base";
+    }
+    else if (props.calendar) return props.petId === pet.id ? "calendar-active" : "calendar-base";
+    else if (selectedPet.value?.id === pet.id) return "active";
+};
+
+const getAllChipStyle = () => {
+    if (props.nav) return props.petId ? "nav-base" : "nav-active";
+    else if (props.calendar) return props.petId ? "calendar-base" : "calendar-active";
+    else if (!props.petId) return "active";
+};
+
+const getAddChipStyle = () => {
+    if (props.nav) return isAddingPet.value ? "nav-active" : "add";
+    else if (isAddingPet.value) return "active";
+}
+
 </script>
 
 <template>
-    <div class="pet-selector">
-        <Button v-if="calendar" variant="chip" size="sm"
-            :class="petId ? (!isMd && 'calendar') : (isMd ? 'active' : 'active-calendar')"
+    <div :class="nav ? 'pet-section md-nav-selector' : 'pet-selector'">
+        <h2 v-if="nav" class="text-brand-light text-xs">{{ t("common.navbar.myPets") }}</h2>
+        <Button v-if="calendar" :variant="nav ? 'ghost' : 'chip'" size="sm" :class="getAllChipStyle()"
             @click="emit('update:petId', undefined)">
             <Paw class="w-1 -rotate-20" /> {{ t("common.button.allChip") }}
         </Button>
-        <Button variant="chip" size="sm" v-for="pet in filteredPets" :class="getChipStyle(pet)"
+        <Button :variant="nav ? 'ghost' : 'chip'" size="sm" v-for="pet in filteredPets" :class="getPetChipStyle(pet)"
             @click="handleClick(pet)">
             <span aria-hidden>{{ getIcon(pet) }}</span>
             {{ pet.name }}</Button>
-        <Button v-if="!form && !calendar" variant="chip" size="sm" :class="{ active: isAddingPet }"
+        <Button v-if="!form && !calendar" :variant="nav ? 'ghost' : 'chip'" size="sm" :class="getAddChipStyle()"
             @click="isAddingPet = true">
             <Plus /> {{ t("common.button.addChip") }}
         </Button>
@@ -60,6 +70,13 @@ const handleClick = (pet: PetExtended) => {
 </template>
 
 <style scoped>
+.add {
+    background: transparent;
+    border: 1px dashed var(--color-brand-light);
+    color: var(--color-brand-light);
+    justify-content: flex-start;
+}
+
 .active {
     background: var(--color-brand);
     color: var(--color-text-chip);
@@ -67,14 +84,34 @@ const handleClick = (pet: PetExtended) => {
     font-weight: 500;
 }
 
-.active-calendar {
+.nav-active {
     background: var(--color-brand-rgba);
-    border-color: var(--color-btn-hover-text);
-    color: var(--color-btn-hover-text)
+    color: var(--color-off-white);
+    justify-content: flex-start;
 }
 
-.calendar {
+.nav-base {
+    background: transparent;
+    color: var(--color-off-white);
+    justify-content: flex-start;
+}
+
+.calendar-base {
     background: var(--color-brand-dark);
     border-color: var(--color-brand-rgba);
+}
+
+.calendar-active {
+    background: var(--color-brand-light);
+    border-color: var(--color-brand-light);
+    color: var(--color-charcoal-lighter);
+}
+
+.md-nav-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+    padding-block: 1rem;
 }
 </style>

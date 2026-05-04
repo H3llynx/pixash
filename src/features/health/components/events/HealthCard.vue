@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { tsToDate } from '../../../../utils';
-import PetIndicator from '../../../pets/components/PetIndicator.vue';
 import type { PetExtended } from '../../../pets/types';
 import type { PetEvent } from '../../types';
 import DateTag from './DateTag.vue';
 
-const props = withDefaults(defineProps<{
+const props = defineProps<{
     title: string
     data: PetEvent
     pet: PetExtended
-    icon?: boolean
-}>(), { icon: true });
+}>();
 
 const date = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "date") : tsToDate(props.data.date, "date"));
 const daysUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "daysUntil") : tsToDate(props.data.date, "daysUntil"))
@@ -19,14 +17,14 @@ const daysUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "
 </script>
 
 <template>
-    <div class="p-1 rounded-xl border border-border bg-bg-2 flex gap-0.5 justify-between min-w-1/2 md:min-w-2xs">
+    <div
+        class="p-1 rounded-xl border border-border bg-bg-2 flex gap-0.5 justify-between min-w-1/2 shrink-0 md:min-w-1/3 md:shrink">
         <div class="text-left flex flex-col h-full">
             <h3>{{ title }}</h3>
-            <p class="text-lg font-medium">{{ date }}</p>
+            <p class="font-medium">{{ date }}</p>
             <p class="text-xs text-brand-light mb-0.5">{{ daysUntil }}</p>
             <DateTag :event="data" class="mt-auto" />
         </div>
-        <PetIndicator v-if="icon" :pet="pet" />
     </div>
 </template>
 
