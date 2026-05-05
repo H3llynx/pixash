@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Camera, X } from '@lucide/vue';
-import { ref } from 'vue';
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
@@ -18,9 +19,15 @@ const { user } = useAuth();
 
 const visible = defineModel<boolean>("picVisible");
 const fileInputRef = ref<HTMLInputElement>();
+const dialogRef = ref<HTMLInputElement>();
 const previewUrl = ref<string | null>(null);
 const selectedFile = ref<File | null>(null);
 const loading = ref<boolean>(false);
+
+const { activate, deactivate } = useFocusTrap(dialogRef, {
+    immediate: true,
+    allowOutsideClick: false,
+});
 
 const onFileChange = async (e: Event) => {
     const target = e.target as HTMLInputElement;
@@ -87,13 +94,21 @@ const handleCancel = () => {
     clearPreview();
     visible.value = false;
 }
+
+onMounted(() => {
+    activate();
+});
+
+onUnmounted(() => {
+    deactivate();
+});
 </script>
 
 <template>
     <Transition name="overlay">
         <div v-if="visible" class="fixed inset-0 w-full h-dvh bg-black/60 flex items-center justify-center">
             <Transition name="toast" appear>
-                <div class="dialog-box w-[80%] max-w-sm">
+                <div class="dialog-box w-[80%] max-w-sm" ref="dialogRef">
                     <LoadingPuppy v-if="loading" class="max-w-xs" />
                     <template v-else>
                         <div class="mx-auto relative" v-if="user?.photo || previewUrl">
@@ -110,7 +125,7 @@ const handleCancel = () => {
                         <form class="mini-form flex flex-col gap-1" @submit.prevent="handleSubmit">
                             <label for="profile-picture" :aria-label="t('common.fileInputLabel')">
                                 <input id="profile-picture" type="file" accept="image/*" class="sr-only"
-                                    ref="fileInputRef" @change="onFileChange" />
+                                    ref="fileInputRef" tabindex="0" @change="onFileChange" />
                                 <Camera />
                             </label>
                             <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
@@ -135,6 +150,13 @@ label {
     background: var(--background-image-card);
     border: 1px solid var(--color-brand);
     cursor: pointer;
+
+    &:has(:focus-visible) {
+        outline-width: 2px;
+        outline-style: solid;
+        outline-offset: 1px;
+        outline-color: var(--color-gold);
+    }
 }
 
 .preview {

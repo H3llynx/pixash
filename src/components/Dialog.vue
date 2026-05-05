@@ -17,18 +17,17 @@ const openDialog = async () => {
     dialogRef.value?.showModal();
     await nextTick();
     activate();
-}
+};
 const closeDialog = () => {
     dialog.value = null;
     dialogRef.value?.close();
     deactivate();
-}
-
+};
 const handleConfirm = () => {
     if (!dialog.value?.onConfirm) return;
     dialog.value.onConfirm();
     closeDialog();
-}
+};
 
 onClickOutside(boxRef, () => closeDialog())
 
