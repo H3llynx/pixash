@@ -153,7 +153,7 @@
     @apply default-transition;
   }
 
-  form:not(.profile-mini-form) {
+  form:not(.mini-form) {
     @apply md:w-2xl;
   }
 
@@ -165,8 +165,13 @@
     width: 100%;
     border-radius: 0.75rem;
 
-    &[readonly]:focus-visible {
-      outline: none;
+    &[readonly] {
+      background: var(--color-brand-rgba);
+      pointer-events: none;
+
+      &:focus-visible {
+        outline: none;
+      }
     }
   }
 
@@ -250,12 +255,12 @@
     }
   }
 
-  input:read-only,
-  select:read-only,
-  textarea:read-only {
-    background: var(--color-brand-rgba);
-    pointer-events: none;
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
   }
+
+  ;
 
   fieldset {
     display: flex;

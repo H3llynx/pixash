@@ -28,7 +28,8 @@ const onVetChange = () => {
 
 <template>
     <Dropdown v-if="vets.length && !vetTextInput" v-model="model" :id="vet.id" :label="t(vet.label)"
-        @change="onVetChange" :class="(selectedVet || readonly) && 'pointer-events-none'" required>
+        @change="onVetChange" :class="(selectedVet || readonly) && 'pointer-events-none focus-visible:outline-0'"
+        @keydown.enter="readonly && $event.preventDefault()" required>
         <option v-for="v in vets" :key="v.id" :value="v.id">
             {{ v.name }}
         </option>

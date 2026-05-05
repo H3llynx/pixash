@@ -131,7 +131,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit")
-                                }}
+                            }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>

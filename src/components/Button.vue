@@ -17,6 +17,7 @@ const button = tv({
             summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light",
             card: "btn-fill-card rounded-xl border border-border gap-1.5 justify-between items-start text-left",
             vetOptions: "btn-hover-fill flex-1 rounded-xl border border-border-btn-vet bg-btn-vet",
+            add: "flex-start rounded-xl border border-dashed border-text-secondary text-text-secondary hover:text-brand-light hover:border-brand-light"
         },
         size: {
             xxs: "text-xs p-0.5",
@@ -46,20 +47,13 @@ withDefaults(defineProps<{
         <slot />
     </button>
 
-    <button v-else :aria-label="t('common.panel.hide')" tabindex="0"
-        class="flex justify-center m-auto py-0.5 px-2 h-1.5 md:m-0 md:w-full md:justify-end">
+    <button v-else :aria-label="t('common.panel.hide')" tabindex="0" class="hide-btn">
         <div class="h-[7px] w-4 rounded-full bg-border md:hidden"></div>
-        <X class="hidden md:block" />
+        <X class="hidden md:block focus-within:bg-gold" />
     </button>
 </template>
 
 <style scoped>
-.btn-hover-fill:hover {
-    background: var(--color-btn-hover);
-    color: var(--color-btn-hover-text);
-    border-color: var(--color-btn-hover)
-}
-
 .btn-fill-card {
     background: var(--color-bg-2);
     position: relative;
@@ -78,8 +72,38 @@ withDefaults(defineProps<{
         z-index: -1;
         transition: 1s ease;
     }
+}
 
-    &:hover {
+.addon-focus:focus-visible {
+    outline: none;
+    color: var(--color-brand);
+}
+
+.hide-btn {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    padding: 0.5rem 2rem;
+    height: 1.5rem;
+}
+
+@media (width >=48rem) {
+    .hide-btn {
+        align-items: center;
+        padding: 0.5rem;
+        margin-right: 1rem;
+        margin-left: auto;
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .btn-hover-fill:hover {
+        background: var(--color-btn-hover);
+        color: var(--color-btn-hover-text);
+        border-color: var(--color-btn-hover)
+    }
+
+    .btn-fill-card:hover {
         color: var(--color-brand);
         border-color: var(--color-brand);
         transform: scale(1.02);
@@ -89,10 +113,5 @@ withDefaults(defineProps<{
             opacity: 1;
         }
     }
-}
-
-.addon-focus:focus-visible {
-    outline: none;
-    color: var(--color-brand);
 }
 </style>

@@ -84,16 +84,16 @@ const handleCancel = () => {
                                     class="object-cover h-full w-full relative" />
                             </div>
                         </div>
-                        <form class="flex flex-col gap-1" @submit.prevent="handleSubmit">
+                        <form class="mini-form flex flex-col gap-1" @submit.prevent="handleSubmit">
                             <label for="profile-picture" :aria-label="t('common.fileInputLabel')">
                                 <input id="profile-picture" type="file" accept="image/*" class="sr-only"
                                     ref="fileInputRef" @change="onFileChange" />
                                 <Camera />
                             </label>
-                            <Button type="button" variant="secondary" @click="handleCancel">{{
-                                t("common.button.cancel")
-                            }}</Button>
                             <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
+                            <Button type="button" variant="ghost" @click="handleCancel">{{
+                                t("common.button.cancel")
+                                }}</Button>
                         </form>
                     </template>
                 </div>

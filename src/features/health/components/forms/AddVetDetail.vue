@@ -43,8 +43,8 @@ const handleSubmit = async () => {
             <Plus :size="18" />
         </Button>
         <template v-else>
-            <form @submit.prevent="handleSubmit" @keydown.enter.exact="handleSubmit"
-                class="profile-mini-form flex gap-0.5" ref="updateForm">
+            <form @submit.prevent="handleSubmit" @keydown.enter.exact="handleSubmit" class="mini-form flex gap-0.5"
+                ref="updateForm">
                 <input v-model=formData :id="`vet-${data}`" class="text-base">
             </form>
             <Button size="xs" variant="ghost" @click="isUpdating = false">

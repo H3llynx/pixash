@@ -113,7 +113,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                                         dateFromInput(formData.dueOn) }}
                                 </p>
                             </div>
-                            <div class="flex gap-0.5 flex-col md:flex-row">
+                            <div class="flex gap-0.5 flex-col-reverse md:flex-row">
                                 <Button type="button" v-if="selectedVaccine && mode === 'edit'" variant="secondary"
                                     size="sm" :disabled="healthLoading" @click="mode = 'view'">
                                     {{ t("common.button.cancel") }}

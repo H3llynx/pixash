@@ -35,16 +35,22 @@ const handleSubmit = async () => {
         <div v-if="visible" class="fixed inset-0 w-full h-dvh bg-black/60 flex items-center justify-center">
             <Transition name="toast" appear>
                 <div class="dialog-box w-[80%] max-w-sm">
-                    <form class="flex flex-col gap-1" @submit.prevent="handleSubmit">
+                    <form class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
                         <Input v-model="formData" :label="t('auth.nameLabel')" :placeholder="t('auth.namePlaceholder')"
                             id="user-name" required />
-                        <Button type="button" variant="secondary" @click="visible = false">{{ t("common.button.cancel")
-                            }}</Button>
                         <Button>{{ t("common.button.confirm") }}</Button>
+                        <Button type="button" variant="ghost" @click="visible = false">{{ t("common.button.cancel")
+                            }}</Button>
                     </form>
                 </div>
             </Transition>
         </div>
     </Transition>
-
 </template>
+
+<style scoped>
+:deep(label) p {
+    font-family: var(--font-title);
+    font-size: large;
+}
+</style>

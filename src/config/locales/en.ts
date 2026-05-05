@@ -7,7 +7,7 @@ export default {
             update: "Update",
             clear: "Clear",
             back: "Back",
-            addChip: "Add",
+            add: "Add",
             allChip: "All",
             scrollRight: "Scroll right",
             scrollLeft: "Scroll left",

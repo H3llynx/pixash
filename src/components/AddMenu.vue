@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { BriefcaseMedical, BugOff, PawPrint, Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
-import { ref, toRef } from 'vue';
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
+import { onMounted, onUnmounted, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { usePets } from '../features/pets/composables/usePets';
 import { resetState } from '../utils';
@@ -21,6 +22,19 @@ const menuRef = ref<HTMLUListElement | null>(null);
 onClickOutside(menuRef, () => {
     if (visible.value) visible.value = false;
 }, { ignore: [toRef(props, "toggleRef")] });
+
+const { activate, deactivate } = useFocusTrap(menuRef, {
+    immediate: true,
+    allowOutsideClick: false,
+});
+
+onMounted(() => {
+    activate();
+});
+
+onUnmounted(() => {
+    deactivate();
+});
 
 const handleClick = (action: string) => {
     resetState(isAddingHealth);

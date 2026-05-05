@@ -51,7 +51,7 @@ onBeforeRouteLeave(() => {
                 @update-monthName="currentMonthName = $event" @date-click="handleDateClick" />
         </section>
         <section
-            class="flex flex-col-reverse p-0 h-full md:flex-col md:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
+            class="flex flex-col-reverse gap-1.5 p-0 h-full md:flex-col md:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
             <EventListSkeleton v-if="isMd && (loading || healthLoading)" />
             <EventList v-else :title="getTitle()" :events="filteredMonthEvents" />
             <CalendarLegend />

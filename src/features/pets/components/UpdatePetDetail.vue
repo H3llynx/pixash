@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { Edit2, Plus, Trash2, X } from '@lucide/vue';
+import { Edit2, Forward, Plus, Trash2, X } from '@lucide/vue';
 import { computed } from '@vue/reactivity';
 import { onClickOutside } from '@vueuse/core';
-import { reactive, ref, watch } from 'vue';
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
+import { nextTick, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
+import Input from '../../../components/Input.vue';
 import { resetState } from '../../../utils';
 import type { Log, VaccineExtended } from '../../health/types';
 import { usePets } from '../composables/usePets';
 import type { Pet, PetExtended } from '../types';
 import { kgToGrams, prefersKg } from '../utils';
 
-const { addNewLog, updateSelectedPet, deleteSelectedPetField, selectedPet, selectPet, selectVaccine, isAddingHealth } = usePets();
+const { addNewLog, updateSelectedPet, deleteSelectedPetField, selectVaccine, isAddingHealth } = usePets();
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -20,14 +22,18 @@ const props = defineProps<{
 }>();
 
 const isUpdating = defineModel();
-
-const updateForm = ref<HTMLFormElement>();
+const updateRef = ref<HTMLFormElement>();
 const inputRef = ref<HTMLInputElement>();
 
-onClickOutside(updateForm, () => {
+onClickOutside(updateRef, () => {
     if (isUpdating.value) {
         isUpdating.value = false;
     }
+});
+
+const { activate, deactivate } = useFocusTrap(updateRef, {
+    immediate: true,
+    allowOutsideClick: true,
 });
 
 const preferredUnit = computed(() => prefersKg(props.pet) ? "kg" : "g");
@@ -40,8 +46,28 @@ const formData = reactive<{
     unit: preferredUnit.value,
 });
 
+const handleUnitChange = () => {
+    inputRef.value?.focus()
+};
+
+const getWeightInGrams = (): number | null => {
+    const numeric = Number(formData.data);
+    if (isNaN(numeric) || numeric <= 0) return null;
+    return formData.unit === "kg" ? kgToGrams(numeric) : numeric;
+};
+
+const hasChanged = computed(() => {
+    if (props.data === "weight") {
+        const grams = getWeightInGrams();
+        return grams !== null && props.pet.weight !== grams;
+    }
+    if (props.data === "microchip") {
+        return props.pet.microchip !== formData.data;
+    }
+    return false;
+});
+
 const startUpdating = () => {
-    selectPet(props.pet);
     formData.data = "";
     isUpdating.value = true;
     const existing = props.pet[props.data];
@@ -61,38 +87,31 @@ const startUpdating = () => {
     }
 };
 
-const handleUnitChange = () => {
-    inputRef.value?.focus()
-};
-
 const handleSubmit = async (field: "weight" | "microchip") => {
-    if (!selectedPet.value || !formData.data) return;
+    if (!formData.data) return;
     let update = {};
     if (field === "weight") {
-        const numeric = Number(formData.data);
-        if (Number.isNaN(numeric) || numeric <= 0) return;
-        const grams = formData.unit === "kg" ? kgToGrams(numeric) : numeric;
-        if (selectedPet.value.weight === grams) return;
+        const grams = getWeightInGrams();
+        if (grams === null) return;
         update = { weight: grams };
         const log: Log = {
             type: "weight",
             weight: grams,
         };
-        await addNewLog(log, selectedPet.value.id)
+        await addNewLog(log, props.pet.id)
     } else {
         const microchip = formData.data;
-        if (selectedPet.value.microchip === microchip) return;
+        if (props.pet.microchip === microchip) return;
         update = { microchipped: true, microchip: microchip };
     }
-    await updateSelectedPet(selectedPet.value, update);
+    await updateSelectedPet(props.pet, update);
     isUpdating.value = false;
 };
 
 const handleDelete = async () => {
-    if (!selectedPet.value) return;
-    await deleteSelectedPetField(selectedPet.value, props.data as keyof Pet);
-    if (props.data === "microchip") await updateSelectedPet(selectedPet.value, { microchipped: false });
-
+    await deleteSelectedPetField(props.pet, props.data as keyof Pet);
+    if (props.data === "microchip") await updateSelectedPet(props.pet, { microchipped: false });
+    isUpdating.value = false;
 };
 
 watch(preferredUnit, (unit) => {
@@ -112,6 +131,13 @@ watch(() => formData.unit,
         }
     }
 );
+
+watch(() => isUpdating.value, async (updating) => {
+    if (updating) {
+        await nextTick();
+        activate()
+    } else deactivate();
+});
 </script>
 
 <template>
@@ -121,41 +147,43 @@ watch(() => formData.unit,
             <Edit2 v-if="pet[data]" :size="16" />
             <Plus v-else :size="18" />
         </Button>
-        <form @submit.prevent="handleSubmit(data)" v-else-if="pet === selectedPet"
-            class="profile-mini-form flex gap-[3px]" ref="updateForm">
-            <input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
+        <form ref="updateRef" v-else @submit.prevent="handleSubmit(data)" class="mini-form flex gap-[3px]">
+            <Input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
                 :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="inputRef"
-                class="text-base">
+                class="text-base" />
             <div class="input-container" v-if="data === 'weight'">
                 <select v-model="formData.unit" v-if="data === 'weight'" @change="handleUnitChange">
                     <option>kg</option>
                     <option>g</option>
                 </select>
             </div>
+            <Button v-if="hasChanged" variant="summaryCta" size="xxs" :aria-label="t('common.button.update')">
+                <Forward :size="18" class="rotate-180 text-brand-light" />
+            </Button>
+            <Button v-else type="button" size="xxs" variant="ghost" @click="isUpdating = false"
+                :aria-label="t('common.button.cancel')">
+                <X :size="18" color="var(--color-brand-light)" />
+            </Button>
+            <Button v-if="isUpdating" type="button" size="xxs" variant="ghost" @click="handleDelete">
+                <Trash2 :size="18" color="var(--color-brand-light)" />
+            </Button>
         </form>
-        <Button v-if="isUpdating && data !== 'nextVaccine' && pet === selectedPet" size="xxs" variant="ghost"
-            @click="isUpdating = false">
-            <X :size="18" color="var(--color-brand-light)" />
-        </Button>
-        <Button v-if="isUpdating && data !== 'nextVaccine' && pet === selectedPet" size="xxs" variant="ghost"
-            @click="handleDelete">
-            <Trash2 :size="18" color="var(--color-brand-light)" />
-        </Button>
     </div>
 </template>
 
 <style scoped>
-input,
 select {
     border-radius: 0.5rem;
     padding: 3px 0.5rem;
 }
 
-input {
-    font-weight: 500;
-}
-
 select {
     width: 3rem;
+}
+
+:deep(input) {
+    border-radius: 0.75rem;
+    padding-block: 4px;
+    padding-inline: 10px;
 }
 </style>

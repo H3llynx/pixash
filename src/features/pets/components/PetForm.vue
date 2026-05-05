@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, reactive, ref, Transition, watch } from 'vue';
+import { computed, reactive, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Dropdown from '../../../components/Dropdown.vue';
@@ -20,7 +20,6 @@ const { loading, pets, error, isAddingPet, isUpdatingPet, hasPets, addNewPet, se
 const { show } = useToast();
 const { t } = useI18n();
 
-const petSelectorRef = ref<HTMLDivElement>();
 const existingPet = computed<Pet | null>(() => {
     if (isAddingPet.value || !selectedPet.value) return null;
     else return selectedPet.value;
@@ -75,16 +74,6 @@ const handleClose = () => {
     isUpdatingPet.value = false;
 };
 
-watch(() => [isAddingPet.value, isUpdatingPet.value],
-    ([adding, editing]) => {
-        if (editing || adding) {
-            nextTick(() => {
-                const petInputs = petSelectorRef.value?.querySelectorAll("input");
-                if (petInputs) petInputs[0].focus();
-            });
-        }
-    });
-
 watch(existingPet, (pet) => {
     if (!pet) {
         resetForm(formData, defaultForm);
@@ -124,7 +113,7 @@ watch(() => formData.species, () => {
                 <form @submit.prevent="handleSubmit">
                     <fieldset class="min-w-0">
                         <legend class="default-padding">{{ t(species.label) }}</legend>
-                        <div class="pet-selector" ref="petSelectorRef">
+                        <div class="pet-selector">
                             <Input v-model="formData.species" v-for="(option, index) in species.options" :id="option.id"
                                 :value="option.id" :key="option.id" :label="option.icon" :aria-label="t(option.name)"
                                 :type="species.type" :name="species.name" :required="index === 0" />
@@ -146,7 +135,7 @@ watch(() => formData.species, () => {
                             <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
                                 <option v-for="option in sex.options" :value="option.id" :key="option.id">{{
                                     t(option.label)
-                                }}
+                                    }}
                                 </option>
                             </Dropdown>
                         </div>

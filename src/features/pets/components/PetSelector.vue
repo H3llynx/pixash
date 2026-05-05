@@ -45,7 +45,7 @@ const getAllChipStyle = () => {
 };
 
 const getAddChipStyle = () => {
-    if (props.nav) return isAddingPet.value ? "nav-active" : "add";
+    if (props.nav) return `justify-start ${isAddingPet.value && "nav-active"}`;
     else if (isAddingPet.value) return "active";
 }
 
@@ -62,21 +62,14 @@ const getAddChipStyle = () => {
             @click="handleClick(pet)">
             <span aria-hidden>{{ getIcon(pet) }}</span>
             {{ pet.name }}</Button>
-        <Button v-if="!form && !calendar" :variant="nav ? 'ghost' : 'chip'" size="sm" :class="getAddChipStyle()"
+        <Button v-if="!form && !calendar" :variant="nav ? 'add' : 'chip'" size="sm" :class="getAddChipStyle()"
             @click="isAddingPet = true">
-            <Plus /> {{ t("common.button.addChip") }}
+            <Plus /> {{ t("common.button.add") }}
         </Button>
     </div>
 </template>
 
 <style scoped>
-.add {
-    background: transparent;
-    border: 1px dashed var(--color-brand-light);
-    color: var(--color-brand-light);
-    justify-content: flex-start;
-}
-
 .active {
     background: var(--color-brand);
     color: var(--color-text-chip);
@@ -88,6 +81,7 @@ const getAddChipStyle = () => {
     background: var(--color-brand-rgba);
     color: var(--color-off-white);
     justify-content: flex-start;
+    border-color: transparent;
 }
 
 .nav-base {
