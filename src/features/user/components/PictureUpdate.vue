@@ -4,13 +4,17 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
+import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
 import { hostImg } from '../../../services/img-hosting';
 import { useAuth } from '../composables/useAuth';
+import Avatar from './Avatar.vue';
 
 const { t } = useI18n();
 const { error, updateUser } = useAuth();
+const { open } = useDialog();
 const { show } = useToast();
+const { user } = useAuth();
 
 const visible = defineModel<boolean>("picVisible");
 const fileInputRef = ref<HTMLInputElement>();
@@ -36,6 +40,23 @@ const clearPreview = () => {
     previewUrl.value = null;
     selectedFile.value = null;
     if (fileInputRef.value) fileInputRef.value.value = "";
+};
+
+const handleX = () => {
+    if (previewUrl) clearPreview();
+    if (user.value?.photoURL) {
+        console.log("has photo");
+        open({
+            title: t("dialog.deletePicture.title"),
+            message: t("dialog.deletePicture.message"),
+            isDelete: true,
+            onConfirm: async () => {
+                try {
+                    await updateUser("photoURL", "");
+                } catch (error) { console.log(error) }
+            }
+        })
+    };
 };
 
 const handleSubmit = async () => {
@@ -75,15 +96,17 @@ const handleCancel = () => {
                 <div class="dialog-box w-[80%] max-w-sm">
                     <LoadingPuppy v-if="loading" class="max-w-xs" />
                     <template v-else>
-                        <div v-if="previewUrl" class="mx-auto relative">
-                            <Button variant="ghost" size="xxs" class="absolute right-0 z-1" @click="clearPreview">
+                        <div class="mx-auto relative" v-if="user?.photo || previewUrl">
+                            <Button variant="ghost" size="xxs" class="absolute right-0 z-1" @click="handleX">
                                 <X stroke-width="3" color="var(--color-error)" />
                             </Button>
                             <div class="preview">
-                                <img :src="previewUrl" alt="Avatar preview"
+                                <img v-if="previewUrl" :src="previewUrl" alt="Avatar preview"
                                     class="object-cover h-full w-full relative" />
+                                <Avatar v-else-if="user?.photo" :user="user" />
                             </div>
                         </div>
+                        <h1 v-else>{{ t("common.text.addPicture") }}</h1>
                         <form class="mini-form flex flex-col gap-1" @submit.prevent="handleSubmit">
                             <label for="profile-picture" :aria-label="t('common.fileInputLabel')">
                                 <input id="profile-picture" type="file" accept="image/*" class="sr-only"
