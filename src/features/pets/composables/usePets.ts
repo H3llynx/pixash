@@ -167,6 +167,7 @@ const syncPetFromEvent = (petId: string | undefined) => {
 
 watch(vaccines, resyncSelectedPet);
 watch(vetVisits, resyncSelectedPet);
+watch(logs, resyncSelectedPet);
 
 watch(selectedVaccine, (vaccine) => syncPetFromEvent(vaccine?.petId));
 watch(selectedVisit, (visit) => syncPetFromEvent(visit?.petId));

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Plus } from '@lucide/vue';
 import type { ChartData, ChartOptions } from 'chart.js';
 import {
     BarElement,
@@ -12,6 +13,7 @@ import {
 import { computed } from 'vue';
 import { Bar } from 'vue-chartjs';
 import { useI18n } from 'vue-i18n';
+import Button from '../../../../components/Button.vue';
 import type { PetExtended } from '../../../pets/types';
 import { getChartColor, prefersKg } from '../../../pets/utils';
 import { useTheme } from '../../../theme/composables/useTheme';
@@ -39,15 +41,15 @@ const sorted = computed(() => {
     if (!props.logs) return [];
     return [...props.logs].sort((a, b) => a.measuredAt.seconds - b.measuredAt.seconds);
 });
-
+const displayed = computed(() => sorted.value.slice(-6));
 const chartData = computed<ChartData<"bar">>(() => {
-    const labels = sorted.value.map(log => log.measuredAt.toDate().toLocaleDateString(undefined, {
+    const labels = displayed.value.map(log => log.measuredAt.toDate().toLocaleDateString(undefined, {
         day: "numeric",
         month: "short",
         year: "2-digit"
     }));
     const unitFactor = prefersKg(props.pet) ? 1 / 1000 : 1;
-    const data = sorted.value.map(log => log.weight * unitFactor);
+    const data = displayed.value.map(log => log.weight * unitFactor);
     theme.value;
     return {
         labels,
@@ -116,18 +118,23 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
         <div class="profile-card w-full text-text" v-if="logs.length">
             <div class="ml-auto text-right">
                 <p class="text-2xl font-medium text-btn-ghost-text">{{ chartData.datasets[0].data.at(-1) }} {{ unit
-                    }}</p>
-                <p v-if="sorted.length" class="text-text-secondary text-xs">{{ t("common.text.lastLogged") }} {{
-                    sorted.at(-1)?.measuredAt.toDate().toLocaleDateString(locale, {
+                }}</p>
+                <p v-if="displayed.length" class="text-text-secondary text-xs">{{ t("common.text.lastLogged") }} {{
+                    displayed.at(-1)?.measuredAt.toDate().toLocaleDateString(locale, {
                         day: "numeric",
                         month: "long",
                         year: "numeric"
                     }) }}</p>
             </div>
-            <div class="h-12">
+            <div class="h-8">
                 <Bar :data="chartData" :options="chartOptions" />
             </div>
         </div>
-        <p v-else class="text-text-secondary text-sm">{{ t("common.text.noWeightLog") }}</p>
+        <div v-else class="flex flex-col gap-1">
+            <p class="text-text-secondary text-sm">{{ t("common.text.noWeightLog") }}</p>
+            <Button variant="add" class="max-w-xs">
+                <Plus /> {{ t("common.button.add") }}
+            </Button>
+        </div>
     </section>
 </template>

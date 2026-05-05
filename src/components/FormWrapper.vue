@@ -11,7 +11,7 @@ withDefaults(defineProps<{
 const panelRef = ref<HTMLElement>();
 const { activate, deactivate } = useFocusTrap(panelRef, {
     immediate: true,
-    allowOutsideClick: false,
+    allowOutsideClick: true,
 });
 
 onMounted(() => {

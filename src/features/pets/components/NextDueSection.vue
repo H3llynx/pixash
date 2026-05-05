@@ -8,7 +8,8 @@ const { t } = useI18n();
 </script>
 
 <template>
-    <div v-if="selectedPet?.nextVaccine || selectedPet?.nextVetVisit" class="pet-selector">
+    <div v-if="selectedPet?.nextVaccine || selectedPet?.nextVetVisit || selectedPet?.nextAntiparasitic"
+        class="pet-selector">
         <HealthCard v-if="selectedPet.nextVaccine" :pet="selectedPet" :data="selectedPet.nextVaccine"
             :title="t('dashboard.title.nextVaccine')" />
         <HealthCard v-if="selectedPet.nextVetVisit" :pet="selectedPet" :data="selectedPet.nextVetVisit"

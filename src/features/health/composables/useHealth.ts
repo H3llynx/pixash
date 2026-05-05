@@ -5,7 +5,7 @@ import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
 import type { AntiparasiteLogExtended, Log, LogExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
-import { getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
+import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
     const { user } = useAuth();
@@ -56,7 +56,8 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
                 logs: petLogs,
                 nextVaccine: getNextVaccine(petVaccines),
                 nextVetVisit: getNextVisit(petVisits),
-                nextAntiparasitic: getNextAntiparasitic(petLogs)
+                nextAntiparasitic: getNextAntiparasitic(petLogs),
+                weight: getCurrentWeight(petLogs)
             }
         });
     };
@@ -90,35 +91,26 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
 
     const addNewVaccine = async (newVaccine: VaccineRecord, petId: string) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             await addVaccine(newVaccine, petId, user.value!.uid);
             await fetchUserVaccines();
-        }, () => {
-            loading.value = false;
             isAddingHealth.vaccine = false;
-        })
+        });
     };
 
     const updateSelectedVaccine = async (vaccine: VaccineExtended, petId: string, data: VaccineRecord) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             await updateVaccine(vaccine.id, petId, user.value!.uid, data);
             await fetchUserVaccines();
             selectVaccine(null);
-        }, () => {
-            loading.value = false;
-        })
+        });
     };
 
     const deleteSelectedVaccine = async (vaccine: VaccineExtended, petId: string,) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             await deleteVaccine(vaccine.id, petId, user.value!.uid);
             await fetchUserVaccines();
-        }, () => {
-            loading.value = false;
             selectVaccine(null);
-        })
+        });
     };
 
     const fetchUserVisits = async () => {

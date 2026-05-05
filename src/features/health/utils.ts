@@ -2,7 +2,7 @@ import { getTodayDayKey, tsToDayKey } from "../../utils";
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, PARASITES, VACCINE_TYPES } from "./config";
-import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, VaccineExtended, VaccineTypes, VisitExtended } from "./types";
+import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
 
 export const resetForm = <T extends object>(
     formData: T,
@@ -78,4 +78,9 @@ export const showAntiparasites = (treated: AntiparasiteTypes["id"][], locale: st
         if (item) labels.push(item.label);
     })
     return new Intl.ListFormat(locale).format(labels.map(l => t(l).toLowerCase()));
+};
+
+export const getCurrentWeight = (logs: LogExtended[]) => {
+    const weightLogs = logs.filter(log => log.type === "weight") as WeightLogExtended[];
+    return weightLogs.sort((a, b) => b.measuredAt.seconds - a.measuredAt.seconds).at(0)?.weight ?? undefined;
 };

@@ -22,7 +22,8 @@ export default {
             noWeightLog: "No weight log registered.",
             lastLogged: "Last logged",
             done: "Done!",
-            antiparasiticLogged: "Antiparasitic against {parasites} logged for {name}."
+            antiparasiticLogged: "Antiparasitic against {parasites} logged for {name}.",
+            addPicture: "Add a profile picture"
         },
         header: {
             greetings: "Welcome",
@@ -184,6 +185,7 @@ export default {
             treated: "What did you treat?",
             other: "Other information",
             validationTypes: "You must select what was treated",
+            viewTitle: "Antiparasitic"
         },
         vaccineForm: {
             types: "Vaccine",
@@ -292,6 +294,10 @@ export default {
         },
         deleteLog: {
             title: "Delete {type} ?",
+            message: "This action cannot be undone. Are you sure you'd like to proceed?",
+        },
+        deletePicture: {
+            title: "Delete picture ?",
             message: "This action cannot be undone. Are you sure you'd like to proceed?",
         },
     },

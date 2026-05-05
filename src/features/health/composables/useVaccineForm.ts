@@ -10,6 +10,7 @@ import type { VaccineExtended, VaccineTypes } from "../types";
 import { getVaccineTypes, resetForm, showTypes } from "../utils";
 import { useEvents } from "./useEvents";
 
+const vaccineLoading = ref<boolean>(false);
 
 export const useVaccineForm = () => {
     const { selectedPet, isAddingHealth, vets, selectedVet, selectedVaccine, selectVaccine, addNewVaccine, healthError, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
@@ -74,6 +75,7 @@ export const useVaccineForm = () => {
         };
         const typesSnapshot = [...formData.types];
         try {
+            vaccineLoading.value = true;
             if (isAddingHealth.vaccine) {
                 await addNewVaccine({ ...formData }, selectedPet.value.id);
                 show({
@@ -93,7 +95,7 @@ export const useVaccineForm = () => {
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-        };
+        } finally { vaccineLoading.value = false; }
     };
 
     const handleDelete = async () => {
@@ -106,6 +108,7 @@ export const useVaccineForm = () => {
             isDelete: true,
             onConfirm: async () => {
                 try {
+                    vaccineLoading.value = true;
                     await deleteSelectedVaccine(vaccine, pet.id);
                     show({
                         type: "success",
@@ -114,7 +117,7 @@ export const useVaccineForm = () => {
                     });
                 } catch (error) {
                     show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-                }
+                } finally { vaccineLoading.value = false; }
             }
         });
     };
@@ -171,5 +174,5 @@ export const useVaccineForm = () => {
             : "";
     });
 
-    return { vetTextInput, today, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete }
+    return { vaccineLoading, vetTextInput, today, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete }
 }

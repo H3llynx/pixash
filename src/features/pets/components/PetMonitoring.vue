@@ -6,16 +6,11 @@ import EventList from '../../health/components/events/EventList.vue';
 import { useEvents } from '../../health/composables/useEvents';
 import { usePets } from '../composables/usePets';
 
-const { selectedPet, logs } = usePets();
+const { selectedPet } = usePets();
 const { petUpcomingEvents } = useEvents();
 const { t } = useI18n();
 
-const weightLogs = computed(() => {
-    if (!selectedPet.value) return [];
-    return logs.value
-        .filter(log => log.petId === selectedPet.value!.id)
-        .filter(log => log.type === "weight")
-});
+const weightLogs = computed(() => selectedPet.value?.logs.filter(log => log.type === "weight") ?? []);
 </script>
 
 <template>

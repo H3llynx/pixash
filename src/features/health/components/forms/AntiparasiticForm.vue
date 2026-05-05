@@ -10,6 +10,7 @@ import Selector from '../../../../components/Selector.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
+import { getIcon } from '../../../pets/utils';
 import { useAntiparasiticForm } from '../../composables/useAntiparasiticForm';
 import { antiparasiteFields } from '../../config';
 import LogSuccess from '../LogSuccess.vue';
@@ -38,7 +39,14 @@ watch(() => mode.value, (mode) => {
             <LoadingPuppy v-if="loading || healthLoading" />
             <div class="md:max-w-max" v-else-if="!newLog">
                 <div class="flex gap-1 justify-between my-1 default-padding">
-                    <h1>{{ t("health.title.logAntiparasitic") }}</h1>
+                    <div v-if="selectedLog.antiparasitic && selectedPet"
+                        class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                        {{ getIcon(selectedPet) }}
+                    </div>
+                    <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
+                    <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
+                        }}
+                    </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"
                             :aria-label="t('health.cta.deleteVaccine')" @click="handleDelete">

@@ -7,13 +7,16 @@ import { nextTick, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Input from '../../../components/Input.vue';
+import Loading from '../../../components/loading/Loading.vue';
 import { resetState } from '../../../utils';
+import { useVaccineForm } from '../../health/composables/useVaccineForm';
 import type { Log, VaccineExtended } from '../../health/types';
 import { usePets } from '../composables/usePets';
 import type { Pet, PetExtended } from '../types';
 import { kgToGrams, prefersKg } from '../utils';
 
 const { addNewLog, updateSelectedPet, deleteSelectedPetField, selectVaccine, isAddingHealth } = usePets();
+const { vaccineLoading } = useVaccineForm();
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -24,6 +27,7 @@ const props = defineProps<{
 const isUpdating = defineModel();
 const updateRef = ref<HTMLFormElement>();
 const inputRef = ref<HTMLInputElement>();
+const loading = ref<boolean>(false);
 
 onClickOutside(updateRef, () => {
     if (isUpdating.value) {
@@ -89,6 +93,7 @@ const startUpdating = () => {
 
 const handleSubmit = async (field: "weight" | "microchip") => {
     if (!formData.data) return;
+    loading.value = true;
     let update = {};
     if (field === "weight") {
         const grams = getWeightInGrams();
@@ -98,14 +103,15 @@ const handleSubmit = async (field: "weight" | "microchip") => {
             type: "weight",
             weight: grams,
         };
-        await addNewLog(log, props.pet.id)
+        await addNewLog(log, props.pet.id);
     } else {
         const microchip = formData.data;
         if (props.pet.microchip === microchip) return;
         update = { microchipped: true, microchip: microchip };
+        await updateSelectedPet(props.pet, update);
     }
-    await updateSelectedPet(props.pet, update);
     isUpdating.value = false;
+    loading.value = false;
 };
 
 const handleDelete = async () => {
@@ -141,7 +147,8 @@ watch(() => isUpdating.value, async (updating) => {
 </script>
 
 <template>
-    <div class="flex h-2 gap-[3px]">
+    <Loading v-if="loading || (data === 'nextVaccine' && vaccineLoading)" class="ml-auto" />
+    <div v-else class="flex h-2 gap-[3px]">
         <Button v-if="!isUpdating || data === 'nextVaccine'" variant="summaryCta" size="xxs" @click="startUpdating"
             :aria-label="t('pet.profile.edit.' + data)">
             <Edit2 v-if="pet[data]" :size="16" />
