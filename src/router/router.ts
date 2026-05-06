@@ -3,6 +3,7 @@ import { useAuth } from '../features/user/composables/useAuth';
 import AuthView from '../views/AuthView.vue';
 import CalendarView from '../views/CalendarView.vue';
 import DashboardView from '../views/DashboardView.vue';
+import HistoryView from '../views/HistoryView.vue';
 import VetView from '../views/VetView.vue';
 import { ROUTES } from './config';
 
@@ -31,6 +32,11 @@ const router = createRouter({
     {
       path: ROUTES.vet,
       component: VetView,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: ROUTES.history,
+      component: HistoryView,
       meta: { requiresAuth: true }
     },
     {

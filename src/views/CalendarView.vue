@@ -2,7 +2,7 @@
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { onBeforeRouteLeave } from 'vue-router';
-import Header from '../components/Header.vue';
+import Header from '../components/header/Header.vue';
 import EventListSkeleton from '../components/loading/EventListSkeleton.vue';
 import { useMedia } from '../composables/useMedia';
 import Calendar from '../features/health/components/events/Calendar.vue';

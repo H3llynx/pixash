@@ -9,7 +9,7 @@ import Paw from '../components/icons/Paw.vue';
         </div>
         <div class="fadein-2">
             <h1 class="text-gold text-4xl">Pixash</h1>
-            <p class="text-brand-light text-sm leading-3 tracking-wider text-medium">pet care, beautifully organised
+            <p class="text-brand-light text-sm leading-3 tracking-wider">pet care, beautifully organised
             </p>
         </div>
     </div>

@@ -30,8 +30,8 @@ const route = useRoute();
         <RouterLink :to="ROUTES.vet" tabindex="0">
             <MapPin />{{ t("common.navbar.vet") }}
         </RouterLink>
-        <RouterLink to="/" tabindex="0">
-            <History />{{ t("common.navbar.home") }}
+        <RouterLink :to="ROUTES.history" tabindex="0">
+            <History />{{ t("common.navbar.history") }}
         </RouterLink>
         <PetSelector v-if="isMd" :calendar="route.path === ROUTES.calendar" nav v-model:petId="petId" />
         <div v-if="isMd" class="relative mt-auto">

@@ -2,5 +2,6 @@ export const ROUTES = {
     dashboard: "/dashboard",
     auth: "/auth",
     calendar: "/calendar",
-    vet: "/vet"
+    vet: "/vet",
+    history: "/history",
 } as const;

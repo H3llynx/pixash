@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SashaPixie from '../assets/sasha-pixie.png';
-import Header from '../components/Header.vue';
+import Header from '../components/header/Header.vue';
 import AuthForm from '../features/user/components/AuthForm.vue';
 </script>
 
