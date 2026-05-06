@@ -4,7 +4,7 @@ import { onClickOutside } from '@vueuse/core';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import FormWrapper from '../../../../components/FormWrapper.vue';
+import FormWrapper from '../../../../components/Panel.vue';
 import { useMedia } from '../../../../composables/useMedia';
 import { resetState } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';

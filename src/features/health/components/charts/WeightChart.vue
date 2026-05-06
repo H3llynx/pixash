@@ -14,6 +14,7 @@ import { computed } from 'vue';
 import { Bar } from 'vue-chartjs';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
+import { usePets } from '../../../pets/composables/usePets';
 import type { PetExtended } from '../../../pets/types';
 import { getChartColor, prefersKg } from '../../../pets/utils';
 import { useTheme } from '../../../theme/composables/useTheme';
@@ -21,6 +22,7 @@ import type { WeightLogExtended } from '../../types';
 
 const { t, locale } = useI18n();
 const { theme } = useTheme();
+const { isAddingHealth } = usePets();
 
 const props = defineProps<{
     pet: PetExtended
@@ -132,7 +134,7 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
         </div>
         <div v-else class="flex flex-col gap-1">
             <p class="text-text-secondary text-sm">{{ t("common.text.noWeightLog") }}</p>
-            <Button variant="add" class="max-w-xs">
+            <Button variant="add" size="lg" class="md:max-w-xs" @click="isAddingHealth.weight = true">
                 <Plus /> {{ t("common.button.add") }}
             </Button>
         </div>

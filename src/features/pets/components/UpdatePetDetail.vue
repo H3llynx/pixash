@@ -3,7 +3,7 @@ import { Edit2, Forward, Plus, Trash2, X } from '@lucide/vue';
 import { computed } from '@vue/reactivity';
 import { onClickOutside } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
-import { nextTick, reactive, ref, watch } from 'vue';
+import { nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Input from '../../../components/Input.vue';
@@ -12,8 +12,8 @@ import { resetState } from '../../../utils';
 import { useVaccineForm } from '../../health/composables/useVaccineForm';
 import type { Log, VaccineExtended } from '../../health/types';
 import { usePets } from '../composables/usePets';
+import { usePetUpdate } from '../composables/usePetUpdate';
 import type { Pet, PetExtended } from '../types';
-import { kgToGrams, prefersKg } from '../utils';
 
 const { addNewLog, updateSelectedPet, deleteSelectedPetField, selectVaccine, isAddingHealth } = usePets();
 const { vaccineLoading } = useVaccineForm();
@@ -24,10 +24,10 @@ const props = defineProps<{
     data: "weight" | "microchip" | "nextVaccine"
 }>();
 
+const { loading, preferredUnit, formData, getWeightInGrams } = usePetUpdate(props.pet);
+
 const isUpdating = defineModel();
 const updateRef = ref<HTMLFormElement>();
-const inputRef = ref<HTMLInputElement>();
-const loading = ref<boolean>(false);
 
 onClickOutside(updateRef, () => {
     if (isUpdating.value) {
@@ -39,26 +39,6 @@ const { activate, deactivate } = useFocusTrap(updateRef, {
     immediate: true,
     allowOutsideClick: true,
 });
-
-const preferredUnit = computed(() => prefersKg(props.pet) ? "kg" : "g");
-
-const formData = reactive<{
-    data: string;
-    unit: "kg" | "g";
-}>({
-    data: "",
-    unit: preferredUnit.value,
-});
-
-const handleUnitChange = () => {
-    inputRef.value?.focus()
-};
-
-const getWeightInGrams = (): number | null => {
-    const numeric = Number(formData.data);
-    if (isNaN(numeric) || numeric <= 0) return null;
-    return formData.unit === "kg" ? kgToGrams(numeric) : numeric;
-};
 
 const hasChanged = computed(() => {
     if (props.data === "weight") {
@@ -120,10 +100,6 @@ const handleDelete = async () => {
     isUpdating.value = false;
 };
 
-watch(preferredUnit, (unit) => {
-    formData.unit = unit;
-});
-
 watch(() => formData.unit,
     (newUnit, oldUnit) => {
         if (props.data !== "weight" || !formData.data) return;
@@ -141,7 +117,7 @@ watch(() => formData.unit,
 watch(() => isUpdating.value, async (updating) => {
     if (updating) {
         await nextTick();
-        activate()
+        activate();
     } else deactivate();
 });
 </script>
@@ -156,10 +132,10 @@ watch(() => isUpdating.value, async (updating) => {
         </Button>
         <form ref="updateRef" v-else @submit.prevent="handleSubmit(data)" class="mini-form flex gap-[3px]">
             <Input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
-                :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="inputRef"
+                :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="weightInputRef"
                 class="text-base" />
             <div class="input-container" v-if="data === 'weight'">
-                <select v-model="formData.unit" v-if="data === 'weight'" @change="handleUnitChange">
+                <select v-model="formData.unit" v-if="data === 'weight'">
                     <option>kg</option>
                     <option>g</option>
                 </select>
@@ -182,9 +158,6 @@ watch(() => isUpdating.value, async (updating) => {
 select {
     border-radius: 0.5rem;
     padding: 3px 0.5rem;
-}
-
-select {
     width: 3rem;
 }
 

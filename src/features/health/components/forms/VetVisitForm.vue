@@ -3,10 +3,10 @@ import { CalendarCheck, Trash2 } from '@lucide/vue';
 import { computed, provide, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import FormWrapper from '../../../../components/FormWrapper.vue';
 import Paw from '../../../../components/icons/Paw.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import FormWrapper from '../../../../components/Panel.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
 import { tsToDate } from '../../../../utils';
 import PetSelector from '../../../pets/components/PetSelector.vue';
@@ -131,7 +131,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit")
-                            }}
+                                }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>

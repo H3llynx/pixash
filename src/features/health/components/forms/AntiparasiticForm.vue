@@ -3,9 +3,9 @@ import { CalendarCheck, CalendarClock, Trash2 } from '@lucide/vue';
 import { provide, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import FormWrapper from '../../../../components/FormWrapper.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import FormWrapper from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
 import PetSelector from '../../../pets/components/PetSelector.vue';
@@ -45,7 +45,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                        }}
+                    }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"

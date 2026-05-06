@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import WeightChart from '../../health/components/charts/WeightChart.vue';
 import EventList from '../../health/components/events/EventList.vue';
+import LogWeightModal from '../../health/components/LogWeightModal.vue';
 import { useEvents } from '../../health/composables/useEvents';
 import { usePets } from '../composables/usePets';
 
@@ -18,4 +19,5 @@ const weightLogs = computed(() => selectedPet.value?.logs.filter(log => log.type
         <EventList :title="t('dashboard.title.upcoming')" :events="petUpcomingEvents" />
         <WeightChart v-if="selectedPet" :logs="weightLogs" :pet="selectedPet" />
     </div>
+    <LogWeightModal v-if="selectedPet" :pet="selectedPet" />
 </template>

@@ -12,7 +12,8 @@ export default {
             scrollRight: "Scroll right",
             scrollLeft: "Scroll left",
             backDash: "Back to dashboard",
-            backCal: "Back to calendar"
+            backCal: "Back to calendar",
+            loading: "Loading...",
         },
         panel: {
             hide: "Close form"
@@ -124,7 +125,7 @@ export default {
                 nextVaccine: "Next vaccine"
             },
             edit: {
-                weight: "Update {name}'s weight",
+                weight: "Log {name}'s weight",
                 microchip: "Edit {name}'s microchip",
                 generalInformation: "Edit {name}'s general information",
                 nextVaccine: "Edit next vaccine",

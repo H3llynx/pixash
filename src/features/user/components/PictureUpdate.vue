@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Camera, X } from '@lucide/vue';
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
+import FreeModal from '../../../components/loading/FreeModal.vue';
 import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
@@ -19,15 +19,9 @@ const { user } = useAuth();
 
 const visible = defineModel<boolean>("picVisible");
 const fileInputRef = ref<HTMLInputElement>();
-const dialogRef = ref<HTMLInputElement>();
 const previewUrl = ref<string | null>(null);
 const selectedFile = ref<File | null>(null);
 const loading = ref<boolean>(false);
-
-const { activate, deactivate } = useFocusTrap(dialogRef, {
-    immediate: true,
-    allowOutsideClick: false,
-});
 
 const onFileChange = async (e: Event) => {
     const target = e.target as HTMLInputElement;
@@ -52,7 +46,6 @@ const clearPreview = () => {
 const handleX = () => {
     if (previewUrl) clearPreview();
     if (user.value?.photoURL) {
-        console.log("has photo");
         open({
             title: t("dialog.deletePicture.title"),
             message: t("dialog.deletePicture.message"),
@@ -93,51 +86,41 @@ const handleSubmit = async () => {
 const handleCancel = () => {
     clearPreview();
     visible.value = false;
-}
-
-onMounted(() => {
-    activate();
-});
-
-onUnmounted(() => {
-    deactivate();
-});
+};
 </script>
 
 <template>
-    <Transition name="overlay">
-        <div v-if="visible" class="fixed inset-0 w-full h-dvh bg-black/60 flex items-center justify-center">
-            <Transition name="toast" appear>
-                <div class="dialog-box w-[80%] max-w-sm" ref="dialogRef">
-                    <LoadingPuppy v-if="loading" class="max-w-xs" />
-                    <template v-else>
-                        <div class="mx-auto relative" v-if="user?.photo || previewUrl">
-                            <Button variant="ghost" size="xxs" class="absolute right-0 z-1" @click="handleX">
-                                <X stroke-width="3" color="var(--color-error)" />
-                            </Button>
-                            <div class="preview">
-                                <img v-if="previewUrl" :src="previewUrl" alt="Avatar preview"
-                                    class="object-cover h-full w-full relative" />
-                                <Avatar v-else-if="user?.photo" :user="user" />
-                            </div>
+    <FreeModal v-model="visible">
+        <Transition name="toast">
+            <div class="dialog-box" v-show="visible">
+                <LoadingPuppy v-if="loading" class="max-w-xs" />
+                <template v-else>
+                    <div class="mx-auto relative" v-if="user?.photo || previewUrl">
+                        <Button variant="ghost" size="xxs" class="absolute right-0 z-1" @click="handleX">
+                            <X stroke-width="3" color="var(--color-error)" />
+                        </Button>
+                        <div class="preview">
+                            <img v-if="previewUrl" :src="previewUrl" alt="Avatar preview"
+                                class="object-cover h-full w-full relative" />
+                            <Avatar v-else-if="user?.photo" :user="user" />
                         </div>
-                        <h1 v-else>{{ t("common.text.addPicture") }}</h1>
-                        <form class="mini-form flex flex-col gap-1" @submit.prevent="handleSubmit">
-                            <label for="profile-picture" :aria-label="t('common.fileInputLabel')">
-                                <input id="profile-picture" type="file" accept="image/*" class="sr-only"
-                                    ref="fileInputRef" tabindex="0" @change="onFileChange" />
-                                <Camera />
-                            </label>
-                            <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
-                            <Button type="button" variant="ghost" @click="handleCancel">{{
-                                t("common.button.cancel")
-                                }}</Button>
-                        </form>
-                    </template>
-                </div>
-            </Transition>
-        </div>
-    </Transition>
+                    </div>
+                    <h2 v-else>{{ t("common.text.addPicture") }}</h2>
+                    <form class="mini-form flex flex-col gap-1" @submit.prevent="handleSubmit">
+                        <label for="profile-picture" :aria-label="t('common.fileInputLabel')">
+                            <input id="profile-picture" type="file" accept="image/*" class="sr-only" ref="fileInputRef"
+                                tabindex="0" @change="onFileChange" />
+                            <Camera />
+                        </label>
+                        <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
+                        <Button type="button" variant="ghost" @click="handleCancel">{{
+                            t("common.button.cancel")
+                        }}</Button>
+                    </form>
+                </template>
+            </div>
+        </Transition>
+    </FreeModal>
 </template>
 
 <style scoped>

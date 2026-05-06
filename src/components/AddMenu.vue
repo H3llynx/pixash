@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { BriefcaseMedical, BugOff, PawPrint, Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
-import { onMounted, onUnmounted, ref, toRef } from 'vue';
+import { ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { usePets } from '../features/pets/composables/usePets';
 import { resetState } from '../utils';
@@ -23,18 +22,6 @@ onClickOutside(menuRef, () => {
     if (visible.value) visible.value = false;
 }, { ignore: [toRef(props, "toggleRef")] });
 
-const { activate, deactivate } = useFocusTrap(menuRef, {
-    immediate: true,
-    allowOutsideClick: false,
-});
-
-onMounted(() => {
-    activate();
-});
-
-onUnmounted(() => {
-    deactivate();
-});
 
 const handleClick = (action: string) => {
     resetState(isAddingHealth);
@@ -53,7 +40,7 @@ const handleClick = (action: string) => {
     <Transition name="overlay">
         <div v-if="visible" class="fixed inset-0 w-full h-dvh bg-black/60">
             <Transition name="toast" appear>
-                <div v-if="vet" ref="menuRef"
+                <div ref="menuRef" v-if="vet"
                     class="flex flex-col items-end gap-1 max-w-2xs absolute bottom-11 md:bottom-7 right-1.5"
                     role="menu">
                     <div class="row">

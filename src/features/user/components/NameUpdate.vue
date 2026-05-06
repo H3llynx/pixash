@@ -3,13 +3,13 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Input from '../../../components/Input.vue';
+import FreeModal from '../../../components/loading/FreeModal.vue';
 import { useToast } from '../../../composables/useToast';
 import { useAuth } from '../composables/useAuth';
 
 const { t } = useI18n();
 const { error, firebaseUser, updateUser } = useAuth();
 const { show } = useToast();
-
 const visible = defineModel<boolean>("nameVisible");
 const formData = ref<string>(firebaseUser.value?.displayName ?? "");
 
@@ -31,21 +31,19 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-    <Transition name="overlay">
-        <div v-if="visible" class="fixed inset-0 w-full h-dvh bg-black/60 flex items-center justify-center">
-            <Transition name="toast" appear>
-                <div class="dialog-box w-[80%] max-w-sm">
-                    <form class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
-                        <Input v-model="formData" :label="t('auth.nameLabel')" :placeholder="t('auth.namePlaceholder')"
-                            id="user-name" required />
-                        <Button>{{ t("common.button.confirm") }}</Button>
-                        <Button type="button" variant="ghost" @click="visible = false">{{ t("common.button.cancel")
-                            }}</Button>
-                    </form>
-                </div>
-            </Transition>
-        </div>
-    </Transition>
+    <FreeModal v-model="visible">
+        <Transition name="toast">
+            <div class="dialog-box" v-show="visible">
+                <form class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
+                    <Input v-model="formData" :label="t('auth.nameLabel')" :placeholder="t('auth.namePlaceholder')"
+                        id="user-name" required />
+                    <Button>{{ t("common.button.confirm") }}</Button>
+                    <Button type="button" variant="ghost" @click="visible = false">{{ t("common.button.cancel")
+                        }}</Button>
+                </form>
+            </div>
+        </Transition>
+    </FreeModal>
 </template>
 
 <style scoped>

@@ -28,7 +28,8 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         vaccine: false,
         visit: false,
         antiparasitic: false,
-        treatment: false
+        treatment: false,
+        weight: false,
     });
     const isUpdatingVet = ref<boolean>(false);
 
