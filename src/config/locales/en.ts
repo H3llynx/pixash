@@ -13,13 +13,14 @@ export default {
             scrollLeft: "Scroll left",
             backDash: "Back to dashboard",
             backCal: "Back to calendar",
-            loading: "Loading...",
+            markDone: "Mark as done"
         },
         panel: {
             hide: "Close form"
         },
         text: {
             noEventText: "You don't have any event scheduled.",
+            noHistoryText: "You don't have any pas event registered.",
             noWeightLog: "No weight log registered.",
             lastLogged: "Last logged",
             done: "Done!",
@@ -31,6 +32,8 @@ export default {
             calendar: "Calendar",
             vetH2: "Vet care",
             vetSpan: "Clinics, treatments & visits",
+            historyH2: "Health history",
+            historySpan: "Medical records & stats per pet"
         },
         navbar: {
             home: "Home",
@@ -244,7 +247,8 @@ export default {
         legend: "Legend",
         visits: "Vet visits",
         vaccines: "Vaccines",
-        antiparasitics: "Antiparasitics"
+        antiparasitics: "Antiparasitics",
+        weightLog: "Weight log"
     },
     toast: {
         dismiss: "Dismiss notification",
