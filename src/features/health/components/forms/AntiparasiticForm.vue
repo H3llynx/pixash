@@ -22,7 +22,7 @@ const { mode, isReadonly } = useFormMode();
 const today = new Date().toISOString().slice(0, 10);
 provide('readonly', isReadonly);
 
-const { treated, givenDate, dueDate, other } = antiparasiteFields;
+const { treated, givenDate, dueDate, notes } = antiparasiteFields;
 
 watch(() => selectedLog.antiparasitic, (log) => {
     mode.value = log ? "view" : "edit";
@@ -45,7 +45,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                        }}
+                    }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"
@@ -80,8 +80,8 @@ watch(() => mode.value, (mode) => {
                                     t("common.button.clear") }}</Button>
                             </template>
                         </Input>
-                        <Input v-if="selectedLog.antiparasitic?.other || mode === 'edit'" v-model="formData.other"
-                            :id="other.id" :label="t(other.label)" :type="other.type" />
+                        <Input v-if="selectedLog.antiparasitic?.notes || mode === 'edit'" v-model="formData.notes"
+                            :id="notes.id" :label="t(notes.label)" :type="notes.type" />
                         <div class="flex gap-0.5 mt-1 items-center ml-auto"
                             v-if="!selectedLog.antiparasitic || mode === 'edit'">
                             <Button type="button" v-if="selectedLog.antiparasitic && mode === 'edit'"

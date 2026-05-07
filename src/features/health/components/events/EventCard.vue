@@ -57,7 +57,7 @@ const markAsDone = async (event: PetEvent) => {
         if (event.eventType === "log" && event.type === "antiparasite") {
             const baseData = {
                 treated: event.treated as AntiparasiteTypes["id"][],
-                other: event.other,
+                notes: event.notes,
                 type: event.type,
             };
             if (event.givenAt && event.dueOn) {

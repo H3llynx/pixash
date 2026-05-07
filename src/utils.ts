@@ -110,3 +110,7 @@ export const getOneYearLaterInput = (firstDate: string) => {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
 };
+
+export const getLabel = (type: string, array: { id: string, label: string }[]) => {
+    return array.find(t => t.id === type)?.label ?? "";
+};

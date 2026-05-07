@@ -8,6 +8,7 @@ import { usePets } from '../../../pets/composables/usePets';
 import { useEvents } from '../../composables/useEvents';
 import type { PetEvent } from '../../types';
 import { showAntiparasites } from '../../utils';
+import TypeTag from './TypeTag.vue';
 
 const { healthLoading, vets } = usePets();
 const { locale, t } = useI18n();
@@ -33,8 +34,8 @@ const date = computed(() => {
                 <Weight v-if="event.type === 'weight'" class="card-icon" :size="20" />
             </template>
             <div class="flex flex-col justify-content w-full">
-                <div class="flex gap-0.5">
-                    <div class="min-w-3/5">
+                <div class="flex gap-0.5 flex-1">
+                    <div class="w-1/2">
                         <p class="text-text-secondary text-xs">
                             {{ date.toDate().toLocaleDateString(locale, {
                                 day: "numeric",
@@ -46,7 +47,10 @@ const date = computed(() => {
                             locale,
                             t) }}</p>
                     </div>
-                    <span v-if="event.notes" class="text-text-secondary text-xs italic">{{ event.notes }}</span>
+                    <div class="flex flex-col justify-content gap-1 flex-1 items-end">
+                        <TypeTag :event="event" class="ml-auto" />
+                        <span v-if="event.notes" class="text-text-secondary text-xs italic">{{ event.notes }}</span>
+                    </div>
                 </div>
                 <p v-if="event.vet" class="mt-auto pt-0.5 text-xs text-brand-light flex items-center gap-[5px]">
                     <Loading v-if="!vets.length" class="my-0.5" />

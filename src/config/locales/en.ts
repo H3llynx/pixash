@@ -187,7 +187,7 @@ export default {
         },
         antiparasiteForm: {
             treated: "What did you treat?",
-            other: "Other information",
+            notes: "Other information",
             validationTypes: "You must select what was treated",
             viewTitle: "Antiparasitic"
         },

@@ -24,14 +24,14 @@ export const useAntiparasiticForm = () => {
             treated: [...log.treated],
             givenAt: tsToDate(log.givenAt, "input"),
             dueOn: tsToDate(log.dueOn, "input"),
-            other: log.other ?? "",
+            notes: log.notes ?? "",
         })
     };
     const defaultForm = {
         treated: [ANTIPARASITE_TYPES.default[0].id] as AntiparasiteTypes["id"][],
         givenAt: "",
         dueOn: "",
-        other: "",
+        notes: "",
     };
     const formData = reactive({ ...defaultForm });
     const handleClose = () => {

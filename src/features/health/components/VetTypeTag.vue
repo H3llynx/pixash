@@ -1,5 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+import { getLabel } from '../../../utils';
+import { VET_TYPES } from '../config';
+
 const props = defineProps<{ type: string }>();
+const { t } = useI18n();
 
 const getTagStyle = () => {
     return {
@@ -12,7 +17,7 @@ const getTagStyle = () => {
 </script>
 
 <template>
-    <span :class="getTagStyle()">{{ type }}</span>
+    <span :class="getTagStyle()">{{ t(getLabel(type, VET_TYPES)) }}</span>
 </template>
 
 <style scoped>

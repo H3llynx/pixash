@@ -43,7 +43,9 @@ export const ANTIPARASITE_TYPES = {
 
 export const STAGE = [{ id: "young", label: "health.stage.young" }, { id: "adult", label: "health.stage.adult" }] as const;
 
-export const VET_TYPES = [{ id: "primary", label: "health.vetTypes.primary" }, { id: "secondary", label: "health.vetTypes.secondary" }, { id: "emergency", label: "health.vetTypes.emergency" }]
+export const VET_TYPES = [{ id: "primary", label: "health.vetTypes.primary" }, { id: "secondary", label: "health.vetTypes.secondary" }, { id: "emergency", label: "health.vetTypes.emergency" }];
+
+export const EVENT_TYPES = [{ id: "vaccines", label: "events.vaccines" }, { id: "visit", label: "events.visit" }, { id: "weight", label: "events.weightLog" }, { id: "antiparasite", label: "antiparasitics" }];
 
 const vetFields = {
     label: "health.vetVisitForm.vet",
@@ -66,9 +68,9 @@ export const antiparasiteFields = {
         label: "health.sharedDateFields.dueDate",
         type: "date",
     },
-    other: {
-        id: "antiparasite-other",
-        label: "health.antiparasiteForm.other",
+    notes: {
+        id: "antiparasite-notes",
+        label: "health.antiparasiteForm.notes",
         type: "text",
     },
 }

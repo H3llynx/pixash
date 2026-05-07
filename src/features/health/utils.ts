@@ -88,4 +88,4 @@ export const getCurrentWeight = (logs: LogExtended[]) => {
 export function getLogTs(log: LogExtended) {
     if (log.type === "antiparasite") return log.dueOn ?? log.givenAt!;
     return log.measuredAt;
-}
+};

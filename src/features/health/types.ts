@@ -50,7 +50,6 @@ export type PetEvent = {
     title?: string;
     vet?: string;
     notes?: string;
-    other?: string;
     types?: VaccineTypes["id"][];
     treated?: AntiparasiteTypes["id"][];
     type?: LogTypes;
@@ -87,7 +86,7 @@ export type AntiparasiteRecord = {
     treated: AntiparasiteTypes["id"][];
     givenAt: string;
     dueOn?: string;
-    other?: string;
+    notes?: string;
 };
 
 export type WeightRecord = {
@@ -108,7 +107,7 @@ export type AntiparasiteLogExtended = {
     treated: AntiparasiteTypes["id"][];
     givenAt: Timestamp;
     dueOn?: Timestamp;
-    other?: string;
+    notes?: string;
 };
 
 export type WeightLogExtended = {

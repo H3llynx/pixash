@@ -223,7 +223,7 @@ export const addLog = async (log: Log, petId: string, userId: string) => {
             treated: log.treated,
             givenAt: log.givenAt ? tsFromInput(log.givenAt) : null,
             dueOn: log.dueOn ? tsFromInput(log.dueOn) : null,
-            other: log.other ?? null,
+            notes: log.notes ?? null,
         };
     else if (log.type === "weight")
         newLog = {
@@ -267,7 +267,7 @@ export const fetchLogs = async (userId: string): Promise<LogExtended[]> => {
                     treated: data.treated,
                     givenAt: data.givenAt,
                     dueOn: data.dueOn,
-                    other: data.other,
+                    notes: data.notes,
                 } as AntiparasiteLogExtended;
                 return log;
             }
@@ -303,7 +303,7 @@ export const updateLog = async (
             treated: log.treated,
             givenAt: tsFromInput(log.givenAt),
             dueOn: log.dueOn ? tsFromInput(log.dueOn) : null,
-            other: log.other,
+            notes: log.notes,
         };
     else if (log.type === "weight")
         updated = {
