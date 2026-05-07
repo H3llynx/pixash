@@ -3,7 +3,7 @@ import { Camera, X } from '@lucide/vue';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
-import FreeModal from '../../../components/loading/FreeModal.vue';
+import FreeModal from '../../../components/FreeModal.vue';
 import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
@@ -115,7 +115,7 @@ const handleCancel = () => {
                         <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
                         <Button type="button" variant="ghost" @click="handleCancel">{{
                             t("common.button.cancel")
-                        }}</Button>
+                            }}</Button>
                     </form>
                 </template>
             </div>

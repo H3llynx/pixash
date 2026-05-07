@@ -2,8 +2,8 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
+import FreeModal from '../../../components/FreeModal.vue';
 import Input from '../../../components/Input.vue';
-import FreeModal from '../../../components/loading/FreeModal.vue';
 import { useToast } from '../../../composables/useToast';
 import { useAuth } from '../composables/useAuth';
 
@@ -39,7 +39,7 @@ const handleSubmit = async () => {
                         id="user-name" required />
                     <Button>{{ t("common.button.confirm") }}</Button>
                     <Button type="button" variant="ghost" @click="visible = false">{{ t("common.button.cancel")
-                        }}</Button>
+                    }}</Button>
                 </form>
             </div>
         </Transition>

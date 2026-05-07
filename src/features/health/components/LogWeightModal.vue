@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
+import FreeModal from '../../../components/FreeModal.vue';
 import Input from '../../../components/Input.vue';
-import FreeModal from '../../../components/loading/FreeModal.vue';
 import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
 import { usePets } from '../../pets/composables/usePets';
 import { usePetUpdate } from '../../pets/composables/usePetUpdate';
@@ -50,7 +50,7 @@ const handleSubmit = async () => {
                     <Button>{{ t("common.button.confirm") }}</Button>
                     <Button type="button" variant="ghost" @click="isAddingHealth.weight = false">{{
                         t("common.button.cancel")
-                    }}</Button>
+                        }}</Button>
                 </form>
             </div>
         </Transition>
