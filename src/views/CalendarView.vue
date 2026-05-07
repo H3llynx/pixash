@@ -13,7 +13,7 @@ import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 import { resetState } from '../utils';
 
-const { loading, healthLoading, selectVaccine, selectVisit, isAddingHealth, selectedLog } = usePets();
+const { selectVaccine, selectVisit, isAddingHealth, selectedLog } = usePets();
 const { selectedDate, currentMonth, currentMonthName, filteredCalendarEvents, filteredMonthEvents, petId } = useEvents();
 const { t } = useI18n();
 const { isMd } = useMedia();
