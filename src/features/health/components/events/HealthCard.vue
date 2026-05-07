@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { tsToDate } from '../../../../utils';
 import type { PetExtended } from '../../../pets/types';
 import type { PetEvent } from '../../types';
+import DateTag from './DateTag.vue';
 
 const props = defineProps<{
     title: string
@@ -11,7 +12,7 @@ const props = defineProps<{
 }>();
 
 const date = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "date") : tsToDate(props.data.date, "date"));
-const daysUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "daysUntil") : tsToDate(props.data.date, "daysUntil"))
+const timeUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "timeUntil") : tsToDate(props.data.date, "timeUntil"))
 
 </script>
 
@@ -21,7 +22,8 @@ const daysUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "
         <div class="text-left flex flex-col h-full">
             <h3>{{ title }}</h3>
             <p class="font-medium">{{ date }}</p>
-            <p class="text-xs text-brand-light mb-0.5">{{ daysUntil }}</p>
+            <p class="text-xs text-brand-light mb-0.5">{{ timeUntil }}</p>
+            <DateTag :event="data" class="mt-auto" />
         </div>
     </div>
 </template>

@@ -312,6 +312,8 @@ export default {
         tomorrow: "Tomorrow",
         yesterday: "Yesterday",
         daysAgo: "{number} days ago",
-        daysUntil: "in {number} days"
+        daysUntil: "in {number} days",
+        monthsUntil: "in {number} month",
+        monthsAgo: "{number} month ago",
     }
 };
