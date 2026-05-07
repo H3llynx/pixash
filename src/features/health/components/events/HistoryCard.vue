@@ -5,12 +5,13 @@ import { useI18n } from 'vue-i18n';
 import EventCardSkeleton from '../../../../components/loading/EventCardSkeleton.vue';
 import Loading from '../../../../components/loading/Loading.vue';
 import { usePets } from '../../../pets/composables/usePets';
+import { prefersKg } from '../../../pets/utils';
 import { useEvents } from '../../composables/useEvents';
 import type { PetEvent } from '../../types';
 import { showAntiparasites } from '../../utils';
 import TypeTag from './TypeTag.vue';
 
-const { healthLoading, vets } = usePets();
+const { healthLoading, vets, pets } = usePets();
 const { locale, t } = useI18n();
 const { useEventData } = useEvents();
 
@@ -19,6 +20,15 @@ const { vet, title } = useEventData(toRef(props, "event"));
 const date = computed(() => {
     if (props.event.givenAt) return props.event.givenAt;
     else return props.event.ts
+});
+const weight = computed(() => {
+    const pet = pets.value.find(pet => pet.id === props.event.petId);
+    if (!pet || !props.event.weight) return null
+    else {
+        const unit = prefersKg(pet) ? "kg" : "g";
+        const unitFactor = prefersKg(pet) ? 1 / 1000 : 1;
+        return `${props.event.weight * unitFactor} ${unit}`
+    };
 });
 </script>
 
@@ -50,6 +60,10 @@ const date = computed(() => {
                     <div class="flex flex-col justify-content gap-1 flex-1 items-end">
                         <TypeTag :event="event" class="ml-auto" />
                         <span v-if="event.notes" class="text-text-secondary text-xs italic">{{ event.notes }}</span>
+                        <div v-if="event.weight" class="flex gap-0.5 items-center">
+                            <Weight :size="20" />
+                            <span class="text-xl">{{ weight }}</span>
+                        </div>
                     </div>
                 </div>
                 <p v-if="event.vet" class="mt-auto pt-0.5 text-xs text-brand-light flex items-center gap-[5px]">

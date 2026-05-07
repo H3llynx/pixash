@@ -48,6 +48,7 @@ export type PetEvent = {
     eventType: string;
     ts: Timestamp;
     title?: string;
+    weight?: number;
     vet?: string;
     notes?: string;
     types?: VaccineTypes["id"][];

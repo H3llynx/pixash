@@ -37,6 +37,6 @@ const getTagStyle = () => {
 
 .vaccine {
     background: rgba(226, 75, 74, 0.2);
-    color: rgb(163, 45, 45);
+    color: rgb(231, 76, 76);
 }
 </style>
