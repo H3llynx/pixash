@@ -20,7 +20,7 @@ export default {
         },
         text: {
             noEventText: "You don't have any event scheduled.",
-            noHistoryText: "You don't have any pas event registered.",
+            noHistoryText: "You don't have any past event registered.",
             noWeightLog: "No weight log registered.",
             lastLogged: "Last logged",
             done: "Done!",
@@ -272,6 +272,7 @@ export default {
                 visitUpdated: "{name}'s {title} successfully updated",
                 visitDeleted: "{name}'s {title} has been successfully deleted",
                 logDeleted: "{type} deleted",
+                markedDone: "All set, this care task has been completed."
             },
         },
         error: {

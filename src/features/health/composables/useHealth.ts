@@ -85,7 +85,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const fetchUserVaccines = async () => {
         await handleHealthAction(async () => {
             const v = await fetchVaccines(user.value!.uid);
-            vaccines.value = v.map(v => ({ ...v, ts: v.dueOn ?? null, eventType: "vaccine" }));
+            vaccines.value = v.map(v => ({ ...v, eventType: "vaccine" }));
             assignHealth();
         });
     };
@@ -117,7 +117,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const fetchUserVisits = async () => {
         await handleHealthAction(async () => {
             const v = await fetchVetVisits(user.value!.uid);
-            vetVisits.value = v.map(v => ({ ...v, ts: v.date, eventType: "visit" }));
+            vetVisits.value = v.map(v => ({ ...v, eventType: "visit" }));
             assignHealth();
         });
     };
@@ -200,10 +200,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const fetchUserLogs = async () => {
         await handleHealthAction(async () => {
             const l = await fetchLogs(user.value!.uid);
-            logs.value = l.map((log): LogExtended => {
-                if (log.type === "antiparasite") return { ...log, ts: log.dueOn ?? log.givenAt, eventType: "log" };
-                else return { ...log, ts: log.measuredAt, eventType: "log" };
-            });
+            logs.value = l.map((log): LogExtended => ({ ...log, eventType: "log" }));
             assignHealth();
         });
     };

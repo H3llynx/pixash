@@ -1,6 +1,7 @@
 import { FirebaseError } from "firebase/app";
 import { computed, ref, watch } from "vue";
 import { addPet, deletePet, deletePetField, fetchPets, updatePet } from "../../../services/pets";
+import { resetState } from "../../../utils";
 import { useHealth } from "../../health/composables/useHealth";
 import { useAuth } from "../../user/composables/useAuth";
 import type { Pet, PetExtended } from "../types";
@@ -55,6 +56,7 @@ const selectPet = (pet: PetExtended | null) => {
   isUpdatingPet.value = false;
   if (selectedVaccine.value) selectVaccine(null);
   if (selectedVisit.value) selectVisit(null);
+  resetState(selectedLog);
   selectedPet.value = pet;
 }
 
@@ -105,7 +107,7 @@ const addNewPet = async (newPet: Pet) => {
   });
 };
 
-const updateSelectedPet = async (pet: PetExtended, data: Partial<Pick<Pet, "microchip" | "microchipped">>) => {
+const updateSelectedPet = async (pet: PetExtended, data: Partial<Pet>) => {
   await handlePetAction(async () => {
     await updatePet(pet.id, user.value!.uid, data);
     const index = pets.value.findIndex(p => p.id === pet.id);

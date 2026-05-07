@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeRouteLeave } from 'vue-router';
 import AddButton from '../components/AddButton.vue';
-import Header from '../components/Header.vue';
+import Header from '../components/header/Header.vue';
 import LoadingPuppy from '../components/loading/LoadingPuppy.vue';
 import VetSkeleton from '../components/loading/VetSkeleton.vue';
 import VetForm from '../features/health/components/forms/VetForm.vue';

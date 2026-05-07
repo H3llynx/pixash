@@ -78,8 +78,9 @@ export const useAntiparasiticForm = () => {
                 if (logId) newLog.value = logs.value.find(l => l.id === logId) ?? null
             }
             else if (selectedLog.antiparasitic) {
+                const logId = selectedLog.antiparasitic.id;
                 await updateSelectedLog(selectedLog.antiparasitic, selectedPet.value.id, log);
-                newLog.value = selectedLog.antiparasitic;
+                newLog.value = logs.value.find(l => l.id === logId) ?? null
             };
         }
         catch (e) {

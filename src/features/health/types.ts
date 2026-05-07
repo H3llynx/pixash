@@ -56,9 +56,12 @@ export type PetEvent = {
     type?: LogTypes;
     stage?: typeof STAGE[number]["id"];
     date?: Timestamp;
+    measuredAt?: Timestamp;
     givenAt?: Timestamp;
     dueOn?: Timestamp;
-}
+};
+
+export type TimelineEvent = PetEvent & { ts: Timestamp };
 
 export type Vet = {
     name: string;

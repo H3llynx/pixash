@@ -438,6 +438,11 @@
   .dialog-box {
     @apply bg-bg-3 p-1.5 rounded-2xl border border-border flex flex-col gap-1;
   }
+
+  .card-icon {
+    flex-shrink: 0;
+    color: var(--color-brand-light);
+  }
 }
 
 

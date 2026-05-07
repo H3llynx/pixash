@@ -15,7 +15,6 @@ const button = tv({
             addon: "text-text-secondary addon-focus",
             chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary capitalize",
             summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light",
-            card: "btn-fill-card rounded-xl border border-border gap-1.5 justify-between items-start text-left",
             vetOptions: "btn-hover-fill flex-1 rounded-xl border border-border-btn-vet bg-btn-vet",
             add: "flex-start rounded-xl border border-dashed border-text-secondary text-text-secondary hover:text-brand-light hover:border-brand-light"
         },
@@ -25,7 +24,6 @@ const button = tv({
             sm: "px-1 py-0.5",
             md: "px-2 py-[10px]",
             lg: "px-2 py-1",
-            card: "p-1 w-full md:max-w-md",
             vetOptions: "px-0.5 py-1 text-sm"
         }
     },
@@ -102,17 +100,6 @@ withDefaults(defineProps<{
         background: var(--color-btn-hover);
         color: var(--color-btn-hover-text);
         border-color: var(--color-btn-hover)
-    }
-
-    .btn-fill-card:hover {
-        color: var(--color-brand);
-        border-color: var(--color-brand);
-        transform: scale(1.02);
-
-        &::before {
-            animation: move-overlay 10s ease-out infinite;
-            opacity: 1;
-        }
     }
 }
 </style>

@@ -45,7 +45,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                    }}
+                        }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"
@@ -97,7 +97,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                 </form>
             </div>
-            <LogSuccess v-else-if="newLog" :onClose="handleClose" :pet="selectedPet!" :logged="newLog" />
+            <LogSuccess v-else-if="newLog" :onClose="handleClose" :pet="selectedPet!" :log="newLog" />
         </FormWrapper>
     </Transition>
 </template>

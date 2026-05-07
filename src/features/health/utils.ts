@@ -84,3 +84,8 @@ export const getCurrentWeight = (logs: LogExtended[]) => {
     const weightLogs = logs.filter(log => log.type === "weight") as WeightLogExtended[];
     return weightLogs.sort((a, b) => b.measuredAt.seconds - a.measuredAt.seconds).at(0)?.weight ?? undefined;
 };
+
+export function getLogTs(log: LogExtended) {
+    if (log.type === "antiparasite") return log.dueOn ?? log.givenAt!;
+    return log.measuredAt;
+}

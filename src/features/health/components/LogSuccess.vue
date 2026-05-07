@@ -14,7 +14,7 @@ const route = useRoute();
 
 defineProps<{
     pet: PetExtended
-    logged: PetEvent
+    log: PetEvent
     onClose: () => void
 }>();
 </script>
@@ -25,13 +25,13 @@ defineProps<{
             <Check :size="30" />
         </div>
         <h1>{{ t("common.text.done") }}</h1>
-        <p v-if="logged.treated" class="w-2/3 mx-auto">
+        <p v-if="log.treated" class="w-2/3 mx-auto">
             {{ t("common.text.antiparasiticLogged", {
-                parasites: showAntiparasites(logged.treated, locale, t),
+                parasites: showAntiparasites(log.treated, locale, t),
                 name: pet.name
             }) }}
         </p>
-        <HealthCard v-if="logged.dueOn" :title="t('events.nextAntiparasitic')" :pet="pet" :data="logged" />
+        <HealthCard v-if="log.dueOn" :title="t('events.nextAntiparasitic')" :pet="pet" :data="log" />
         <Button @click="onClose">{{ route.path === ROUTES.calendar ? t("common.button.backCal") :
             t("common.button.backDash") }}</Button>
     </div>
