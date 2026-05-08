@@ -60,6 +60,15 @@ const selectPet = (pet: PetExtended | null) => {
   selectedPet.value = pet;
 }
 
+const resetPetActions = () => {
+  isAddingPet.value = false;
+  isUpdatingPet.value = false;
+  resetState(isAddingHealth);
+  resetState(selectedLog);
+  selectVaccine(null);
+  selectVisit(null);
+};
+
 const handlePetAction = async (
   action: () => Promise<void> | void,
   onFinal?: () => void
@@ -218,5 +227,6 @@ export const usePets = () => {
     addNewLog,
     updateSelectedLog,
     deleteSelectedLog,
+    resetPetActions
   };
 };

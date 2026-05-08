@@ -6,16 +6,11 @@ import DashboardSkeleton from '../components/loading/DashboardSkeleton.vue';
 import PetMonitoring from '../features/pets/components/PetMonitoring.vue';
 import PetSummary from '../features/pets/components/PetSummary.vue';
 import { usePets } from '../features/pets/composables/usePets';
-import { resetState } from '../utils';
 
-const { loading, hasPets, isAddingPet, isAddingHealth, isUpdatingPet, selectVaccine, selectVisit } = usePets();
+const { resetPetActions, loading, hasPets } = usePets();
 
 onBeforeRouteLeave(() => {
-  isAddingPet.value = false;
-  isUpdatingPet.value = false;
-  resetState(isAddingHealth);
-  selectVaccine(null);
-  selectVisit(null);
+  resetPetActions();
 });
 </script>
 

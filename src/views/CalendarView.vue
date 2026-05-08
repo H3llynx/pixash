@@ -11,9 +11,8 @@ import EventMenu from '../features/health/components/events/EventMenu.vue';
 import { useEvents } from '../features/health/composables/useEvents';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
-import { resetState } from '../utils';
 
-const { selectVaccine, selectVisit, isAddingHealth, selectedLog } = usePets();
+const { resetPetActions } = usePets();
 const { selectedDate, currentMonth, currentMonthName, filteredCalendarEvents, filteredMonthEvents, petId } = useEvents();
 const { t } = useI18n();
 const { isMd } = useMedia();
@@ -39,10 +38,7 @@ const handleDateClick = (date: string, x: number, y: number) => {
 
 onBeforeRouteLeave(() => {
     selectedDate.value = null;
-    resetState(isAddingHealth);
-    resetState(selectedLog);
-    selectVaccine(null);
-    selectVisit(null);
+    resetPetActions();
 });
 </script>
 
