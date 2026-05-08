@@ -99,11 +99,11 @@ const markAsDone = async (event: PetEvent) => {
                         }) }}</p>
                     <Button
                         v-if="event.eventType === 'vaccine' || event.eventType === 'log' && event.type === 'antiparasite'"
-                        size="xs" variant="ghost" class="border border-border mb-1" @click="markAsDone(event)">
+                        size="xs" variant="ghost" class="border border-border" @click="markAsDone(event)">
                         <Check :size="20" />{{ t("common.button.markDone") }}
                     </Button>
                 </div>
-                <p v-if="event.vet" class="mt-auto text-xs text-brand-light flex items-center gap-[5px]">
+                <p v-if="event.vet" class="mt-auto pt-1 text-xs text-brand-light flex items-center gap-[5px]">
                     <Loading v-if="!vets.length" />
                     <MapPinned v-else :size="16" /> {{ vet }}
                 </p>
