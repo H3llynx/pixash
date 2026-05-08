@@ -4,8 +4,8 @@ import Button from '../../../components/Button.vue';
 import FreeModal from '../../../components/FreeModal.vue';
 import Input from '../../../components/Input.vue';
 import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
+import { usePetDetails } from '../../pets/composables/usePetDetails';
 import { usePets } from '../../pets/composables/usePets';
-import { usePetUpdate } from '../../pets/composables/usePetUpdate';
 import type { PetExtended } from '../../pets/types';
 import type { Log } from '../types';
 
@@ -13,10 +13,10 @@ const { isAddingHealth, addNewLog } = usePets();
 const { t } = useI18n();
 
 const props = defineProps<{ pet: PetExtended }>();
-const { loading, getWeightInGrams, formData } = usePetUpdate(props.pet);
+const { loading, getWeightInGrams, formPartialUpdate } = usePetDetails(props.pet);
 
 const handleSubmit = async () => {
-    if (!formData.data) return;
+    if (!formPartialUpdate.data) return;
     loading.value = true;
     const grams = getWeightInGrams();
     if (grams === null) return;
@@ -38,10 +38,11 @@ const handleSubmit = async () => {
                 <form v-else class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
                     <h2>{{ t('pet.profile.edit.weight', { name: pet.name }) }}</h2>
                     <div class="flex gap-0.5">
-                        <Input v-model="formData.data" type="number" id="first-weight-log"
-                            :step="formData.unit === 'kg' ? '0.001' : '1'" ref="weightInputRef" class="text-base" />
+                        <Input v-model="formPartialUpdate.data" type="number" id="first-weight-log"
+                            :step="formPartialUpdate.unit === 'kg' ? '0.001' : '1'" ref="weightInputRef"
+                            class="text-base" />
                         <div class="input-container w-max">
-                            <select v-model="formData.unit">
+                            <select v-model="formPartialUpdate.unit">
                                 <option>kg</option>
                                 <option>g</option>
                             </select>

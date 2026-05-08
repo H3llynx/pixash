@@ -11,8 +11,8 @@ import Loading from '../../../components/loading/Loading.vue';
 import { resetState } from '../../../utils';
 import { useVaccineForm } from '../../health/composables/useVaccineForm';
 import type { Log, VaccineExtended } from '../../health/types';
+import { usePetDetails } from '../composables/usePetDetails';
 import { usePets } from '../composables/usePets';
-import { usePetUpdate } from '../composables/usePetUpdate';
 import type { Pet, PetExtended } from '../types';
 
 const { addNewLog, updateSelectedPet, deleteSelectedPetField, selectVaccine, isAddingHealth } = usePets();
@@ -24,7 +24,7 @@ const props = defineProps<{
     data: "weight" | "microchip" | "nextVaccine"
 }>();
 
-const { loading, preferredUnit, formData, getWeightInGrams } = usePetUpdate(props.pet);
+const { loading, preferredUnit, formPartialUpdate, getWeightInGrams } = usePetDetails(props.pet);
 
 const isUpdating = defineModel();
 const updateRef = ref<HTMLFormElement>();
@@ -46,21 +46,21 @@ const hasChanged = computed(() => {
         return grams !== null && props.pet.weight !== grams;
     }
     if (props.data === "microchip") {
-        return props.pet.microchip !== formData.data;
+        return props.pet.microchip !== formPartialUpdate.data;
     }
     return false;
 });
 
 const startUpdating = () => {
-    formData.data = "";
+    formPartialUpdate.data = "";
     isUpdating.value = true;
     const existing = props.pet[props.data];
     if (props.data === "weight" && typeof existing === "number") {
-        formData.data = preferredUnit.value === "kg"
+        formPartialUpdate.data = preferredUnit.value === "kg"
             ? (existing / 1000).toString()
             : existing.toString();
     } else if (props.data === "microchip" && typeof existing === "string") {
-        formData.data = existing;
+        formPartialUpdate.data = existing;
     } else if (props.data === "nextVaccine") {
         resetState(isAddingHealth);
         if (existing) {
@@ -72,7 +72,7 @@ const startUpdating = () => {
 };
 
 const handleSubmit = async (field: "weight" | "microchip") => {
-    if (!formData.data) return;
+    if (!formPartialUpdate.data) return;
     loading.value = true;
     let update = {};
     if (field === "weight") {
@@ -85,7 +85,7 @@ const handleSubmit = async (field: "weight" | "microchip") => {
         };
         await addNewLog(log, props.pet.id);
     } else {
-        const microchip = formData.data;
+        const microchip = formPartialUpdate.data;
         if (props.pet.microchip === microchip) return;
         update = { microchipped: true, microchip: microchip };
         await updateSelectedPet(props.pet, update);
@@ -100,16 +100,16 @@ const handleDelete = async () => {
     isUpdating.value = false;
 };
 
-watch(() => formData.unit,
+watch(() => formPartialUpdate.unit,
     (newUnit, oldUnit) => {
-        if (props.data !== "weight" || !formData.data) return;
-        const value = parseFloat(formData.data);
+        if (props.data !== "weight" || !formPartialUpdate.data) return;
+        const value = parseFloat(formPartialUpdate.data);
         if (isNaN(value)) return;
         if (oldUnit === "kg" && newUnit === "g") {
-            formData.data = Math.round(value * 1000).toString()
+            formPartialUpdate.data = Math.round(value * 1000).toString()
         }
         else if (oldUnit === "g" && newUnit === "kg") {
-            formData.data = (value / 1000).toFixed(3)
+            formPartialUpdate.data = (value / 1000).toFixed(3)
         }
     }
 );
@@ -131,11 +131,11 @@ watch(() => isUpdating.value, async (updating) => {
             <Plus v-else :size="18" />
         </Button>
         <form ref="updateRef" v-else @submit.prevent="handleSubmit(data)" class="mini-form flex gap-[3px]">
-            <Input v-model="formData.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
-                :step="data === 'weight' ? (formData.unit === 'kg' ? '0.001' : '1') : 'any'" ref="weightInputRef"
-                class="text-base" />
+            <Input v-model="formPartialUpdate.data" :type="data === 'weight' ? 'number' : 'text'" :id="`pet-${data}`"
+                :step="data === 'weight' ? (formPartialUpdate.unit === 'kg' ? '0.001' : '1') : 'any'"
+                ref="weightInputRef" class="text-base" />
             <div class="input-container" v-if="data === 'weight'">
-                <select v-model="formData.unit" v-if="data === 'weight'">
+                <select v-model="formPartialUpdate.unit" v-if="data === 'weight'">
                     <option>kg</option>
                     <option>g</option>
                 </select>
