@@ -23,6 +23,9 @@ const today = new Date().toISOString().slice(0, 10);
 provide('readonly', isReadonly);
 
 const { treated, givenDate, dueDate, notes } = antiparasiteFields;
+watch(() => isAddingHealth.antiparasitic, (adding) => {
+    if (adding) mode.value = "edit";
+});
 
 watch(() => selectedLog.antiparasitic, (log) => {
     mode.value = log ? "view" : "edit";
@@ -45,7 +48,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                    }}
+                        }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"
