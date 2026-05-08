@@ -2,14 +2,17 @@
 import { Plus } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 import Button from '../../../components/Button.vue';
 import Paw from '../../../components/icons/Paw.vue';
+import { ROUTES } from '../../../router/config';
 import { usePets } from '../composables/usePets';
 import type { PetExtended } from '../types';
 import { getIcon } from '../utils';
 
 const { pets, selectPet, selectedPet, selectedVet, isAddingPet } = usePets();
 const { t } = useI18n();
+const route = useRoute();
 
 const props = withDefaults(defineProps<{
     form?: boolean
@@ -59,7 +62,7 @@ const getAddChipStyle = () => {
             <Paw class="w-1 -rotate-20" /> {{ t("common.button.allChip") }}
         </Button>
         <Button :variant="nav ? 'ghost' : 'chip'" size="sm" v-for="pet in filteredPets" :class="getPetChipStyle(pet)"
-            @click="handleClick(pet)">
+            @click="handleClick(pet)" :disabled="route.path === ROUTES.vet">
             <span aria-hidden>{{ getIcon(pet) }}</span>
             {{ pet.name }}</Button>
         <Button v-if="!form && !calendar" :variant="nav ? 'add' : 'chip'" size="sm" :class="getAddChipStyle()"
@@ -77,17 +80,18 @@ const getAddChipStyle = () => {
     font-weight: 500;
 }
 
+.nav-base,
+.nav-active:disabled {
+    background: transparent;
+    color: var(--color-off-white);
+    justify-content: flex-start;
+}
+
 .nav-active {
     background: var(--color-brand-rgba);
     color: var(--color-off-white);
     justify-content: flex-start;
     border-color: transparent;
-}
-
-.nav-base {
-    background: transparent;
-    color: var(--color-off-white);
-    justify-content: flex-start;
 }
 
 .calendar-base {
