@@ -5,9 +5,8 @@ const { t } = useI18n();
 </script>
 
 <template>
-    <div class="pet-section default-padding flex gap-1 mb-3 items-center md:items-start md:p-0 md:flex-col flex-wrap"
-        aria-hidden>
-        <h2 class="hidden md:block p-0">{{ t("events.legend") }}</h2>
+    <div class="pet-section default-padding flex gap-1 mb-3 items-center flex-wrap md:p-0" aria-hidden>
+        <h2 class="hidden md:block p-0 w-full">{{ t("events.legend") }}</h2>
         <div class="row">
             <div class="w-1 h-1 rounded-md border border-brand-light bg-brand-rgba"></div>
             <span>{{ t("events.visits") }}</span>
