@@ -8,25 +8,25 @@ const props = withDefaults(defineProps<{
     label?: string
     type?: string
     placeholder?: string
-    modelValue?: string | boolean | string[]
 }>(), {
     type: "text"
 });
-const emit = defineEmits(["update:modelValue"]);
+
+const model = defineModel<string | boolean | string[]>();
 const $attrs = useAttrs();
 
 const readonly = inject("readonly", ref(false));
 
 const inputValue = computed(() => {
     if (props.type === "radio" || props.type === "checkbox") return $attrs.value as string;
-    return props.modelValue;
+    return model.value;
 });
 
 const inputChecked = computed(() => {
-    if (props.type === "radio") return props.modelValue === ($attrs.value as string);
+    if (props.type === "radio") return model.value === ($attrs.value as string);
     if (props.type === "checkbox") {
-        if (Array.isArray(props.modelValue)) return props.modelValue.includes($attrs.value as string);
-        return props.modelValue === ($attrs.value as string);
+        if (Array.isArray(model.value)) return model.value.includes($attrs.value as string);
+        return model.value === ($attrs.value as string);
     }
     return undefined;
 });
@@ -36,16 +36,14 @@ const handleChange = (event: Event) => {
     const value = target.value;
     const val = $attrs.value as string;
     if (props.type === "checkbox") {
-        if (Array.isArray(props.modelValue)) {
-            const exists = props.modelValue.includes(val);
-            const next = exists
-                ? props.modelValue.filter(v => v !== val)
-                : [...props.modelValue, val];
-
-            emit("update:modelValue", next);
-        }
+        if (Array.isArray(model.value)) {
+            const exists = model.value.includes(val);
+            model.value = exists
+                ? model.value.filter(v => v !== val)
+                : [...model.value, val];
+        } else model.value = target.checked;
     } else {
-        emit("update:modelValue", value);
+        model.value = value;
     }
 };
 </script>

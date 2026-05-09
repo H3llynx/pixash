@@ -1,5 +1,5 @@
 import { STAGE } from "../health/config";
-import { SPECIES } from "./config";
+import { catBreeds, dogBreeds, SPECIES } from "./config";
 import type { Pet } from "./types";
 
 export const getIcon = (pet: Pet) => {
@@ -57,5 +57,8 @@ export const getWeight = (pet: Pet) => {
     else return `${pet.weight} g`;
 };
 
-export const getChartColor = (variable: string) =>
-    getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+export const getBreedOptions = (species: string) => {
+    if (species === "dog") return dogBreeds;
+    if (species === "cat") return catBreeds;
+    return []
+};

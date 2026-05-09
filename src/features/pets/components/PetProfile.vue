@@ -5,9 +5,10 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
+import { getLabel } from '../../../utils';
 import { usePets } from '../composables/usePets';
 import type { PetExtended } from '../types';
-import { getAge, getIcon } from '../utils';
+import { getAge, getBreedOptions, getIcon } from '../utils';
 import PetProfileRow from './PetProfileRow.vue';
 
 const { selectPet, deleteSelectedPet, isUpdatingPet } = usePets();
@@ -63,7 +64,8 @@ const handleDelete = async () => {
                         <Edit2 :size="14" />
                     </Button>
                 </div>
-                <span v-if="pet.breed" class="capitalize">{{ pet.breed }} · </span>
+                <span v-if="pet.breed" class="capitalize">{{ getLabel(pet.breed, getBreedOptions(pet.species)) }} ·
+                </span>
                 <span>{{ getAge(pet)?.text }} · </span>
                 <span class="capitalize">{{ pet.sex }}</span>
                 <span class="capitalize" v-if="pet.sterilized"> · {{ pet.sex === "male" ?

@@ -114,3 +114,6 @@ export const getOneYearLaterInput = (firstDate: string) => {
 export const getLabel = (type: string, array: { id: string, label: string }[]) => {
     return array.find(t => t.id === type)?.label ?? "";
 };
+
+export const getChartColor = (variable: string) =>
+    getComputedStyle(document.documentElement).getPropertyValue(variable).trim();

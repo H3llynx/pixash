@@ -14,9 +14,10 @@ import { computed } from 'vue';
 import { Bar } from 'vue-chartjs';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
+import { getChartColor } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';
 import type { PetExtended } from '../../../pets/types';
-import { getChartColor, prefersKg } from '../../../pets/utils';
+import { prefersKg } from '../../../pets/utils';
 import { useTheme } from '../../../theme/composables/useTheme';
 import type { WeightLogExtended } from '../../types';
 

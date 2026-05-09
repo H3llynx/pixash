@@ -3,17 +3,16 @@
 defineProps<{
     id: string
     label: string
-    modelValue: string | undefined | null
 }>();
-defineEmits(["update:modelValue"]);
+
+const model = defineModel<string | undefined | null>();
 </script>
 
 <template>
     <label :for="id">
         <p>{{ label }}</p>
         <div class="input-container">
-            <select :value="modelValue" @change="$emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
-                v-bind="$attrs" :id="id">
+            <select v-model="model" v-bind="$attrs" :id="id">
                 <slot />
             </select>
         </div>

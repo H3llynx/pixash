@@ -14,6 +14,8 @@ import { resetForm } from '../../health/utils';
 import { usePets } from '../composables/usePets';
 import { petFields } from '../config';
 import type { Pet } from '../types';
+import { getBreedOptions } from '../utils';
+import BreedSelector from './BreedSelector.vue';
 
 const { name, species, breed, birthDate, sex, sterilized, microchipped } = petFields;
 const { loading, pets, error, isAddingPet, isUpdatingPet, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();
@@ -35,11 +37,6 @@ const defaultForm: Pet = {
 };
 const formData = reactive<Pet>({ ...defaultForm });
 
-const getBreedOptions = (species: string) => {
-    if (species === "dog") return breed.dogOptions;
-    if (species === "cat") return breed.catOptions;
-    return []
-};
 const selectedSpecies = computed(() =>
     species.options.find(s => s.id === formData.species)
 );
@@ -121,21 +118,15 @@ watch(() => formData.species, () => {
                     </fieldset>
                     <div class="default-padding flex flex-col gap-1">
                         <Input v-model="formData.name" :id="name.id" :label="t(name.label)" required />
-                        <Dropdown v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="t(breed.label)"
-                            required>
-                            <option value="" disabled>{{ t(breed.placeholder) }}</option>
-                            <option v-for="option in getBreedOptions(formData.species)"
-                                :key="`${formData.species}-${option.value}`" :value="option.value">
-                                {{ option.name }}
-                            </option>
-                        </Dropdown>
+                        <BreedSelector v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="t(breed.label)"
+                            :placeholder="t(breed.placeholder)" :breeds="getBreedOptions(formData.species)" />
                         <div class="flex justify-between gap-1">
                             <Input v-model="formData.birthDate" :id="birthDate.id" :type="birthDate.type"
                                 :label="t(birthDate.label)" required />
                             <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
                                 <option v-for="option in sex.options" :value="option.id" :key="option.id">{{
                                     t(option.label)
-                                }}
+                                    }}
                                 </option>
                             </Dropdown>
                         </div>
