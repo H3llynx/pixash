@@ -25,7 +25,7 @@ const isUpdating = reactive({
 
 const updateGeneralInfo = () => {
     selectPet(props.pet);
-    isUpdatingPet.value = true
+    isUpdatingPet.value = true;
 };
 
 const handleDelete = async () => {

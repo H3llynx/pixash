@@ -163,6 +163,36 @@ watch(user, async (newUser) => {
   }
 }, { immediate: true });
 
+watch(
+  [selectedVaccine, selectedVisit, () => selectedLog.antiparasitic],
+  ([vaccine, visit, log]) => {
+    if (vaccine || visit || log) {
+      isAddingPet.value = false;
+      isUpdatingPet.value = false;
+    }
+  }
+);
+
+watch(isAddingPet, (adding) => {
+  if (adding) {
+    resetState(isAddingHealth);
+    resetState(selectedLog);
+    isUpdatingPet.value = false;
+    selectVaccine(null);
+    selectVisit(null);
+  }
+});
+
+watch(isUpdatingPet, (editing) => {
+  if (editing) {
+    resetState(isAddingHealth);
+    resetState(selectedLog);
+    isAddingPet.value = false;
+    selectVaccine(null);
+    selectVisit(null);
+  }
+});
+
 const resyncSelectedPet = () => {
   if (selectedPet.value) {
     const updated = pets.value.find(pet => pet.id === selectedPet.value!.id);

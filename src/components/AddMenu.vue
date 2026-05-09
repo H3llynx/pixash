@@ -4,10 +4,9 @@ import { onClickOutside } from '@vueuse/core';
 import { ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { usePets } from '../features/pets/composables/usePets';
-import { resetState } from '../utils';
 import Button from './Button.vue';
 
-const { isAddingPet, isAddingHealth, isUpdatingPet } = usePets();
+const { isAddingPet, isAddingHealth, resetPetActions } = usePets();
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -24,9 +23,7 @@ onClickOutside(menuRef, () => {
 
 
 const handleClick = (action: string) => {
-    resetState(isAddingHealth);
-    isUpdatingPet.value = false;
-    isAddingPet.value = false;
+    resetPetActions();
     if (action === "vaccine") isAddingHealth.vaccine = true;
     else if (action === "pet") isAddingPet.value = true;
     else if (action === "visit") isAddingHealth.visit = true;

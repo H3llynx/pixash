@@ -11,10 +11,10 @@ import PetIndicator from '../../../pets/components/PetIndicator.vue';
 import { usePets } from '../../../pets/composables/usePets';
 import { useEvents } from '../../composables/useEvents';
 import type { STAGE } from '../../config';
-import type { AntiparasiteTypes, LogExtended, PetEvent, VaccineExtended, VaccineRecord, VaccineTypes, VisitExtended } from '../../types';
+import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, PetEvent, VaccineExtended, VaccineRecord, VaccineTypes, VisitExtended } from '../../types';
 import DateTag from './DateTag.vue';
 
-const { vaccines, vetVisits, selectVaccine, selectVisit, vets, healthLoading, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, healthError } = usePets();
+const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectedLog, vets, healthLoading, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, healthError, isAddingHealth, isUpdatingPet, isAddingPet } = usePets();
 const { locale, t } = useI18n();
 const { useEventData } = useEvents();
 const { show } = useToast();
@@ -26,10 +26,13 @@ const handleClick = (event: PetEvent) => {
     if (event.eventType === "vaccine") {
         const vaccine = vaccines.value.find(v => v.id === event.id) as VaccineExtended;
         selectVaccine(vaccine);
-    } else {
+    } else if (event.eventType === "visit") {
         const visit = vetVisits.value.find(v => v.id === event.id) as VisitExtended;
         selectVisit(visit);
-    }
+    } else if (event.type === "antiparasite") {
+        const log = logs.value.find(l => l.id === event.id) as AntiparasiteLogExtended;
+        selectedLog.antiparasitic = log;
+    } else return;
 }
 
 const markAsDone = async (event: PetEvent) => {
