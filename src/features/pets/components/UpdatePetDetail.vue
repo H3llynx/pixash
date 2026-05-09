@@ -38,6 +38,7 @@ onClickOutside(updateRef, () => {
 const { activate, deactivate } = useFocusTrap(updateRef, {
     immediate: true,
     allowOutsideClick: true,
+    escapeDeactivates: false,
 });
 
 const hasChanged = computed(() => {

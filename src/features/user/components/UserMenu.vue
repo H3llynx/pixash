@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Camera, Edit2, LogOut } from '@lucide/vue';
-import { onClickOutside } from '@vueuse/core';
-import { ref, toRef } from 'vue';
+import { onClickOutside, onKeyStroke } from '@vueuse/core';
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
+import { onMounted, onUnmounted, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { ROUTES } from '../../../router/config';
@@ -22,8 +23,14 @@ const menuRef = ref<HTMLUListElement | null>(null);
 const isEditingName = ref<boolean>(false);
 const isEditingPicture = ref<boolean>(false);
 
+const { activate, deactivate } = useFocusTrap(menuRef, {
+    immediate: true,
+    clickOutsideDeactivates: true,
+});
+onKeyStroke("Escape", () => { visible.value = false; });
+
 onClickOutside(menuRef, () => {
-    if (visible.value) visible.value = false;
+    visible.value = false;
 }, { ignore: [toRef(props, "toggleRef")] });
 
 const handleLogout = async () => {
@@ -40,6 +47,14 @@ const handleEditPicture = () => {
     isEditingPicture.value = true;
     visible.value = false;
 }
+
+onMounted(() => {
+    activate();
+});
+
+onUnmounted(() => {
+    deactivate();
+});
 </script>
 
 <template>
