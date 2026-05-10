@@ -6,7 +6,7 @@ import Button from '../../../../components/Button.vue';
 import Paw from '../../../../components/icons/Paw.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
-import FormWrapper from '../../../../components/Panel.vue';
+import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import { useDialog } from '../../../../composables/useDialog';
 import { useToast } from '../../../../composables/useToast';
@@ -123,7 +123,7 @@ watch(() => selectedVet.value,
 
 <template>
     <Transition name="panel" appear>
-        <FormWrapper v-if="isAddingHealth.vet || (selectedVet && isUpdatingVet)" :onClose="handleClose">
+        <Panel v-if="isAddingHealth.vet || (selectedVet && isUpdatingVet)" :onClose="handleClose">
             <LoadingPuppy v-if="healthLoading" />
             <div v-else class="md:max-w-max">
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">
@@ -176,7 +176,7 @@ watch(() => selectedVet.value,
                     </div>
                 </form>
             </div>
-        </FormWrapper>
+        </Panel>
     </Transition>
 </template>
 

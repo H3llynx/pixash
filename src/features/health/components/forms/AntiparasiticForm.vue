@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
-import FormWrapper from '../../../../components/Panel.vue';
+import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
 import PetSelector from '../../../pets/components/PetSelector.vue';
@@ -38,7 +38,7 @@ watch(() => mode.value, (mode) => {
 
 <template>
     <Transition name="panel">
-        <FormWrapper v-if="isAddingHealth.antiparasitic || selectedLog.antiparasitic" :onClose="handleClose">
+        <Panel v-if="isAddingHealth.antiparasitic || selectedLog.antiparasitic" :onClose="handleClose">
             <LoadingPuppy v-if="loading || healthLoading" />
             <div class="md:max-w-max" v-else-if="!newLog">
                 <div class="flex gap-1 justify-between my-1 default-padding">
@@ -48,7 +48,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                        }}
+                    }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"
@@ -101,7 +101,7 @@ watch(() => mode.value, (mode) => {
                 </form>
             </div>
             <LogSuccess v-else-if="newLog" :onClose="handleClose" :pet="selectedPet!" :log="newLog" />
-        </FormWrapper>
+        </Panel>
     </Transition>
 </template>
 

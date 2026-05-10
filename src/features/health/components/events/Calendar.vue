@@ -16,7 +16,7 @@ const emit = defineEmits<{
     dateClick: [date: string, x: number, y: number]
 }>();
 
-const { selectVaccine, selectVisit, selectedLog } = usePets();
+const { selectVaccine, selectVisit, selectLog } = usePets();
 
 const eventColors: Record<string, string> = {
     visit: "var(--color-brand-light)",
@@ -53,7 +53,7 @@ const calendarOptions = computed(() => ({
         else if (info.event.extendedProps.event.eventType === "visit") selectVisit(info.event.extendedProps.event);
         else if (info.event.extendedProps.event.eventType === "log") {
             if (info.event.extendedProps.event.type === "antiparasite")
-                selectedLog.antiparasitic = info.event.extendedProps.event;
+                selectLog(info.event.extendedProps.event, "antiparasitic");
         }
     }
 }));

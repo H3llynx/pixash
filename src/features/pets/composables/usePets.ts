@@ -25,6 +25,7 @@ const {
   selectedVaccine,
   selectVaccine,
   selectVisit,
+  selectLog,
   selectedVisit,
   fetchUserVaccines,
   addNewVaccine,
@@ -175,6 +176,16 @@ watch(
   }
 );
 
+watch(
+  [selectedVaccine, selectedVisit, () => selectedLog.antiparasitic],
+  ([vaccine, visit, log]) => {
+    if (vaccine || visit || log) {
+      isAddingPet.value = false;
+      isUpdatingPet.value = false;
+    }
+  }
+);
+
 watch(isAddingPet, (adding) => {
   if (adding) {
     resetState(isAddingHealth);
@@ -237,6 +248,7 @@ export const usePets = () => {
     vetVisits,
     selectedVaccine,
     selectVaccine,
+    selectLog,
     isAddingHealth,
     fetchUserVaccines,
     addNewVaccine,

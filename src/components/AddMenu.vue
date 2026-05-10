@@ -23,7 +23,6 @@ onClickOutside(menuRef, () => {
 
 
 const handleClick = (action: string) => {
-    resetPetActions();
     if (action === "vaccine") isAddingHealth.vaccine = true;
     else if (action === "pet") isAddingPet.value = true;
     else if (action === "visit") isAddingHealth.visit = true;

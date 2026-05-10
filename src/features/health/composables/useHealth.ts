@@ -35,15 +35,26 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
 
     const selectVaccine = (vaccine: VaccineExtended | null) => {
         resetState(isAddingHealth);
+        resetState(selectedLog);
         selectedVisit.value = null;
         selectedVaccine.value = vaccine;
     };
 
     const selectVisit = (visit: VisitExtended | null) => {
         resetState(isAddingHealth);
+        resetState(selectedLog);
         selectedVaccine.value = null;
         selectedVisit.value = visit;
     };
+
+    type SelectedLogValues = typeof selectedLog[keyof typeof selectedLog];
+
+    const selectLog = (log: SelectedLogValues, logType: keyof typeof selectedLog) => {
+        resetState(isAddingHealth);
+        selectedVaccine.value = null;
+        selectedVisit.value = null;
+        selectedLog[logType] = log;
+    }
 
     const assignHealth = () => {
         pets.value = pets.value.map(pet => {
@@ -246,6 +257,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         selectedVisit,
         selectVaccine,
         selectVisit,
+        selectLog,
         isAddingHealth,
         fetchUserVaccines,
         addNewVaccine,

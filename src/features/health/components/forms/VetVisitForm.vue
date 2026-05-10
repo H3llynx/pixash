@@ -6,7 +6,7 @@ import Button from '../../../../components/Button.vue';
 import Paw from '../../../../components/icons/Paw.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
-import FormWrapper from '../../../../components/Panel.vue';
+import Panel from '../../../../components/Panel.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
 import { tsToDate } from '../../../../utils';
 import PetSelector from '../../../pets/components/PetSelector.vue';
@@ -89,7 +89,7 @@ watch(() => mode.value, (mode) => {
 
 <template>
     <Transition name="panel" appear>
-        <FormWrapper v-if="isAddingHealth.visit || selectedVisit" :onClose="handleClose">
+        <Panel v-if="isAddingHealth.visit || selectedVisit" :onClose="handleClose">
             <LoadingPuppy v-if="loading || healthLoading" />
             <div v-else class="md:max-w-max">
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">
@@ -131,7 +131,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit")
-                                }}
+                            }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>
@@ -142,7 +142,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                 </form>
             </div>
-        </FormWrapper>
+        </Panel>
     </Transition>
 </template>
 

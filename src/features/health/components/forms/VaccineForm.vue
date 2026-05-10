@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
-import FormWrapper from '../../../../components/Panel.vue';
+import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import Toggle from '../../../../components/Toggle.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
@@ -43,14 +43,14 @@ watch(() => isAddingHealth.vaccine, (adding) => {
 
 <template>
     <Transition name="panel">
-        <FormWrapper v-if="isAddingHealth.vaccine || selectedVaccine" :onClose="handleClose">
+        <Panel v-if="isAddingHealth.vaccine || selectedVaccine" :onClose="handleClose">
             <LoadingPuppy v-if="loading || healthLoading" />
             <div class="md:max-w-max" v-else>
                 <div class="flex gap-1 justify-between my-1 default-padding">
                     <h1 v-if="isAddingHealth.vaccine">{{ t("health.title.addVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'edit'">{{ t("health.title.editVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'view'" class="font-medium">{{ getIcon(selectedPet!)
-                        }} {{
+                    }} {{
                             selectedPet!.name
                         }} · {{ showTypes(formData.types, selectedPet!) }}</h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
@@ -104,11 +104,11 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{
                                     selectedPet.name
-                                    }} · {{
+                                }} · {{
                                         showTypes(formData.types, selectedPet) }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.sharedDateFields.dueDate")
-                                    }}:
+                                }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
@@ -119,7 +119,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                                     {{ t("common.button.cancel") }}
                                 </Button>
                                 <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVaccine")
-                                    }}</Button>
+                                }}</Button>
                             </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
@@ -129,7 +129,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                     </div>
                 </form>
             </div>
-        </FormWrapper>
+        </Panel>
     </Transition>
 </template>
 

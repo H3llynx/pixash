@@ -4,7 +4,7 @@ import { onClickOutside } from '@vueuse/core';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import FormWrapper from '../../../../components/Panel.vue';
+import Panel from '../../../../components/Panel.vue';
 import { useMedia } from '../../../../composables/useMedia';
 import { resetState } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';
@@ -83,7 +83,7 @@ watch(() => visible.value, (visible) => {
     </Transition>
 
     <Transition name="panel" v-else>
-        <FormWrapper :onClose="handleClose" v-if="visible" class="bg-bg-rgba filter-blur">
+        <Panel :onClose="handleClose" v-if="visible" class="bg-bg-rgba filter-blur">
             <div class="flex default-padding my-1 gap-1 items-center">
                 <Button variant="ghost" size="xs" class="no-border" @click="submenu = false" v-if="submenu"
                     :aria-label="t('common.button.back')">
@@ -125,7 +125,7 @@ watch(() => visible.value, (visible) => {
                     <span>{{ t("addMenu.antiparasitic") }}</span>
                 </Button>
             </div>
-        </FormWrapper>
+        </Panel>
     </Transition>
 </template>
 

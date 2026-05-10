@@ -14,7 +14,7 @@ import type { STAGE } from '../../config';
 import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, PetEvent, VaccineExtended, VaccineRecord, VaccineTypes, VisitExtended } from '../../types';
 import DateTag from './DateTag.vue';
 
-const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectedLog, vets, healthLoading, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, healthError } = usePets();
+const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, healthLoading, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, healthError } = usePets();
 const { locale, t } = useI18n();
 const { useEventData } = useEvents();
 const { show } = useToast();
@@ -31,7 +31,7 @@ const handleClick = (event: PetEvent) => {
         selectVisit(visit);
     } else if (event.type === "antiparasite") {
         const log = logs.value.find(l => l.id === event.id) as AntiparasiteLogExtended;
-        selectedLog.antiparasitic = log;
+        selectLog(log, "antiparasitic");
     } else return;
 }
 
@@ -82,9 +82,10 @@ const markAsDone = async (event: PetEvent) => {
 </script>
 <template>
     <EventCardSkeleton v-if="healthLoading" />
-    <div tabindex="0"
+    <div tabindex="0" role="button"
         class="card cursor-pointer flex p-1 w-full md:max-w-md rounded-xl border border-border gap-1.5 justify-between items-start text-left"
-        v-else @click="handleClick(event)" :class="{ 'opacity-50': tsToDate(event.ts, 'isPast') }">
+        v-else @click="handleClick(event)" @keydown="handleClick(event)"
+        :class="{ 'opacity-50': tsToDate(event.ts, 'isPast') }">
         <div class="flex gap-0.5 w-full min-w-0 h-full">
             <Syringe v-if="event.eventType === 'vaccine'" class="card-icon" :size="20" />
             <Stethoscope v-else class="card-icon" :size="20" />
