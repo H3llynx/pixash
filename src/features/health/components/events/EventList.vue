@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<{
 }>(), { history: false });
 
 const currentPage = ref<number>(1);
-const itemsPerPage = computed(() => props.itemsPerPage ?? isMd.value ? 2 : 3)
+const itemsPerPage = computed(() => props.itemsPerPage ?? (isMd.value ? 2 : 3))
 
 const totalPages = computed(() => Math.ceil(props.events.length / itemsPerPage.value));
 const paginatedEvents = computed(() => props.events.slice(
@@ -48,7 +48,7 @@ watch(() => props.events, () => {
                 <p v-else class="text-text-secondary text-sm">{{ t("common.text.noEventText") }}</p>
             </template>
         </div>
-        <div v-if="totalPages > 1" class="flex gap-0.5 h-max justify-end mt-1">
+        <div v-if="!history && totalPages > 1" class="flex gap-0.5 h-max justify-end mt-1">
             <Button variant="ghost" size="xs" :disabled="currentPage === 1" @click="goPrev"
                 :aria-label="t('common.button.back')">
                 <ChevronLeft />
