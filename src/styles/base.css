@@ -144,6 +144,20 @@
     border-radius: 5px;
   }
 
+  *::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border-radius: 0.75rem;
+    background: var(--color-brand-light);
+  }
+
+  *::-webkit-scrollbar-track {
+    margin-top: 1.5rem;
+  }
+
   dialog:focus-visible {
     outline: none;
   }

@@ -23,7 +23,7 @@ export const useVaccineForm = () => {
     const error = ref<boolean>(false);
     const vetTextInput = ref<boolean>(false);
     const today = new Date().toISOString().slice(0, 10);
-    const date = computed(() => selectedDate.value ?? today);
+    const date = computed(() => selectedDate.value ?? "");
     const givenBy = computed(() => {
         if (selectedVet.value) return selectedVet.value.id;
         const pet = selectedPet.value;
