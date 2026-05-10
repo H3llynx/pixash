@@ -17,7 +17,7 @@ import { useVetVisitForm } from '../../composables/useVetVisitForm';
 import { vetVisitFields } from '../../config';
 import type { VisitExtended } from '../../types';
 import { resetForm } from '../../utils';
-import VetFormSelector from './VetFormSelector.vue';
+import VetSelector from './VetSelector.vue';
 
 const { loading, selectedPet, selectedVisit, isAddingHealth, healthLoading, selectedVet, vets } = usePets();
 const { mode, isReadonly } = useFormMode();
@@ -118,8 +118,7 @@ watch(() => mode.value, (mode) => {
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
-                        <VetFormSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput"
-                            required />
+                        <VetSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput" required />
                         <label :for="notes.id" v-if="selectedVisit?.notes || mode === 'edit'">
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id"

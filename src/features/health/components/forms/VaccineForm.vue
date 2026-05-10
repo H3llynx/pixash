@@ -16,7 +16,7 @@ import { getIcon } from '../../../pets/utils';
 import { useVaccineForm } from '../../composables/useVaccineForm';
 import { vaccineFields } from '../../config';
 import { showTypes } from '../../utils';
-import VetFormSelector from './VetFormSelector.vue';
+import VetSelector from './VetSelector.vue';
 
 const { loading, selectedPet, isAddingHealth, selectedVaccine, healthLoading } = usePets();
 const { t } = useI18n();
@@ -93,7 +93,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                                 <CalendarClock class="mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
-                        <VetFormSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput" />
+                        <VetSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput" />
                         <label :for="notes.id" v-if="selectedVaccine?.notes || mode === 'edit'">
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id"
