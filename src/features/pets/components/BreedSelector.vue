@@ -34,7 +34,9 @@ const handleFocusOut = (e: FocusEvent) => {
     open.value = false;
 };
 
-const { activate, deactivate } = useFocusTrap(dropdownRef);
+const { activate, deactivate } = useFocusTrap(dropdownRef, {
+    clickOutsideDeactivates: true
+});
 
 onClickOutside(dropdownRef, () => open.value = false);
 onKeyStroke("Escape", () => { open.value = false; });
@@ -53,9 +55,10 @@ watch(() => open.value, (open) => {
                 aria-autocomplete="list" :aria-controls="`${id}-listbox`" :placeholder="placeholder"
                 @focus="open = true" @keydown.esc="open = false" class="font-medium px-1 py-0.5 h-3" required />
             <ul v-if="open" role="listbox" :id="`${id}-listbox`"
-                class="filter-blur bg-bg-rgba absolute z-1 w-full border border-border rounded-lg max-h-10 overflow-y-scroll">
+                class="filter-blur bg-bg-rgba absolute z-1 w-full border border-border rounded-lg max-h-12 overflow-y-scroll">
                 <li tabindex="0" role="option" :aria-selected="model === option.id" class="py-0.5 px-1"
-                    v-for="option in filtered" :key="option.id" :id="option.id" @click="handleSelect(option)"
+                    v-for="option in filtered" :key="option.id" :id="option.id"
+                    @mousedown.prevent="handleSelect(option)" @touchend.prevent="handleSelect(option)"
                     @keydown.enter="handleSelect(option)">
                     {{ option.label }}</li>
             </ul>
@@ -64,6 +67,16 @@ watch(() => open.value, (open) => {
 </template>
 
 <style scoped>
+ul::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+}
+
+ul::-webkit-scrollbar-thumb {
+    border-radius: 0.75rem;
+    background: var(--color-brand-light);
+}
+
 li:focus-visible {
     background: var(--color-gold);
     outline: none;

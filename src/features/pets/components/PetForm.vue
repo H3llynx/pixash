@@ -132,7 +132,9 @@ watch(() => formData.species, () => {
                         </div>
                         <Toggle v-model="formData.sterilized" :label="t(sterilized.label)" :id="sterilized.id" />
                         <Toggle v-model="formData.microchipped" :label="t(microchipped.label)" :id="microchipped.id" />
-                        <Button :disabled="loading" class="md:ml-auto">{{ t("pet.cta.save", { name: formData.name }) }}
+                        <Button :disabled="loading" class="md:ml-auto">{{ t("pet.cta.save", {
+                            name: formData.name
+                        }) }}
                             <Paw class="w-1 -rotate-12" />
                         </Button>
                     </div>
