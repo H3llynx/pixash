@@ -14,7 +14,7 @@ import type { STAGE } from '../../config';
 import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, PetEvent, VaccineExtended, VaccineRecord, VaccineTypes, VisitExtended } from '../../types';
 import DateTag from './DateTag.vue';
 
-const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectedLog, vets, healthLoading, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, healthError, isAddingHealth, isUpdatingPet, isAddingPet } = usePets();
+const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectedLog, vets, healthLoading, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, healthError } = usePets();
 const { locale, t } = useI18n();
 const { useEventData } = useEvents();
 const { show } = useToast();
