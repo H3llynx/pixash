@@ -12,12 +12,12 @@ const props = defineProps<{
 
 const model = defineModel<string | undefined | null>();
 const dropdownRef = ref<HTMLUListElement>();
-const search = ref("");
+const search = ref(model.value ? props.breeds.find(breed => breed.id === model.value)?.label : "");
 const open = ref(false);
 
 const filtered = computed(() =>
-    search.value.length
-        ? props.breeds.filter(breed => breed.label.toLowerCase().includes(search.value.toLowerCase()))
+    search.value?.length
+        ? props.breeds.filter(breed => breed.label.toLowerCase().includes(search.value!.toLowerCase()))
         : props.breeds
 );
 
