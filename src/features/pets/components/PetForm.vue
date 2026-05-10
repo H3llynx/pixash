@@ -6,7 +6,7 @@ import Dropdown from '../../../components/Dropdown.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
 import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
-import FormWrapper from '../../../components/Panel.vue';
+import Panel from '../../../components/Panel.vue';
 import Toggle from '../../../components/Toggle.vue';
 import { useToast } from '../../../composables/useToast';
 import { shallowEqual } from '../../../utils';
@@ -94,7 +94,7 @@ watch(() => formData.species, () => {
 
 <template>
     <Transition name="panel">
-        <FormWrapper v-if="isAddingPet || isUpdatingPet" :canClose="hasPets" :onClose="handleClose">
+        <Panel v-if="isAddingPet || isUpdatingPet" :canClose="hasPets" :onClose="handleClose">
             <LoadingPuppy v-if="loading" />
             <div class="md:max-w-max" v-else>
                 <div v-if="!hasPets" class="px-2 py-1 text-center">
@@ -126,7 +126,7 @@ watch(() => formData.species, () => {
                             <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
                                 <option v-for="option in sex.options" :value="option.id" :key="option.id">{{
                                     t(option.label)
-                                    }}
+                                }}
                                 </option>
                             </Dropdown>
                         </div>
@@ -140,7 +140,7 @@ watch(() => formData.species, () => {
                     </div>
                 </form>
             </div>
-        </FormWrapper>
+        </Panel>
     </Transition>
 </template>
 

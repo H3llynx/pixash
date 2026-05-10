@@ -35,7 +35,8 @@ const handleFocusOut = (e: FocusEvent) => {
 };
 
 const { activate, deactivate } = useFocusTrap(dropdownRef, {
-    clickOutsideDeactivates: true
+    clickOutsideDeactivates: true,
+    escapeDeactivates: false
 });
 
 onClickOutside(dropdownRef, () => open.value = false);
@@ -67,16 +68,6 @@ watch(() => open.value, (open) => {
 </template>
 
 <style scoped>
-ul::-webkit-scrollbar {
-    width: 6px;
-    background: transparent;
-}
-
-ul::-webkit-scrollbar-thumb {
-    border-radius: 0.75rem;
-    background: var(--color-brand-light);
-}
-
 li:focus-visible {
     background: var(--color-gold);
     outline: none;
