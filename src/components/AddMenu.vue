@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { usePets } from '../features/pets/composables/usePets';
 import Button from './Button.vue';
 
-const { isAddingPet, isAddingHealth, resetPetActions } = usePets();
+const { isAddingPet, isAddingHealth } = usePets();
 const { t } = useI18n();
 
 const props = defineProps<{

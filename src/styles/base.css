@@ -154,10 +154,6 @@
     background: var(--color-brand-light);
   }
 
-  *::-webkit-scrollbar-track {
-    margin-top: 1.5rem;
-  }
-
   dialog:focus-visible {
     outline: none;
   }

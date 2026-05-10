@@ -17,8 +17,10 @@ onMounted(() => {
 
 <template>
     <section ref="panelRef" tabindex="-1"
-        class="bg-bg-3 fixed bottom-0 max-h-[90dvh] overflow-y-scroll overflow-x-hidden right-0 left-0 z-2 border-t md:border border-border rounded-t-3xl pt-1 pb-2 px-0 md:w-2xl md:ml-auto">
+        class="bg-bg-3 flex flex-col fixed bottom-0 max-h-[90dvh] right-0 left-0 z-2 border-t md:border border-border rounded-t-3xl px-0 md:w-2xl md:ml-auto">
         <Button v-if="canClose" action="hide" @click="onClose" />
-        <slot />
+        <div class="flex-1 min-h-0 overflow-y-scroll overflow-x-hidden pt-1 pb-2">
+            <slot />
+        </div>
     </section>
 </template>

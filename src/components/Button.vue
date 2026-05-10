@@ -82,7 +82,7 @@ withDefaults(defineProps<{
     display: flex;
     justify-content: center;
     margin: auto;
-    padding: 0.5rem 2rem;
+    padding: 1rem 2rem 0.5rem;
     height: 1.5rem;
 }
 
@@ -90,8 +90,7 @@ withDefaults(defineProps<{
     .hide-btn {
         align-items: center;
         padding: 0.5rem;
-        margin-right: 1rem;
-        margin-left: auto;
+        margin: 1rem 1rem auto auto;
     }
 }
 
