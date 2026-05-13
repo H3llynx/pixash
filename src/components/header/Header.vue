@@ -17,6 +17,7 @@ const route = useRoute();
 
 const getHeaderStyle = () => {
     return {
+        "flex gap-0.5": true,
         "md:pl-21": route.path !== ROUTES.auth,
         "bg-brand-dark md:bg-bg-2 md:border-b md:border-border": route.path === ROUTES.calendar
     }
@@ -32,7 +33,7 @@ const getHeaderStyle = () => {
             t("common.header.calendar")
         }}</h2>
         <Logo v-if="route.path === ROUTES.auth || (route.path === ROUTES.calendar && !isMd)" />
-        <div class="flex gap-0.5 relative z-2 items-start">
+        <div class="flex gap-0.5 relative z-3 items-start">
             <ThemeSwitcher />
             <UserPicture />
         </div>

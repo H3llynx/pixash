@@ -1,14 +1,8 @@
-<script setup lang="ts">
-import { useMedia } from '../../composables/useMedia';
-
-const { isMd } = useMedia();
-</script>
-
 <template>
     <div class="animate-pulse flex flex-col gap-1.5 default-padding py-1 max-w-full overflow-hidden">
         <div class="h-1 w-7 rounded bg-grey-light opacity-30"></div>
         <div class="flex gap-1 w-full">
-            <div v-for="i in isMd ? 2 : 1" :key="i"
+            <div
                 class="flex flex-col gap-0.5 px-1 pt-2 pb-1 rounded-xl border border-border bg-bg-2 w-full md:w-sm shrink-0">
                 <div class="flex items-start">
                     <div class="rounded-xl w-5 aspect-square bg-grey-light opacity-30 min-w-2"></div>
