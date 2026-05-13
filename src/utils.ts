@@ -45,9 +45,7 @@ export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, t?: TF
     if (!ts) return;
     const date = ts.toDate();
     const { today, diffDays, diffMonths, eventDay } = getCleanDates(date);
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, "0");
-    const d = String(date.getDate()).padStart(2, "0");
+
     switch (mode) {
         case "date":
             return date.toLocaleDateString(undefined, {
@@ -56,11 +54,9 @@ export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, t?: TF
                 year: "numeric"
             });
         case "input":
-            return `${y}-${m}-${d}`;
+            return date.toISOString().slice(0, 10);
         case "datetime":
-            const h = String(date.getHours()).padStart(2, "0");
-            const min = String(date.getMinutes()).padStart(2, "0");
-            return `${y}-${m}-${d}T${h}:${min}`;
+            return date.toISOString().slice(0, 16);
         case "timeUntil": {
             if (!t) return;
             if (diffDays === -1) return t("tsToDate.yesterday");

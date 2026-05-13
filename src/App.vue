@@ -3,6 +3,7 @@ import Dialog from './components/Dialog.vue';
 import NavBar from './components/NavBar.vue';
 import Toast from './components/Toast.vue';
 import AntiparasiticForm from './features/health/components/forms/AntiparasiticForm.vue';
+import TreatmentForm from './features/health/components/forms/TreatmentForm.vue';
 import VaccineForm from './features/health/components/forms/VaccineForm.vue';
 import VetVisitForm from './features/health/components/forms/VetVisitForm.vue';
 import PetForm from './features/pets/components/PetForm.vue';
@@ -18,6 +19,7 @@ const { loading, user } = useAuth();
   <NavBar v-if="user" />
   <VaccineForm />
   <VetVisitForm />
+  <TreatmentForm />
   <AntiparasiticForm />
   <PetForm />
   <Toast />

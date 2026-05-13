@@ -67,6 +67,7 @@ export default {
         vet: "Add vet",
         log: "New log",
         antiparasitic: "Log antiparasitic",
+        treatment: "Add treatment"
     },
     userMenu: {
         logout: "Log out",
@@ -168,7 +169,9 @@ export default {
             addVet: "Add vet",
             editVet: "Edit {name}",
             myVets: "My vets",
-            logAntiparasitic: "Log antiparasitic"
+            logAntiparasitic: "Log antiparasitic",
+            addTreatment: "Add treatment",
+            editTreatment: "Edit treatment"
         },
         cta: {
             saveVaccine: "Save vaccine",
@@ -178,8 +181,10 @@ export default {
             saveVet: "Save {name}",
             deleteVet: "Delete vet",
             editVetVisit: "Edit vet appointment",
-            saveTreatment: "Log treatment",
-            editLog: "Edit log"
+            logTreatment: "Log treatment",
+            editLog: "Edit log",
+            saveTreatment: "Save treatment",
+            editTreatment: "Modify treatment",
         },
         sharedDateFields: {
             givenDate: "Date given",
@@ -208,6 +213,12 @@ export default {
             other: "Other",
             placeholderVet: "Type your vet's name...",
             chooseExisting: "Pick from my vets"
+        },
+        treatmentForm: {
+            name: "Treatment name",
+            startDate: "Start date",
+            vet: "Prescribed by",
+            notes: "Notes"
         },
         vetForm: {
             name: "Name",

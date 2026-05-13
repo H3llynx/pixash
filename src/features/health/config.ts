@@ -73,7 +73,7 @@ export const antiparasiteFields = {
         label: "health.antiparasiteForm.notes",
         type: "text",
     },
-}
+} as const;
 
 export const vaccineFields = {
     types: {
@@ -189,5 +189,27 @@ export const vetFormFields = {
     hours: {
         id: "vet-hours",
         label: "health.vetForm.hours",
+    },
+} as const;
+
+export const treatmentFields = {
+    name: {
+        id: "treatment-name",
+        label: "health.treatmentForm.name",
+    },
+    startDate: {
+        id: "treatment-start-date",
+        label: "health.treatmentForm.startDate",
+        type: "date",
+    },
+    vet: {
+        id: "treatment-vet",
+        label: vetFields.label,
+        placeholder: vetFields.placeholder
+    },
+    notes: {
+        id: "treatment-notes",
+        label: "health.treatmentForm.notes",
+        type: "text",
     },
 } as const;

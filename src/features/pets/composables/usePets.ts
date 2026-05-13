@@ -47,7 +47,8 @@ const {
   fetchUserLogs,
   addNewLog,
   updateSelectedLog,
-  deleteSelectedLog
+  deleteSelectedLog,
+  selectedTreatment
 } = useHealth(pets);
 
 const hasVets = computed(() => vets.value.length > 0);
@@ -271,6 +272,7 @@ export const usePets = () => {
     addNewLog,
     updateSelectedLog,
     deleteSelectedLog,
-    resetPetActions
+    resetPetActions,
+    selectedTreatment
   };
 };

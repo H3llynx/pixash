@@ -13,7 +13,7 @@ export type VaccineRecord = {
     dueOn?: string;
     vet?: string;
     notes?: string;
-}
+};
 
 export type VaccineExtended = Omit<VaccineRecord, "givenAt" | "dueOn"> & {
     id: string;
@@ -23,14 +23,14 @@ export type VaccineExtended = Omit<VaccineRecord, "givenAt" | "dueOn"> & {
     dueOn: Timestamp;
     eventType: string;
     ts: Timestamp;
-}
+};
 
 export type VisitRecord = {
     title: string;
     date: string;
     vet: string;
     notes?: string;
-}
+};
 
 export type VisitExtended = Omit<VisitRecord, "date"> & {
     id: string;
@@ -39,7 +39,23 @@ export type VisitExtended = Omit<VisitRecord, "date"> & {
     date: Timestamp;
     eventType: string;
     ts: Timestamp;
-}
+};
+
+export type TreatmentRecord = {
+    name: string;
+    startDate: string;
+    vet: string;
+    notes?: string;
+};
+
+export type TreatmentExtended = Omit<TreatmentRecord, "date"> & {
+    id: string;
+    petId: string;
+    userId: string;
+    startDate: Timestamp;
+    eventType: string;
+    ts: Timestamp;
+};
 
 export type PetEvent = {
     id: string;
@@ -77,9 +93,7 @@ export type Vet = {
     hours?: string;
 }
 
-export type VetExtended = Vet & {
-    id: string;
-}
+export type VetExtended = Vet & { id: string; }
 
 export type LogTypes = "antiparasite" | "weight";
 

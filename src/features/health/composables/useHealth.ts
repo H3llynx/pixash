@@ -4,7 +4,7 @@ import { addLog, addVaccine, addVet, addVetVisit, deleteLog, deleteVaccine, dele
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { AntiparasiteLogExtended, Log, LogExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { AntiparasiteLogExtended, Log, LogExtended, TreatmentExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
@@ -16,6 +16,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const selectedVaccine = ref<VaccineExtended | null>(null);
     const selectedVisit = ref<VisitExtended | null>(null);
     const selectedVet = ref<VetExtended | null>(null);
+    const selectedTreatment = ref<TreatmentExtended | null>(null)
     const selectedLog = reactive<{
         antiparasitic: AntiparasiteLogExtended | null;
     }>({
@@ -279,6 +280,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         fetchUserLogs,
         addNewLog,
         updateSelectedLog,
-        deleteSelectedLog
+        deleteSelectedLog,
+        selectedTreatment
     };
 };

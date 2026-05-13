@@ -84,7 +84,7 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
 
 watch(() => mode.value, (mode) => {
     if (mode === "view") fillVisitData(selectedVisit.value!);
-})
+});
 </script>
 
 <template>
@@ -130,7 +130,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit")
-                            }}
+                                }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>
