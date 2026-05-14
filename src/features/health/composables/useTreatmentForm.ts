@@ -3,6 +3,7 @@ import { useI18n } from "vue-i18n";
 import { useDialog } from "../../../composables/useDialog";
 import { useToast } from "../../../composables/useToast";
 import { usePets } from "../../pets/composables/usePets";
+import { MED_FREQUENCY } from "../config";
 import { resetForm } from "../utils";
 import { useEvents } from "./useEvents";
 
@@ -13,11 +14,19 @@ export const useTreatmentForm = () => {
     const { open } = useDialog();
     const { t } = useI18n();
 
+    const defaultMedData = {
+        name: "",
+        instructions: "",
+        frequency: MED_FREQUENCY[0].id,
+        endDate: ""
+    };
+
     const defaultForm = {
         name: "",
         startDate: "",
         vet: "",
         notes: "",
+        medicine: [defaultMedData],
     };
 
     const formData = reactive({ ...defaultForm });
@@ -28,8 +37,8 @@ export const useTreatmentForm = () => {
         isAddingHealth.treatment = false;
     };
 
-    const handleSubmit = async () => { console.log("submit") };
+    const handleSubmit = async () => { console.log(formData) };
     const handleDelete = async () => { console.log("delete") };
 
-    return { isAddingHealth, selectedTreatment, formData, defaultForm, handleClose, handleSubmit, handleDelete }
+    return { isAddingHealth, selectedTreatment, formData, defaultForm, defaultMedData, handleClose, handleSubmit, handleDelete }
 }

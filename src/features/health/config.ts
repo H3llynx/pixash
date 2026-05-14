@@ -47,9 +47,57 @@ export const VET_TYPES = [{ id: "primary", label: "health.vetTypes.primary" }, {
 
 export const EVENT_TYPES = [{ id: "vaccines", label: "events.vaccines" }, { id: "visit", label: "events.visit" }, { id: "weight", label: "events.weightLog" }, { id: "antiparasite", label: "antiparasitics" }];
 
+export const MED_FREQUENCY = [
+    {
+        id: "daily",
+        label: "health.medicine.frequency.daily"
+    },
+    {
+        id: "twice_daily",
+        label: "health.medicine.frequency.twiceDaily"
+
+    },
+    {
+        id: "three_times_daily",
+        label: "health.medicine.frequency.threeDaily"
+
+    },
+    {
+        id: "every_48_hours",
+        label: "health.medicine.frequency.every48"
+
+    },
+    {
+        id: "custom",
+        label: "health.medicine.frequency.custom"
+
+    }
+] as const;
+
 const vetFields = {
     label: "health.vetVisitForm.vet",
     placeholder: "health.vetVisitForm.placeholderVet"
+};
+
+export const medFields = {
+    title: "health.medicine.title",
+    name: {
+        label: "health.medicine.name",
+        type: "text",
+    },
+    instructions: {
+        label: "health.medicine.instructions",
+        type: "text",
+    },
+    frequency: {
+        label: "health.medicine.frequency.label",
+        type: "radio",
+        options: MED_FREQUENCY
+    },
+    endDate: {
+        label: "health.medicine.endDate",
+        type: "date"
+    },
 };
 
 export const antiparasiteFields = {

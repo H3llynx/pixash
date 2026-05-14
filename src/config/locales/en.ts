@@ -233,6 +233,22 @@ export default {
             email: "Email",
             hours: "Working hours"
         },
+        medicine: {
+            title: "Medicine {index}",
+            name: "Medicine name",
+            instructions: "Medication instruction",
+            frequency: {
+                label: "Medication frequency",
+                daily: "Daily",
+                twiceDaily: "Twice daily",
+                threeDaily: "Three times daily",
+                every48: "Every 48h",
+                custom: "Custom"
+            },
+            endDate: "End date",
+            validationFrequency: "You must select a frequency",
+            cta: "Add medicine",
+        },
         stage: {
             adult: "Adult",
             young: "Young",

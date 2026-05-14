@@ -41,9 +41,17 @@ export type VisitExtended = Omit<VisitRecord, "date"> & {
     ts: Timestamp;
 };
 
+export type Medicine = {
+    name: string;
+    instructions: string;
+    frequency: string;
+    endDate: string;
+}
+
 export type TreatmentRecord = {
     name: string;
     startDate: string;
+    medicine: Medicine[]
     vet: string;
     notes?: string;
 };

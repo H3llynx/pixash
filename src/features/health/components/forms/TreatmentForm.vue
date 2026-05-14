@@ -16,6 +16,7 @@ import { useTreatmentForm } from '../../composables/useTreatmentForm';
 import { treatmentFields } from '../../config';
 import type { TreatmentExtended } from '../../types';
 import { resetForm } from '../../utils';
+import MedicineArea from './MedicineArea.vue';
 import VetSelector from './VetSelector.vue';
 
 const { handleClose, formData, defaultForm, handleSubmit, handleDelete } = useTreatmentForm();
@@ -106,8 +107,7 @@ watch(() => mode.value, (mode) => {
                 <PetSelector v-if="isAddingHealth.treatment" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-if="mode === 'edit'" v-model="formData.name" :id="name.id" :label="t(name.label)"
-                            required />
+                        <Input v-model="formData.name" :id="name.id" :label="t(name.label)" required />
                         <Input v-model="formData.startDate" :id="startDate.id" :label="t(startDate.label)"
                             :type="startDate.type" :class="mode === 'view'" required>
                             <template #addon>
@@ -117,6 +117,7 @@ watch(() => mode.value, (mode) => {
                         <VetSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput" required />
                         <Input v-if="selectedTreatment?.notes || mode === 'edit'" v-model="formData.notes"
                             :id="notes.id" :label="t(notes.label)" :type="notes.type" />
+                        <MedicineArea v-model="formData.medicine" />
                         <div class="flex gap-0.5 mt-1 items-center ml-auto"
                             v-if="!selectedTreatment || mode === 'edit'">
                             <Button v-if="selectedTreatment && mode === 'edit'" variant="secondary" size="sm"
