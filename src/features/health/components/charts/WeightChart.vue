@@ -118,10 +118,10 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
 <template>
     <section class="pet-section mb-4 md:mb-1 md:px-0">
         <h2>{{ t("dashboard.title.weightTracking") }}</h2>
-        <div class="profile-card w-full text-text" v-if="logs.length">
+        <div class="card w-full text-text" v-if="logs.length">
             <div class="ml-auto text-right">
                 <p class="text-2xl font-medium text-btn-ghost-text">{{ chartData.datasets[0].data.at(-1) }} {{ unit
-                }}</p>
+                    }}</p>
                 <p v-if="displayed.length" class="text-text-secondary text-xs">{{ t("common.text.lastLogged") }} {{
                     displayed.at(-1)?.measuredAt.toDate().toLocaleDateString(locale, {
                         day: "numeric",

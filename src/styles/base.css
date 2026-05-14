@@ -21,7 +21,8 @@
   --color-grey-dark: #3D3D5C;
   --color-grey-dark-rgba: rgba(61, 61, 92, 0.3);
   --color-grey-mid: #888888;
-  --color-gold: #C9953A;
+  --color-gold: #E6A93E;
+  --color-gold-dark: #C9953A;
   --color-gold-rgba: rgba(201, 149, 58, 0.3);
   --color-purple: #9e8fff;
   --color-purple-light: #9D92D8;
@@ -80,6 +81,7 @@
 }
 
 [data-theme="dark"] {
+  --color-gold: var(--color-gold-dark);
   --color-bg: var(--color-charcoal);
   --color-bg-2: var(--color-charcoal-lighter);
   --color-bg-3: var(--color-purple-dark);
@@ -405,11 +407,11 @@
     }
   }
 
-  .profile-card {
+  .card {
     @apply flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 overflow-x-scroll;
   }
 
-  .profile-card::-webkit-scrollbar,
+  .card::-webkit-scrollbar,
   .pet-selector::-webkit-scrollbar {
     display: none;
   }

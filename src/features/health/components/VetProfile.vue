@@ -48,7 +48,7 @@ const handleVetUpdate = () => {
 </script>
 
 <template>
-    <div class="profile-card w-full md:w-sm shrink-0">
+    <div class="card w-full md:w-sm shrink-0">
         <div class="flex items-start gap-0.5 py-1">
             <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                 <BriefcaseMedical />

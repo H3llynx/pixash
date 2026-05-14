@@ -75,7 +75,7 @@ const calendarOptions = computed(() => ({
 
 :deep(.fc-toolbar-title) {
     font-size: x-large;
-    color: var(--color-gold);
+    color: var(--color-gold-dark);
     padding-inline: 1rem;
 }
 

@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useMedia } from '../../composables/useMedia';
+import { usePets } from '../../features/pets/composables/usePets';
 import ThemeSwitcher from '../../features/theme/composants/ThemeSwitcher.vue';
 import UserPicture from '../../features/user/components/UserPicture.vue';
 import { ROUTES } from '../../router/config';
@@ -12,6 +13,7 @@ import VetHeaderTitle from './VetHeaderTitle.vue';
 
 const { t } = useI18n();
 const { isMd } = useMedia();
+const { hasPets } = usePets();
 
 const route = useRoute();
 
@@ -31,9 +33,9 @@ const getHeaderStyle = () => {
         <HistoryHeaderTitle v-if="route.path === ROUTES.history" />
         <h2 v-if="route.path === ROUTES.calendar && isMd" class="text-2xl md:text-3xl my-auto">{{
             t("common.header.calendar")
-        }}</h2>
+            }}</h2>
         <Logo v-if="route.path === ROUTES.auth || (route.path === ROUTES.calendar && !isMd)" />
-        <div class="flex gap-0.5 relative z-3 items-start">
+        <div :class="[hasPets ? 'z-2' : 'z-3', 'flex gap-0.5 relative items-start']">
             <ThemeSwitcher />
             <UserPicture />
         </div>

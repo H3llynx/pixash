@@ -48,7 +48,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                        }}
+                    }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"
@@ -107,8 +107,7 @@ watch(() => mode.value, (mode) => {
 
 <style scoped>
 :deep(label:not(:has(input[type="checkbox"]))) p,
-:deep(legend),
-.read-only-label {
+:deep(legend) {
     text-transform: uppercase;
     color: var(--color-text-secondary);
     font-weight: 500;
