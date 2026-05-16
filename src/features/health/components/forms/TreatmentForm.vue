@@ -49,7 +49,10 @@ const fillTreatmentData = (treatment: Partial<TreatmentExtended>) => {
         startDate: tsToDate(treatment.startDate, "input"),
         vet: treatment.vet,
         notes: treatment.notes ?? "",
-        medication: treatment.medication
+        medication: treatment.medication?.map(med => ({
+            ...med,
+            endDate: med.endDate ? tsToDate(med.endDate, "input") : "",
+        }))
     })
 };
 

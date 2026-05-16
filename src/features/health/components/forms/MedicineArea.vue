@@ -16,16 +16,14 @@ const medicineList = defineModel<Medicine[]>();
 <template>
     <div v-if="medicineList?.length" v-for="(med, index) in medicineList" :key="med.id" class="relative">
         <MedicineBox :index="index + 1" v-model="medicineList[index]" />
-        <Button v-if="medicineList?.length > 1" variant="ghost" size="xs"
+        <Button v-if="medicineList?.length > 1 && !readonly" variant="ghost" size="xs"
             @click="medicineList = medicineList.filter((_m, i) => i !== index)"
             class="absolute top-px right-px bg-transparent" :aria-label="t('health.medicine.delete')">
             <MinusCircle />
         </Button>
     </div>
-    <Button v-if="!readonly" type="button" variant="add" @click="{
-        medicineList = medicineList ? [...medicineList, addMedicine()] : [addMedicine()];
-        console.log(medicineList)
-    }">{{
-        t("health.medicine.cta")
+    <Button v-if="!readonly" type="button" variant="add"
+        @click="medicineList = medicineList ? [...medicineList, addMedicine()] : [addMedicine()]">{{
+            t("health.medicine.cta")
         }}</Button>
 </template>
