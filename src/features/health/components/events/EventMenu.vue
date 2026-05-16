@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Panel from '../../../../components/Panel.vue';
 import { useMedia } from '../../../../composables/useMedia';
-import { resetState } from '../../../../utils';
+import { resetLogs, resetState } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';
 import { useEvents } from '../../composables/useEvents';
 
@@ -26,7 +26,7 @@ onClickOutside(menuRef, () => {
 
 const handleClick = (action: string) => {
     resetState(isAddingHealth);
-    resetState(selectedLog);
+    resetLogs(selectedLog);
     selectVaccine(null);
     selectVisit(null);
     if (action === "vaccine") isAddingHealth.vaccine = true;
@@ -44,7 +44,7 @@ const handleClose = () => {
 watch(() => visible.value, (visible) => {
     if (visible) {
         resetState(isAddingHealth);
-        resetState(selectedLog);
+        resetLogs(selectedLog);
         selectVaccine(null);
         selectVisit(null);
     }
