@@ -2,6 +2,7 @@ import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp, updateDoc
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
 import type { AntiparasiteLogExtended, Log, LogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/health/types";
+import { getTreatmentEndDate } from "../features/health/utils";
 import { tsFromInput } from "../utils";
 
 export const fetchPetVaccines = async (userId: string, petId: string): Promise<VaccineExtended[]> => {
@@ -41,12 +42,16 @@ export const fetchPetTreatments = async (userId: string, petId: string): Promise
         const snapshot = await getDocs(
             collection(db, DB.users, userId, DB.pets, petId, DB.treatments)
         );
-        return snapshot.docs.map(doc => ({
-            id: doc.id,
-            petId,
-            ...doc.data() as Omit<TreatmentExtended, "id" | "petId">,
-            eventType: "treatment" as const,
-        }));
+        return snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                petId,
+                ...data,
+                eventType: "treatment" as const,
+                endDate: getTreatmentEndDate(data.medication)
+            } as TreatmentExtended;
+        });
     } catch (error) {
         console.error("Fetch treatments error:", error);
         return [];
@@ -353,7 +358,10 @@ export const updateTreatment = async (
         startDate: tsFromInput(data.startDate),
         vet: data.vet,
         notes: data.notes,
-        medication: data.medication
+        medication: data.medication.map(med => ({
+            ...med,
+            endDate: med.endDate && !med.noEnd ? tsFromInput(med.endDate) : null
+        }))
     };
     try {
         const docRef = getTreatmentDoc(userId, petId, treatmentId);
@@ -371,7 +379,10 @@ export const addTreatment = async (treatment: TreatmentRecord, petId: string, us
         startDate: tsFromInput(treatment.startDate),
         vet: treatment.vet,
         notes: treatment.notes,
-        medication: treatment.medication
+        medication: treatment.medication.map(med => ({
+            ...med,
+            endDate: med.endDate && !med.noEnd ? tsFromInput(med.endDate) : null
+        }))
     };
     try {
         const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.treatments), newTreatment);

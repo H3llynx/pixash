@@ -50,6 +50,15 @@ export type Medicine = {
     endDate: string;
 }
 
+export type MedicineDb = {
+    id: string;
+    name: string;
+    instructions: string;
+    frequency: string;
+    noEnd: boolean;
+    endDate: Timestamp;
+}
+
 export type TreatmentRecord = {
     name: string;
     startDate: string;
@@ -58,13 +67,14 @@ export type TreatmentRecord = {
     medication: Medicine[];
 };
 
-export type TreatmentExtended = Omit<TreatmentRecord, "startDate"> & {
+export type TreatmentExtended = Omit<TreatmentRecord, "startDate" | "medication"> & {
     id: string;
     petId: string;
     userId: string;
     startDate: Timestamp;
+    medication: MedicineDb[];
+    endDate: Timestamp | null;
     eventType: "treatment";
-    ts: Timestamp;
 };
 
 export type PetEvent = {

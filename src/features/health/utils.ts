@@ -1,8 +1,9 @@
+import { Timestamp } from "firebase/firestore";
 import { getTodayDayKey, tsToDayKey } from "../../utils";
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, PARASITES, VACCINE_TYPES } from "./config";
-import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
+import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, MedicineDb, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
 
 export const resetForm = <T extends object>(
     formData: T,
@@ -85,7 +86,33 @@ export const getCurrentWeight = (logs: LogExtended[]) => {
     return weightLogs.sort((a, b) => b.measuredAt.seconds - a.measuredAt.seconds).at(0)?.weight ?? undefined;
 };
 
-export function getLogTs(log: LogExtended) {
+export const getLogTs = (log: LogExtended) => {
     if (log.type === "antiparasite") return log.dueOn ?? log.givenAt!;
     return log.measuredAt;
+};
+
+export const getTreatmentEndDate = (medication: MedicineDb[]): Timestamp | null => {
+    if (medication.some(med => med.noEnd)) return null;
+    const endDates = medication
+        .map(med => med.endDate)
+        .filter(date => date !== null)
+        .map(ts => ts!.seconds);
+
+    if (endDates.length === 0) return null;
+
+    return new Timestamp(Math.max(...endDates), 0);
+};
+
+export const getTreatmentProgress = (treatment: TreatmentExtended): number | null => {
+    if (!treatment.endDate) return null;
+
+    const now = Date.now();
+    const start = treatment.startDate.toMillis()
+    const end = treatment.endDate.toMillis()
+
+    if (now >= end) return 100;
+    if (now <= start) return 0;
+
+    const progress = ((now - start) / (end - start)) * 100;
+    return Math.round(Math.min(Math.max(progress, 0), 100));
 };
