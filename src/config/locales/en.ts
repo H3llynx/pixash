@@ -82,7 +82,7 @@ export default {
             nextVetVisit: "Next vet visit",
             nextAntiparasitic: "Next antiparasitic",
             weightTracking: "Weight tracking",
-            ActiveTreatments: "Active treatments",
+            activeTreatments: "Active treatments",
         }
     },
     vet: {
@@ -220,7 +220,7 @@ export default {
             name: "Treatment name",
             startDate: "Start date",
             vet: "Prescribed by",
-            notes: "Notes"
+            notes: "Notes",
         },
         vetForm: {
             name: "Name",
@@ -247,6 +247,7 @@ export default {
                 every48: "Every 48h",
                 custom: "Custom"
             },
+            noEnd: "No end date",
             endDate: "End date",
             validationFrequency: "You must select a frequency",
             cta: "Add medicine",
