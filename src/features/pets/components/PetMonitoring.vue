@@ -13,7 +13,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-    <div class="flex flex-col gap-1.5 md:default-padding lg:px-1.5">
+    <div class="flex flex-col gap-1.5 md:mb-3 md:default-padding lg:px-1.5">
         <ActiveTreatments />
         <EventList :title="t('dashboard.title.upcoming')" :events="petUpcomingEvents" class="md:px-0" />
     </div>
