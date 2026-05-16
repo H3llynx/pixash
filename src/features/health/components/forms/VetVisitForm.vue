@@ -73,11 +73,6 @@ watch(() => [selectedPet.value, selectedVisit.value] as const,
             mode.value = "view";
             fillVisitData(visit);
         }
-        else {
-            resetForm(formData, defaultForm, { exclude: ['title'] });
-            formData.vet = assignedVet.value;
-            formData.date = visitDate.value;
-        };
     },
     { immediate: true }
 );

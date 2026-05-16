@@ -121,7 +121,6 @@ export const useVaccineForm = () => {
         });
     };
 
-
     watch(() => [selectedPet.value, selectedVaccine.value] as const,
         ([pet, vaccine]) => {
             if (!pet) {

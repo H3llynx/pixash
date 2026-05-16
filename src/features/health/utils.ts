@@ -7,16 +7,11 @@ import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, MedicineD
 
 export const resetForm = <T extends object>(
     formData: T,
-    defaultForm: T,
-    options?: { exclude?: (keyof T)[] }
+    defaultForm: T
 ) => {
-    const exclude = options?.exclude ?? [];
     const entries = Object.entries(defaultForm) as [keyof T, T[keyof T]][];
-
     for (const [key, value] of entries) {
-        if (!exclude.includes(key)) {
-            formData[key] = structuredClone(value);
-        }
+        formData[key] = structuredClone(value);
     }
 };
 

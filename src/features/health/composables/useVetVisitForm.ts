@@ -43,7 +43,7 @@ export const useVetVisitForm = () => {
                 });
             }
             else if (selectedVisit.value && !shallowEqual(formData,
-                { ...selectedVisit.value, date: tsToDate(selectedVisit.value.date, "input") })) {
+                { ...selectedVisit.value, date: tsToDate(selectedVisit.value.date, "datetime") })) {
                 await updateSelectedVisit(selectedVisit.value, selectedPet.value.id, { ...formData });
                 show({
                     type: "success",
@@ -54,7 +54,7 @@ export const useVetVisitForm = () => {
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-        } finally { resetForm(formData, defaultForm) };
+        };
     };
 
     const handleDelete = async () => {

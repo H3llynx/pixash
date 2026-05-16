@@ -74,11 +74,6 @@ watch(() => [selectedPet.value, selectedTreatment.value] as const,
             mode.value = "view";
             fillTreatmentData(treatment);
         }
-        else {
-            resetForm(formData, defaultForm, { exclude: ["name"] });
-            formData.vet = assignedVet.value;
-            formData.startDate = dateInit.value;
-        };
     },
     { immediate: true }
 );

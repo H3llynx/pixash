@@ -52,20 +52,31 @@ export const useTreatmentForm = () => {
                     title: t("toast.success.title.generic"),
                     message: t("toast.success.message.treatmentAdded", { name: selectedPet.value.name, title: nameSnapshot }),
                 });
+                formData.name = "";
             }
-            else if (selectedTreatment.value && !shallowEqual(formData,
-                { ...selectedTreatment.value, startDate: tsToDate(selectedTreatment.value.startDate, "input") })) {
-                await updateSelectedTreatment(selectedTreatment.value, selectedPet.value.id, { ...formData });
-                show({
-                    type: "success",
-                    title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.treatmentUpdated", { name: selectedPet.value.name, title: nameSnapshot }),
-                });
+            else if (selectedTreatment.value) {
+                const originalData = {
+                    ...selectedTreatment.value,
+                    startDate: tsToDate(selectedTreatment.value.startDate, "input"),
+                    medication: selectedTreatment.value.medication.map(med => ({
+                        ...med,
+                        endDate: med.endDate ? tsToDate(med.endDate, "input") : ""
+                    }))
+                };
+                if (!shallowEqual(formData, originalData)) {
+                    await updateSelectedTreatment(selectedTreatment.value, selectedPet.value.id, { ...formData });
+                    show({
+                        type: "success",
+                        title: t("toast.success.title.generic"),
+                        message: t("toast.success.message.treatmentUpdated", { name: selectedPet.value.name, title: nameSnapshot }),
+                    });
+                    formData.name = "";
+                }
             }
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-        } finally { resetForm(formData, defaultForm) };
+        };
     };
 
     const handleDelete = async () => {

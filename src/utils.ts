@@ -1,3 +1,4 @@
+import equal from 'fast-deep-equal';
 import { Timestamp } from "firebase/firestore";
 
 export const resetState = (state: any) => {
@@ -6,14 +7,11 @@ export const resetState = (state: any) => {
     });
 };
 
-export const shallowEqual = (a: any, b: any) =>
-    Object.keys(a).every((key) => {
-        if (Array.isArray(a[key]) && Array.isArray(b[key])) {
-            return a[key].length === b[key].length &&
-                a[key].every((v: any, i: number) => v === b[key][i]);
-        }
-        return a[key] === b[key];
-    });
+export const shallowEqual = (formData: any, source: any) => {
+    return Object.keys(formData).every((key) =>
+        equal(formData[key], source[key])
+    );
+};
 
 type DateFormatMode = "date" | "timeUntil" | "input" | "datetime" | "upcoming" | "thatMonth" | "isThisWeek" | "isPast";
 type TFunction = (key: string, params?: Record<string, unknown>) => string;
