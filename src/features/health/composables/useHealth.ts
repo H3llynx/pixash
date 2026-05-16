@@ -337,6 +337,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         deleteSelectedLog,
         treatments,
         selectedTreatment,
+        fetchUserTreatments,
         addNewTreatment,
         updateSelectedTreatment,
         deleteSelectedTreatment,

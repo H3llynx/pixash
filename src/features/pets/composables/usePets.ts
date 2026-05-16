@@ -51,6 +51,7 @@ const {
   treatments,
   selectedTreatment,
   addNewTreatment,
+  fetchUserTreatments,
   updateSelectedTreatment,
   deleteSelectedTreatment,
   selectTreatment
@@ -63,6 +64,7 @@ const selectPet = (pet: PetExtended | null) => {
   isUpdatingPet.value = false;
   if (selectedVaccine.value) selectVaccine(null);
   if (selectedVisit.value) selectVisit(null);
+  if (selectedTreatment.value) selectTreatment(null);
   resetState(selectedLog);
   selectedPet.value = pet;
 }
@@ -102,6 +104,7 @@ const fetchUserPets = async () => {
     await fetchUserVaccines();
     await fetchUserVisits();
     await fetchUserLogs();
+    await fetchUserTreatments();
     if (!selectedPet.value && pets.value.length) {
       selectPet(pets.value[0]);
     } else if (!pets.value.length) isAddingPet.value = true;
@@ -227,10 +230,12 @@ const syncPetFromEvent = (petId: string | undefined) => {
 
 watch(vaccines, resyncSelectedPet);
 watch(vetVisits, resyncSelectedPet);
+watch(treatments, resyncSelectedPet);
 watch(logs, resyncSelectedPet);
 
 watch(selectedVaccine, (vaccine) => syncPetFromEvent(vaccine?.petId));
 watch(selectedVisit, (visit) => syncPetFromEvent(visit?.petId));
+watch(selectedTreatment, (treatment) => syncPetFromEvent(treatment?.petId));
 watch(selectedLog, (log) => syncPetFromEvent(log.antiparasitic?.petId));
 
 export const usePets = () => {
