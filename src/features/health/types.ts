@@ -21,7 +21,7 @@ export type VaccineExtended = Omit<VaccineRecord, "givenAt" | "dueOn"> & {
     userId: string;
     givenAt?: Timestamp;
     dueOn: Timestamp;
-    eventType: string;
+    eventType: "vaccine";
     ts: Timestamp;
 };
 
@@ -37,7 +37,7 @@ export type VisitExtended = Omit<VisitRecord, "date"> & {
     petId: string;
     userId: string;
     date: Timestamp;
-    eventType: string;
+    eventType: "visit";
     ts: Timestamp;
 };
 
@@ -55,7 +55,7 @@ export type TreatmentRecord = {
     startDate: string;
     vet: string;
     notes?: string;
-    medication: Omit<Medicine, "noEnd">[];
+    medication: Medicine[];
 };
 
 export type TreatmentExtended = Omit<TreatmentRecord, "startDate"> & {
@@ -63,7 +63,7 @@ export type TreatmentExtended = Omit<TreatmentRecord, "startDate"> & {
     petId: string;
     userId: string;
     startDate: Timestamp;
-    eventType: string;
+    eventType: "treatment";
     ts: Timestamp;
 };
 
@@ -87,8 +87,6 @@ export type PetEvent = {
     dueOn?: Timestamp;
 };
 
-export type TimelineEvent = PetEvent & { ts: Timestamp };
-
 export type Vet = {
     name: string;
     address1: string;
@@ -101,9 +99,9 @@ export type Vet = {
     phone?: string;
     email?: string;
     hours?: string;
-}
+};
 
-export type VetExtended = Vet & { id: string; }
+export type VetExtended = Vet & { id: string; };
 
 export type LogTypes = "antiparasite" | "weight";
 
@@ -126,7 +124,7 @@ export type AntiparasiteLogExtended = {
     id: string;
     petId: string;
     userId: string;
-    eventType: string;
+    eventType: "log";
     ts: Timestamp;
     type: "antiparasite";
     treated: AntiparasiteTypes["id"][];
@@ -139,7 +137,7 @@ export type WeightLogExtended = {
     id: string;
     petId: string;
     userId: string;
-    eventType: string;
+    eventType: "log";
     ts: Timestamp;
     type: "weight";
     weight: number;

@@ -1,8 +1,10 @@
 import { FirebaseError } from "firebase/app";
 import { computed, ref, watch } from "vue";
+import { fetchPetLogs, fetchPetTreatments, fetchPetVaccines, fetchPetVisits } from "../../../services/health";
 import { addPet, deletePet, deletePetField, fetchPets, updatePet } from "../../../services/pets";
 import { resetState } from "../../../utils";
 import { useHealth } from "../../health/composables/useHealth";
+import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../../health/utils";
 import { useAuth } from "../../user/composables/useAuth";
 import type { Pet, PetExtended } from "../types";
 
@@ -27,12 +29,10 @@ const {
   selectVisit,
   selectLog,
   selectedVisit,
-  fetchUserVaccines,
   addNewVaccine,
   updateSelectedVaccine,
   deleteSelectedVaccine,
   addNewVetVisit,
-  fetchUserVisits,
   updateSelectedVisit,
   deleteSelectedVisit,
   vets,
@@ -44,14 +44,12 @@ const {
   deleteSelectedVet,
   selectedLog,
   logs,
-  fetchUserLogs,
   addNewLog,
   updateSelectedLog,
   deleteSelectedLog,
   treatments,
   selectedTreatment,
   addNewTreatment,
-  fetchUserTreatments,
   updateSelectedTreatment,
   deleteSelectedTreatment,
   selectTreatment
@@ -97,20 +95,56 @@ const handlePetAction = async (
   }
 };
 
+// const fetchUserPets = async () => {
+//   await handlePetAction(async () => {
+//     loading.value = true;
+//     pets.value = await fetchPets(user.value!.uid);
+//     await fetchUserVaccines();
+//     await fetchUserVisits();
+//     await fetchUserLogs();
+//     await fetchUserTreatments();
+//     if (!selectedPet.value && pets.value.length) {
+//       selectPet(pets.value[0]);
+//     } else if (!pets.value.length) isAddingPet.value = true;
+//   },
+//     () => loading.value = false
+//   );
+// };
+
 const fetchUserPets = async () => {
   await handlePetAction(async () => {
     loading.value = true;
-    pets.value = await fetchPets(user.value!.uid);
-    await fetchUserVaccines();
-    await fetchUserVisits();
-    await fetchUserLogs();
-    await fetchUserTreatments();
+    const fetchedPets = await fetchPets(user.value!.uid);
+
+    pets.value = await Promise.all(
+      fetchedPets.map(async (pet) => {
+        const [vaccines, vetVisits, treatments, logs] = await Promise.all([
+          fetchPetVaccines(user.value!.uid, pet.id),
+          fetchPetVisits(user.value!.uid, pet.id),
+          fetchPetTreatments(user.value!.uid, pet.id),
+          fetchPetLogs(user.value!.uid, pet.id),
+        ]);
+
+        return {
+          ...pet,
+          vaccines,
+          vetVisits,
+          treatments,
+          logs,
+          nextVaccine: getNextVaccine(vaccines),
+          nextVetVisit: getNextVisit(vetVisits),
+          nextAntiparasitic: getNextAntiparasitic(logs),
+          weight: getCurrentWeight(logs)
+        };
+      })
+    );
+
     if (!selectedPet.value && pets.value.length) {
       selectPet(pets.value[0]);
-    } else if (!pets.value.length) isAddingPet.value = true;
-  },
-    () => loading.value = false
-  );
+    } else if (!pets.value.length) {
+      isAddingPet.value = true;
+    }
+  }, () => loading.value = false);
 };
 
 const addNewPet = async (newPet: Pet) => {
@@ -166,8 +200,6 @@ watch(user, async (newUser) => {
   if (!newUser) {
     pets.value = [];
     vets.value = [];
-    vaccines.value = [];
-    vetVisits.value = [];
     selectPet(null);
   } else {
     await fetchUserPets();
@@ -176,17 +208,7 @@ watch(user, async (newUser) => {
 }, { immediate: true });
 
 watch(
-  [selectedVaccine, selectedVisit, () => selectedLog.antiparasitic],
-  ([vaccine, visit, log]) => {
-    if (vaccine || visit || log) {
-      isAddingPet.value = false;
-      isUpdatingPet.value = false;
-    }
-  }
-);
-
-watch(
-  [selectedVaccine, selectedVisit, () => selectedLog.antiparasitic],
+  [selectedVaccine, selectedVisit, selectedTreatment, () => selectedLog.antiparasitic],
   ([vaccine, visit, log]) => {
     if (vaccine || visit || log) {
       isAddingPet.value = false;
@@ -261,7 +283,6 @@ export const usePets = () => {
     selectVaccine,
     selectLog,
     isAddingHealth,
-    fetchUserVaccines,
     addNewVaccine,
     updateSelectedVaccine,
     deleteSelectedVaccine,

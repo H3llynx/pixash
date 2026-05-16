@@ -1,29 +1,104 @@
-import { addDoc, collection, collectionGroup, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp, updateDoc } from "firebase/firestore";
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
 import type { AntiparasiteLogExtended, Log, LogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/health/types";
 import { tsFromInput } from "../utils";
 
-const getVaccineDoc = (userId: string, petId: string, vaccineId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
-
-export const fetchVaccines = async (userId: string): Promise<VaccineExtended[]> => {
+export const fetchPetVaccines = async (userId: string, petId: string): Promise<VaccineExtended[]> => {
     try {
-        const snapshot = await getDocs(query(
-            collectionGroup(db, DB.vaccines),
-            where("userId", "==", userId)));
-        if (snapshot.empty) {
-            console.log("No vaccine found");
-            return [];
-        }
+        const snapshot = await getDocs(
+            collection(db, DB.users, userId, DB.pets, petId, DB.vaccines)
+        );
         return snapshot.docs.map(doc => ({
             id: doc.id,
-            ...doc.data() as Omit<VaccineExtended, "id">
+            petId,
+            ...doc.data() as Omit<VaccineExtended, "id" | "petId">,
+            eventType: "vaccine" as const,
         }));
     } catch (error) {
         console.error("Fetch vaccines error:", error);
         return [];
     }
 };
+export const fetchPetVisits = async (userId: string, petId: string): Promise<VisitExtended[]> => {
+    try {
+        const snapshot = await getDocs(
+            collection(db, DB.users, userId, DB.pets, petId, DB.vetVisits)
+        );
+        return snapshot.docs.map(doc => ({
+            id: doc.id,
+            petId,
+            ...doc.data() as Omit<VisitExtended, "id" | "petId">,
+            eventType: "visit" as const,
+        }));
+    } catch (error) {
+        console.error("Fetch visits error:", error);
+        return [];
+    }
+};
+export const fetchPetTreatments = async (userId: string, petId: string): Promise<TreatmentExtended[]> => {
+    try {
+        const snapshot = await getDocs(
+            collection(db, DB.users, userId, DB.pets, petId, DB.treatments)
+        );
+        return snapshot.docs.map(doc => ({
+            id: doc.id,
+            petId,
+            ...doc.data() as Omit<TreatmentExtended, "id" | "petId">,
+            eventType: "treatment" as const,
+        }));
+    } catch (error) {
+        console.error("Fetch treatments error:", error);
+        return [];
+    }
+};
+export const fetchPetLogs = async (userId: string, petId: string): Promise<LogExtended[]> => {
+    try {
+        const snapshot = await getDocs(
+            collection(db, DB.users, userId, DB.pets, petId, DB.logs)
+        );
+        if (snapshot.empty) {
+            console.log("No logs found");
+            return [];
+        }
+        const logs: LogExtended[] = snapshot.docs.map((doc) => {
+            const data = doc.data();
+            const base = {
+                id: doc.id,
+                petId,
+                userId,
+                eventType: "log",
+            }
+            if (data.type === "antiparasite") {
+                const log = {
+                    ...base,
+                    type: "antiparasite",
+                    treated: data.treated,
+                    givenAt: data.givenAt,
+                    dueOn: data.dueOn,
+                    notes: data.notes,
+                } as AntiparasiteLogExtended;
+                return log;
+            }
+            if (data.type === "weight") {
+                const log = {
+                    ...base,
+                    type: "weight",
+                    weight: data.weight,
+                    measuredAt: data.measuredAt,
+                } as WeightLogExtended;
+                return log;
+            }
+            throw new Error(`Unknown log type: ${data.type}`);
+        });
+        return logs;
+    } catch (error) {
+        console.error("Fetch logs error:", error);
+        return [];
+    }
+};
+
+const getVaccineDoc = (userId: string, petId: string, vaccineId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
 
 export const addVaccine = async (vaccine: VaccineRecord, petId: string, userId: string) => {
     const newVaccine = {
@@ -76,7 +151,6 @@ export const deleteVaccine = async (vaccineId: string, petId: string, userId: st
     }
 };
 
-
 const getVisitDoc = (userId: string, petId: string, visitId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.vetVisits, visitId);
 
 export const addVetVisit = async (visit: VisitRecord, petId: string, userId: string) => {
@@ -93,25 +167,6 @@ export const addVetVisit = async (visit: VisitRecord, petId: string, userId: str
         return docRef.id;
     } catch (error) {
         console.error("Error adding vaccine: ", error);
-    }
-};
-
-export const fetchVetVisits = async (userId: string): Promise<VisitExtended[]> => {
-    try {
-        const snapshot = await getDocs(query(
-            collectionGroup(db, DB.vetVisits),
-            where("userId", "==", userId)));
-        if (snapshot.empty) {
-            console.log("No visit found");
-            return [];
-        }
-        return snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data() as Omit<VisitExtended, "id">
-        }));
-    } catch (error) {
-        console.error("Fetch vet visits error:", error);
-        return [];
     }
 };
 
@@ -241,54 +296,6 @@ export const addLog = async (log: Log, petId: string, userId: string) => {
     }
 };
 
-export const fetchLogs = async (userId: string): Promise<LogExtended[]> => {
-    try {
-        const snapshot = await getDocs(
-            query(
-                collectionGroup(db, DB.logs),
-                where("userId", "==", userId)
-            )
-        );
-        if (snapshot.empty) {
-            console.log("No logs found");
-            return [];
-        }
-        const logs: LogExtended[] = snapshot.docs.map((doc) => {
-            const data = doc.data();
-            const base = {
-                id: doc.id,
-                petId: data.petId,
-                userId: data.userId,
-            }
-            if (data.type === "antiparasite") {
-                const log = {
-                    ...base,
-                    type: "antiparasite",
-                    treated: data.treated,
-                    givenAt: data.givenAt,
-                    dueOn: data.dueOn,
-                    notes: data.notes,
-                } as AntiparasiteLogExtended;
-                return log;
-            }
-            if (data.type === "weight") {
-                const log = {
-                    ...base,
-                    type: "weight",
-                    weight: data.weight,
-                    measuredAt: data.measuredAt,
-                } as WeightLogExtended;
-                return log;
-            }
-            throw new Error(`Unknown log type: ${data.type}`);
-        });
-        return logs;
-    } catch (error) {
-        console.error("Fetch log error:", error);
-        return [];
-    }
-};
-
 export const updateLog = async (
     logId: string,
     petId: string,
@@ -332,24 +339,6 @@ export const deleteLog = async (logId: string, petId: string, userId: string) =>
 };
 
 const getTreatmentDoc = (userId: string, petId: string, treatmentId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.treatments, treatmentId);
-
-export const fetchTreatments = async (userId: string): Promise<TreatmentExtended[]> => {
-    try {
-        const snapshot = await getDocs(query(
-            collectionGroup(db, DB.treatments),
-            where("userId", "==", userId)));
-        if (snapshot.empty) {
-            return [];
-        }
-        return snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data() as Omit<TreatmentExtended, "id">
-        }));
-    } catch (error) {
-        console.error("Fetch treatment error:", error);
-        return [];
-    }
-};
 
 export const updateTreatment = async (
     treatmentId: string,

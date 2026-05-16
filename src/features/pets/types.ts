@@ -1,4 +1,4 @@
-import type { LogExtended, VaccineExtended, VisitExtended } from "../health/types";
+import type { LogExtended, TreatmentExtended, VaccineExtended, VisitExtended } from "../health/types";
 import type { SPECIES } from "./config";
 
 export type Pet = {
@@ -18,8 +18,10 @@ export type PetExtended = Pet & {
     ownerUid: string;
     createdAt: Date;
     vaccines: VaccineExtended[];
+    vetVisits: VisitExtended[];
+    treatments: TreatmentExtended[];
+    logs: LogExtended[];
     nextVaccine?: VaccineExtended;
     nextVetVisit?: VisitExtended;
     nextAntiparasitic?: LogExtended;
-    logs: LogExtended[];
 }
