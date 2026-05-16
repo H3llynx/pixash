@@ -18,7 +18,7 @@ const timeUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "
 
 <template>
     <div
-        class="p-1 rounded-xl border border-border bg-bg-2 flex gap-0.5 justify-between min-w-1/2 shrink-0 md:min-w-1/3 md:shrink">
+        class="p-1 rounded-xl border border-border bg-bg-2 flex gap-0.5 justify-between min-w-1/2 shrink-0 md:min-w-1/3 lg:min-w-9">
         <div class="text-left flex flex-col h-full">
             <h3>{{ title }}</h3>
             <p class="font-medium">{{ date }}</p>

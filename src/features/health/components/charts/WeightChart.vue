@@ -116,7 +116,7 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
 </script>
 
 <template>
-    <section class="pet-section mb-4 md:mb-1 md:px-0">
+    <section class="pet-section w-full md:mb-1">
         <h2>{{ t("dashboard.title.weightTracking") }}</h2>
         <div class="card w-full text-text" v-if="logs.length">
             <div class="ml-auto text-right">

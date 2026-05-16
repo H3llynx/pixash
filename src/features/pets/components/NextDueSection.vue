@@ -9,7 +9,7 @@ const { t } = useI18n();
 
 <template>
     <div v-if="selectedPet?.nextVaccine || selectedPet?.nextVetVisit || selectedPet?.nextAntiparasitic"
-        class="pet-selector">
+        class="pet-selector lg:flex-wrap">
         <HealthCard v-if="selectedPet.nextVaccine" :pet="selectedPet" :data="selectedPet.nextVaccine"
             :title="t('dashboard.title.nextVaccine')" />
         <HealthCard v-if="selectedPet.nextVetVisit" :pet="selectedPet" :data="selectedPet.nextVetVisit"
