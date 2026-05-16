@@ -7,6 +7,12 @@ export const resetState = (state: any) => {
     });
 };
 
+export const resetLogs = (log: any) => {
+    Object.keys(log).forEach((key) => {
+        log[key] = null;
+    });
+};
+
 export const shallowEqual = (formData: any, source: any) => {
     return Object.keys(formData).every((key) =>
         equal(formData[key], source[key])

@@ -2,7 +2,7 @@ import { computed, reactive, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDialog } from "../../../composables/useDialog";
 import { useToast } from "../../../composables/useToast";
-import { getOneYearLaterInput, tsToDate } from "../../../utils";
+import { getOneYearLaterInput, shallowEqual, tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import { getAge } from "../../pets/utils";
 import { STAGE, VACCINE_TYPES } from "../config";
@@ -84,12 +84,22 @@ export const useVaccineForm = () => {
                 });
             }
             else if (selectedVaccine.value) {
-                await updateSelectedVaccine(selectedVaccine.value, selectedPet.value.id, { ...formData });
-                show({
-                    type: "success",
-                    title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showTypes(typesSnapshot, selectedPet.value) }),
-                });
+                const originalData = {
+                    ...selectedVaccine.value,
+                    givenAt: tsToDate(selectedVaccine.value.givenAt, "input"),
+                    dueOn: tsToDate(selectedVaccine.value.dueOn, "input"),
+                    given: selectedVaccine.value.givenAt ? true : false,
+                    nextDose: selectedVaccine.value.dueOn ? true : false,
+                };
+
+                if (!shallowEqual(formData, originalData)) {
+                    await updateSelectedVaccine(selectedVaccine.value, selectedPet.value.id, { ...formData });
+                    show({
+                        type: "success",
+                        title: t("toast.success.title.generic"),
+                        message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showTypes(typesSnapshot, selectedPet.value) }),
+                    });
+                }
             }
         }
         catch (e) {

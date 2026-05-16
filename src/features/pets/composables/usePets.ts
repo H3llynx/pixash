@@ -2,7 +2,7 @@ import { FirebaseError } from "firebase/app";
 import { computed, ref, watch } from "vue";
 import { fetchPetLogs, fetchPetTreatments, fetchPetVaccines, fetchPetVisits } from "../../../services/health";
 import { addPet, deletePet, deletePetField, fetchPets, updatePet } from "../../../services/pets";
-import { resetState } from "../../../utils";
+import { resetLogs, resetState } from "../../../utils";
 import { useHealth } from "../../health/composables/useHealth";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../../health/utils";
 import { useAuth } from "../../user/composables/useAuth";
@@ -63,7 +63,7 @@ const selectPet = (pet: PetExtended | null) => {
   if (selectedVaccine.value) selectVaccine(null);
   if (selectedVisit.value) selectVisit(null);
   if (selectedTreatment.value) selectTreatment(null);
-  resetState(selectedLog);
+  resetLogs(selectedLog);
   selectedPet.value = pet;
 }
 
@@ -71,7 +71,7 @@ const resetPetActions = () => {
   isAddingPet.value = false;
   isUpdatingPet.value = false;
   resetState(isAddingHealth);
-  resetState(selectedLog);
+  resetLogs(selectedLog);
   selectVaccine(null);
   selectVisit(null);
 };
@@ -220,7 +220,7 @@ watch(
 watch(isAddingPet, (adding) => {
   if (adding) {
     resetState(isAddingHealth);
-    resetState(selectedLog);
+    resetLogs(selectedLog);
     isUpdatingPet.value = false;
     selectVaccine(null);
     selectVisit(null);
@@ -230,7 +230,7 @@ watch(isAddingPet, (adding) => {
 watch(isUpdatingPet, (editing) => {
   if (editing) {
     resetState(isAddingHealth);
-    resetState(selectedLog);
+    resetLogs(selectedLog);
     isAddingPet.value = false;
     selectVaccine(null);
     selectVisit(null);

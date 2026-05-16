@@ -2,7 +2,7 @@ import { computed, reactive, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDialog } from "../../../composables/useDialog";
 import { useToast } from "../../../composables/useToast";
-import { resetState, tsToDate } from "../../../utils";
+import { resetLogs, shallowEqual, tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import { ANTIPARASITE_TYPES } from "../config";
 import type { AntiparasiteLogExtended, AntiparasiteTypes, Log, PetEvent } from "../types";
@@ -39,7 +39,7 @@ export const useAntiparasiticForm = () => {
         error.value = false;
         selectedDate.value = null;
         isAddingHealth.antiparasitic = false;
-        resetState(selectedLog);
+        resetLogs(selectedLog);
     };
 
     const handleDelete = async () => {
@@ -78,10 +78,18 @@ export const useAntiparasiticForm = () => {
                 if (logId) newLog.value = logs.value.find(l => l.id === logId) ?? null
             }
             else if (selectedLog.antiparasitic) {
-                const logId = selectedLog.antiparasitic.id;
-                await updateSelectedLog(selectedLog.antiparasitic, selectedPet.value.id, log);
-                newLog.value = logs.value.find(l => l.id === logId) ?? null
-            };
+                const originalData = {
+                    treated: selectedLog.antiparasitic.treated,
+                    givenAt: tsToDate(selectedLog.antiparasitic.givenAt, "input"),
+                    dueOn: tsToDate(selectedLog.antiparasitic.dueOn, "input"),
+                    notes: selectedLog.antiparasitic.notes ?? "",
+                };
+                if (!shallowEqual(formData, originalData)) {
+                    const logId = selectedLog.antiparasitic.id;
+                    await updateSelectedLog(selectedLog.antiparasitic, selectedPet.value.id, log);
+                    newLog.value = logs.value.find(l => l.id === logId) ?? null
+                };
+            }
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
