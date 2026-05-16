@@ -82,6 +82,7 @@ export default {
             nextVetVisit: "Next vet visit",
             nextAntiparasitic: "Next antiparasitic",
             weightTracking: "Weight tracking",
+            ActiveTreatments: "Active treatments",
         }
     },
     vet: {
@@ -183,6 +184,7 @@ export default {
             editVetVisit: "Edit vet appointment",
             logTreatment: "Log treatment",
             editLog: "Edit log",
+            startTreatment: "Start treatment",
             saveTreatment: "Save treatment",
             editTreatment: "Modify treatment",
         },
@@ -248,6 +250,7 @@ export default {
             endDate: "End date",
             validationFrequency: "You must select a frequency",
             cta: "Add medicine",
+            delete: "Delete medicine"
         },
         stage: {
             adult: "Adult",
@@ -295,10 +298,11 @@ export default {
                 nameDeleted: "{name} has been successfully deleted",
                 vaccineAdded: "{name}'s {type} successfully added",
                 vaccineUpdated: "{name}'s {type} successfully updated",
-                vaccineDeleted: "{name}'s {type} has been successfully deleted",
                 visitAdded: "{name}'s {title} successfully added",
                 visitUpdated: "{name}'s {title} successfully updated",
-                visitDeleted: "{name}'s {title} has been successfully deleted",
+                treatmentAdded: "{name}'s {title} successfully added",
+                treatmentUpdated: "{name}'s {title} successfully updated",
+                eventDeleted: "{name}'s {title} has been successfully deleted",
                 logDeleted: "{type} deleted",
                 markedDone: "All set, this care task has been completed."
             },
@@ -314,11 +318,7 @@ export default {
             title: "Delete {name} ?",
             message: "This will remove {name}'s profile and tracked information. This action cannot be undone. Are you sure you'd like to proceed?",
         },
-        deleteVaccine: {
-            title: "Delete {type} ?",
-            message: "This will remove {name}'s {type}. This action cannot be undone. Are you sure you'd like to proceed?",
-        },
-        deleteVetVisit: {
+        deleteEvent: {
             title: "Delete {title} ?",
             message: "This will remove {name}'s {title}. This action cannot be undone. Are you sure you'd like to proceed?",
         },

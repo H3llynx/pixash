@@ -1,16 +1,17 @@
 import { FirebaseError } from "firebase/app";
 import { reactive, ref, type Ref } from "vue";
-import { addLog, addVaccine, addVet, addVetVisit, deleteLog, deleteVaccine, deleteVet, deleteVisit, fetchLogs, fetchVaccines, fetchVets, fetchVetVisits, updateLog, updateVaccine, updateVet, updateVetVisit } from "../../../services/health";
+import { addLog, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchLogs, fetchTreatments, fetchVaccines, fetchVets, fetchVetVisits, updateLog, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/health";
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { AntiparasiteLogExtended, Log, LogExtended, TreatmentExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { AntiparasiteLogExtended, Log, LogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
     const { user } = useAuth();
     const vaccines = ref<VaccineExtended[]>([]);
     const vetVisits = ref<VisitExtended[]>([]);
+    const treatments = ref<TreatmentExtended[]>([]);
     const vets = ref<VetExtended[]>([]);
     const logs = ref<LogExtended[]>([]);
     const selectedVaccine = ref<VaccineExtended | null>(null);
@@ -38,6 +39,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         resetState(isAddingHealth);
         resetState(selectedLog);
         selectedVisit.value = null;
+        selectedTreatment.value = null;
         selectedVaccine.value = vaccine;
     };
 
@@ -45,7 +47,16 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         resetState(isAddingHealth);
         resetState(selectedLog);
         selectedVaccine.value = null;
+        selectedTreatment.value = null;
         selectedVisit.value = visit;
+    };
+
+    const selectTreatment = (treatment: TreatmentExtended | null) => {
+        resetState(isAddingHealth);
+        resetState(selectedLog);
+        selectedVaccine.value = null;
+        selectedVisit.value = null;
+        selectedTreatment.value = treatment;
     };
 
     type SelectedLogValues = typeof selectedLog[keyof typeof selectedLog];
@@ -62,10 +73,12 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
             const petVaccines = vaccines.value.filter(vaccine => vaccine.petId === pet.id);
             const petVisits = vetVisits.value.filter(visit => visit.petId === pet.id);
             const petLogs = logs.value.filter(log => log.petId === pet.id);
+            const petTreatments = treatments.value.filter(treatment => treatment.petId === pet.id);
             return {
                 ...pet,
                 vaccines: petVaccines,
                 vetVisits: petVisits,
+                treatments: petTreatments,
                 logs: petLogs,
                 nextVaccine: getNextVaccine(petVaccines),
                 nextVetVisit: getNextVisit(petVisits),
@@ -249,6 +262,47 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         })
     };
 
+    const fetchUserTreatments = async () => {
+        await handleHealthAction(async () => {
+            const v = await fetchTreatments(user.value!.uid);
+            treatments.value = v.map(v => ({ ...v, eventType: "treatment" }));
+            assignHealth();
+        });
+    };
+
+    const addNewTreatment = async (newTreatment: TreatmentRecord, petId: string) => {
+        await handleHealthAction(async () => {
+            loading.value = true;
+            await addTreatment(newTreatment, petId, user.value!.uid);
+            await fetchUserTreatments();
+        }, () => {
+            loading.value = false;
+            isAddingHealth.treatment = false;
+        })
+    };
+
+    const updateSelectedTreatment = async (treatment: TreatmentExtended, petId: string, data: TreatmentRecord) => {
+        await handleHealthAction(async () => {
+            loading.value = true;
+            await updateTreatment(treatment.id, petId, user.value!.uid, data);
+            await fetchUserTreatments();
+            selectTreatment(null);
+        }, () => {
+            loading.value = false;
+        })
+    };
+
+    const deleteSelectedTreatment = async (treatment: TreatmentExtended, petId: string,) => {
+        await handleHealthAction(async () => {
+            loading.value = true;
+            selectTreatment(null);
+            await deleteTreatment(treatment.id, petId, user.value!.uid);
+            await fetchUserTreatments();
+        }, () => {
+            loading.value = false;
+        })
+    };
+
     return {
         error,
         loading,
@@ -281,6 +335,11 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         addNewLog,
         updateSelectedLog,
         deleteSelectedLog,
-        selectedTreatment
+        treatments,
+        selectedTreatment,
+        addNewTreatment,
+        updateSelectedTreatment,
+        deleteSelectedTreatment,
+        selectTreatment
     };
 };

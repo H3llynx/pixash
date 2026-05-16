@@ -83,7 +83,7 @@ const markAsDone = async (event: PetEvent) => {
 <template>
     <EventCardSkeleton v-if="healthLoading" />
     <div tabindex="0" role="button"
-        class="card cursor-pointer flex p-1 w-full md:max-w-md rounded-xl border border-border gap-1.5 justify-between items-start text-left"
+        class="card cursor-pointer flex-row p-1 w-full md:max-w-md rounded-xl border border-border gap-1.5 justify-between items-start text-left"
         v-else @click="handleClick(event)" @keydown="handleClick(event)"
         :class="{ 'opacity-50': tsToDate(event.ts, 'isPast') }">
         <div class="flex gap-0.5 w-full min-w-0 h-full">

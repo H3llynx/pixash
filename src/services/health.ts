@@ -1,7 +1,7 @@
 import { addDoc, collection, collectionGroup, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where } from "firebase/firestore";
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
-import type { AntiparasiteLogExtended, Log, LogExtended, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/health/types";
+import type { AntiparasiteLogExtended, Log, LogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/health/types";
 import { tsFromInput } from "../utils";
 
 const getVaccineDoc = (userId: string, petId: string, vaccineId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
@@ -328,5 +328,74 @@ export const deleteLog = async (logId: string, petId: string, userId: string) =>
         await deleteDoc(getLogDoc(userId, petId, logId));
     } catch (error) {
         console.error("Error deleting log: ", error);
+    }
+};
+
+const getTreatmentDoc = (userId: string, petId: string, treatmentId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.treatments, treatmentId);
+
+export const fetchTreatments = async (userId: string): Promise<TreatmentExtended[]> => {
+    try {
+        const snapshot = await getDocs(query(
+            collectionGroup(db, DB.treatments),
+            where("userId", "==", userId)));
+        if (snapshot.empty) {
+            return [];
+        }
+        return snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data() as Omit<TreatmentExtended, "id">
+        }));
+    } catch (error) {
+        console.error("Fetch treatment error:", error);
+        return [];
+    }
+};
+
+export const updateTreatment = async (
+    treatmentId: string,
+    petId: string,
+    userId: string,
+    data: TreatmentRecord
+) => {
+    const updated = {
+        petId: petId,
+        userId: userId,
+        name: data.name,
+        startDate: tsFromInput(data.startDate),
+        vet: data.vet,
+        notes: data.notes,
+        medication: data.medication
+    };
+    try {
+        const docRef = getTreatmentDoc(userId, petId, treatmentId);
+        await updateDoc(docRef, updated);
+    } catch (error) {
+        console.error("Error updating treatment: ", error);
+    }
+};
+
+export const addTreatment = async (treatment: TreatmentRecord, petId: string, userId: string) => {
+    const newTreatment = {
+        petId: petId,
+        userId: userId,
+        name: treatment.name,
+        startDate: tsFromInput(treatment.startDate),
+        vet: treatment.vet,
+        notes: treatment.notes,
+        medication: treatment.medication
+    };
+    try {
+        const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.treatments), newTreatment);
+        return docRef.id;
+    } catch (error) {
+        console.error("Error adding treatment: ", error);
+    }
+};
+
+export const deleteTreatment = async (treatmentId: string, petId: string, userId: string) => {
+    try {
+        await deleteDoc(getTreatmentDoc(userId, petId, treatmentId));
+    } catch (error) {
+        console.error("Error deleting treatment: ", error);
     }
 };

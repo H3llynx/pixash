@@ -5,7 +5,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-    <div class="pet-section default-padding flex gap-1 mb-3 items-center flex-wrap md:p-0" aria-hidden>
+    <div class="pet-section default-padding flex gap-1 mb-1 items-center flex-wrap md:p-0" aria-hidden>
         <h2 class="hidden md:block p-0 w-full">{{ t("events.legend") }}</h2>
         <div class="row">
             <div class="w-1 h-1 rounded-md border border-brand-light bg-brand-rgba"></div>
@@ -28,5 +28,6 @@ const { t } = useI18n();
     gap: 0.5rem;
     align-items: center;
     color: var(--color-text-secondary);
+    font-size: small;
 }
 </style>

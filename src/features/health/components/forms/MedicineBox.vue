@@ -2,10 +2,13 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Input from '../../../../components/Input.vue';
+import Selector from '../../../../components/Selector.vue';
+import { useTreatmentForm } from '../../composables/useTreatmentForm';
 import { medFields } from '../../config';
 import type { Medicine } from '../../types';
 
 const { title, name, instructions, frequency, endDate } = medFields;
+const { formData } = useTreatmentForm();
 const { t } = useI18n();
 const error = ref<boolean>(false);
 
@@ -19,20 +22,23 @@ const medData = defineModel<Medicine>();
         <h3>{{ t(title, { index: index }) }}</h3>
         <Input v-model="medData.name" :id="`med-name-${index}`" :label="t(name.label)" required />
         <Input v-model="medData.instructions" :id="`med-instructions-${index}`" :label="t(instructions.label)" />
-        <fieldset>
-            <legend>{{ t(frequency.label) }}</legend>
+        <Selector :legend="t(frequency.label)" class="px-0">
             <Input v-model="medData.frequency" v-for="option in frequency.options" :name="`${option.id}-${index}`"
                 :value="option.id" :key="`${option.id}-${index}`" :label="t(option.label)" :type="frequency.type"
                 @input="error = false" />
             <p v-if="error" class="text-sm w-full text-error pb-0.5">{{
                 t("health.medicine.validationFrequency") }}</p>
-        </fieldset>
+        </Selector>
         <Input v-model="medData.endDate" :id="`med-end-date-${index}`" :type="endDate.type" :label="t(endDate.label)"
-            required />
+            :min="formData.startDate" required />
     </div>
 </template>
 
 <style scoped>
+:deep(legend) {
+    font-size: 14px;
+}
+
 :deep(label:has(input[type="radio"])) p {
     display: flex;
     height: 3rem;
@@ -40,6 +46,7 @@ const medData = defineModel<Medicine>();
     justify-content: center;
     align-items: center;
     border-radius: 0.75rem;
+    font-size: 14px;
 }
 
 :deep(label:has(input[type="radio"]:checked)) p {

@@ -103,8 +103,8 @@ export const useVaccineForm = () => {
         const vaccine = selectedVaccine.value;
         if (!vaccine || !pet) return;
         open({
-            title: t("dialog.deleteVaccine.title", { type: showTypes(vaccine.types, pet) }),
-            message: t("dialog.deleteVaccine.message", { name: pet.name, type: showTypes(vaccine.types, pet) }),
+            title: t("dialog.deleteEvent.title", { title: showTypes(vaccine.types, pet) }),
+            message: t("dialog.deleteEvent.message", { name: pet.name, title: showTypes(vaccine.types, pet) }),
             isDelete: true,
             onConfirm: async () => {
                 try {
@@ -113,7 +113,7 @@ export const useVaccineForm = () => {
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
-                        message: t("toast.success.message.vaccineDeleted", { name: pet.name, type: showTypes(vaccine.types, pet) }),
+                        message: t("toast.success.message.eventDeleted", { name: pet.name, title: showTypes(vaccine.types, pet) }),
                     });
                 } catch (error) {
                     show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });

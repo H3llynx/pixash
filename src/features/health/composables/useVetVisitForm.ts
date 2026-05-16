@@ -62,8 +62,8 @@ export const useVetVisitForm = () => {
         const visit = selectedVisit.value;
         if (!visit || !pet) return;
         open({
-            title: t("dialog.deleteVetVisit.title", { title: visit.title }),
-            message: t("dialog.deleteVetVisit.message", { name: pet.name, title: visit.title }),
+            title: t("dialog.deleteEvent.title", { title: visit.title }),
+            message: t("dialog.deleteEvent.message", { name: pet.name, title: visit.title }),
             isDelete: true,
             onConfirm: async () => {
                 try {
@@ -71,7 +71,7 @@ export const useVetVisitForm = () => {
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
-                        message: t("toast.success.message.visitDeleted", { name: pet.name, title: visit.title }),
+                        message: t("toast.success.message.eventDeleted", { name: pet.name, title: visit.title }),
                     });
                 } catch (error) {
                     show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });

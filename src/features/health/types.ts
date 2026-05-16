@@ -51,9 +51,9 @@ export type Medicine = {
 export type TreatmentRecord = {
     name: string;
     startDate: string;
-    medicine: Medicine[]
     vet: string;
     notes?: string;
+    medication: Medicine[];
 };
 
 export type TreatmentExtended = Omit<TreatmentRecord, "date"> & {

@@ -117,14 +117,16 @@ watch(() => mode.value, (mode) => {
                         <VetSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput" required />
                         <Input v-if="selectedTreatment?.notes || mode === 'edit'" v-model="formData.notes"
                             :id="notes.id" :label="t(notes.label)" :type="notes.type" />
-                        <MedicineArea v-model="formData.medicine" />
+                        <MedicineArea v-model="formData.medication" />
                         <div class="flex gap-0.5 mt-1 items-center ml-auto"
                             v-if="!selectedTreatment || mode === 'edit'">
                             <Button v-if="selectedTreatment && mode === 'edit'" variant="secondary" size="sm"
                                 type="button" :disabled="healthLoading" @click="mode = 'view'">
                                 {{ t("common.button.cancel") }}
                             </Button>
-                            <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveTreatment") }}</Button>
+                            <Button size="sm" :disabled="healthLoading">{{ isAddingHealth.treatment ?
+                                t("health.cta.startTreatment") :
+                                t("health.cta.saveTreatment") }}</Button>
                         </div>
                         <Button v-if="selectedTreatment && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
                             @click="mode = 'edit'">
