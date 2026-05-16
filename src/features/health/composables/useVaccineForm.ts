@@ -22,7 +22,6 @@ export const useVaccineForm = () => {
     const vaccineTypes = ref<VaccineTypes[]>([]);
     const error = ref<boolean>(false);
     const vetTextInput = ref<boolean>(false);
-    const today = new Date().toISOString().slice(0, 10);
     const date = computed(() => selectedDate.value ?? "");
     const givenBy = computed(() => {
         if (selectedVet.value) return selectedVet.value.id;
@@ -174,5 +173,5 @@ export const useVaccineForm = () => {
             : "";
     });
 
-    return { vaccineLoading, vetTextInput, today, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete }
+    return { vaccineLoading, vetTextInput, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete }
 }

@@ -21,9 +21,11 @@ import VetSelector from './VetSelector.vue';
 const { loading, selectedPet, isAddingHealth, selectedVaccine, healthLoading } = usePets();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
-const { vetTextInput, today, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete } = useVaccineForm();
+const { vetTextInput, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete } = useVaccineForm();
 provide('readonly', isReadonly);
 const { types, stage, given, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
+const today = new Date().toISOString().slice(0, 10);
+
 watch(() => selectedVaccine.value, (vaccine) => {
     mode.value = vaccine ? "view" : "edit";
 });
@@ -50,7 +52,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                     <h1 v-if="isAddingHealth.vaccine">{{ t("health.title.addVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'edit'">{{ t("health.title.editVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'view'" class="font-medium">{{ getIcon(selectedPet!)
-                    }} {{
+                        }} {{
                             selectedPet!.name
                         }} · {{ showTypes(formData.types, selectedPet!) }}</h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
@@ -77,7 +79,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                             :type="stage.type" :name="stage.name" :required="index === 0" />
                     </Selector>
                     <div class="default-padding flex flex-col gap-1">
-                        <Toggle v-if="mode === 'edit'" v-model="formData.given" :max="today"
+                        <Toggle v-if="mode === 'edit'" v-model="formData.given"
                             :label="t(given.label, { name: selectedPet!.name })" :id="given.id" />
                         <Input v-if="formData.given" v-model="formData.givenAt" :id="givenDate.id" :max="today"
                             :label="t(givenDate.label)" :type="givenDate.type" required>
@@ -104,11 +106,11 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{
                                     selectedPet.name
-                                }} · {{
+                                    }} · {{
                                         showTypes(formData.types, selectedPet) }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.sharedDateFields.dueDate")
-                                }}:
+                                    }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
@@ -119,7 +121,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                                     {{ t("common.button.cancel") }}
                                 </Button>
                                 <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVaccine")
-                                }}</Button>
+                                    }}</Button>
                             </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
