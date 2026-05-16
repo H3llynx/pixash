@@ -14,7 +14,7 @@ export const resetForm = <T extends object>(
 
     for (const [key, value] of entries) {
         if (!exclude.includes(key)) {
-            formData[key] = value;
+            formData[key] = structuredClone(value);
         }
     }
 };

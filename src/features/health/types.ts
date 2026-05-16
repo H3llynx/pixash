@@ -42,9 +42,11 @@ export type VisitExtended = Omit<VisitRecord, "date"> & {
 };
 
 export type Medicine = {
+    id: string;
     name: string;
     instructions: string;
     frequency: string;
+    noEnd: boolean;
     endDate: string;
 }
 
@@ -53,10 +55,10 @@ export type TreatmentRecord = {
     startDate: string;
     vet: string;
     notes?: string;
-    medication: Medicine[];
+    medication: Omit<Medicine, "noEnd">[];
 };
 
-export type TreatmentExtended = Omit<TreatmentRecord, "date"> & {
+export type TreatmentExtended = Omit<TreatmentRecord, "startDate"> & {
     id: string;
     petId: string;
     userId: string;

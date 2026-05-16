@@ -94,6 +94,10 @@ export const medFields = {
         type: "radio",
         options: MED_FREQUENCY
     },
+    noEnd: {
+        id: "treatment-end-date",
+        label: "health.medicine.noEnd"
+    },
     endDate: {
         label: "health.medicine.endDate",
         type: "date"

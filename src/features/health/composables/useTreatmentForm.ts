@@ -8,34 +8,37 @@ import { MED_FREQUENCY } from "../config";
 import { resetForm } from "../utils";
 import { useEvents } from "./useEvents";
 
-const defaultMedData = {
-    name: "",
-    instructions: "",
-    frequency: MED_FREQUENCY[0].id,
-    endDate: ""
-};
-
-const defaultForm = {
-    name: "",
-    startDate: "",
-    vet: "",
-    notes: "",
-    medication: [defaultMedData],
-};
-
-const formData = reactive({ ...defaultForm });
-
 export const useTreatmentForm = () => {
-    const { isAddingHealth, selectedTreatment, selectedPet, addNewTreatment, updateSelectedTreatment, healthError, deleteSelectedTreatment } = usePets();
+    const { isAddingHealth, selectedTreatment, selectTreatment, selectedPet, addNewTreatment, updateSelectedTreatment, healthError, deleteSelectedTreatment } = usePets();
     const { selectedDate } = useEvents();
     const { show } = useToast();
     const { open } = useDialog();
     const { t } = useI18n();
 
+    const addMedicine = () => ({
+        id: crypto.randomUUID(),
+        name: "",
+        instructions: "",
+        frequency: MED_FREQUENCY[0].id,
+        noEnd: false,
+        endDate: ""
+    });
+
+    const defaultForm = {
+        name: "",
+        startDate: "",
+        vet: "",
+        notes: "",
+        medication: [addMedicine()],
+    };
+
+    const formData = reactive({ ...defaultForm });
+
     const handleClose = () => {
         resetForm(formData, defaultForm);
         selectedDate.value = null;
         isAddingHealth.treatment = false;
+        selectTreatment(null);
     };
 
     const handleSubmit = async () => {
@@ -88,5 +91,5 @@ export const useTreatmentForm = () => {
         });
     };
 
-    return { formData, defaultForm, defaultMedData, handleClose, handleSubmit, handleDelete }
+    return { formData, defaultForm, addMedicine, handleClose, handleSubmit, handleDelete }
 }

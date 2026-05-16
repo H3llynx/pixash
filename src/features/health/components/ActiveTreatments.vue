@@ -17,7 +17,7 @@ const { t } = useI18n();
             <Button v-for="treatment in treatments" :key="treatment.id" variant="ghost"
                 @click="selectTreatment(treatment)">
                 <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
-                    <Loading v-if="healthLoading && (selectedTreatment = treatment)" />
+                    <Loading v-if="healthLoading && (selectedTreatment === treatment)" />
                     <Pill v-else />
                 </div>
                 <div>

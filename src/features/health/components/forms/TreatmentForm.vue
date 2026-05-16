@@ -46,9 +46,10 @@ const fillTreatmentData = (treatment: Partial<TreatmentExtended>) => {
     vetTextInput.value = !isRegisteredVet;
     Object.assign(formData, {
         name: treatment.name,
-        startDate: tsToDate(treatment.startDate, "date"),
+        startDate: tsToDate(treatment.startDate, "input"),
         vet: treatment.vet,
         notes: treatment.notes ?? "",
+        medication: treatment.medication
     })
 };
 
