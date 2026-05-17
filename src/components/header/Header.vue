@@ -21,7 +21,8 @@ const getHeaderStyle = () => {
     return {
         "flex gap-0.5": true,
         "md:pl-21": route.path !== ROUTES.auth,
-        "bg-brand-dark md:bg-bg-2 md:border-b md:border-border": route.path === ROUTES.calendar
+        "bg-brand-dark": route.path === ROUTES.calendar,
+        "md:bg-bg-2 md:border-b md:border-border": route.path === ROUTES.calendar || route.path === ROUTES.vet
     }
 }
 </script>

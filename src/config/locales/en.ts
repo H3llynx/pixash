@@ -241,6 +241,9 @@ export default {
             email: "Email",
             hours: "Working hours"
         },
+        treatment: {
+            ongoing: "Ongoing treatment"
+        },
         medicine: {
             title: "Medicine {index}",
             name: "Medicine name",

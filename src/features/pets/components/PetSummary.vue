@@ -15,6 +15,6 @@ const { isMd } = useMedia();
         <PetSelector v-if="selectedPet && !isMd" />
         <NextDueSection />
         <ProfileSection />
-        <ActiveTreatments v-if="selectedPet?.treatments.length" :pet="selectedPet" />
+        <ActiveTreatments v-if="selectedPet?.treatments.length" :pet="selectedPet" class="default-padding" />
     </div>
 </template>

@@ -65,7 +65,7 @@ const getAddChipStyle = () => {
             @click="handleClick(pet)">
             <span aria-hidden>{{ getIcon(pet) }}</span>
             {{ pet.name }}</Button>
-        <Button v-if="!form && !calendar && route.path !== ROUTES.history" :variant="nav ? 'add' : 'chip'" size="sm"
+        <Button v-if="nav || route.path === ROUTES.dashboard" :variant="nav ? 'add' : 'chip'" size="sm"
             :class="getAddChipStyle()" @click="isAddingPet = true">
             <Plus /> {{ t("common.button.add") }}
         </Button>

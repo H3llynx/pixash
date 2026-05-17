@@ -40,8 +40,8 @@ const progress = computed(() => getTreatmentProgress(props.treatment));
                 </div>
             </div>
         </div>
-        <span v-if="!treatment.endDate" class="tag bg-separator text-text-secondary">Ongoing
-            treatment</span>
+        <span v-if="!treatment.endDate" class="tag bg-separator text-text-secondary">{{ t("health.treatment.ongoing")
+            }}</span>
     </Button>
 </template>
 

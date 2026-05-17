@@ -116,7 +116,7 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
 </script>
 
 <template>
-    <section class="pet-section md:px-0">
+    <article class="pet-section">
         <h2>{{ t("dashboard.title.weightTracking") }}</h2>
         <div class="card w-full text-text" v-if="logs.length">
             <div class="flex gap-1 justify-between items-start">
@@ -145,5 +145,5 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
                 <Plus /> {{ t("common.button.add") }}
             </Button>
         </div>
-    </section>
+    </article>
 </template>

@@ -15,9 +15,9 @@ const weightLogs = computed(() => selectedPet.value?.logs.filter(log => log.type
 </script>
 
 <template>
-    <div class="flex flex-col gap-1.5 md:mb-3 md:default-padding lg:px-1.5">
-        <EventList :title="t('dashboard.title.upcoming')" :events="petUpcomingEvents" class="md:px-0" />
+    <section class="flex flex-col gap-1.5 md:mb-3 md:default-padding lg:px-1.5">
+        <EventList :title="t('dashboard.title.upcoming')" :events="petUpcomingEvents" />
         <WeightChart v-if="selectedPet" :logs="weightLogs" :pet="selectedPet" />
-    </div>
+    </section>
     <LogWeightModal v-if="selectedPet" :pet="selectedPet" />
 </template>

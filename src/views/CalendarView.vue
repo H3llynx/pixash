@@ -51,8 +51,8 @@ onBeforeRouteLeave(() => {
                 @update-monthName="currentMonthName = $event" @date-click="handleDateClick" />
         </section>
         <section
-            class="flex flex-col-reverse gap-1.5 p-0 h-full md:flex-col md:default-padding lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
-            <EventList :title="getTitle()" :events="filteredMonthEvents" class="md:px-0" />
+            class="flex flex-col-reverse gap-1.5 h-full md:flex-col lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
+            <EventList :title="getTitle()" :events="filteredMonthEvents" />
             <CalendarLegend />
         </section>
     </main>
