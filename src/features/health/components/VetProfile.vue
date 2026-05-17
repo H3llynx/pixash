@@ -58,7 +58,7 @@ const handleVetUpdate = () => {
                     <h1>{{ vet.name }}</h1>
                     <Button variant="ghost" size="xs" :aria-label="t('vet.cta.edit', { name: vet.name })"
                         @click="handleVetUpdate">
-                        <Edit2 :size="14" />
+                        <Edit2 :size="15" />
                     </Button>
                 </div>
                 <div class="flex flex-wrap gap-x-[5px]">

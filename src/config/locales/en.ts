@@ -26,7 +26,9 @@ export default {
             lastLogged: "Last logged",
             done: "Done!",
             antiparasiticLogged: "Antiparasitic against {parasites} logged for {name}.",
-            addPicture: "Add a profile picture"
+            addPicture: "Add a profile picture",
+            copied: "Copied!",
+            errorCopy: "Failed to copy"
         },
         header: {
             greetings: "Welcome",
@@ -34,7 +36,7 @@ export default {
             vetH2: "Vet care",
             vetSpan: "Clinics, treatments & visits",
             historyH2: "Health history",
-            historySpan: "Medical records & stats per pet"
+            historySpan: "Medical records & stats per pet",
         },
         navbar: {
             home: "Home",
@@ -135,7 +137,8 @@ export default {
                 microchip: "Edit {name}'s microchip",
                 generalInformation: "Edit {name}'s general information",
                 nextVaccine: "Edit next vaccine",
-            }
+            },
+            addChip: "Add {name}'s microchip",
         },
         form: {
             name: "Name",
@@ -183,6 +186,7 @@ export default {
             deleteVet: "Delete vet",
             editVetVisit: "Edit vet appointment",
             logTreatment: "Log treatment",
+            logWeight: "Log weight",
             editLog: "Edit log",
             startTreatment: "Start treatment",
             saveTreatment: "Save treatment",

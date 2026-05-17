@@ -5,6 +5,7 @@ import { useToast } from "../../../composables/useToast";
 import { shallowEqual, tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import { MED_FREQUENCY } from "../config";
+import type { TreatmentRecord } from "../types";
 import { resetForm } from "../utils";
 import { useEvents } from "./useEvents";
 
@@ -29,10 +30,10 @@ export const useTreatmentForm = () => {
         startDate: "",
         vet: "",
         notes: "",
-        medication: [addMedicine()],
+        medication: [],
     };
 
-    const formData = reactive({ ...defaultForm });
+    const formData = reactive<TreatmentRecord>({ ...defaultForm });
 
     const handleClose = () => {
         resetForm(formData, defaultForm);

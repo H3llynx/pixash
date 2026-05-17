@@ -55,8 +55,8 @@ const handleChange = (event: Event) => {
             :aria-hidden="readonly && (type === 'date' || type === 'datetime-local')">
             <input v-bind="$attrs" :id="id" :type="type" :placeholder="placeholder" :value="inputValue"
                 :checked="inputChecked" class="font-medium pl-1 pr-2.5 py-0.5" @change="handleChange"
-                @click="readonly && $event.preventDefault()" :readonly="readonly" :aria-readonly="readonly"
-                :tabindex="readonly ? -1 : 0" />
+                @input="handleChange" @click="readonly && $event.preventDefault()" :readonly="readonly"
+                :aria-readonly="readonly" :tabindex="readonly ? -1 : 0" />
             <div class="absolute right-0.5 top-1/2 -translate-y-1/2 flex items-center">
                 <slot name="addon"></slot>
                 <AlertCircle class="error-icon" />

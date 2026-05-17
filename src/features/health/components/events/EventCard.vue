@@ -84,7 +84,7 @@ const markAsDone = async (event: PetEvent) => {
     <EventCardSkeleton v-if="healthLoading" />
     <div tabindex="0" role="button"
         class="card cursor-pointer flex-row p-1 w-full md:max-w-md border border-border gap-1.5 justify-between items-start text-left"
-        v-else @click="handleClick(event)" @keydown="handleClick(event)"
+        v-else @click="handleClick(event)" @keydown.enter="handleClick(event)"
         :class="{ 'opacity-50': tsToDate(event.ts, 'isPast') }">
         <div class="flex gap-0.5 w-full min-w-0 h-full">
             <Syringe v-if="event.eventType === 'vaccine'" class="card-icon" :size="20" />

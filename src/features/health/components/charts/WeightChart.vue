@@ -119,15 +119,20 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
     <section class="pet-section md:px-0">
         <h2>{{ t("dashboard.title.weightTracking") }}</h2>
         <div class="card w-full text-text" v-if="logs.length">
-            <div class="ml-auto text-right">
-                <p class="text-2xl font-medium text-btn-ghost-text">{{ chartData.datasets[0].data.at(-1) }} {{ unit
+            <div class="flex gap-1 justify-between items-start">
+                <Button @click="isAddingHealth.weight = true" size="xxs">
+                    {{ t("health.cta.logWeight") }}
+                </Button>
+                <div class="ml-auto text-right">
+                    <p class="text-2xl font-medium text-btn-ghost-text">{{ chartData.datasets[0].data.at(-1) }} {{ unit
                     }}</p>
-                <p v-if="displayed.length" class="text-text-secondary text-xs">{{ t("common.text.lastLogged") }} {{
-                    displayed.at(-1)?.measuredAt.toDate().toLocaleDateString(locale, {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric"
-                    }) }}</p>
+                    <p v-if="displayed.length" class="text-text-secondary text-xs">{{ t("common.text.lastLogged") }} {{
+                        displayed.at(-1)?.measuredAt.toDate().toLocaleDateString(locale, {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric"
+                        }) }}</p>
+                </div>
             </div>
             <div class="h-8">
                 <Bar :data="chartData" :options="chartOptions" />

@@ -13,10 +13,10 @@ const { isAddingHealth, addNewLog } = usePets();
 const { t } = useI18n();
 
 const props = defineProps<{ pet: PetExtended }>();
-const { loading, getWeightInGrams, formPartialUpdate } = usePetDetails(props.pet);
+const { loading, getWeightInGrams, weightForm } = usePetDetails(props.pet);
 
 const handleSubmit = async () => {
-    if (!formPartialUpdate.data) return;
+    if (!weightForm.data) return;
     loading.value = true;
     const grams = getWeightInGrams();
     if (grams === null) return;
@@ -38,11 +38,10 @@ const handleSubmit = async () => {
                 <form v-else class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
                     <h2>{{ t('pet.profile.edit.weight', { name: pet.name }) }}</h2>
                     <div class="flex gap-0.5">
-                        <Input v-model="formPartialUpdate.data" type="number" id="first-weight-log"
-                            :step="formPartialUpdate.unit === 'kg' ? '0.001' : '1'" ref="weightInputRef"
-                            class="text-base" />
+                        <Input v-model="weightForm.data" type="number" id="first-weight-log"
+                            :step="weightForm.unit === 'kg' ? '0.001' : '1'" ref="weightInputRef" class="text-base" />
                         <div class="input-container w-max">
-                            <select v-model="formPartialUpdate.unit">
+                            <select v-model="weightForm.unit">
                                 <option>kg</option>
                                 <option>g</option>
                             </select>
@@ -51,7 +50,7 @@ const handleSubmit = async () => {
                     <Button>{{ t("common.button.confirm") }}</Button>
                     <Button type="button" variant="ghost" @click="isAddingHealth.weight = false">{{
                         t("common.button.cancel")
-                        }}</Button>
+                    }}</Button>
                 </form>
             </div>
         </Transition>

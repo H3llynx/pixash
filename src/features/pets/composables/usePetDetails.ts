@@ -4,9 +4,10 @@ import { kgToGrams, prefersKg } from "../utils";
 
 export const usePetDetails = (pet: PetExtended) => {
     const loading = ref<boolean>(false);
+    const chipData = ref<string>("");
     const preferredUnit = computed(() => prefersKg(pet) ? "kg" : "g");
 
-    const formPartialUpdate = reactive<{
+    const weightForm = reactive<{
         data: string;
         unit: "kg" | "g";
     }>({
@@ -15,14 +16,14 @@ export const usePetDetails = (pet: PetExtended) => {
     });
 
     const getWeightInGrams = (): number | null => {
-        const numeric = Number(formPartialUpdate.data);
+        const numeric = Number(weightForm.data);
         if (isNaN(numeric) || numeric <= 0) return null;
-        return formPartialUpdate.unit === "kg" ? kgToGrams(numeric) : numeric;
+        return weightForm.unit === "kg" ? kgToGrams(numeric) : numeric;
     };
 
     watch(preferredUnit, (unit) => {
-        formPartialUpdate.unit = unit;
+        weightForm.unit = unit;
     });
 
-    return { loading, preferredUnit, formPartialUpdate, getWeightInGrams }
+    return { chipData, loading, weightForm, getWeightInGrams }
 }
