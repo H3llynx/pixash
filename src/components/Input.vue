@@ -31,6 +31,12 @@ const inputChecked = computed(() => {
     return undefined;
 });
 
+const handleInput = (event: Event) => {
+    if (props.type === "text") {
+        handleChange(event);
+    }
+};
+
 const handleChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
     const value = target.value;
@@ -55,7 +61,7 @@ const handleChange = (event: Event) => {
             :aria-hidden="readonly && (type === 'date' || type === 'datetime-local')">
             <input v-bind="$attrs" :id="id" :type="type" :placeholder="placeholder" :value="inputValue"
                 :checked="inputChecked" class="font-medium pl-1 pr-2.5 py-0.5" @change="handleChange"
-                @input="handleChange" @click="readonly && $event.preventDefault()" :readonly="readonly"
+                @input="handleInput" @click="readonly && $event.preventDefault()" :readonly="readonly"
                 :aria-readonly="readonly" :tabindex="readonly ? -1 : 0" />
             <div class="absolute right-0.5 top-1/2 -translate-y-1/2 flex items-center">
                 <slot name="addon"></slot>
