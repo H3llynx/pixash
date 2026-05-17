@@ -11,7 +11,7 @@ const { isMd } = useMedia();
 </script>
 
 <template>
-    <div class="flex flex-col gap-1.5">
+    <div class="flex flex-col gap-1.5 md:mb-1">
         <PetSelector v-if="selectedPet && !isMd" />
         <NextDueSection />
         <ProfileSection />

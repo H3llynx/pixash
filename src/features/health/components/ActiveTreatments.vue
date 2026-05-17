@@ -8,7 +8,7 @@ defineProps<{ pet: PetExtended }>();
 </script>
 
 <template>
-    <section class="pet-section md:px-0">
+    <section class="pet-section">
         <template v-if="pet.treatments.length">
             <h2>{{ t("dashboard.title.activeTreatments") }}</h2>
             <TreatmentProgress v-for="treatment in pet.treatments" :key="treatment.id" :treatment="treatment" />
