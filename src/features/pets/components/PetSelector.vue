@@ -62,7 +62,7 @@ const getAddChipStyle = () => {
             <Paw class="w-1 -rotate-20" /> {{ t("common.button.allChip") }}
         </Button>
         <Button :variant="nav ? 'ghost' : 'chip'" size="sm" v-for="pet in filteredPets" :class="getPetChipStyle(pet)"
-            @click="handleClick(pet)" :disabled="route.path === ROUTES.vet">
+            @click="handleClick(pet)">
             <span aria-hidden>{{ getIcon(pet) }}</span>
             {{ pet.name }}</Button>
         <Button v-if="!form && !calendar && route.path !== ROUTES.history" :variant="nav ? 'add' : 'chip'" size="sm"

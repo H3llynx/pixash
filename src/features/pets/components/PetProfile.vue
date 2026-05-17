@@ -50,7 +50,7 @@ const handleDelete = async () => {
             <div class="rounded-full w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                 {{ getIcon(pet) }}
             </div>
-            <div class="text-text-secondary text-sm w-full">
+            <div class="w-full">
                 <div class="flex gap-0.5 items-center">
                     <h1>{{ pet.name }}</h1>
                     <Button variant="ghost" size="xs"
@@ -63,13 +63,20 @@ const handleDelete = async () => {
                         <Trash2 :size="22" color="var(--color-border)" />
                     </Button>
                 </div>
-                <span v-if="pet.breed" class="capitalize">{{ getLabel(pet.breed, getBreedOptions(pet.species)) }} ·
-                </span>
-                <span>{{ getAge(pet)?.text }} · </span>
-                <span class="capitalize">{{ pet.sex }}</span>
-                <span class="capitalize" v-if="pet.sterilized"> · {{ pet.sex === "male" ?
-                    t("pet.profile.labels.sterilized.male") : t("pet.profile.labels.sterilized.female") }}</span>
-                <span v-if="pet.weight"> · {{ pet.weight * unitFactor }}{{ preferredUnit }}</span>
+                <div class="text-text-secondary text-sm mb-0.5">
+                    <span v-if="pet.breed" class="capitalize">{{ getLabel(pet.breed, getBreedOptions(pet.species)) }} ·
+                    </span>
+                    <span>{{ getAge(pet)?.text }} · </span>
+                    <span class="capitalize">{{ pet.sex }}</span>
+                    <span v-if="pet.weight"> · {{ pet.weight * unitFactor }}{{ preferredUnit }}</span>
+                </div>
+                <div class="flex gap-0.5">
+                    <span class="tag capitalize bg-green-rgba text-green-pale" v-if="pet.sterilized">{{ pet.sex ===
+                        "male" ?
+                        t("pet.profile.labels.sterilized.male") : t("pet.profile.labels.sterilized.female") }}</span>
+                    <span class="tag capitalize bg-gold-rgba text-gold-dark" v-if="pet.microchipped">{{
+                        t("pet.profile.labels.microchipped") }}</span>
+                </div>
             </div>
         </div>
         <MicrochipRow :pet="pet" />

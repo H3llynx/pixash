@@ -150,7 +150,6 @@ const markAsDone = async (event: PetEvent) => {
 @media (hover: hover) and (pointer: fine) {
     .card:hover {
         color: var(--color-brand);
-        border-color: var(--color-brand);
         transform: scale(1.02);
 
         &::before {

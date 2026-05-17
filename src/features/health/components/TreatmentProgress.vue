@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { Pill } from '@lucide/vue';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Loading from '../../../components/loading/Loading.vue';
+import { tsToDate } from '../../../utils';
 import { usePets } from '../../pets/composables/usePets';
 import type { TreatmentExtended } from '../types';
 import { getTreatmentProgress } from '../utils';
 
 const { selectTreatment, healthLoading, selectedTreatment } = usePets();
+const { t } = useI18n();
 
 const props = defineProps<{ treatment: TreatmentExtended }>();
 
 const progress = computed(() => getTreatmentProgress(props.treatment));
-const isOngoing = computed(() => progress.value === null);
 </script>
 
 <template>
@@ -24,14 +26,22 @@ const isOngoing = computed(() => progress.value === null);
         <div class="text-left w-full">
             <h3>{{ treatment.name }}</h3>
             <p v-if="treatment.notes" class="text-text-secondary">{{ treatment.notes }}</p>
-            <div v-if="!isOngoing" class="flex gap-0.5 items-center mt-0.5">
-                <div class="progress-bar">
-                    <div class="progress-fill" :style="{ width: `${progress}%` }"></div>
+            <div class="text-sm text-text-secondary mt-0.5">
+                <div class="text-xs">
+                    <span v-if="!treatment.endDate">{{ t("common.text.started") }}</span>
+                    <span>{{ tsToDate(treatment.startDate, "date") }}</span>
+                    <span v-if="treatment.endDate"> - {{ tsToDate(treatment.endDate, "date") }}</span>
                 </div>
-                <span class="text-text-secondary text-sm">{{ progress }}%</span>
+                <div v-if="treatment.endDate" class="flex gap-0.5 items-center">
+                    <div class="progress-bar">
+                        <div class="progress-fill" :style="{ width: `${progress}%` }"></div>
+                    </div>
+                    <span>{{ progress }}%</span>
+                </div>
             </div>
-            <p v-else class="text-text-secondary">Ongoing treatment</p>
         </div>
+        <span v-if="!treatment.endDate" class="tag bg-separator text-text-secondary">Ongoing
+            treatment</span>
     </Button>
 </template>
 
@@ -42,6 +52,20 @@ button {
     border: 1px solid var(--color-border);
     background: var(--color-bg-2);
     justify-content: start;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        inset: 0;
+        background-image: var(--background-image-card);
+        background-size: 150% 100%;
+        opacity: 0;
+        z-index: -1;
+        transition: 1s ease;
+    }
 }
 
 .progress-bar {
@@ -62,6 +86,17 @@ button {
     h3,
     p {
         font-size: clamp(0.85rem, 0.5vw, 1rem);
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    button:hover {
+        transform: scale(1.02);
+
+        &::before {
+            animation: move-overlay 10s ease-out infinite;
+            opacity: 1;
+        }
     }
 }
 </style>

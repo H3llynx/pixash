@@ -26,7 +26,7 @@ export const getNextVaccine = (vaccines: VaccineExtended[]) => {
     return (
         vaccines
             .filter(vaccine => vaccine.dueOn && tsToDayKey(vaccine.dueOn) >= todayKey)
-            .sort((a, b) => tsToDayKey(a.dueOn) - tsToDayKey(b.dueOn),)[0] ?? null
+            .sort((a, b) => tsToDayKey(a.dueOn) - tsToDayKey(b.dueOn))[0] ?? null
     );
 };
 

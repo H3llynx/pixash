@@ -1,5 +1,6 @@
 <template>
-    <div class="animate-pulse flex flex-col gap-1.5 default-padding py-1 max-w-full overflow-hidden">
+    <div
+        class="animate-pulse flex flex-col gap-1.5 default-padding py-1 max-w-full overflow-hidden pb-6 md:pb-0 md:pl-21">
         <div class="h-1 w-7 rounded bg-grey-light opacity-30"></div>
         <div class="flex gap-1 w-full">
             <div

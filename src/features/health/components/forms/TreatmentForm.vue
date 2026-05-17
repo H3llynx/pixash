@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarCheck, Trash2 } from '@lucide/vue';
-import { computed, provide, ref, watch, watchEffect } from 'vue';
+import { computed, provide, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
@@ -26,16 +26,6 @@ const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
 const { name, startDate, vet, notes } = treatmentFields;
 provide('readonly', isReadonly);
-
-console.log('TreatmentForm script evaluated');
-
-watchEffect(() => {
-    console.log('TreatmentForm reactive state:', {
-        isAdding: isAddingHealth.treatment,
-        selected: !!selectedTreatment.value,
-        pet: !!selectedPet.value
-    });
-});
 
 const vetTextInput = ref<boolean>(false);
 const assignedVet = computed(() => {

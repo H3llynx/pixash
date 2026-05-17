@@ -28,7 +28,8 @@ export default {
             antiparasiticLogged: "Antiparasitic against {parasites} logged for {name}.",
             addPicture: "Add a profile picture",
             copied: "Copied!",
-            errorCopy: "Failed to copy"
+            errorCopy: "Failed to copy",
+            started: "Started: ",
         },
         header: {
             greetings: "Welcome",
@@ -128,6 +129,7 @@ export default {
                     female: "Spayed"
                 },
                 weight: "Weight",
+                microchipped: "Microchipped",
                 microchip: "Microchip",
                 generalInformation: "General information",
                 nextVaccine: "Next vaccine"
