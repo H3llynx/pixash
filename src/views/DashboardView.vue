@@ -17,7 +17,7 @@ onBeforeRouteLeave(() => {
 <template>
   <Header />
   <DashboardSkeleton v-if="loading" />
-  <main v-else-if="hasPets" class="lg:grid lg:grid-cols-[55%_45%] md:gap-0">
+  <main v-else-if="hasPets" class="lg:grid lg:grid-cols-[55%_45%] lg:gap-0">
     <PetSummary />
     <PetMonitoring />
     <AddButton />

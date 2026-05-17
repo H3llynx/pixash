@@ -95,22 +95,6 @@ const handlePetAction = async (
   }
 };
 
-// const fetchUserPets = async () => {
-//   await handlePetAction(async () => {
-//     loading.value = true;
-//     pets.value = await fetchPets(user.value!.uid);
-//     await fetchUserVaccines();
-//     await fetchUserVisits();
-//     await fetchUserLogs();
-//     await fetchUserTreatments();
-//     if (!selectedPet.value && pets.value.length) {
-//       selectPet(pets.value[0]);
-//     } else if (!pets.value.length) isAddingPet.value = true;
-//   },
-//     () => loading.value = false
-//   );
-// };
-
 const fetchUserPets = async () => {
   await handlePetAction(async () => {
     loading.value = true;
