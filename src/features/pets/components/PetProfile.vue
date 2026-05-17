@@ -5,6 +5,7 @@ import Button from '../../../components/Button.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { useToast } from '../../../composables/useToast';
 import { getLabel } from '../../../utils';
+import { usePetDetails } from '../composables/usePetDetails';
 import { usePets } from '../composables/usePets';
 import type { PetExtended } from '../types';
 import { getAge, getBreedOptions, getIcon } from '../utils';
@@ -16,6 +17,7 @@ const { show } = useToast();
 const { t } = useI18n();
 
 const props = defineProps<{ pet: PetExtended }>();
+const { unitFactor, preferredUnit } = usePetDetails(props.pet);
 
 const updatePetInfo = () => {
     selectPet(props.pet);
@@ -67,6 +69,7 @@ const handleDelete = async () => {
                 <span class="capitalize">{{ pet.sex }}</span>
                 <span class="capitalize" v-if="pet.sterilized"> · {{ pet.sex === "male" ?
                     t("pet.profile.labels.sterilized.male") : t("pet.profile.labels.sterilized.female") }}</span>
+                <span v-if="pet.weight"> · {{ pet.weight * unitFactor }}{{ preferredUnit }}</span>
             </div>
         </div>
         <MicrochipRow :pet="pet" />

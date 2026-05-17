@@ -15,9 +15,9 @@ import { Bar } from 'vue-chartjs';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { getChartColor } from '../../../../utils';
+import { usePetDetails } from '../../../pets/composables/usePetDetails';
 import { usePets } from '../../../pets/composables/usePets';
 import type { PetExtended } from '../../../pets/types';
-import { prefersKg } from '../../../pets/utils';
 import { useTheme } from '../../../theme/composables/useTheme';
 import type { WeightLogExtended } from '../../types';
 
@@ -30,6 +30,8 @@ const props = defineProps<{
     logs: WeightLogExtended[];
 }>();
 
+const { unitFactor, preferredUnit } = usePetDetails(props.pet);
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -39,7 +41,6 @@ ChartJS.register(
     Legend,
 );
 
-const unit = computed(() => prefersKg(props.pet) ? "kg" : "g");
 const sorted = computed(() => {
     if (!props.logs) return [];
     return [...props.logs].sort((a, b) => a.measuredAt.seconds - b.measuredAt.seconds);
@@ -51,14 +52,13 @@ const chartData = computed<ChartData<"bar">>(() => {
         month: "short",
         year: "2-digit"
     }));
-    const unitFactor = prefersKg(props.pet) ? 1 / 1000 : 1;
     const data = displayed.value.map(log => log.weight * unitFactor);
     theme.value;
     return {
         labels,
         datasets: [
             {
-                label: `${t("pet.profile.labels.weight")} ${unit.value})`,
+                label: `${t("pet.profile.labels.weight")} ${preferredUnit.value})`,
                 data,
                 borderColor: getChartColor("--color-brand-light"),
                 borderRadius: { topLeft: 12, topRight: 12 },
@@ -124,8 +124,9 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
                     {{ t("health.cta.logWeight") }}
                 </Button>
                 <div class="ml-auto text-right">
-                    <p class="text-2xl font-medium text-btn-ghost-text">{{ chartData.datasets[0].data.at(-1) }} {{ unit
-                    }}</p>
+                    <p class="text-2xl font-medium text-btn-ghost-text">{{ chartData.datasets[0].data.at(-1) }} {{
+                        preferredUnit
+                        }}</p>
                     <p v-if="displayed.length" class="text-text-secondary text-xs">{{ t("common.text.lastLogged") }} {{
                         displayed.at(-1)?.measuredAt.toDate().toLocaleDateString(locale, {
                             day: "numeric",

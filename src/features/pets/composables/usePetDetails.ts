@@ -6,7 +6,6 @@ export const usePetDetails = (pet: PetExtended) => {
     const loading = ref<boolean>(false);
     const chipData = ref<string>("");
     const preferredUnit = computed(() => prefersKg(pet) ? "kg" : "g");
-
     const weightForm = reactive<{
         data: string;
         unit: "kg" | "g";
@@ -14,6 +13,8 @@ export const usePetDetails = (pet: PetExtended) => {
         data: "",
         unit: preferredUnit.value,
     });
+
+    const unitFactor = prefersKg(pet) ? 1 / 1000 : 1;
 
     const getWeightInGrams = (): number | null => {
         const numeric = Number(weightForm.data);
@@ -25,5 +26,5 @@ export const usePetDetails = (pet: PetExtended) => {
         weightForm.unit = unit;
     });
 
-    return { chipData, loading, weightForm, getWeightInGrams }
+    return { chipData, loading, weightForm, getWeightInGrams, unitFactor, preferredUnit }
 }
