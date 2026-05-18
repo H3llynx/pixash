@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Mail } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../../../components/Button.vue';
-import { useMedia } from '../../../composables/useMedia';
-import type { VetExtended } from '../types';
-import AddVetDetail from './forms/AddVetDetail.vue';
+import Button from '../../../../components/Button.vue';
+import { useMedia } from '../../../../composables/useMedia';
+import type { VetExtended } from '../../types';
+import AddVetDetail from '../forms/AddVetDetail.vue';
 
 const { t } = useI18n();
 const { isMd } = useMedia();

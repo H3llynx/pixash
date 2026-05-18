@@ -2,10 +2,10 @@
 import { BriefcaseMedical, Edit2, Plus } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../../../components/Button.vue';
-import { resetState } from '../../../utils';
-import { usePets } from '../../pets/composables/usePets';
-import PetTag from './PetTag.vue';
+import Button from '../../../../components/Button.vue';
+import { resetState } from '../../../../utils';
+import { usePets } from '../../../pets/composables/usePets';
+import PetTag from '../PetTag.vue';
 import VetNotes from './VetNotes.vue';
 import VetProfileRow from './VetProfileRow.vue';
 import VetTypeTag from './VetTypeTag.vue';

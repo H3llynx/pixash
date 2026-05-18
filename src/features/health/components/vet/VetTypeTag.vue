@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { getLabel } from '../../../utils';
-import { VET_TYPES } from '../config';
+import { getLabel } from '../../../../utils';
+import { VET_TYPES } from '../../config';
 
 const props = defineProps<{ type: string }>();
 const { t } = useI18n();

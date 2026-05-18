@@ -6,7 +6,7 @@ import LoadingPuppy from '../components/loading/LoadingPuppy.vue';
 import VetSkeleton from '../components/loading/VetSkeleton.vue';
 import VetForm from '../features/health/components/forms/VetForm.vue';
 import TreatmentsSection from '../features/health/components/TreatmentsSection.vue';
-import VetSummary from '../features/health/components/VetSummary.vue';
+import VetSummary from '../features/health/components/vet/VetSummary.vue';
 import { usePets } from '../features/pets/composables/usePets';
 
 const { loading, selectedVet, healthLoading, hasVets, isUpdatingVet, selectedPet } = usePets();

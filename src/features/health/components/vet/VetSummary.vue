@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Plus } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../../../components/Button.vue';
-import Scrollable from '../../../components/Scrollable.vue';
-import { usePets } from '../../pets/composables/usePets';
+import Button from '../../../../components/Button.vue';
+import Scrollable from '../../../../components/Scrollable.vue';
+import { usePets } from '../../../pets/composables/usePets';
 import VetProfile from './VetProfile.vue';
 
 const { vets, hasVets, isAddingHealth } = usePets();
