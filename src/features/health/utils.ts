@@ -2,7 +2,7 @@ import { Timestamp } from "firebase/firestore";
 import { getTodayDayKey, tsToDayKey } from "../../utils";
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
-import { ANTIPARASITE_TYPES, PARASITES, VACCINE_TYPES } from "./config";
+import { ANTIPARASITE_TYPES, COLORS, PARASITES, VACCINE_TYPES } from "./config";
 import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, MedicineDb, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
 
 export const resetForm = <T extends object>(
@@ -111,3 +111,19 @@ export const getTreatmentProgress = (treatment: TreatmentExtended): number | nul
     const progress = ((now - start) / (end - start)) * 100;
     return Math.round(Math.min(Math.max(progress, 0), 100));
 };
+
+export const getMedicationProgress = (treatment: TreatmentExtended, medication: MedicineDb): number | null => {
+    if (!medication.endDate) return null;
+
+    const now = Date.now();
+    const start = treatment.startDate.toMillis()
+    const end = medication.endDate.toMillis()
+
+    if (now >= end) return 100;
+    if (now <= start) return 0;
+
+    const progress = ((now - start) / (end - start)) * 100;
+    return Math.round(Math.min(Math.max(progress, 0), 100));
+};
+
+export const getProgressColor = (index: number) => COLORS[index] ?? "var(--color-brand)";

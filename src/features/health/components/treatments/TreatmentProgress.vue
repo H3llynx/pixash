@@ -2,23 +2,25 @@
 import { Pill } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../../../components/Button.vue';
-import Loading from '../../../components/loading/Loading.vue';
-import { tsToDate } from '../../../utils';
-import { usePets } from '../../pets/composables/usePets';
-import type { TreatmentExtended } from '../types';
-import { getTreatmentProgress } from '../utils';
+import Button from '../../../../components/Button.vue';
+import Loading from '../../../../components/loading/Loading.vue';
+import { tsToDate } from '../../../../utils';
+import { usePets } from '../../../pets/composables/usePets';
+import type { TreatmentExtended } from '../../types';
+import { getTreatmentProgress } from '../../utils';
+import ProgressBar from './ProgressBar.vue';
 
 const { selectTreatment, healthLoading, selectedTreatment } = usePets();
 const { t } = useI18n();
 
-const props = defineProps<{ treatment: TreatmentExtended }>();
+const props = defineProps<{ treatment: TreatmentExtended; color: string }>();
 
 const progress = computed(() => getTreatmentProgress(props.treatment));
 </script>
 
 <template>
-    <Button variant="ghost" @click="selectTreatment(treatment)" size="sm" class="w-full md:max-w-md ">
+    <Button tabindex="0" role="button" variant="ghost" @click="selectTreatment(treatment)" size="sm"
+        class="w-full md:max-w-md cursor-pointer">
         <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
             <Loading v-if="healthLoading && (selectedTreatment === treatment)" />
             <Pill v-else />
@@ -32,16 +34,11 @@ const progress = computed(() => getTreatmentProgress(props.treatment));
                     <span>{{ tsToDate(treatment.startDate, "date") }}</span>
                     <span v-if="treatment.endDate"> - {{ tsToDate(treatment.endDate, "date") }}</span>
                 </div>
-                <div v-if="treatment.endDate" class="flex gap-0.5 items-center">
-                    <div class="progress-bar">
-                        <div class="progress-fill" :style="{ width: `${progress}%` }"></div>
-                    </div>
-                    <span>{{ progress }}%</span>
-                </div>
+                <ProgressBar v-if="progress" :progress="progress" :color="color" />
             </div>
         </div>
         <span v-if="!treatment.endDate" class="tag bg-separator text-text-secondary">{{ t("health.treatment.ongoing")
-            }}</span>
+        }}</span>
     </Button>
 </template>
 
@@ -66,19 +63,6 @@ button {
         z-index: -1;
         transition: 1s ease;
     }
-}
-
-.progress-bar {
-    width: 100%;
-    height: 8px;
-    background: var(--color-separator);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background: var(--color-brand);
 }
 
 @media (width >=48rem) {
