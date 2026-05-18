@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { inject, onMounted, ref, watch } from 'vue';
 import { usePets } from '../features/pets/composables/usePets';
 import Button from './Button.vue';
 
 const { hasPets } = usePets();
+const readonly = inject("readonly", ref(false));
 
 withDefaults(defineProps<{
     canClose?: boolean
@@ -15,6 +16,10 @@ const panelRef = ref<HTMLElement>();
 onMounted(() => {
     panelRef.value?.focus();
     document.documentElement.scrollTop = 0;
+});
+
+watch(readonly, () => {
+    panelRef.value?.focus();
 });
 </script>
 
