@@ -8,10 +8,12 @@ import kitty from '../assets/animations/kitty.json';
 import { useMedia } from '../composables/useMedia';
 import { useEvents } from '../features/health/composables/useEvents';
 import PetSelector from '../features/pets/components/PetSelector.vue';
+import { usePets } from '../features/pets/composables/usePets';
 import { ROUTES } from '../router/config';
 import Logo from './Logo.vue';
 
 const { isMd } = useMedia();
+const { loading } = usePets();
 const { petId } = useEvents();
 const { t } = useI18n();
 const route = useRoute();
@@ -33,7 +35,7 @@ const route = useRoute();
         <RouterLink :to="ROUTES.history" tabindex="0">
             <History />{{ t("common.navbar.history") }}
         </RouterLink>
-        <PetSelector v-if="isMd" :calendar="route.path === ROUTES.calendar" nav v-model:petId="petId" />
+        <PetSelector v-if="isMd && !loading" :calendar="route.path === ROUTES.calendar" nav v-model:petId="petId" />
         <div v-if="isMd" class="relative mt-auto">
             <LottieAnimation :animationData="happyDog" :loop="true" :autoplay="true" :speed="1" class="dog" />
             <LottieAnimation :animationData="kitty" :loop="true" :autoplay="true" :speed="1" class="cat" />
