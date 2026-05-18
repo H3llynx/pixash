@@ -1,18 +1,16 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import type { Timestamp } from 'firebase/firestore';
 import { useI18n } from 'vue-i18n';
 import { tsToDate } from '../../../../utils';
-import type { PetEvent } from '../../types';
 
 const { t } = useI18n();
 
-const props = defineProps<{ event: PetEvent }>();
-const date = computed(() => props.event.dueOn ?? props.event.date ?? props.event.ts)
+const props = defineProps<{ date: Timestamp }>();
 
 const getTagStyle = () => {
-    const daysUntil = tsToDate(date.value, "timeUntil", t);
-    const isThisWeek = tsToDate(date.value, "isThisWeek");
-    const isNotPast = !tsToDate(date.value, "isPast");
+    const daysUntil = tsToDate(props.date, "timeUntil", t);
+    const isThisWeek = tsToDate(props.date, "isThisWeek");
+    const isNotPast = !tsToDate(props.date, "isPast");
 
     return {
         "tag text-text-secondary": true,

@@ -95,6 +95,7 @@ export type PetEvent = {
     measuredAt?: Timestamp;
     givenAt?: Timestamp;
     dueOn?: Timestamp;
+    endDate?: Timestamp;
 };
 
 export type Vet = {

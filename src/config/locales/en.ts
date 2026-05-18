@@ -27,7 +27,6 @@ export default {
             addPicture: "Add a profile picture",
             copied: "Copied!",
             errorCopy: "Failed to copy",
-            started: "Started: ",
         },
         header: {
             greetings: "Welcome",
@@ -240,7 +239,8 @@ export default {
             hours: "Working hours"
         },
         treatment: {
-            ongoing: "Ongoing treatment"
+            ongoing: "Ongoing treatment",
+            started: "Started: ",
         },
         medicine: {
             title: "Medicine {index}",

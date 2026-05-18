@@ -11,6 +11,7 @@ const props = defineProps<{
     pet: PetExtended
 }>();
 
+const timestamp = computed(() => props.data.dueOn ?? props.data.date ?? props.data.ts)
 const date = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "date") : tsToDate(props.data.date, "date"));
 const timeUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "timeUntil") : tsToDate(props.data.date, "timeUntil"))
 
@@ -23,7 +24,7 @@ const timeUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "
             <h3>{{ title }}</h3>
             <p class="font-medium">{{ date }}</p>
             <p class="text-xs text-brand-light mb-0.5">{{ timeUntil }}</p>
-            <DateTag :event="data" class="mt-auto" />
+            <DateTag :date="timestamp" class="mt-auto" />
         </div>
     </div>
 </template>

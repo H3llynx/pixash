@@ -1,20 +1,24 @@
 <script setup lang="ts">
-import { SPECIES } from '../../pets/config';
-import type { PetExtended } from '../../pets/types';
-import { getIcon } from '../../pets/utils';
+import { SPECIES } from '../config';
+import type { PetExtended } from '../types';
+import { getIcon } from '../utils';
 
-const props = defineProps<{ pet: PetExtended }>();
+const props = withDefaults(defineProps<{
+    pet: PetExtended
+    color?: boolean
+}>(), { color: true });
 
 const getTagStyle = () => {
     return {
         "flex items-center justify-center gap-[5px] rounded-full py-[5px] px-[10px] text-xs border font-medium": true,
-        "orange": props.pet.species === SPECIES[0].id,
-        "purple": props.pet.species === SPECIES[1].id,
-        "yellow": props.pet.species === SPECIES[2].id,
-        "grey": props.pet.species === SPECIES[3].id,
-        "blue": props.pet.species === SPECIES[4].id,
-        "green": props.pet.species === SPECIES[5].id,
-        "pink": props.pet.species === SPECIES[6].id,
+        "border-border bg-bg": !props.color,
+        "orange": props.pet.species === SPECIES[0].id && props.color,
+        "purple": props.pet.species === SPECIES[1].id && props.color,
+        "yellow": props.pet.species === SPECIES[2].id && props.color,
+        "grey": props.pet.species === SPECIES[3].id && props.color,
+        "blue": props.pet.species === SPECIES[4].id && props.color,
+        "green": props.pet.species === SPECIES[5].id && props.color,
+        "pink": props.pet.species === SPECIES[6].id && props.color,
     };
 };
 </script>

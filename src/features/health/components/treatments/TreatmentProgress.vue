@@ -30,7 +30,7 @@ const progress = computed(() => getTreatmentProgress(props.treatment));
             <p v-if="treatment.notes" class="text-text-secondary">{{ treatment.notes }}</p>
             <div class="text-sm text-text-secondary mt-0.5">
                 <div class="text-xs">
-                    <span v-if="!treatment.endDate">{{ t("common.text.started") }}</span>
+                    <span v-if="!treatment.endDate">{{ t("health.treatment.started") }}</span>
                     <span>{{ tsToDate(treatment.startDate, "date") }}</span>
                     <span v-if="treatment.endDate"> - {{ tsToDate(treatment.endDate, "date") }}</span>
                 </div>
@@ -38,7 +38,7 @@ const progress = computed(() => getTreatmentProgress(props.treatment));
             </div>
         </div>
         <span v-if="!treatment.endDate" class="tag bg-separator text-text-secondary">{{ t("health.treatment.ongoing")
-        }}</span>
+            }}</span>
     </Button>
 </template>
 

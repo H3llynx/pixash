@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Check, MapPinned, Stethoscope, Syringe } from '@lucide/vue';
-import { toRef } from 'vue';
+import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import EventCardSkeleton from '../../../../components/loading/EventCardSkeleton.vue';
@@ -21,6 +21,8 @@ const { show } = useToast();
 
 const props = defineProps<{ event: PetEvent }>();
 const { pet, vet, title } = useEventData(toRef(props, "event"));
+
+const date = computed(() => props.event.dueOn ?? props.event.date ?? props.event.ts);
 
 const handleClick = (event: PetEvent) => {
     if (event.eventType === "vaccine") {
@@ -92,7 +94,7 @@ const markAsDone = async (event: PetEvent) => {
             <div class="flex-1 min-w-0 flex flex-col">
                 <div class="flex gap-0.5 items-start">
                     <h4>{{ title }}</h4>
-                    <DateTag :event="event" class="ml-auto" />
+                    <DateTag :date="date" class="ml-auto" />
                 </div>
                 <div>
                     <p class="text-text-secondary mb-0.5">
