@@ -111,8 +111,8 @@ export const getOneYearLaterInput = (firstDate: string) => {
     return `${year}-${month}-${day}`;
 };
 
-export const getLabel = (type: string, array: { id: string, label: string }[]) => {
-    return array.find(t => t.id === type)?.label ?? "";
+export const getLabel = (item: string, array: { id: string, label: string }[]) => {
+    return array.find(t => t.id === item)?.label ?? "";
 };
 
 export const getChartColor = (variable: string) =>

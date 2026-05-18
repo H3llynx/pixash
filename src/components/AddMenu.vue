@@ -44,6 +44,10 @@ const handleClick = (action: string) => {
                         <Button @click="handleClick('vet')">{{ t("addMenu.vet") }}</Button>
                         <BriefcaseMedical class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
+                    <div class="row">
+                        <Button @click="handleClick('treatment')">{{ t("addMenu.treatment") }}</Button>
+                        <Pill class="btn-icon default-transition filter-blur" :size="40" />
+                    </div>
                 </div>
 
                 <div v-else ref="menuRef"
