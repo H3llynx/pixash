@@ -29,6 +29,5 @@ onBeforeRouteLeave(() => {
             <AddButton vet />
         </section>
     </main>
-
     <VetForm />
 </template>
