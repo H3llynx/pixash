@@ -127,9 +127,16 @@ export type WeightRecord = {
     weight: number;
 };
 
+export type MedicationRecord = {
+    treatmentId: string,
+    medicine: string,
+    givenAt: Timestamp,
+};
+
 export type Log =
     | (AntiparasiteRecord & { type: "antiparasite" })
-    | (WeightRecord & { type: "weight" });
+    | (WeightRecord & { type: "weight" })
+    | (MedicationRecord & { type: "medication" });
 
 export type AntiparasiteLogExtended = {
     id: string;
@@ -144,15 +151,25 @@ export type AntiparasiteLogExtended = {
     notes?: string;
 };
 
-export type WeightLogExtended = {
+export type WeightLogExtended = WeightRecord & {
     id: string;
     petId: string;
     userId: string;
     eventType: "log";
     ts: Timestamp;
     type: "weight";
-    weight: number;
     measuredAt: Timestamp;
 };
 
-export type LogExtended = AntiparasiteLogExtended | WeightLogExtended;
+export type MedicationLogExtended = {
+    id: string,
+    petId: string,
+    userId: string,
+    eventType: "log";
+    treatmentId: string,
+    medicine: string,
+    givenAt: Timestamp,
+    type: "medication"
+}
+
+export type LogExtended = AntiparasiteLogExtended | WeightLogExtended | MedicationLogExtended;
