@@ -6,12 +6,12 @@ import Scrollable from '../../../../components/Scrollable.vue';
 import { usePets } from '../../../pets/composables/usePets';
 import VetProfile from './VetProfile.vue';
 
-const { vets, hasVets, isAddingHealth } = usePets();
+const { vets, hasVets, isAddingHealth, selectedPet } = usePets();
 const { t } = useI18n();
 </script>
 
 <template>
-    <section class="pet-section p-0 md:pt-1.5">
+    <section class="pet-section p-0 md:py-1.5">
         <h2 class="default-padding">{{ t("health.title.myVets") }}</h2>
         <Scrollable v-if="hasVets" :list="vets">
             <VetProfile v-if="hasVets" v-for="vet in vets" :vet="vet" />

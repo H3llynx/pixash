@@ -4,11 +4,13 @@ import { onClickOutside } from '@vueuse/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
+import { useMedia } from '../../../../composables/useMedia';
 import { usePets } from '../../../pets/composables/usePets';
 import type { VetExtended } from '../../types';
 
 const { updateSelectedVet } = usePets();
 const { t } = useI18n();
+const { isMd } = useMedia();
 
 const props = defineProps<{ vet: VetExtended }>();
 
@@ -38,12 +40,17 @@ const handleNoteEdit = async () => {
 
 
 <template>
-    <Button variant="vetOptions" size="xs" @click="toggleNoteEdit"
-        :aria-label="isUpdatingNotes ? t('vet.cta.saveNotes') : t('vet.cta.notes')" ref="toggleRef">
-        <CheckCircle v-if="isUpdatingNotes" />
-        <PenLine v-else />
-    </Button>
-    <textarea v-model="notesData" :readonly="!isUpdatingNotes" ref="notesRef" :placeholder="t('vet.notesPlaceholder')"
-        :class="{ 'italic py-0.5 px-1 border-0 bg-bg md:text-sm': true, 'text-text-secondary': !isUpdatingNotes }"
-        @change="handleNoteEdit" />
+
+    <div class="relative flex flex-col gap-0.75">
+        <Button :variant="isMd ? 'ghost' : 'vetOptions'" size="xs" @click="toggleNoteEdit"
+            :aria-label="isUpdatingNotes ? t('vet.cta.saveNotes') : t('vet.cta.notes')" ref="toggleRef"
+            :class="isMd && 'absolute -top-0.5 -right-0.5 rounded-xl bg-transparent'">
+            <CheckCircle v-if="isUpdatingNotes" :size="isMd ? 18 : 24" />
+            <PenLine v-else :size="isMd ? 15 : 24" />
+        </Button>
+        <textarea v-model="notesData" :readonly="!isUpdatingNotes" ref="notesRef"
+            :placeholder="t('vet.notesPlaceholder')"
+            :class="{ 'italic py-0.5 px-1 border-0 bg-bg md:text-sm': true, 'text-text-secondary': !isUpdatingNotes, 'pr-1.5': isMd }"
+            @change="handleNoteEdit" />
+    </div>
 </template>
