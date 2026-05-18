@@ -12,7 +12,7 @@ defineProps<{ pet: PetExtended }>();
     <article class="pet-section">
         <template v-if="pet.treatments.length">
             <h2>{{ t("dashboard.title.activeTreatments") }}</h2>
-            <div class="grid grid-cols-1 gap-1 auto-rows-fr">
+            <div class="grid grid-cols-1 gap-1">
                 <TreatmentProgress v-for="(treatment, index) in pet.treatments" :key="treatment.id"
                     :treatment="treatment" :color="getProgressColor(index)" />
             </div>

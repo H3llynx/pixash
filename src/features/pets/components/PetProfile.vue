@@ -45,7 +45,7 @@ const handleDelete = async () => {
 </script>
 
 <template>
-    <div class="card md:max-w-md">
+    <div class="card">
         <div class="flex items-center gap-1">
             <div class="rounded-full w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                 {{ getIcon(pet) }}

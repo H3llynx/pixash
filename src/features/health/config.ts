@@ -50,27 +50,28 @@ export const EVENT_TYPES = [{ id: "vaccines", label: "events.vaccines" }, { id: 
 export const MED_FREQUENCY = [
     {
         id: "daily",
-        label: "health.medicine.frequency.daily"
+        label: "health.medicine.frequency.daily",
+        dailyDose: 1
     },
     {
         id: "twice_daily",
-        label: "health.medicine.frequency.twiceDaily"
+        label: "health.medicine.frequency.twiceDaily",
+        dailyDose: 2
 
     },
     {
         id: "three_times_daily",
-        label: "health.medicine.frequency.threeDaily"
-
+        label: "health.medicine.frequency.threeDaily",
+        dailyDose: 3
     },
     {
         id: "every_48_hours",
-        label: "health.medicine.frequency.every48"
+        label: "health.medicine.frequency.every48",
 
     },
     {
         id: "custom",
-        label: "health.medicine.frequency.custom"
-
+        label: "health.medicine.frequency.custom",
     }
 ];
 
