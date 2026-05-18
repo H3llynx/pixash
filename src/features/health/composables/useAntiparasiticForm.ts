@@ -18,7 +18,8 @@ export const useAntiparasiticForm = () => {
     const antiparasitics = ref<AntiparasiteTypes[]>([]);
     const error = ref<boolean>(false);
     const newLog = ref<PetEvent | null>(null);
-    const givenAt = computed(() => selectedDate.value ?? new Date().toISOString().slice(0, 10));
+    const today = new Date().toISOString().slice(0, 10);
+    const givenAt = computed(() => selectedDate.value && selectedDate.value <= today ? selectedDate.value : today);
     const fillLogData = (log: AntiparasiteLogExtended) => {
         Object.assign(formData, {
             treated: [...log.treated],

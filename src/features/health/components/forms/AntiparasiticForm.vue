@@ -91,7 +91,8 @@ watch(() => mode.value, (mode) => {
                                 variant="secondary" size="sm" :disabled="healthLoading" @click="mode = 'view'">
                                 {{ t("common.button.cancel") }}
                             </Button>
-                            <Button size="sm" :disabled="healthLoading">{{ t("health.cta.logTreatment") }}</Button>
+                            <Button size="sm" :disabled="healthLoading">{{ t("health.cta.logTreatment")
+                            }}</Button>
                         </div>
                         <Button v-if="selectedLog.antiparasitic && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
                             @click="mode = 'edit'">

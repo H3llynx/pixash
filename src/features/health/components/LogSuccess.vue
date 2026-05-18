@@ -25,14 +25,16 @@ defineProps<{
             <Check :size="30" />
         </div>
         <h1>{{ t("common.text.done") }}</h1>
-        <p v-if="log.treated" class="w-2/3 mx-auto">
+        <p v-if="log.treated" class="md:max-w-2/3 mx-auto">
             {{ t("common.text.antiparasiticLogged", {
                 parasites: showAntiparasites(log.treated, locale, t),
                 name: pet.name
             }) }}
         </p>
-        <HealthCard v-if="log.dueOn" :title="t('events.nextAntiparasitic')" :pet="pet" :data="log" />
-        <Button @click="onClose">{{ route.path === ROUTES.calendar ? t("common.button.backCal") :
+        <HealthCard v-if="log.dueOn" :title="t('events.nextAntiparasitic')" :pet="pet" :data="log"
+            class="w-full md:max-w-2/3" />
+        <Button @click="onClose">{{ route.path === ROUTES.calendar ? t("common.button.backCal")
+            :
             t("common.button.backDash") }}</Button>
     </div>
 </template>
