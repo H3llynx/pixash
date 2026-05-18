@@ -43,7 +43,8 @@ watch(
 <template>
     <div class="relative">
         <div v-if="list.length > 1" class="flex gap-0.5 w-full mb-0.5 default-padding" aria-hidden>
-            <div v-for="(_item, index) in list" :key="index" class="h-0.25 default-transition rounded cursor-pointer"
+            <button tabindex="0" v-for="(_item, index) in list" :key="index" ref="scrollBtn"
+                class="h-0.25 default-transition rounded cursor-pointer"
                 :class="index === activeIndex ? 'bg-brand' : 'bg-separator'" :style="{ width: `${barWidth}%` }"
                 @click="scrollToCard(index)" />
         </div>
@@ -54,26 +55,8 @@ watch(
 </template>
 
 <style scoped>
-.left-arrow,
-.right-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0;
-    transition: 0.4s ease-in-out;
-    color: var(--color-gold);
-    filter: drop-shadow(0 0 5px var(--color-bg));
-}
-
-.left-arrow {
-    left: 0rem;
-}
-
-.right-arrow {
-    right: 0rem;
-}
-
-.visible {
-    opacity: 1;
+button:focus-visible {
+    outline: none;
+    background: var(--color-brand-light);
 }
 </style>
