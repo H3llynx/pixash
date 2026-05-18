@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MinusCircle } from '@lucide/vue';
+import { X } from '@lucide/vue';
 import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
@@ -19,7 +19,7 @@ const medicineList = defineModel<Medicine[]>();
         <Button v-if="medicineList?.length > 1 && !readonly" variant="ghost" size="xs"
             @click="medicineList = medicineList.filter((_m, i) => i !== index)"
             class="absolute top-px right-px bg-transparent" :aria-label="t('health.medicine.delete')">
-            <MinusCircle />
+            <X color="var(--color-border)" />
         </Button>
     </div>
     <Button v-if="!readonly" type="button" variant="add"

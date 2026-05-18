@@ -26,10 +26,13 @@ watch(() => medData.value?.noEnd, (noEnd) => {
 </script>
 
 <template>
-    <div class="card bg-bg-rgba" v-if="medData">
-        <h3>{{ t(title, { index: index }) }}</h3>
-        <Input v-model="medData.name" :id="`med-name-${medData.id}`" :label="t(name.label)" required />
-        <Input v-model="medData.instructions" :id="`med-instructions-${medData.id}`" :label="t(instructions.label)" />
+    <div class="p-1 rounded-xl border border-border bg-bg-rgba" v-if="medData">
+        <div class="flex flex-col gap-0.5 mb-0.5">
+            <h3>{{ t(title, { index: index }) }}</h3>
+            <Input v-model="medData.name" :id="`med-name-${medData.id}`" :label="t(name.label)" required />
+            <Input v-model="medData.instructions" :id="`med-instructions-${medData.id}`"
+                :label="t(instructions.label)" />
+        </div>
         <Selector :legend="t(frequency.label)" class="px-0">
             <Input v-model="medData.frequency" v-for="option in frequency.options" :name="`${option.id}-${medData.id}`"
                 :value="option.id" :key="`${option.id}-${medData.id}`" :label="t(option.label)" :type="frequency.type"
@@ -37,9 +40,12 @@ watch(() => medData.value?.noEnd, (noEnd) => {
             <p v-if="error" class="text-sm w-full text-error pb-0.5">{{
                 t("health.medicine.validationFrequency") }}</p>
         </Selector>
-        <Toggle v-if="!readonly" v-model="medData.noEnd" :label="t(noEnd.label)" :id="`${noEnd.id}-${medData.id}`" />
-        <Input v-if="!medData.noEnd" v-model="medData.endDate" :id="`med-end-date-${medData.id}`" :type="endDate.type"
-            :label="t(endDate.label)" :min="formData.startDate" required />
+        <div class="flex flex-col">
+            <Toggle v-if="!readonly" v-model="medData.noEnd" :label="t(noEnd.label)" :id="`${noEnd.id}-${medData.id}`"
+                class="text-sm ml-auto gap-1 italic font-medium text-brand" />
+            <Input v-if="!medData.noEnd" v-model="medData.endDate" :id="`med-end-date-${medData.id}`"
+                :type="endDate.type" :label="t(endDate.label)" :min="formData.startDate" required />
+        </div>
     </div>
 </template>
 

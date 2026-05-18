@@ -143,7 +143,7 @@
     outline-style: solid;
     outline-offset: 1px;
     outline-color: var(--color-gold);
-    border-radius: 5px;
+    border-radius: 0.75rem;
   }
 
   *::-webkit-scrollbar {
@@ -255,6 +255,10 @@
         outline-style: solid;
         outline-offset: 1px;
         outline-color: var(--color-gold);
+      }
+
+      &:has(input[readonly]) {
+        cursor: auto;
       }
     }
 
