@@ -10,8 +10,6 @@ export default {
             next: "Next",
             add: "Add",
             allChip: "All",
-            scrollRight: "Scroll right",
-            scrollLeft: "Scroll left",
             backDash: "Back to dashboard",
             backCal: "Back to calendar",
             markDone: "Mark as done"

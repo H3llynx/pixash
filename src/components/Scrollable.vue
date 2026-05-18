@@ -1,48 +1,40 @@
 <script setup lang="ts">
-import { ChevronLeft, ChevronRight } from '@lucide/vue';
 import { computed, nextTick, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 
 const props = defineProps<{ list: any[] }>();
 
 const cardSelector = ref<HTMLDivElement>();
-const showRightArrow = ref(false);
-const showLeftArrow = ref(false);
 const cardWidth = computed(() => cardSelector.value?.clientWidth || 384);
+const activeIndex = ref(0);
+
+const barWidth = computed(() => {
+    if (!props.list.length) return 0;
+    return 100 / props.list.length;
+});
 
 const handleScroll = () => {
     if (!cardSelector.value) return;
     const el = cardSelector.value;
-    showLeftArrow.value = el.scrollLeft > 0;
-    showRightArrow.value = el.scrollLeft + el.clientWidth < el.scrollWidth;
+    const scrollPosition = el.scrollLeft;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    const scrollPercent = scrollPosition / maxScroll;
+    activeIndex.value = Math.round(scrollPercent * (props.list.length - 1));
 };
 
-const updateArrowState = async () => {
-    await nextTick();
-    handleScroll();
-};
-
-const scrollLeft = () => {
+const scrollToCard = (index: number) => {
     if (!cardSelector.value) return;
-    cardSelector.value.scrollBy({
-        left: -cardWidth.value,
-        behavior: "smooth"
-    });
-};
-
-const scrollRight = () => {
-    if (!cardSelector.value) return;
-    cardSelector.value.scrollBy({
-        left: cardWidth.value,
+    cardSelector.value.scrollTo({
+        left: index * cardWidth.value,
         behavior: "smooth"
     });
 };
 
 watch(
     () => props.list.length,
-    updateArrowState,
+    async () => {
+        await nextTick();
+        handleScroll();
+    },
     { immediate: true }
 );
 </script>
@@ -50,16 +42,13 @@ watch(
 
 <template>
     <div class="relative">
+        <div v-if="list.length > 1" class="flex gap-0.5 w-full mb-0.5 default-padding" aria-hidden>
+            <div v-for="(_item, index) in list" :key="index" class="h-0.25 default-transition rounded cursor-pointer"
+                :class="index === activeIndex ? 'bg-brand' : 'bg-separator'" :style="{ width: `${barWidth}%` }"
+                @click="scrollToCard(index)" />
+        </div>
         <div class="pet-selector md:gap-1" ref="cardSelector" @scroll="handleScroll">
             <slot />
-            <button :class="{ 'left-arrow rounded-full': true, 'visible': showLeftArrow, 'hidden md:block': true }"
-                tabindex="0" @click="scrollLeft" :aria-label="t('common.button.scrollLeft')">
-                <ChevronLeft :size="50" :class="{ visible: showLeftArrow }" />
-            </button>
-            <button :class="{ 'right-arrow rounded-full': true, 'visible': showRightArrow, 'hidden md:block': true }"
-                tabindex="0" @click="scrollRight" :aria-label="t('common.button.scrollRight')">
-                <ChevronRight :size="50" />
-            </button>
         </div>
     </div>
 </template>
