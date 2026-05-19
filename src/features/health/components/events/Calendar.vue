@@ -21,7 +21,7 @@ const { selectVaccine, selectVisit, selectLog } = usePets();
 const eventColors: Record<string, string> = {
     visit: "var(--color-brand-light)",
     vaccine: "var(--color-gold)",
-    log: "var(--color-separator)"
+    log: "var(--color-separator)",
 };
 
 const calendarOptions = computed(() => ({
@@ -35,8 +35,11 @@ const calendarOptions = computed(() => ({
     },
     eventDidMount(info: EventMountArg) {
         const type = info.event.extendedProps.event.eventType;
-        info.el.style.backgroundColor = eventColors[type] || "gray";
+        if (eventColors[type]) info.el.style.backgroundColor = eventColors[type];
         info.el.style.opacity = info.isPast ? "0.4" : "1";
+        if (type === "treatment") {
+            info.el.classList.add("treatment-event");
+        };
     },
     datesSet(info: DatesSetArg) {
         emit("updateMonth", info.view.currentStart);
@@ -144,6 +147,18 @@ const calendarOptions = computed(() => ({
     font-size: smaller;
 }
 
+:deep(.treatment-event .fc-event-title) {
+    color: rgb(48, 131, 124);
+    font-size: 0.65rem;
+    font-style: italic;
+}
+
+:deep(.treatment-event) {
+    display: flex;
+    align-items: flex-end;
+    pointer-events: none;
+}
+
 @media (width >=48rem) {
     .fc {
         background: transparent;
@@ -153,6 +168,10 @@ const calendarOptions = computed(() => ({
 
     :deep(.fc-button) {
         color: var(--color-brand)
+    }
+
+    :deep(.treatment-event) {
+        border: 1px solid var(--color-separator);
     }
 }
 </style>

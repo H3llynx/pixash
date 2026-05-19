@@ -2,7 +2,7 @@ import { Timestamp } from "firebase/firestore";
 import { getTodayDayKey, tsToDayKey } from "../../utils";
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
-import { ANTIPARASITE_TYPES, COLORS, MED_FREQUENCY, PARASITES, VACCINE_TYPES } from "./config";
+import { ANTIPARASITE_TYPES, MED_FREQUENCY, PARASITES, TREATMENTCOLORS, VACCINE_TYPES } from "./config";
 import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, MedicineDb, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
 
 export const resetForm = <T extends object>(
@@ -127,9 +127,25 @@ export const getMedicationProgress = (treatment: TreatmentExtended, medication: 
     return Math.round(Math.min(Math.max(progress, 0), 100));
 };
 
-export const getProgressColor = (index: number) => COLORS[index] ?? "var(--color-brand)";
-
 export const getDoseButtons = (frequency: string): number => {
     const count = MED_FREQUENCY.find(f => f.id === frequency)?.dailyDose;
     return count ?? 1;
-}
+};
+
+export const getTreatmentColor = (index: number) => TREATMENTCOLORS[index] ? TREATMENTCOLORS[index % TREATMENTCOLORS.length].rgb : "var(--color-brand)";
+
+export const getTreatmentBackground = (index: number) => TREATMENTCOLORS[index] ? TREATMENTCOLORS[index % TREATMENTCOLORS.length].rgba : "var(--color-separator)";
+
+export const checkOverlapsMonth = (startDate: Timestamp, endDate: Timestamp | undefined, month: Date
+): boolean => {
+    const monthStart = new Date(month);
+    monthStart.setDate(1);
+    monthStart.setHours(0, 0, 0, 0);
+    const monthEnd = new Date(month);
+    monthEnd.setMonth(monthEnd.getMonth() + 1);
+    monthEnd.setDate(0);
+    monthEnd.setHours(23, 59, 59, 999);
+    const treatmentStart = startDate.toDate();
+    const treatmentEnd = endDate ? endDate.toDate() : new Date(2099, 11, 31);
+    return treatmentStart <= monthEnd && treatmentEnd >= monthStart;
+};

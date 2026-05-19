@@ -4,7 +4,7 @@ import { tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import { getIcon } from "../../pets/utils";
 import { type PetEvent } from "../types";
-import { getLogTs, showTypes } from "../utils";
+import { checkOverlapsMonth, getLogTs, getTreatmentBackground, getTreatmentColor, showTypes } from "../utils";
 
 const selectedDate = ref<string | null>(null);
 const currentMonth = ref<Date>(new Date());
@@ -12,12 +12,12 @@ const currentMonthName = ref<string>("");
 const petId = ref<string>("");
 
 export const useEvents = () => {
-    const { vaccines, pets, vetVisits, logs, vets, selectedPet } = usePets();
+    const { vaccines, pets, vetVisits, treatments, logs, vets, selectedPet } = usePets();
     const { t } = useI18n();
 
     const isForSpecificPet = (petId: string) => pets.value.some(pet => pet.id === petId)
 
-    const history = computed<PetEvent[]>(() => [
+    const history = computed(() => [
         ...vaccines.value
             .filter(vaccine => isForSpecificPet(vaccine.petId))
             .filter(vaccine => vaccine.givenAt && vaccine.givenAt.toDate() <= new Date())
@@ -30,10 +30,11 @@ export const useEvents = () => {
             .filter(log => isForSpecificPet(log.petId))
             .filter(log => {
                 if (log.type === "antiparasite") return log.givenAt && log.givenAt.toDate() <= new Date();
-                return log.measuredAt && log.measuredAt.toDate() <= new Date();
+                else if (log.type === "weight") return log.measuredAt && log.measuredAt.toDate() <= new Date();
+                else return;
             })
             .map(log => ({ ...log, ts: getLogTs(log) })),
-    ].sort((a, b) => b.ts.seconds - a.ts.seconds));
+    ].sort((a, b) => b.ts!.seconds - a.ts!.seconds));
 
     const calendarEvents = computed(() => [
         ...vaccines.value
@@ -75,6 +76,28 @@ export const useEvents = () => {
                     event: log,
                 });
                 return events;
+            }),
+        ...treatments.value
+            .filter(treatment => isForSpecificPet(treatment.petId))
+            .map((treatment, index) => {
+                let endDate;
+                if (treatment.medication.some(med => med.noEnd)) {
+                    endDate = new Date(2099, 11, 31).toISOString().split('T')[0];
+                } else {
+                    const end = treatment.endDate!.toDate();
+                    end.setDate(end.getDate() + 1);
+                    endDate = end.toISOString().split('T')[0];
+                }
+                return {
+                    title: "💊",
+                    start: tsToDate(treatment.startDate, "input"),
+                    end: endDate,
+                    event: treatment,
+                    index: index,
+                    allDay: true,
+                    display: "background",
+                    backgroundColor: getTreatmentBackground(index),
+                }
             })
     ]);
 
@@ -117,6 +140,27 @@ export const useEvents = () => {
         return { pet, vet, title };
     };
 
+    const treatmentsThisMonth = computed(() => {
+        const now = new Date();
+        return treatments.value
+            .filter(t => {
+                const isActive = t.startDate.toDate() <= now &&
+                    (!t.endDate || t.endDate.toDate() >= now);
+                const overlapsMonth = checkOverlapsMonth(
+                    t.startDate,
+                    t.endDate!,
+                    currentMonth.value
+                );
+                return isActive && overlapsMonth;
+            })
+            .map((t, index) => ({ ...t, color: getTreatmentColor(index) }))
+    });
+
+    const filteredMonthTreatments = computed(() => petId.value
+        ? treatmentsThisMonth.value.filter(e => e.petId === petId.value)
+        : treatmentsThisMonth.value
+    );
+
     return {
         selectedDate,
         currentMonth,
@@ -128,6 +172,7 @@ export const useEvents = () => {
         petId,
         petUpcomingEvents,
         useEventData,
-        history
+        history,
+        filteredMonthTreatments
     }
 }

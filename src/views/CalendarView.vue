@@ -8,6 +8,7 @@ import Calendar from '../features/health/components/events/Calendar.vue';
 import CalendarLegend from '../features/health/components/events/CalendarLegend.vue';
 import EventList from '../features/health/components/events/EventList.vue';
 import EventMenu from '../features/health/components/events/EventMenu.vue';
+import TreatmentOverview from '../features/health/components/treatments/TreatmentOverview.vue';
 import { useEvents } from '../features/health/composables/useEvents';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
@@ -45,14 +46,17 @@ onBeforeRouteLeave(() => {
 <template>
     <Header />
     <main class="lg:gap-0 lg:grid lg:grid-cols-[55%_45%] xl:grid-cols-[1fr_35%]">
-        <section class="p-0 bg-brand-dark md:bg-bg md:pt-0.5">
+        <section class="p-0 bg-brand-dark md:bg-bg md:pb-1">
             <PetSelector v-if="!isMd" calendar v-model:petId="petId" />
             <Calendar :events="filteredCalendarEvents" @update-month="currentMonth = $event"
                 @update-monthName="currentMonthName = $event" @date-click="handleDateClick" />
         </section>
         <section
-            class="flex flex-col-reverse gap-1.5 h-full md:flex-col lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
-            <EventList :title="getTitle()" :events="filteredMonthEvents" />
+            class="flex flex-col-reverse gap-1.5 h-full lg:flex-col lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
+            <div class="flex flex-col gap-1.5">
+                <EventList :title="getTitle()" :events="filteredMonthEvents" />
+                <TreatmentOverview />
+            </div>
             <CalendarLegend />
         </section>
     </main>

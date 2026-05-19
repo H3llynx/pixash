@@ -35,7 +35,7 @@ const progress = computed(() => getTreatmentProgress(props.treatment));
                 <span v-if="treatment.endDate"> - {{ tsToDate(treatment.endDate, "date") }}</span>
                 <span v-else class="inline ml-0.5 float-right tag bg-separator text-text-secondary">{{
                     t("health.treatment.ongoing")
-                    }}</span>
+                }}</span>
             </div>
             <ProgressBar v-if="progress" :progress="progress" :color="color" />
         </div>
@@ -49,7 +49,7 @@ const progress = computed(() => getTreatmentProgress(props.treatment));
                 :progress="getMedicationProgress(treatment, medication)!" :color="color" />
             <div class="flex gap-0.5">
                 <Button v-for="(_dose, index) in getDoseButtons(medication.frequency)" variant="ghost" size="xs"
-                    class="bg-separator w-full hover:text-white border border-border"
+                    @click="console.log(treatment)" class="bg-separator w-full hover:text-white border border-border"
                     :style="{ '--custom-color': color }">
                     {{ t("health.cta.logDose") }} {{ getDoseButtons(medication.frequency) > 1 ? index + 1 : ""
                     }}</Button>

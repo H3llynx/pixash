@@ -5,7 +5,7 @@ import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets';
 import { MED_FREQUENCY } from '../../config';
 import type { TreatmentExtended } from '../../types';
-import { getMedicationProgress, getProgressColor } from '../../utils';
+import { getMedicationProgress, getTreatmentColor } from '../../utils';
 import DateTag from '../events/DateTag.vue';
 import ProgressBar from './ProgressBar.vue';
 
@@ -33,10 +33,10 @@ defineProps<{ treatment: TreatmentExtended }>();
             }}</span>
             <DateTag v-if="treatment.endDate" :date="medication.endDate" class="inline float-right ml-0.5" />
             <ProgressBar v-if="medication.endDate" :progress="getMedicationProgress(treatment, medication)!"
-                :color="getProgressColor(index)" class="w-full my-0.25" />
+                :color="getTreatmentColor(index)" class="w-full my-0.25" />
             <span v-else class="tag bg-separator text-text-secondary inline float-right">{{
                 t("health.treatment.ongoing")
-            }}</span>
+                }}</span>
         </div>
     </div>
 </template>

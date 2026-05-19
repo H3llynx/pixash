@@ -75,7 +75,13 @@ export const MED_FREQUENCY = [
     }
 ];
 
-export const COLORS = ["rgb(48, 131, 124)", "rgb(207, 136, 22)", "rgb(163, 45, 45)", "rgb(93, 144, 175)", "rgb(92, 164, 110)"];
+export const TREATMENTCOLORS = [
+    { rgb: "rgb(48, 131, 124)", rgba: "rgba(48, 131, 124, 0.15)" },
+    { rgb: "rgb(207, 136, 22)", rgba: "rgba(207, 136, 22, 0.15)" },
+    { rgb: "rgb(163, 45, 45)", rgba: "rgba(163, 45, 45, 0.1)" },
+    { rgb: "rgb(93, 144, 175)", rgba: "rgba(93, 144, 175, 0.15)" },
+    { rgb: "rgb(92, 164, 110)", rgba: "rgba(92, 164, 110, 0.15)" }
+];
 
 const vetFields = {
     label: "health.vetVisitForm.vet",
