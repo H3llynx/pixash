@@ -76,8 +76,10 @@ import EventCardSkeleton from './EventCardSkeleton.vue';
         <!-- Upcoming events -->
         <div class="default-padding flex flex-col gap-1.5 lg:px-1.5">
             <div>
-                <div class="h-1 w-7 rounded bg-grey-light opacity-30 mb-1"></div>
-                <EventCardSkeleton v-for="i in 2" :key="i" />
+                <div class="h-1 w-7 rounded bg-grey-light opacity-30 flex mb-1"></div>
+                <div class="flex flex-col gap-1">
+                    <EventCardSkeleton v-for="i in 2" :key="i" />
+                </div>
             </div>
             <div>
                 <div class="h-1 w-7 rounded bg-grey-light opacity-30 mb-1"></div>

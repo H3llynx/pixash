@@ -3,13 +3,16 @@ import { ChevronLeft, ChevronRight } from '@lucide/vue';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
+import Loading from '../../../../components/loading/Loading.vue';
 import { useMedia } from '../../../../composables/useMedia';
+import { usePets } from '../../../pets/composables/usePets';
 import type { PetEvent } from '../../types';
 import EventCard from './EventCard.vue';
 import HistoryCard from './HistoryCard.vue';
 
 const { isMd } = useMedia();
 const { t } = useI18n();
+const { loading } = usePets();
 
 const props = withDefaults(defineProps<{
     title?: string
@@ -39,13 +42,14 @@ watch(() => props.events, () => {
     <article :class="['pet-section', history && 'default-padding']">
         <h2 v-if="title">{{ title }}</h2>
         <div class="grid grid-cols-1 gap-1 auto-rows-fr">
+            <Loading v-if="loading" class="my-0.5" />
             <template v-if="history">
                 <HistoryCard v-if="events.length" v-for="event in events" :event="event" :key="event.id" />
                 <p v-else class="text-text-secondary text-sm">{{ t("common.text.noHistoryText") }}</p>
             </template>
             <template v-else>
                 <EventCard v-if="events.length" v-for="event in paginatedEvents" :event="event" :key="event.id" />
-                <p v-else class="text-text-secondary text-sm">{{ t("common.text.noEventText") }}</p>
+                <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noEventText") }}</p>
             </template>
         </div>
         <div v-if="!history && totalPages > 1" class="flex gap-0.5 h-max justify-end mt-1">

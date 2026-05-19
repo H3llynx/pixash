@@ -1,5 +1,6 @@
 <template>
-    <div class="bg-bg-2 border border-border rounded-xl space-y-0.25 p-1 mb-1 w-full md:max-w-md flex justify-between">
+    <div
+        class="animate-pulse bg-bg-2 border border-border rounded-xl space-y-0.25 p-1 w-full md:max-w-md flex justify-between">
         <div class="w-full">
             <div class="h-1 w-2/3 rounded bg-grey-light opacity-30 mb-0.5"></div>
             <div class="h-[10px] w-1/3 rounded bg-grey-light opacity-30"></div>
