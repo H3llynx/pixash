@@ -9,9 +9,9 @@ import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import Panel from '../../../../components/Panel.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
 import { tsToDate } from '../../../../utils';
+import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
-import { getIcon } from '../../../pets/utils';
 import { useEvents } from '../../composables/useEvents';
 import { useVetVisitForm } from '../../composables/useVetVisitForm';
 import { vetVisitFields } from '../../config';
@@ -90,7 +90,7 @@ watch(() => mode.value, (mode) => {
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">
                     <div v-if="selectedVisit && selectedPet"
                         class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
-                        {{ getIcon(selectedPet) }}
+                        <PetIcon :pet="selectedPet" />
                     </div>
                     <h1 v-if="isAddingHealth.visit">{{ t("health.title.addVetVisit") }}</h1>
                     <h1 v-else-if="selectedVisit && mode === 'edit'">{{ t("health.title.editVetVisit", {

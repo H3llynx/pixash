@@ -11,6 +11,7 @@ export type Pet = {
     microchipped: boolean;
     weight?: number;
     microchip?: string;
+    photo?: string;
 }
 
 export type PetExtended = Pet & {

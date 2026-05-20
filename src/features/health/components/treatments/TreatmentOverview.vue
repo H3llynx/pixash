@@ -39,7 +39,6 @@ const { t } = useI18n();
                     <span v-else class="inline ml-0.5 float-right tag bg-separator text-text-secondary">{{
                         t("health.treatment.ongoing")
                         }}</span>
-
                 </div>
             </Button>
         </div>

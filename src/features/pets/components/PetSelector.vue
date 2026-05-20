@@ -8,7 +8,7 @@ import Paw from '../../../components/icons/Paw.vue';
 import { ROUTES } from '../../../router/config';
 import { usePets } from '../composables/usePets';
 import type { PetExtended } from '../types';
-import { getIcon } from '../utils';
+import PetIcon from './PetIcon.vue';
 
 const { pets, selectPet, selectedPet, selectedVet, isAddingPet } = usePets();
 const { t } = useI18n();
@@ -63,8 +63,11 @@ const getAddChipStyle = () => {
         </Button>
         <Button :variant="nav ? 'ghost' : 'chip'" size="sm" v-for="pet in filteredPets" :class="getPetChipStyle(pet)"
             @click="handleClick(pet)">
-            <span aria-hidden>{{ getIcon(pet) }}</span>
-            {{ pet.name }}</Button>
+            <p aria-hidden class="h-1.5 aspect-square">
+                <PetIcon :pet="pet" />
+            </p>
+            {{ pet.name }}
+        </Button>
         <Button v-if="nav || route.path === ROUTES.dashboard" :variant="nav ? 'add' : 'chip'" size="sm"
             :class="getAddChipStyle()" @click="isAddingPet = true">
             <Plus /> {{ t("common.button.add") }}

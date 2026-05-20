@@ -118,6 +118,7 @@ export default {
         cta: {
             save: "Save {name}",
             delete: "Delete {name}",
+            updatePic: "Update {name}'s picture"
         },
         profile: {
             labels: {

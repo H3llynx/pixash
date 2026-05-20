@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { Edit2, Trash2 } from '@lucide/vue';
+import { Camera, Edit2, Trash2 } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { useDialog } from '../../../composables/useDialog';
+import { usePictureUpdate } from '../../../composables/usePictureUpdate';
 import { useToast } from '../../../composables/useToast';
 import { getLabel } from '../../../utils';
 import { usePetDetails } from '../composables/usePetDetails';
 import { usePets } from '../composables/usePets';
 import type { PetExtended } from '../types';
-import { getAge, getBreedOptions, getIcon } from '../utils';
+import { getAge, getBreedOptions } from '../utils';
 import MicrochipRow from './MicrochipRow.vue';
+import PetIcon from './PetIcon.vue';
+import PetPictureUpdate from './PetPictureUpdate.vue';
 
 const { selectPet, deleteSelectedPet, isUpdatingPet } = usePets();
+const { isEditingPicture } = usePictureUpdate();
 const { open } = useDialog();
 const { show } = useToast();
 const { t } = useI18n();
@@ -47,9 +51,12 @@ const handleDelete = async () => {
 <template>
     <div class="card">
         <div class="flex items-center gap-1">
-            <div class="rounded-full w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
-                {{ getIcon(pet) }}
-            </div>
+            <button @click="isEditingPicture = true" :aria-label="t('pet.cta.updatePic', { name: pet.name })"
+                class="group update-pic-btn rounded-full md:overflow-hidden w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center relative">
+                <PetIcon :pet="pet" />
+                <Camera
+                    class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.75 h-1.5 p-[3px] rounded-lg text-brand md:text-white md:opacity-0 md:group-hover:opacity-100 md:default-transition md:top-0 md:w-full md:h-full md:p-1 bg-separator" />
+            </button>
             <div class="w-full">
                 <div class="flex gap-0.5 items-center">
                     <h1>{{ pet.name }}</h1>
@@ -81,4 +88,5 @@ const handleDelete = async () => {
         </div>
         <MicrochipRow :pet="pet" />
     </div>
+    <PetPictureUpdate v-model:petPicVisible="isEditingPicture" />
 </template>

@@ -26,17 +26,20 @@ defineProps<{ treatment: TreatmentExtended }>();
             <PetTag :pet="pets.find(pet => pet.id === treatment.petId)!" :color="false" />
         </div>
         <div v-for="(medication, index) in treatment.medication" class="text-sm">
-            <span>{{ medication.name }}</span>
-            <span class="italic font-medium text-brand text-xs ml-0.5">{{
-                t(getLabel(medication.frequency,
-                    MED_FREQUENCY))
-            }}</span>
-            <DateTag v-if="treatment.endDate" :date="medication.endDate" class="inline float-right ml-0.5" />
+            <div class="flex gap-1 justify-between items-center">
+                <div>
+                    <p>{{ medication.name }}</p>
+                    <p class="italic font-medium text-brand text-xs">{{ t(getLabel(medication.frequency,
+                        MED_FREQUENCY))
+                        }}</p>
+                </div>
+                <DateTag v-if="treatment.endDate" :date="medication.endDate" class="inline float-right ml-0.5" />
+            </div>
             <ProgressBar v-if="medication.endDate" :progress="getMedicationProgress(treatment, medication)!"
                 :color="getTreatmentColor(index)" class="w-full my-0.25" />
             <span v-else class="tag bg-separator text-text-secondary inline float-right">{{
                 t("health.treatment.ongoing")
-                }}</span>
+            }}</span>
         </div>
     </div>
 </template>

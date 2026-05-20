@@ -5,6 +5,7 @@ import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
 import { onMounted, onUnmounted, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
+import { usePictureUpdate } from '../../../composables/usePictureUpdate';
 import { ROUTES } from '../../../router/config';
 import router from '../../../router/router';
 import { useAuth } from '../composables/useAuth';
@@ -13,6 +14,7 @@ import PictureUpdate from './PictureUpdate.vue';
 
 const { logout } = useAuth();
 const { t } = useI18n();
+const { isEditingPicture } = usePictureUpdate();
 
 const props = defineProps<{
     toggleRef: HTMLElement | null
@@ -21,7 +23,6 @@ const props = defineProps<{
 const visible = defineModel<boolean>("visible");
 const menuRef = ref<HTMLUListElement | null>(null);
 const isEditingName = ref<boolean>(false);
-const isEditingPicture = ref<boolean>(false);
 
 const { activate, deactivate } = useFocusTrap(menuRef, {
     immediate: true,

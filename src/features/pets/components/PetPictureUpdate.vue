@@ -9,29 +9,28 @@ import { useDialog } from '../../../composables/useDialog';
 import { usePictureUpdate } from '../../../composables/usePictureUpdate';
 import { useToast } from '../../../composables/useToast';
 import { hostImg } from '../../../services/img-hosting';
-import { useAuth } from '../composables/useAuth';
-import Avatar from './Avatar.vue';
+import { usePets } from '../composables/usePets';
+import PetIcon from './PetIcon.vue';
 
 const { t } = useI18n();
-const { error, updateUser } = useAuth();
 const { open } = useDialog();
 const { show } = useToast();
-const { user } = useAuth();
+const { selectedPet, error, updateSelectedPet } = usePets();
 const { onFileChange, previewUrl, clearPreview, selectedFile } = usePictureUpdate();
 
-const visible = defineModel<boolean>("picVisible");
+const visible = defineModel<boolean>("petPicVisible");
 const loading = ref<boolean>(false);
 
 const handleX = () => {
     if (previewUrl) clearPreview();
-    if (user.value?.photoURL) {
+    if (selectedPet.value?.photo) {
         open({
             title: t("dialog.deletePicture.title"),
             message: t("dialog.deletePicture.message"),
             isDelete: true,
             onConfirm: async () => {
                 try {
-                    await updateUser("photoURL", "");
+                    await updateSelectedPet(selectedPet.value!, { photo: "" });
                 } catch (error) { console.log(error) }
             }
         })
@@ -39,7 +38,7 @@ const handleX = () => {
 };
 
 const handleSubmit = async () => {
-    if (!selectedFile.value) return;
+    if (!selectedFile.value || !selectedPet.value) return;
     loading.value = true;
     const url = await hostImg(selectedFile.value);
     if (!url) {
@@ -47,7 +46,7 @@ const handleSubmit = async () => {
         return;
     }
     try {
-        await updateUser("photoURL", url);
+        await updateSelectedPet(selectedPet.value, { photo: url });
         show({
             type: "success",
             title: t("toast.success.title.generic"),
@@ -69,19 +68,19 @@ const handleCancel = () => {
 </script>
 
 <template>
-    <FreeModal v-model="visible">
+    <FreeModal v-model="visible" v-if="selectedPet">
         <Transition name="toast">
             <div class="dialog-box" v-show="visible">
                 <LoadingPuppy v-if="loading" class="max-w-xs" />
                 <template v-else>
-                    <div class="mx-auto relative" v-if="user?.photo || previewUrl">
+                    <div class="mx-auto relative" v-if="selectedPet?.photo || previewUrl">
                         <Button variant="ghost" size="xxs" class="absolute right-0 z-1" @click="handleX">
                             <X stroke-width="3" color="var(--color-error)" />
                         </Button>
                         <div class="preview">
                             <img v-if="previewUrl" :src="previewUrl" alt="Avatar preview"
                                 class="object-cover h-full w-full relative" />
-                            <Avatar v-else-if="user?.photo" :user="user" />
+                            <PetIcon v-else :pet="selectedPet" />
                         </div>
                     </div>
                     <h2 v-else>{{ t("common.text.addPicture") }}</h2>

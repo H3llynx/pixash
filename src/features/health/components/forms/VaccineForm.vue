@@ -10,9 +10,9 @@ import Selector from '../../../../components/Selector.vue';
 import Toggle from '../../../../components/Toggle.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
 import { dateFromInput, todayAsInput } from '../../../../utils';
+import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
-import { getIcon } from '../../../pets/utils';
 import { useVaccineForm } from '../../composables/useVaccineForm';
 import { vaccineFields } from '../../config';
 import { showTypes } from '../../utils';
@@ -51,10 +51,14 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                 <div class="flex gap-1 justify-between my-1 default-padding">
                     <h1 v-if="isAddingHealth.vaccine">{{ t("health.title.addVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'edit'">{{ t("health.title.editVaccine") }}</h1>
-                    <h1 v-else-if="selectedVaccine && mode === 'view'" class="font-medium">{{ getIcon(selectedPet!)
-                    }} {{
-                            selectedPet!.name
-                        }} · {{ showTypes(formData.types, selectedPet!) }}</h1>
+                    <div v-else-if="selectedVaccine && mode === 'view'"
+                        class="flex gap-0.5 items-center flex-1 font-medium">
+                        <div v-if="selectedPet"
+                            class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                            <PetIcon :pet="selectedPet" />
+                        </div>
+                        <h1>{{ selectedPet!.name }} · {{ showTypes(formData.types, selectedPet!) }}</h1>
+                    </div>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedVaccine" variant="ghost" size="xs"
                             :aria-label="t('health.cta.deleteVaccine')" @click="handleDelete">
@@ -102,26 +106,33 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                                 :readonly="!!selectedVaccine && mode === 'view'" />
                         </label>
 
-                        <div class="flex gap-1 mt-1 items-center" v-if="!selectedVaccine || mode === 'edit'">
-                            <div class="flex flex-wrap gap-[5px] items-center flex-1">
-                                <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{
-                                    selectedPet.name
-                                }} · {{
-                                        showTypes(formData.types, selectedPet) }}</p>
+                        <div class="flex gap-1 mt-1 justify-between items-center flex-wrap"
+                            v-if="!selectedVaccine || mode === 'edit'">
+                            <div
+                                class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                                <PetIcon :pet="selectedPet!" />
+                            </div>
+                            <div class="flex-1">
+                                <p v-if="selectedPet" class="font-medium">
+                                    {{
+                                        selectedPet.name
+                                    }} · {{
+                                        showTypes(formData.types, selectedPet) }}
+                                </p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.sharedDateFields.dueDate")
-                                }}:
+                                    }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
                             </div>
-                            <div class="flex gap-0.5 flex-col-reverse md:flex-row">
+                            <div class="flex gap-0.5 flex-col-reverse md:flex-row shrink-0 w-full sm:w-max">
                                 <Button type="button" v-if="selectedVaccine && mode === 'edit'" variant="secondary"
                                     size="sm" :disabled="healthLoading" @click="mode = 'view'">
                                     {{ t("common.button.cancel") }}
                                 </Button>
                                 <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVaccine")
-                                }}</Button>
+                                    }}</Button>
                             </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"

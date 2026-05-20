@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Pet } from '../types';
-import { getIcon } from '../utils';
+import PetIcon from './PetIcon.vue';
 
 defineProps<{ pet: Pet }>();
 </script>
@@ -8,7 +8,7 @@ defineProps<{ pet: Pet }>();
 <template>
     <div class="flex flex-col justify-center text-center gap-0.5">
         <div class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
-            {{ getIcon(pet) }}
+            <PetIcon :pet="pet" />
         </div>
         <p class="text-sm text-brand-light">{{ pet.name }}</p>
     </div>
