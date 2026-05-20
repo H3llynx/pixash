@@ -78,6 +78,8 @@ export const deletePet = async (petId: string, userId: string) => {
     await Promise.all([
       deleteSubcollection(petRef, DB.vaccines),
       deleteSubcollection(petRef, DB.vetVisits),
+      deleteSubcollection(petRef, DB.logs),
+      deleteSubcollection(petRef, DB.treatments)
     ]);
 
     await deleteDoc(petRef);
