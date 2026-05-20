@@ -101,6 +101,7 @@ export const useTreatmentForm = () => {
                 }
             }
         });
+        resetForm(formData, defaultForm);
     };
 
     return { formData, defaultForm, addMedicine, handleClose, handleSubmit, handleDelete }

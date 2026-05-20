@@ -129,6 +129,7 @@ export const useVaccineForm = () => {
                 } finally { vaccineLoading.value = false; }
             }
         });
+        resetForm(formData, defaultForm);
     };
 
     watch(() => [selectedPet.value, selectedVaccine.value] as const,

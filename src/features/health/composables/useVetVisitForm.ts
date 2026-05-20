@@ -78,6 +78,7 @@ export const useVetVisitForm = () => {
                 }
             }
         });
+        resetForm(formData, defaultForm);
     };
 
     return { defaultForm, formData, handleClose, handleSubmit, handleDelete };
