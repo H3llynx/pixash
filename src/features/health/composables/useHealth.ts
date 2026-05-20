@@ -83,6 +83,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
             } else {
                 error.value = "An unexpected error occurred";
             }
+            throw e;
         } finally {
             if (onFinal) onFinal();
         }

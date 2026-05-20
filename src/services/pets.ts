@@ -19,7 +19,7 @@ export const fetchPets = async (userId: string): Promise<PetExtended[]> => {
     }));
   } catch (error) {
     console.error("Fetch pets error:", error);
-    return [];
+    throw error;
   }
 };
 
@@ -40,6 +40,7 @@ export const addPet = async (pet: Pet, userId: string) => {
     return docRef.id;
   } catch (error) {
     console.error("Error adding pet: ", error);
+    throw error;
   }
 };
 
@@ -53,6 +54,7 @@ export const updatePet = async (
     await updateDoc(docRef, data);
   } catch (error) {
     console.error("Error updating pet: ", error);
+    throw error;
   }
 };
 
@@ -68,6 +70,7 @@ export const deletePetField = async (
     });
   } catch (error) {
     console.error(`Error deleting ${field}: `, error);
+    throw error;
   }
 };
 

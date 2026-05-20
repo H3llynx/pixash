@@ -18,7 +18,7 @@ export const fetchPetVaccines = async (userId: string, petId: string): Promise<V
         }));
     } catch (error) {
         console.error("Fetch vaccines error:", error);
-        return [];
+        throw error;
     }
 };
 export const fetchPetVisits = async (userId: string, petId: string): Promise<VisitExtended[]> => {
@@ -34,7 +34,7 @@ export const fetchPetVisits = async (userId: string, petId: string): Promise<Vis
         }));
     } catch (error) {
         console.error("Fetch visits error:", error);
-        return [];
+        throw error;
     }
 };
 export const fetchPetTreatments = async (userId: string, petId: string): Promise<TreatmentExtended[]> => {
@@ -54,7 +54,7 @@ export const fetchPetTreatments = async (userId: string, petId: string): Promise
         });
     } catch (error) {
         console.error("Fetch treatments error:", error);
-        return [];
+        throw error;
     }
 };
 export const fetchPetLogs = async (userId: string, petId: string): Promise<LogExtended[]> => {
@@ -109,7 +109,7 @@ export const fetchPetLogs = async (userId: string, petId: string): Promise<LogEx
         return logs;
     } catch (error) {
         console.error("Fetch logs error:", error);
-        return [];
+        throw error;
     }
 };
 
@@ -131,6 +131,7 @@ export const addVaccine = async (vaccine: VaccineRecord, petId: string, userId: 
         return docRef.id;
     } catch (error) {
         console.error("Error adding vaccine: ", error);
+        throw error;
     }
 };
 
@@ -155,6 +156,7 @@ export const updateVaccine = async (
         await updateDoc(docRef, updated);
     } catch (error) {
         console.error("Error updating vaccine: ", error);
+        throw error;
     }
 };
 
@@ -163,6 +165,7 @@ export const deleteVaccine = async (vaccineId: string, petId: string, userId: st
         await deleteDoc(getVaccineDoc(userId, petId, vaccineId));
     } catch (error) {
         console.error("Error deleting vaccine: ", error);
+        throw error;
     }
 };
 
@@ -182,6 +185,7 @@ export const addVetVisit = async (visit: VisitRecord, petId: string, userId: str
         return docRef.id;
     } catch (error) {
         console.error("Error adding vaccine: ", error);
+        throw error;
     }
 };
 
@@ -204,6 +208,7 @@ export const updateVetVisit = async (
         await updateDoc(docRef, updated);
     } catch (error) {
         console.error("Error updating vet appointment: ", error);
+        throw error;
     }
 };
 
@@ -212,6 +217,7 @@ export const deleteVisit = async (visitId: string, petId: string, userId: string
         await deleteDoc(getVisitDoc(userId, petId, visitId));
     } catch (error) {
         console.error("Error deleting vet appointment: ", error);
+        throw error;
     }
 };
 
@@ -231,7 +237,7 @@ export const fetchVets = async (userId: string): Promise<VetExtended[]> => {
         }));
     } catch (error) {
         console.error("Fetch vets error:", error);
-        return [];
+        throw error;
     }
 };
 
@@ -256,6 +262,7 @@ export const addVet = async (vet: Vet, userId: string) => {
         return docRef.id;
     } catch (error) {
         console.error("Error adding vet: ", error);
+        throw error;
     }
 };
 
@@ -269,6 +276,7 @@ export const updateVet = async (
         await updateDoc(docRef, data);
     } catch (error) {
         console.error("Error updating vet: ", error);
+        throw error;
     }
 };
 
@@ -320,6 +328,7 @@ export const addLog = async (log: Log, petId: string, userId: string) => {
         return docRef.id;
     } catch (error) {
         console.error("Error adding log: ", error);
+        throw error;
     }
 };
 
@@ -354,6 +363,7 @@ export const updateLog = async (
         await updateDoc(docRef, updated);
     } catch (error) {
         console.error("Error updating log: ", error);
+        throw error;
     }
 };
 
@@ -362,6 +372,7 @@ export const deleteLog = async (logId: string, petId: string, userId: string) =>
         await deleteDoc(getLogDoc(userId, petId, logId));
     } catch (error) {
         console.error("Error deleting log: ", error);
+        throw error;
     }
 };
 
@@ -390,6 +401,7 @@ export const updateTreatment = async (
         await updateDoc(docRef, updated);
     } catch (error) {
         console.error("Error updating treatment: ", error);
+        throw error;
     }
 };
 
@@ -411,6 +423,7 @@ export const addTreatment = async (treatment: TreatmentRecord, petId: string, us
         return docRef.id;
     } catch (error) {
         console.error("Error adding treatment: ", error);
+        throw error;
     }
 };
 
@@ -429,5 +442,6 @@ export const deleteTreatment = async (treatmentId: string, petId: string, userId
         await deleteDoc(treatmentRef);
     } catch (error) {
         console.error("Error deleting treatment: ", error);
+        throw error;
     }
 };

@@ -90,6 +90,7 @@ const handlePetAction = async (
     } else {
       error.value = "An unexpected error occurred";
     }
+    throw e;
   } finally {
     if (onFinal) onFinal();
   }
