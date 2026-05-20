@@ -58,9 +58,19 @@ export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, t?: TF
                 year: "numeric"
             });
         case "input":
-            return date.toISOString().slice(0, 10);
+            return [date.getFullYear(),
+            String(date.getMonth() + 1).padStart(2, "0"),
+            String(date.getDate()).padStart(2, "0")
+            ].join("-");
         case "datetime":
-            return date.toISOString().slice(0, 16);
+            return [
+                date.getFullYear(),
+                String(date.getMonth() + 1).padStart(2, "0"),
+                String(date.getDate()).padStart(2, "0")
+            ].join("-") + "T" + [
+                String(date.getHours()).padStart(2, "0"),
+                String(date.getMinutes()).padStart(2, "0")
+            ].join(":");
         case "timeUntil": {
             if (!t) return;
             if (diffDays === -1) return t("tsToDate.yesterday");

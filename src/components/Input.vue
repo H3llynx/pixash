@@ -77,14 +77,14 @@ const handleChange = (event: Event) => {
                     ? new Date(inputValue as string).toLocaleDateString(locale, {
                         day: "numeric",
                         month: "long",
-                        year: "numeric"
+                        year: "numeric",
                     })
                     : new Date(inputValue as string).toLocaleString(locale, {
                         day: "numeric",
                         month: "long",
                         year: "numeric",
                         hour: '2-digit',
-                        minute: '2-digit'
+                        minute: '2-digit',
                     })
                     : ""
             }}

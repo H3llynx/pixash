@@ -57,7 +57,7 @@ export const useEvents = () => {
         ...vetVisits.value.filter(visit => isForSpecificPet(visit.petId))
             .map(visit => ({
                 title: `${getIcon(pets.value.find(pet => pet.id === visit.petId)!)} ${visit.title}`,
-                date: tsToDate(visit.date, "input"),
+                date: tsToDate(visit.date, "datetime"),
                 event: visit,
             })),
         ...logs.value

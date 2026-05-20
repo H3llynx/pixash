@@ -57,7 +57,7 @@ watch(() => props.events, () => {
             </div>
             <div v-if="!history && totalPages > 1" class="flex gap-0.5 h-max justify-end mt-1">
                 <Button variant="ghost" size="xs" :disabled="currentPage === 1" @click="goPrev"
-                    :aria-label="t(' common.button.back')">
+                    :aria-label="t('common.button.back')">
                     <ChevronLeft />
                 </Button>
                 <Button variant="ghost" size="xs" :disabled="currentPage === totalPages" @click="goNext"
