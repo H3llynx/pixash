@@ -76,7 +76,7 @@ export const useAntiparasiticForm = () => {
         try {
             if (isAddingHealth.antiparasitic) {
                 const logId = await addNewLog(log, selectedPet.value.id);
-                if (logId) newLog.value = logs.value.find(l => l.id === logId) ?? null
+                if (logId) newLog.value = logs.value.find(l => l.id === logId) as AntiparasiteLogExtended ?? null
             }
             else if (selectedLog.antiparasitic) {
                 const originalData = {
@@ -88,7 +88,7 @@ export const useAntiparasiticForm = () => {
                 if (!shallowEqual(formData, originalData)) {
                     const logId = selectedLog.antiparasitic.id;
                     await updateSelectedLog(selectedLog.antiparasitic, selectedPet.value.id, log);
-                    newLog.value = logs.value.find(l => l.id === logId) ?? null
+                    newLog.value = logs.value.find(l => l.id === logId) as AntiparasiteLogExtended ?? null
                 };
             }
         }
