@@ -190,7 +190,8 @@ export default {
             startTreatment: "Start treatment",
             saveTreatment: "Save treatment",
             editTreatment: "Modify treatment",
-            logDose: "Log dose"
+            logDose: "Log dose",
+            cancelLog: "Cancel log",
         },
         sharedDateFields: {
             givenDate: "Date given",

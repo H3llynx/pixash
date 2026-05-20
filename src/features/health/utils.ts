@@ -127,9 +127,9 @@ export const getMedicationProgress = (treatment: TreatmentExtended, medication: 
     return Math.round(Math.min(Math.max(progress, 0), 100));
 };
 
-export const getDoseButtons = (frequency: string): number => {
+export const getDailyDose = (frequency: string): number | undefined => {
     const count = MED_FREQUENCY.find(f => f.id === frequency)?.dailyDose;
-    return count ?? 1;
+    return count ?? undefined;
 };
 
 export const getTreatmentColor = (index: number) => TREATMENTCOLORS[index] ? TREATMENTCOLORS[index % TREATMENTCOLORS.length].rgb : "var(--color-brand)";

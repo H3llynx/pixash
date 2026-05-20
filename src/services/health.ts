@@ -1,7 +1,7 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp, updateDoc } from "firebase/firestore";
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
-import type { AntiparasiteLogExtended, Log, LogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/health/types";
+import type { AntiparasiteLogExtended, Log, LogExtended, MedicationLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/health/types";
 import { getTreatmentEndDate } from "../features/health/utils";
 import { tsFromInput } from "../utils";
 
@@ -92,6 +92,16 @@ export const fetchPetLogs = async (userId: string, petId: string): Promise<LogEx
                     weight: data.weight,
                     measuredAt: data.measuredAt,
                 } as WeightLogExtended;
+                return log;
+            }
+            if (data.type === "medication") {
+                const log = {
+                    ...base,
+                    type: "medication",
+                    treatmentId: data.treatmentId,
+                    medicineId: data.medicineId,
+                    givenAt: data.givenAt,
+                } as MedicationLogExtended;
                 return log;
             }
             throw new Error(`Unknown log type: ${data.type}`);
@@ -292,7 +302,19 @@ export const addLog = async (log: Log, petId: string, userId: string) => {
             type: log.type,
             weight: log.weight,
             measuredAt: serverTimestamp()
-        }
+        };
+    else if (log.type === "medication")
+        newLog = {
+            petId: petId,
+            userId: userId,
+            treatmentId: log.treatmentId,
+            medicineId: log.medicineId,
+            type: log.type,
+            givenAt: serverTimestamp()
+        };
+    else {
+        throw new Error("Unsupported log type");
+    }
     try {
         const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.logs), newLog);
         return docRef.id;

@@ -129,8 +129,7 @@ export type WeightRecord = {
 
 export type MedicationRecord = {
     treatmentId: string,
-    medicine: string,
-    givenAt: Timestamp,
+    medicineId: string,
 };
 
 export type Log =
@@ -167,7 +166,7 @@ export type MedicationLogExtended = {
     userId: string,
     eventType: "log";
     treatmentId: string,
-    medicine: string,
+    medicineId: string,
     givenAt: Timestamp,
     type: "medication"
 }
