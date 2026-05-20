@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where, writeBatch } from "firebase/firestore";
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
 import type { AntiparasiteLogExtended, Log, LogExtended, MedicationLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/health/types";
@@ -416,7 +416,17 @@ export const addTreatment = async (treatment: TreatmentRecord, petId: string, us
 
 export const deleteTreatment = async (treatmentId: string, petId: string, userId: string) => {
     try {
-        await deleteDoc(getTreatmentDoc(userId, petId, treatmentId));
+        const treatmentRef = getTreatmentDoc(userId, petId, treatmentId);
+        const logsRef = collection(db, DB.users, userId, DB.pets, petId, DB.logs);
+        const associatedLogsSnapshot = await getDocs(query(logsRef, where('treatmentId', '==', treatmentId)));
+        const logs = associatedLogsSnapshot.docs;
+        const batchLimit = 499;
+        for (let i = 0; i < logs.length; i += batchLimit) {
+            const batch = writeBatch(db);
+            logs.slice(i, i + batchLimit).forEach((logDoc) => batch.delete(logDoc.ref));
+            await batch.commit();
+        }
+        await deleteDoc(treatmentRef);
     } catch (error) {
         console.error("Error deleting treatment: ", error);
     }
