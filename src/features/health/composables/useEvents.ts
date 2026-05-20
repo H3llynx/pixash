@@ -86,7 +86,8 @@ export const useEvents = () => {
                 } else {
                     const end = treatment.endDate!.toDate();
                     end.setDate(end.getDate() + 1);
-                    endDate = end.toISOString().split('T')[0];
+                    const pad = (n: number) => String(n).padStart(2, "0");
+                    endDate = `${end.getFullYear()}-${pad(end.getMonth() + 1)}-${pad(end.getDate())}`;
                 }
                 return {
                     title: "💊",

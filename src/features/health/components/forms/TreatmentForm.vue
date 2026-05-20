@@ -7,7 +7,7 @@ import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import Panel from '../../../../components/Panel.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
-import { tsToDate } from '../../../../utils';
+import { todayAsInput, tsToDate } from '../../../../utils';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
 import { getIcon } from '../../../pets/utils';
@@ -38,7 +38,7 @@ const assignedVet = computed(() => {
     return vets.value?.[0]?.id ?? "";
 });
 const dateInit = computed(() => {
-    return selectedDate.value ? selectedDate.value : new Date().toISOString().slice(0, 10);
+    return selectedDate.value ? selectedDate.value : todayAsInput();
 });
 
 const fillTreatmentData = (treatment: Partial<TreatmentExtended>) => {

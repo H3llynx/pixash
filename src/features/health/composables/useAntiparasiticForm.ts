@@ -2,7 +2,7 @@ import { computed, reactive, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDialog } from "../../../composables/useDialog";
 import { useToast } from "../../../composables/useToast";
-import { resetLogs, shallowEqual, tsToDate } from "../../../utils";
+import { resetLogs, shallowEqual, todayAsInput, tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import { ANTIPARASITE_TYPES } from "../config";
 import type { AntiparasiteLogExtended, AntiparasiteTypes, Log, PetEvent } from "../types";
@@ -18,7 +18,7 @@ export const useAntiparasiticForm = () => {
     const antiparasitics = ref<AntiparasiteTypes[]>([]);
     const error = ref<boolean>(false);
     const newLog = ref<PetEvent | null>(null);
-    const today = new Date().toISOString().slice(0, 10);
+    const today = todayAsInput();
     const givenAt = computed(() => selectedDate.value && selectedDate.value <= today ? selectedDate.value : today);
     const fillLogData = (log: AntiparasiteLogExtended) => {
         Object.assign(formData, {

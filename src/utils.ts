@@ -121,6 +121,15 @@ export const getOneYearLaterInput = (firstDate: string) => {
     return `${year}-${month}-${day}`;
 };
 
+export const todayAsInput = () => {
+    const now = new Date();
+    return [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0")
+    ].join("-");
+};
+
 export const getLabel = (item: string, array: { id: string, label: string }[]) => {
     return array.find(t => t.id === item)?.label ?? "";
 };

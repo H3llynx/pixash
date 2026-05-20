@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Panel from '../../../../components/Panel.vue';
 import { useMedia } from '../../../../composables/useMedia';
-import { resetLogs, resetState } from '../../../../utils';
+import { resetLogs, resetState, todayAsInput } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';
 import { useEvents } from '../../composables/useEvents';
 
@@ -63,8 +63,8 @@ watch(() => visible.value, (visible) => {
                     <span>{{ t("addMenu.vetVisit") }}</span>
                     <Stethoscope :size="18" />
                 </Button>
-                <Button v-if="selectedDate && selectedDate <= new Date().toISOString().slice(0, 10)" variant="ghost"
-                    size="xxs" @click="submenu = true" :aria-label="t('addMenu.antiparasitic')">
+                <Button v-if="selectedDate && selectedDate <= todayAsInput()" variant="ghost" size="xxs"
+                    @click="submenu = true" :aria-label="t('addMenu.antiparasitic')">
                     <span>{{ t("addMenu.log") }}</span>
                     <NotebookPen :size="isMd ? 18 : 20" />
                 </Button>
@@ -110,8 +110,8 @@ watch(() => visible.value, (visible) => {
                     </div>
                     <span>{{ t("addMenu.vetVisit") }}</span>
                 </Button>
-                <Button v-if="selectedDate && selectedDate <= new Date().toISOString().slice(0, 10)" variant="secondary"
-                    size="sm" @click="submenu = true" :aria-label="t('addMenu.antiparasitic')">
+                <Button v-if="selectedDate && selectedDate <= todayAsInput()" variant="secondary" size="sm"
+                    @click="submenu = true" :aria-label="t('addMenu.antiparasitic')">
                     <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
                         <NotebookPen :size="20" />
                     </div>

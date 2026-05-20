@@ -8,6 +8,7 @@ import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
+import { todayAsInput } from '../../../../utils';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
 import { getIcon } from '../../../pets/utils';
@@ -19,7 +20,7 @@ const { loading, isAddingHealth, healthLoading, selectedLog, selectedPet } = use
 const { formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error } = useAntiparasiticForm();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
-const today = new Date().toISOString().slice(0, 10);
+const today = todayAsInput();
 provide('readonly', isReadonly);
 
 const { treated, givenDate, dueDate, notes } = antiparasiteFields;
@@ -48,7 +49,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                        }}
+                    }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"
@@ -92,7 +93,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="healthLoading">{{ t("health.cta.logTreatment")
-                            }}</Button>
+                                }}</Button>
                         </div>
                         <Button v-if="selectedLog.antiparasitic && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
                             @click="mode = 'edit'">

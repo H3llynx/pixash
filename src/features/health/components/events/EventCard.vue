@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Loading from '../../../../components/loading/Loading.vue';
 import { useToast } from '../../../../composables/useToast';
-import { tsToDate } from '../../../../utils';
+import { todayAsInput, tsToDate } from '../../../../utils';
 import PetIndicator from '../../../pets/components/PetIndicator.vue';
 import { usePets } from '../../../pets/composables/usePets';
 import { useEvents } from '../../composables/useEvents';
@@ -38,7 +38,7 @@ const handleClick = (event: PetEvent) => {
 
 const markAsDone = async (event: PetEvent) => {
     if (!pet.value) return;
-    const today = new Date().toISOString().slice(0, 10);
+    const today = todayAsInput();
     try {
         if (event.eventType === "vaccine") {
             const baseData: VaccineRecord = {

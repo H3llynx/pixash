@@ -9,7 +9,7 @@ import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import Toggle from '../../../../components/Toggle.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
-import { dateFromInput } from '../../../../utils';
+import { dateFromInput, todayAsInput } from '../../../../utils';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets';
 import { getIcon } from '../../../pets/utils';
@@ -24,7 +24,7 @@ const { mode, isReadonly } = useFormMode();
 const { vetTextInput, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete } = useVaccineForm();
 provide('readonly', isReadonly);
 const { types, stage, given, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
-const today = new Date().toISOString().slice(0, 10);
+const today = todayAsInput();
 
 watch(() => selectedVaccine.value, (vaccine) => {
     mode.value = vaccine ? "view" : "edit";
@@ -52,7 +52,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                     <h1 v-if="isAddingHealth.vaccine">{{ t("health.title.addVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'edit'">{{ t("health.title.editVaccine") }}</h1>
                     <h1 v-else-if="selectedVaccine && mode === 'view'" class="font-medium">{{ getIcon(selectedPet!)
-                        }} {{
+                    }} {{
                             selectedPet!.name
                         }} · {{ showTypes(formData.types, selectedPet!) }}</h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
@@ -106,11 +106,11 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                             <div class="flex flex-wrap gap-[5px] items-center flex-1">
                                 <p v-if="selectedPet" class="font-medium">{{ getIcon(selectedPet) }} {{
                                     selectedPet.name
-                                    }} · {{
+                                }} · {{
                                         showTypes(formData.types, selectedPet) }}</p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.sharedDateFields.dueDate")
-                                    }}:
+                                }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
@@ -121,7 +121,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                                     {{ t("common.button.cancel") }}
                                 </Button>
                                 <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVaccine")
-                                    }}</Button>
+                                }}</Button>
                             </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
