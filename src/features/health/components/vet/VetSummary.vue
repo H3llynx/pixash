@@ -6,7 +6,7 @@ import Scrollable from '../../../../components/Scrollable.vue';
 import { usePets } from '../../../pets/composables/usePets';
 import VetProfile from './VetProfile.vue';
 
-const { vets, hasVets, isAddingHealth, selectedPet } = usePets();
+const { vets, hasVets, isAddingHealth } = usePets();
 const { t } = useI18n();
 </script>
 

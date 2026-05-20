@@ -19,7 +19,7 @@ const { t } = useI18n();
     <article class="pet-section" v-if="filteredMonthTreatments.length">
         <h2>{{ t("dashboard.title.activeTreatments") }}</h2>
         <div class="grid grid-cols-1 gap-1">
-            <Button v-for="(treatment, index) in filteredMonthTreatments" variant="ghost" size="sm"
+            <Button v-for="treatment in filteredMonthTreatments" variant="ghost" size="sm"
                 @click="selectTreatment(treatment)" class="w-full h-full md:max-w-md border border-border flex-row">
                 <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                     <Loading v-if="healthLoading && (selectedTreatment === treatment)" />
@@ -38,7 +38,7 @@ const { t } = useI18n();
                         :color="treatment.color" />
                     <span v-else class="inline ml-0.5 float-right tag bg-separator text-text-secondary">{{
                         t("health.treatment.ongoing")
-                    }}</span>
+                        }}</span>
 
                 </div>
             </Button>
