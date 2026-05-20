@@ -88,7 +88,7 @@ const deleteDose = async (log: LogExtended) => {
                 <span v-if="treatment.endDate"> - {{ tsToDate(treatment.endDate, "date") }}</span>
                 <span v-else class="inline ml-0.5 float-right tag bg-separator text-text-secondary">{{
                     t("health.treatment.ongoing")
-                }}</span>
+                    }}</span>
             </div>
             <ProgressBar v-if="progress" :progress="progress" :color="color" />
         </div>
@@ -129,7 +129,12 @@ const deleteDose = async (log: LogExtended) => {
 .dose,
 .log {
     flex: 1;
-    min-width: 32%;
+    min-width: 48%;
+    min-height: 3rem;
+}
+
+.log {
+    border: 1px solid var(--custom-color);
 }
 
 .dose:not(:disabled):hover {
@@ -139,5 +144,13 @@ const deleteDose = async (log: LogExtended) => {
 
 .cancel {
     border-radius: 8px;
+}
+
+@media (width >=48rem) {
+
+    .dose,
+    .log {
+        min-width: 32%;
+    }
 }
 </style>
