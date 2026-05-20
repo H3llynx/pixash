@@ -6,6 +6,8 @@ import FullCalendar from '@fullcalendar/vue3';
 import { computed } from 'vue';
 import { usePets } from '../../../pets/composables/usePets';
 
+const { selectVaccine, selectVisit, selectLog } = usePets();
+
 const props = defineProps<{
     events?: EventInput
 }>();
@@ -15,8 +17,6 @@ const emit = defineEmits<{
     updateMonthName: [name: string]
     dateClick: [date: string, x: number, y: number]
 }>();
-
-const { selectVaccine, selectVisit, selectLog } = usePets();
 
 const eventColors: Record<string, string> = {
     visit: "var(--color-brand-light)",
@@ -164,6 +164,8 @@ const calendarOptions = computed(() => ({
         background: transparent;
         color: var(--color-text-text);
         margin-inline: 2rem;
+        position: sticky;
+        top: 0;
     }
 
     :deep(.fc-button) {

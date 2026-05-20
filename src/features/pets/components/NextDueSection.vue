@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { resetState } from '../../../utils';
 import HealthCard from '../../health/components/events/HealthCard.vue';
+import type { PetEvent } from '../../health/types';
 import { usePets } from '../composables/usePets';
 
 const { selectedPet, isAddingHealth } = usePets();
@@ -23,8 +24,8 @@ const handleClick = (action: string) => {
             :title="t('dashboard.title.nextVaccine')" />
         <HealthCard v-if="selectedPet.nextVetVisit" :pet="selectedPet" :data="selectedPet.nextVetVisit"
             :title="t('dashboard.title.nextVetVisit')" />
-        <HealthCard v-if="selectedPet.nextAntiparasitic" :pet="selectedPet" :data="selectedPet.nextAntiparasitic"
-            :title="t('dashboard.title.nextAntiparasitic')" />
+        <HealthCard v-if="selectedPet.nextAntiparasitic" :pet="selectedPet"
+            :data="(selectedPet.nextAntiparasitic as PetEvent)" :title="t('dashboard.title.nextAntiparasitic')" />
     </div>
     <div v-else class="flex gap-0.5 py-0.5 default-padding">
         <Button variant="add" class="w-1/2 md:w-14 flex-col h-6" @click="handleClick('vaccine')">
