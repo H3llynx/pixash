@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from '@lucide/vue';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import Loading from '../../../../components/loading/Loading.vue';
+import EventCardSkeleton from '../../../../components/loading/EventCardSkeleton.vue';
 import { useMedia } from '../../../../composables/useMedia';
 import { usePets } from '../../../pets/composables/usePets';
 import type { PetEvent } from '../../types';
@@ -41,26 +41,30 @@ watch(() => props.events, () => {
 <template>
     <article :class="['pet-section', history && 'default-padding']">
         <h2 v-if="title">{{ title }}</h2>
-        <div class="grid grid-cols-1 gap-1 auto-rows-fr">
-            <Loading v-if="loading" class="my-0.5" />
-            <template v-if="history">
-                <HistoryCard v-if="events.length" v-for="event in events" :event="event" :key="event.id" />
-                <p v-else class="text-text-secondary text-sm">{{ t("common.text.noHistoryText") }}</p>
-            </template>
-            <template v-else>
-                <EventCard v-if="events.length" v-for="event in paginatedEvents" :event="event" :key="event.id" />
-                <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noEventText") }}</p>
-            </template>
+        <div v-if="loading" class="flex flex-col gap-1">
+            <EventCardSkeleton v-for="i in 3" :key="i" />
         </div>
-        <div v-if="!history && totalPages > 1" class="flex gap-0.5 h-max justify-end mt-1">
-            <Button variant="ghost" size="xs" :disabled="currentPage === 1" @click="goPrev"
-                :aria-label="t(' common.button.back')">
-                <ChevronLeft />
-            </Button>
-            <Button variant="ghost" size="xs" :disabled="currentPage === totalPages" @click="goNext"
-                :aria-label="t('common.button.next')">
-                <ChevronRight />
-            </Button>
-        </div>
+        <template v-else>
+            <div class="grid grid-cols-1 gap-1 auto-rows-fr">
+                <template v-if="history">
+                    <HistoryCard v-if="events.length" v-for="event in events" :event="event" :key="event.id" />
+                    <p v-else class="text-text-secondary text-sm">{{ t("common.text.noHistoryText") }}</p>
+                </template>
+                <template v-else>
+                    <EventCard v-if="events.length" v-for="event in paginatedEvents" :event="event" :key="event.id" />
+                    <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noEventText") }}</p>
+                </template>
+            </div>
+            <div v-if="!history && totalPages > 1" class="flex gap-0.5 h-max justify-end mt-1">
+                <Button variant="ghost" size="xs" :disabled="currentPage === 1" @click="goPrev"
+                    :aria-label="t(' common.button.back')">
+                    <ChevronLeft />
+                </Button>
+                <Button variant="ghost" size="xs" :disabled="currentPage === totalPages" @click="goNext"
+                    :aria-label="t('common.button.next')">
+                    <ChevronRight />
+                </Button>
+            </div>
+        </template>
     </article>
 </template>

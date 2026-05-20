@@ -3,7 +3,6 @@ import { Check, MapPinned, Stethoscope, Syringe } from '@lucide/vue';
 import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import EventCardSkeleton from '../../../../components/loading/EventCardSkeleton.vue';
 import Loading from '../../../../components/loading/Loading.vue';
 import { useToast } from '../../../../composables/useToast';
 import { tsToDate } from '../../../../utils';
@@ -14,7 +13,7 @@ import type { STAGE } from '../../config';
 import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, PetEvent, VaccineExtended, VaccineRecord, VaccineTypes, VisitExtended } from '../../types';
 import DateTag from './DateTag.vue';
 
-const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, healthLoading, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, healthError } = usePets();
+const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, healthError } = usePets();
 const { locale, t } = useI18n();
 const { useEventData } = useEvents();
 const { show } = useToast();
@@ -83,9 +82,8 @@ const markAsDone = async (event: PetEvent) => {
 
 </script>
 <template>
-    <EventCardSkeleton v-if="healthLoading" />
     <div tabindex="0" role="button"
-        class="card cursor-pointer flex-row p-1 w-full md:max-w-md border border-border gap-1.5 justify-between" v-else
+        class="card cursor-pointer flex-row p-1 w-full md:max-w-md border border-border gap-1.5 justify-between"
         @click="handleClick(event)" @keydown.enter="handleClick(event)"
         :class="{ 'opacity-50': tsToDate(event.ts, 'isPast') }">
         <div class="flex gap-0.5 w-full min-w-0 h-full">
