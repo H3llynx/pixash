@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Dropdown from '../../../../components/Dropdown.vue';
 import Input from '../../../../components/Input.vue';
-import Loading from '../../../../components/loading/Loading.vue';
 import { usePets } from '../../../pets/composables/usePets';
 
 const { t } = useI18n();
@@ -28,15 +27,15 @@ const onVetChange = () => {
 </script>
 
 <template>
-    <Dropdown v-if="vets.length && !vetTextInput" v-model="model" :id="vet.id" :label="t(vet.label)"
-        @change="onVetChange" :class="(selectedVet || readonly) && 'pointer-events-none focus-visible:outline-0'"
+    <Dropdown v-if="vets.length && (!vetTextInput || vets.find(v => v.id === model))" v-model="model" :id="vet.id"
+        :label="t(vet.label)" @change="onVetChange"
+        :class="(selectedVet || readonly) && 'pointer-events-none focus-visible:outline-0'"
         @keydown.enter="readonly && $event.preventDefault()" required>
         <option v-for="v in vets" :key="v.id" :value="v.id">
             {{ v.name }}
         </option>
         <option value="other">{{ t("health.vetVisitForm.other") }}</option>
     </Dropdown>
-    <Loading v-else-if="readonly && vets.find(v => v.id === model)" class="py-0.5" />
     <Input v-else v-model="model" :id="vet.id" :label="t(vet.label)" :placeholder="t(vet.placeholder)"
         :required="required">
         <template #addon>
