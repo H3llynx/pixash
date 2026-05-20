@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { AlertCircle } from '@lucide/vue';
 import { computed, inject, ref, useAttrs } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-defineOptions({ inheritAttrs: false })
+defineOptions({ inheritAttrs: false });
+
+const { locale } = useI18n();
 const props = withDefaults(defineProps<{
     id?: string
     label?: string
@@ -71,12 +74,12 @@ const handleChange = (event: Event) => {
         <span :id="id" class="flex font-medium bg-brand-rgba py-0.5 px-1 rounded-xl w-full border border-border"
             v-if="readonly && (type === 'date' || type === 'datetime-local')">{{
                 inputValue ? type === 'date'
-                    ? new Date(inputValue as string).toLocaleDateString(undefined, {
+                    ? new Date(inputValue as string).toLocaleDateString(locale, {
                         day: "numeric",
                         month: "long",
                         year: "numeric"
                     })
-                    : new Date(inputValue as string).toLocaleString(undefined, {
+                    : new Date(inputValue as string).toLocaleString(locale, {
                         day: "numeric",
                         month: "long",
                         year: "numeric",

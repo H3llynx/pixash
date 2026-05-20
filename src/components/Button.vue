@@ -6,12 +6,12 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const button = tv({
-    base: "font-medium rounded-full filter-blur flex items-center gap-[5px] justify-center disabled:opacity-40",
+    base: "font-medium rounded-full filter-blur flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed",
     variants: {
         variant: {
             primary: "btn-hover-fill bg-brand border border-brand text-bg",
             secondary: "btn-hover-fill border border-brand text-brand bg-bg-rgba",
-            ghost: "btn-hover-fill-ghost rounded-xl text-btn-ghost-text hover:text-brand-light bg-bg-rgba",
+            ghost: "btn-hover-fill-ghost rounded-xl text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba",
             addon: "text-text-secondary addon-focus",
             chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary capitalize",
             summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light",
