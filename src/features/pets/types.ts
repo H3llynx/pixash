@@ -1,3 +1,4 @@
+import type { Timestamp } from "firebase/firestore";
 import type { LogExtended, TreatmentExtended, VaccineExtended, VisitExtended } from "../health/types";
 import type { SPECIES } from "./config";
 
@@ -16,7 +17,7 @@ export type Pet = {
 export type PetExtended = Pet & {
     id: string;
     ownerUid: string;
-    createdAt: Date;
+    createdAt: Timestamp;
     vaccines: VaccineExtended[];
     vetVisits: VisitExtended[];
     treatments: TreatmentExtended[];
