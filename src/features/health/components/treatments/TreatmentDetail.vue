@@ -88,7 +88,7 @@ const deleteDose = async (log: LogExtended) => {
                 <span v-if="treatment.endDate"> - {{ tsToDate(treatment.endDate, "date") }}</span>
                 <span v-else class="inline ml-0.5 float-right tag bg-separator text-text-secondary">{{
                     t("health.treatment.ongoing")
-                    }}</span>
+                }}</span>
             </div>
             <ProgressBar v-if="progress" :progress="progress" :color="color" />
         </div>
@@ -118,7 +118,7 @@ const deleteDose = async (log: LogExtended) => {
                     </Button>
                 </div>
                 <Button :disabled="loading" v-for="number in getDoseButtons(medication)" :key="number" variant="ghost"
-                    size="xs" @click="logDose(medication)" class="dose bg-separator border border-border">
+                    size="xs" @click="logDose(medication)" class="dose border border-border">
                     {{ t("health.cta.logDose") }} {{ getDoseButtons(medication) > 1 ? number : "" }}</Button>
             </div>
         </div>
@@ -133,13 +133,13 @@ const deleteDose = async (log: LogExtended) => {
     min-height: 3rem;
 }
 
-.log {
-    border: 1px solid var(--custom-color);
-}
-
-.dose:not(:disabled):hover {
+.dose {
     background-color: var(--custom-color);
     color: var(--color-white);
+}
+
+.log {
+    border: 1px solid var(--custom-color);
 }
 
 .cancel {
@@ -151,6 +151,18 @@ const deleteDose = async (log: LogExtended) => {
     .dose,
     .log {
         min-width: 32%;
+    }
+
+    .dose {
+        background: var(--color-separator);
+        color: var(--color-text);
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .dose:not(:disabled):hover {
+        background-color: var(--custom-color);
+        color: var(--color-white);
     }
 }
 </style>

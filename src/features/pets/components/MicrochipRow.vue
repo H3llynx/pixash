@@ -69,7 +69,7 @@ watch(() => clipboardText.value, (clipboard) => {
 </script>
 
 <template>
-    <div :class="['flex gap-0.5 items-center text-sm mt-0.5', !isMd && 'ml-auto']">
+    <div class="flex gap-0.5 items-center text-sm mt-0.5">
         <template v-if="pet.microchip">
             <div class="rounded-xl w-2 h-2 bg-separator flex shrink-0 justify-center items-center">
                 <Cpu color="var(--color-text-secondary)" />
