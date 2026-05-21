@@ -6,13 +6,14 @@ const selectedFile = ref<File | null>(null);
 
 export const usePictureUpdate = () => {
     const isEditingPicture = ref<boolean>(false);
+
     const onFileChange = async (e: Event) => {
         const target = e.target as HTMLInputElement;
         const file = target.files?.[0];
         if (!file) return;
         if (previewUrl.value) {
             URL.revokeObjectURL(previewUrl.value);
-        }
+        };
         selectedFile.value = file;
         previewUrl.value = URL.createObjectURL(file);
     };

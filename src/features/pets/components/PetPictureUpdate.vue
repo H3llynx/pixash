@@ -22,8 +22,9 @@ const visible = defineModel<boolean>("petPicVisible");
 const loading = ref<boolean>(false);
 
 const handleX = () => {
-    if (previewUrl) clearPreview();
-    if (selectedPet.value?.photo) {
+    if (previewUrl.value) {
+        clearPreview();
+    } else if (selectedPet.value?.photo) {
         open({
             title: t("dialog.deletePicture.title"),
             message: t("dialog.deletePicture.message"),
@@ -87,7 +88,8 @@ const handleCancel = () => {
                     <form class="mini-form flex flex-col gap-1" @submit.prevent="handleSubmit">
                         <label for="profile-picture" :aria-label="t('common.fileInputLabel')">
                             <input id="profile-picture" type="file" accept="image/*" class="sr-only" ref="fileInputRef"
-                                tabindex="0" @change="onFileChange" />
+                                tabindex="0" @change="onFileChange"
+                                @click="(e) => (e.target as HTMLInputElement).value = ''" />
                             <Camera />
                         </label>
                         <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
