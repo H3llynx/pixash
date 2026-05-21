@@ -193,6 +193,7 @@ export default {
             editTreatment: "Modify treatment",
             logDose: "Log dose",
             cancelLog: "Cancel log",
+            editMedTime: "Update medication given time"
         },
         sharedDateFields: {
             givenDate: "Date given",

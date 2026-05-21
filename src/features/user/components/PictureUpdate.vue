@@ -71,35 +71,30 @@ const handleCancel = () => {
 
 <template>
     <FreeModal v-model="visible">
-        <Transition name="toast">
-            <div class="dialog-box" v-show="visible">
-                <LoadingPuppy v-if="loading" class="max-w-xs" />
-                <template v-else>
-                    <div class="mx-auto relative" v-if="user?.photo || previewUrl">
-                        <Button variant="ghost" size="xxs" class="absolute right-0 z-1" @click="handleX">
-                            <X stroke-width="3" color="var(--color-error)" />
-                        </Button>
-                        <div class="preview">
-                            <img v-if="previewUrl" :src="previewUrl" alt="Avatar preview"
-                                class="object-cover h-full w-full relative" />
-                            <Avatar v-else-if="user?.photo" :user="user" />
-                        </div>
-                    </div>
-                    <h2 v-else>{{ t("common.text.addPicture") }}</h2>
-                    <form class="mini-form flex flex-col gap-1" @submit.prevent="handleSubmit">
-                        <label for="profile-picture" :aria-label="t('common.fileInputLabel')">
-                            <input id="profile-picture" type="file" accept="image/*" class="sr-only" ref="fileInputRef"
-                                tabindex="0" @change="onFileChange"
-                                @click="(e) => (e.target as HTMLInputElement).value = ''" />
-                            <Camera />
-                        </label>
-                        <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
-                        <Button type="button" variant="ghost" @click="handleCancel">{{
-                            t("common.button.cancel")
-                            }}</Button>
-                    </form>
-                </template>
+        <LoadingPuppy v-if="loading" class="max-w-xs" />
+        <template v-else>
+            <div class="mx-auto relative" v-if="user?.photo || previewUrl">
+                <Button variant="ghost" size="xxs" class="absolute right-0 z-1" @click="handleX">
+                    <X stroke-width="3" color="var(--color-error)" />
+                </Button>
+                <div class="preview">
+                    <img v-if="previewUrl" :src="previewUrl" alt="Avatar preview"
+                        class="object-cover h-full w-full relative" />
+                    <Avatar v-else-if="user?.photo" :user="user" />
+                </div>
             </div>
-        </Transition>
+            <h2 v-else>{{ t("common.text.addPicture") }}</h2>
+            <form class="mini-form flex flex-col gap-1" @submit.prevent="handleSubmit">
+                <label for="profile-picture" :aria-label="t('common.fileInputLabel')">
+                    <input id="profile-picture" type="file" accept="image/*" class="sr-only" ref="fileInputRef"
+                        tabindex="0" @change="onFileChange" @click="(e) => (e.target as HTMLInputElement).value = ''" />
+                    <Camera />
+                </label>
+                <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
+                <Button type="button" variant="ghost" @click="handleCancel">{{
+                    t("common.button.cancel")
+                }}</Button>
+            </form>
+        </template>
     </FreeModal>
 </template>

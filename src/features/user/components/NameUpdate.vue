@@ -32,17 +32,13 @@ const handleSubmit = async () => {
 
 <template>
     <FreeModal v-model="visible">
-        <Transition name="toast">
-            <div class="dialog-box" v-show="visible">
-                <form class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
-                    <Input v-model="formData" :label="t('auth.nameLabel')" :placeholder="t('auth.namePlaceholder')"
-                        id="user-name" required />
-                    <Button>{{ t("common.button.confirm") }}</Button>
-                    <Button type="button" variant="ghost" @click="visible = false">{{ t("common.button.cancel")
-                    }}</Button>
-                </form>
-            </div>
-        </Transition>
+        <form class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
+            <Input v-model="formData" :label="t('auth.nameLabel')" :placeholder="t('auth.namePlaceholder')"
+                id="user-name" required />
+            <Button>{{ t("common.button.confirm") }}</Button>
+            <Button type="button" variant="ghost" @click="visible = false">{{ t("common.button.cancel")
+            }}</Button>
+        </form>
     </FreeModal>
 </template>
 

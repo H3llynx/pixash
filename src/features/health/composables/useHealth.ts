@@ -4,7 +4,7 @@ import { addLog, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, delet
 import { resetLogs, resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { AntiparasiteLogExtended, Log, LogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { AntiparasiteLogExtended, Log, LogExtended, MedicationLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
@@ -16,8 +16,10 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const selectedTreatment = ref<TreatmentExtended | null>(null)
     const selectedLog = reactive<{
         antiparasitic: AntiparasiteLogExtended | null;
+        medication: MedicationLogExtended | null
     }>({
         antiparasitic: null,
+        medication: null
     })
     const loading = ref<boolean>(false);
     const error = ref<string | null>(null);
@@ -60,14 +62,12 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         selectedTreatment.value = treatment;
     };
 
-    type SelectedLogValues = typeof selectedLog[keyof typeof selectedLog];
-
-    const selectLog = (log: SelectedLogValues, logType: keyof typeof selectedLog) => {
+    const selectLog = <K extends keyof typeof selectedLog>(log: typeof selectedLog[K], logType: K) => {
         resetState(isAddingHealth);
         selectedVaccine.value = null;
         selectedVisit.value = null;
         selectedLog[logType] = log;
-    }
+    };
 
     const handleHealthAction = async <T>(
         action: () => Promise<T>,
@@ -235,9 +235,8 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
             await updateLog(log.id, petId, user.value!.uid, data);
             await refreshPetHealth(petId);
             const updatedLog = logs.value.find(l => l.id === log.id);
-            if (updatedLog) {
-                selectedLog.antiparasitic = updatedLog as AntiparasiteLogExtended;
-            }
+            if (updatedLog?.type === "antiparasite") selectedLog.antiparasitic = updatedLog as AntiparasiteLogExtended;
+            else if (updatedLog?.type === "medication") selectLog(null, updatedLog?.type);
         }, () => {
             loading.value = false;
         })

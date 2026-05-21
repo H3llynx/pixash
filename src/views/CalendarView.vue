@@ -8,7 +8,7 @@ import Calendar from '../features/health/components/events/Calendar.vue';
 import CalendarLegend from '../features/health/components/events/CalendarLegend.vue';
 import EventList from '../features/health/components/events/EventList.vue';
 import EventMenu from '../features/health/components/events/EventMenu.vue';
-import TreatmentOverview from '../features/health/components/treatments/TreatmentOverview.vue';
+import TreatmentsThisMonth from '../features/health/components/treatments/TreatmentsThisMonth.vue';
 import { useEvents } from '../features/health/composables/useEvents';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
@@ -55,7 +55,7 @@ onBeforeRouteLeave(() => {
             class="flex flex-col-reverse gap-1.5 h-full lg:flex-col lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
             <div class="flex flex-col gap-1.5">
                 <EventList :title="getTitle()" :events="filteredMonthEvents" />
-                <TreatmentOverview />
+                <TreatmentsThisMonth />
             </div>
             <CalendarLegend />
         </section>

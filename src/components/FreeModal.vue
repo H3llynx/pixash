@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, Transition, watch } from 'vue';
 
 const dialogRef = ref<HTMLDialogElement>();
 const visible = defineModel<boolean>();
@@ -17,6 +17,10 @@ watch(visible, (visible) => visible ? openDialog() : closeDialog());
 <template>
     <dialog ref="dialogRef" @click.self="closeDialog" @close="visible = false"
         class="m-auto bg-transparent text-text w-[80%] max-w-sm backdrop:bg-black/40 backdrop:filter-blur overflow-hidden">
-        <slot />
+        <transition name="toast">
+            <div v-show="visible" class="dialog-box">
+                <slot />
+            </div>
+        </Transition>
     </dialog>
 </template>

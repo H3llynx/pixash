@@ -32,28 +32,24 @@ const handleSubmit = async () => {
 
 <template>
     <FreeModal v-model="isAddingHealth.weight">
-        <Transition name="toast">
-            <div class="dialog-box" v-show="isAddingHealth.weight">
-                <LoadingPuppy v-if="loading" class="max-w-xs" />
-                <form v-else class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
-                    <h2>{{ t('pet.profile.edit.weight', { name: pet.name }) }}</h2>
-                    <div class="flex gap-0.5">
-                        <Input v-model="weightForm.data" type="number" id="first-weight-log"
-                            :step="weightForm.unit === 'kg' ? '0.001' : '1'" ref="weightInputRef" class="text-base" />
-                        <div class="input-container w-max">
-                            <select v-model="weightForm.unit">
-                                <option>kg</option>
-                                <option>g</option>
-                            </select>
-                        </div>
-                    </div>
-                    <Button>{{ t("common.button.confirm") }}</Button>
-                    <Button type="button" variant="ghost" @click="isAddingHealth.weight = false">{{
-                        t("common.button.cancel")
-                    }}</Button>
-                </form>
+        <LoadingPuppy v-if="loading" class="max-w-xs" />
+        <form v-else class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
+            <h2>{{ t('pet.profile.edit.weight', { name: pet.name }) }}</h2>
+            <div class="flex gap-0.5">
+                <Input v-model="weightForm.data" type="number" id="first-weight-log"
+                    :step="weightForm.unit === 'kg' ? '0.001' : '1'" ref="weightInputRef" class="text-base" />
+                <div class="input-container w-max">
+                    <select v-model="weightForm.unit">
+                        <option>kg</option>
+                        <option>g</option>
+                    </select>
+                </div>
             </div>
-        </Transition>
+            <Button>{{ t("common.button.confirm") }}</Button>
+            <Button type="button" variant="ghost" @click="isAddingHealth.weight = false">{{
+                t("common.button.cancel")
+            }}</Button>
+        </form>
     </FreeModal>
 </template>
 

@@ -355,6 +355,15 @@ export const updateLog = async (
             type: log.type,
             weight: log.weight
         };
+    else if (log.type === "medication")
+        updated = {
+            petId: petId,
+            userId: userId,
+            treatmentId: log.treatmentId,
+            medicineId: log.medicineId,
+            type: log.type,
+            givenAt: log.givenAt
+        };
     else {
         throw new Error("Unsupported log type");
     }

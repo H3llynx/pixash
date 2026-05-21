@@ -5,7 +5,7 @@ import Header from '../components/header/Header.vue';
 import LoadingPuppy from '../components/loading/LoadingPuppy.vue';
 import VetSkeleton from '../components/loading/VetSkeleton.vue';
 import VetForm from '../features/health/components/forms/VetForm.vue';
-import TreatmentsSection from '../features/health/components/treatments/TreatmentsSection.vue';
+import VetTreatmentsSection from '../features/health/components/treatments/VetTreatmentsSection.vue';
 import VetSummary from '../features/health/components/vet/VetSummary.vue';
 import { usePets } from '../features/pets/composables/usePets';
 
@@ -25,7 +25,7 @@ onBeforeRouteLeave(() => {
         <VetSummary />
         <section
             class="flex flex-col gap-1.5 pb-1 lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
-            <TreatmentsSection v-if="selectedPet" :pet="selectedPet" />
+            <VetTreatmentsSection v-if="selectedPet" :pet="selectedPet" />
             <AddButton vet />
         </section>
     </main>

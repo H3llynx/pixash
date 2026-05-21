@@ -130,6 +130,7 @@ export type WeightRecord = {
 export type MedicationRecord = {
     treatmentId: string,
     medicineId: string,
+    givenAt?: Timestamp
 };
 
 export type Log =
