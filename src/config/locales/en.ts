@@ -20,6 +20,8 @@ export default {
         text: {
             noEventText: "You don't have any event scheduled.",
             noHistoryText: "You don't have any past event registered.",
+            noPastTreatments: "You don't have any past event registered.",
+            noActiveTreatment: "You don't have any ongoing treatment",
             noWeightLog: "No weight log registered.",
             lastLogged: "Last logged",
             done: "Done!",
@@ -83,6 +85,7 @@ export default {
             nextAntiparasitic: "Next antiparasitic",
             weightTracking: "Weight tracking",
             activeTreatments: "Active treatments",
+            pastTreatments: "Past treatments"
         }
     },
     vet: {

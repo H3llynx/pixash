@@ -1,15 +1,24 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { onBeforeRouteLeave } from 'vue-router';
 import AddButton from '../components/AddButton.vue';
 import Header from '../components/header/Header.vue';
 import LoadingPuppy from '../components/loading/LoadingPuppy.vue';
 import VetSkeleton from '../components/loading/VetSkeleton.vue';
 import VetForm from '../features/health/components/forms/VetForm.vue';
-import VetTreatmentsSection from '../features/health/components/treatments/VetTreatmentsSection.vue';
+import TreatmentList from '../features/health/components/treatments/TreatmentList.vue';
 import VetSummary from '../features/health/components/vet/VetSummary.vue';
 import { usePets } from '../features/pets/composables/usePets';
 
-const { loading, selectedVet, healthLoading, hasVets, isUpdatingVet, selectedPet } = usePets();
+const { loading, selectedVet, healthLoading, hasVets, isUpdatingVet, treatments } = usePets();
+const { t } = useI18n();
+
+const activeTreatments = computed(() => {
+    const now = new Date();
+    return treatments.value.filter(t => t.startDate.toDate() <= now &&
+        (!t.endDate || t.endDate.toDate() >= now))
+});
 
 onBeforeRouteLeave(() => {
     isUpdatingVet.value = false;
@@ -25,7 +34,8 @@ onBeforeRouteLeave(() => {
         <VetSummary />
         <section
             class="flex flex-col gap-1.5 pb-1 lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
-            <VetTreatmentsSection v-if="selectedPet" :pet="selectedPet" />
+            <TreatmentList v-if="activeTreatments" :treatments="activeTreatments"
+                :title="t('dashboard.title.activeTreatments')" />
             <AddButton vet />
         </section>
     </main>

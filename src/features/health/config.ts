@@ -45,7 +45,7 @@ export const STAGE = [{ id: "young", label: "health.stage.young" }, { id: "adult
 
 export const VET_TYPES = [{ id: "primary", label: "health.vetTypes.primary" }, { id: "secondary", label: "health.vetTypes.secondary" }, { id: "emergency", label: "health.vetTypes.emergency" }];
 
-export const EVENT_TYPES = [{ id: "vaccines", label: "events.vaccines" }, { id: "visit", label: "events.visit" }, { id: "weight", label: "events.weightLog" }, { id: "antiparasite", label: "antiparasitics" }];
+export const EVENT_TYPES = [{ id: "vaccine", label: "events.vaccines" }, { id: "visit", label: "events.visits" }, { id: "weight", label: "events.weightLog" }, { id: "antiparasite", label: "events.antiparasitics" }];
 
 export const MED_FREQUENCY = [
     {
