@@ -43,7 +43,7 @@ const handleSubmit = async () => {
     loading.value = true;
     const url = await hostImg(selectedFile.value);
     if (!url) {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: t("toast.error.userPicture") });
+        show({ type: "error", title: t("toast.error.genericTitle"), message: t("toast.error.errorPicture") });
         return;
     }
     try {
@@ -51,7 +51,7 @@ const handleSubmit = async () => {
         show({
             type: "success",
             title: t("toast.success.title.generic"),
-            message: t("toast.success.message.userPictureUpdated"),
+            message: t("toast.success.message.petPictureUpdated", { name: selectedPet.value.name }),
         });
     } catch (e) {
         show({ type: "error", title: t("toast.error.genericTitle"), message: error.value || "" });

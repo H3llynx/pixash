@@ -305,6 +305,7 @@ export default {
                 userAuthenticated: "You have been successfully logged in.",
                 usernameUpdated: "Your name has successfully be changed to {name}",
                 userPictureUpdated: "Your profile picture has been successfully updated",
+                petPictureUpdated: "{name}'s picture has been successfully updated",
                 nameAdded: "{name} has been successfully added",
                 nameUpdated: "{name} has been successfully updated",
                 nameDeleted: "{name} has been successfully deleted",
@@ -322,7 +323,7 @@ export default {
         error: {
             genericTitle: "Error",
             generic: "An unexpected error occurred",
-            userPicture: "Your picture could not be loaded. Please try again",
+            errorPicture: "Your picture could not be loaded. Please try again",
         }
     },
     dialog: {

@@ -44,7 +44,7 @@ const handleSubmit = async () => {
     loading.value = true;
     const url = await hostImg(selectedFile.value);
     if (!url) {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: t("toast.error.userPicture") });
+        show({ type: "error", title: t("toast.error.genericTitle"), message: t("toast.error.errorPicture") });
         return;
     }
     try {
@@ -93,7 +93,7 @@ const handleCancel = () => {
                 <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
                 <Button type="button" variant="ghost" @click="handleCancel">{{
                     t("common.button.cancel")
-                }}</Button>
+                    }}</Button>
             </form>
         </template>
     </FreeModal>
