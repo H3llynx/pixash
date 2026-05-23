@@ -55,7 +55,7 @@ const handleDelete = async () => {
                 class="group update-pic-btn rounded-full md:overflow-hidden w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center relative">
                 <PetIcon :pet="pet" />
                 <Camera
-                    class="absolute -bottom-0.5 left-0 w-1.75 h-1.5 p-[3px] rounded-lg text-brand md:text-white md:opacity-0 md:group-hover:opacity-100 md:default-transition md:bottom-0 md:w-full md:h-full md:p-1 bg-separator" />
+                    class="absolute -bottom-0.5 left-0 w-1.75 h-1.5 p-[3px] rounded-lg text-white md:opacity-0 md:group-hover:opacity-100 md:default-transition md:bottom-0 md:w-full md:h-full md:p-1 bg-charcoal-rgba" />
             </button>
             <div class="w-full">
                 <div class="flex gap-0.5 items-center">
