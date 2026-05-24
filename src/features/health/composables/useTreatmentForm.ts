@@ -55,7 +55,6 @@ export const useTreatmentForm = () => {
                     title: t("toast.success.title.generic"),
                     message: t("toast.success.message.treatmentAdded", { name: selectedPet.value.name, title: nameSnapshot }),
                 });
-                formData.name = "";
             }
             else if (selectedTreatment.value) {
                 const originalData = {
@@ -73,14 +72,16 @@ export const useTreatmentForm = () => {
                         title: t("toast.success.title.generic"),
                         message: t("toast.success.message.treatmentUpdated", { name: selectedPet.value.name, title: nameSnapshot }),
                     });
-                    formData.name = "";
                 }
-            }
+            };
+            resetForm(formData, defaultForm);
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
         }
-        finally { loading.value = false; }
+        finally {
+            loading.value = false;
+        };
     };
 
     const handleDelete = async () => {

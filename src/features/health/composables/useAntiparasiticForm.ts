@@ -94,7 +94,8 @@ export const useAntiparasiticForm = () => {
                     await updateSelectedLog(selectedLog.antiparasitic, selectedPet.value.id, log);
                     newLog.value = logs.value.find(l => l.id === logId) as AntiparasiteLogExtended ?? null
                 };
-            }
+            };
+            resetForm(formData, defaultForm);
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });

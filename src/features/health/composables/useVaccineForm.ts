@@ -99,11 +99,15 @@ export const useVaccineForm = () => {
                         message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showTypes(typesSnapshot, selectedPet.value) }),
                     });
                 }
-            }
+            };
+            resetForm(formData, defaultForm);
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-        } finally { loading.value = false; }
+        }
+        finally {
+            loading.value = false;
+        };
     };
 
     const handleDelete = async () => {
