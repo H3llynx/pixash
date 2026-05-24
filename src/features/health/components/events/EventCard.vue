@@ -84,15 +84,15 @@ const markAsDone = async (event: PetEvent) => {
 <template>
     <div tabindex="0" role="button"
         class="card cursor-pointer flex-row p-1 w-full md:max-w-md border border-border gap-1.5 justify-between"
-        @click="handleClick(event)" @keydown.enter="handleClick(event)"
-        :class="{ 'opacity-50': tsToDate(event.ts, 'isPast') }">
+        @click="handleClick(event)" @keydown.enter="handleClick(event)">
         <div class="flex gap-0.5 w-full min-w-0 h-full">
             <Syringe v-if="event.eventType === 'vaccine'" class="card-icon" :size="20" />
             <Stethoscope v-else class="card-icon" :size="20" />
             <div class="flex-1 min-w-0 flex flex-col">
                 <div class="flex gap-0.5 items-start">
                     <h4>{{ title }}</h4>
-                    <DateTag :date="date" class="ml-auto" />
+                    <DateTag :date="date" class="ml-auto"
+                        :withMissed="event.eventType === 'vaccine' || event.type === 'antiparasite'" />
                 </div>
                 <div>
                     <p class="text-text-secondary mb-0.5">

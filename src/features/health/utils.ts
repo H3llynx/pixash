@@ -1,5 +1,5 @@
 import { Timestamp } from "firebase/firestore";
-import { getTodayDayKey, tsToDayKey } from "../../utils";
+import { tsToDay } from "../../utils";
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, MED_FREQUENCY, PARASITES, TREATMENTCOLORS, VACCINE_TYPES } from "./config";
@@ -21,31 +21,22 @@ export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default
     return [...specific, ...VACCINE_TYPES.default];
 };
 
-export const getNextVaccine = (vaccines: VaccineExtended[]) => {
-    const todayKey = getTodayDayKey();
-    return (
-        vaccines
-            .filter(vaccine => vaccine.dueOn && tsToDayKey(vaccine.dueOn) >= todayKey)
-            .sort((a, b) => tsToDayKey(a.dueOn) - tsToDayKey(b.dueOn))[0] ?? null
-    );
-};
+export const getNextVaccine = (vaccines: VaccineExtended[]) => vaccines
+    .filter(vaccine => vaccine.dueOn)
+    .sort((a, b) => tsToDay(a.dueOn) - tsToDay(b.dueOn))[0] ?? null;
 
 export const getNextVisit = (visits: VisitExtended[]) => {
-    const todayKey = getTodayDayKey();
-    return (
-        visits
-            .filter(visit => visit.date && tsToDayKey(visit.date) >= todayKey)
-            .sort((a, b) => tsToDayKey(a.date) - tsToDayKey(b.date),)[0] ?? null
-    );
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return visits
+        .filter(visit => tsToDay(visit.date) >= today.getTime())
+        .sort((a, b) => tsToDay(a.date) - tsToDay(b.date))[0] ?? null
 };
 
 export const getNextAntiparasitic = (logs: LogExtended[]) => {
-    const todayKey = getTodayDayKey();
     const antiparasiticDue = logs.filter(log => log.type === "antiparasite" && log.dueOn) as AntiparasiteLogExtended[];
     return (
-        antiparasiticDue
-            .filter(log => tsToDayKey(log.dueOn!) >= todayKey)
-            .sort((a, b) => tsToDayKey(a.dueOn!) - tsToDayKey(b.dueOn!),)[0] ?? null
+        antiparasiticDue.sort((a, b) => tsToDay(a.dueOn!) - tsToDay(b.dueOn!),)[0] ?? null
     );
 };
 

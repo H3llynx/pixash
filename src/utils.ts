@@ -22,13 +22,7 @@ export const shallowEqual = (formData: any, source: any) => {
 type DateFormatMode = "date" | "timeUntil" | "input" | "datetime" | "upcoming" | "thatMonth" | "isThisWeek" | "isPast";
 type TFunction = (key: string, params?: Record<string, unknown>) => string;
 
-export const getTodayDayKey = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return today.getTime();
-};
-
-export const tsToDayKey = (ts: Timestamp) => {
+export const tsToDay = (ts: Timestamp) => {
     const d = ts.toDate();
     d.setHours(0, 0, 0, 0);
     return d.getTime();
@@ -84,7 +78,7 @@ export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, t?: TF
             const end = new Date(today);
             end.setMonth(end.getMonth() + 3);
             end.setHours(23, 59, 59, 999);
-            return eventDay >= today && eventDay <= end;
+            return eventDay <= end;
         }
         case "thatMonth": {
             if (!month) return;

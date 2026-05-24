@@ -24,7 +24,7 @@ const timeUntil = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "
             <h3>{{ title }}</h3>
             <p class="font-medium">{{ date }}</p>
             <p class="text-xs text-brand-light mb-0.5">{{ timeUntil }}</p>
-            <DateTag :date="timestamp" class="mt-auto" />
+            <DateTag :date="timestamp" class="mt-auto" withMissed />
         </div>
     </div>
 </template>
