@@ -16,8 +16,8 @@ import { useAntiparasiticForm } from '../../composables/useAntiparasiticForm';
 import { antiparasiteFields } from '../../config';
 import LogSuccess from '../LogSuccess.vue';
 
-const { loading, isAddingHealth, healthLoading, selectedLog, selectedPet } = usePets();
-const { formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error } = useAntiparasiticForm();
+const { isAddingHealth, selectedLog, selectedPet, vetLoading } = usePets();
+const { loading, formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error } = useAntiparasiticForm();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
 const today = todayAsInput();
@@ -40,7 +40,7 @@ watch(() => mode.value, (mode) => {
 <template>
     <Transition name="panel">
         <Panel v-if="isAddingHealth.antiparasitic || selectedLog.antiparasitic" :onClose="handleClose">
-            <LoadingPuppy v-if="loading || healthLoading" />
+            <LoadingPuppy v-if="loading || vetLoading" />
             <div class="md:max-w-max" v-else-if="!newLog">
                 <div class="flex gap-1 justify-between my-1 default-padding">
                     <div v-if="selectedLog.antiparasitic && selectedPet"
@@ -49,7 +49,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                    }}
+                        }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"
@@ -89,11 +89,11 @@ watch(() => mode.value, (mode) => {
                         <div class="flex gap-0.5 mt-1 items-center ml-auto"
                             v-if="!selectedLog.antiparasitic || mode === 'edit'">
                             <Button type="button" v-if="selectedLog.antiparasitic && mode === 'edit'"
-                                variant="secondary" size="sm" :disabled="healthLoading" @click="mode = 'view'">
+                                variant="secondary" size="sm" :disabled="loading" @click="mode = 'view'">
                                 {{ t("common.button.cancel") }}
                             </Button>
-                            <Button size="sm" :disabled="healthLoading">{{ t("health.cta.logTreatment")
-                                }}</Button>
+                            <Button size="sm" :disabled="loading">{{ t("health.cta.logTreatment")
+                            }}</Button>
                         </div>
                         <Button v-if="selectedLog.antiparasitic && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
                             @click="mode = 'edit'">

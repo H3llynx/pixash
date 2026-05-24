@@ -19,8 +19,8 @@ import { resetForm } from '../../utils';
 import MedicineArea from './MedicineArea.vue';
 import VetSelector from './VetSelector.vue';
 
-const { loading, selectedPet, selectedTreatment, isAddingHealth, healthLoading, selectedVet, vets } = usePets();
-const { handleClose, formData, defaultForm, handleSubmit, handleDelete, addMedicine } = useTreatmentForm();
+const { selectedPet, selectedTreatment, isAddingHealth, vetLoading, selectedVet, vets } = usePets();
+const { handleClose, formData, defaultForm, handleSubmit, handleDelete, addMedicine, loading } = useTreatmentForm();
 const { selectedDate } = useEvents();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
@@ -87,7 +87,7 @@ watch(() => mode.value, (mode) => {
 <template>
     <Transition name="panel" appear>
         <Panel v-if="isAddingHealth.treatment || selectedTreatment" :onClose="handleClose">
-            <LoadingPuppy v-if="loading || healthLoading" />
+            <LoadingPuppy v-if="loading || vetLoading" />
             <div v-else class="md:max-w-max">
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">
                     <div v-if="selectedTreatment && selectedPet"
@@ -121,10 +121,10 @@ watch(() => mode.value, (mode) => {
                         <div class="flex gap-0.5 mt-1 items-center ml-auto"
                             v-if="!selectedTreatment || mode === 'edit'">
                             <Button v-if="selectedTreatment && mode === 'edit'" variant="secondary" size="sm"
-                                type="button" :disabled="healthLoading" @click="mode = 'view'">
+                                type="button" :disabled="loading" @click="mode = 'view'">
                                 {{ t("common.button.cancel") }}
                             </Button>
-                            <Button size="sm" :disabled="healthLoading">{{ isAddingHealth.treatment ?
+                            <Button size="sm" :disabled="loading">{{ isAddingHealth.treatment ?
                                 t("health.cta.startTreatment") :
                                 t("health.cta.saveTreatment") }}</Button>
                         </div>

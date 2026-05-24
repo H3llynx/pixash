@@ -22,6 +22,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
         medication: null
     })
     const loading = ref<boolean>(false);
+    const vetLoading = ref<boolean>(false);
     const error = ref<string | null>(null);
     const isAddingHealth = reactive({
         vet: false,
@@ -92,7 +93,7 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
     const refreshPetHealth = async (petId: string) => {
         const petIndex = pets.value.findIndex(p => p.id === petId);
         if (petIndex === -1) return;
-
+        loading.value = true;
         const [vaccines, vetVisits, treatments, logs] = await Promise.all([
             fetchPetVaccines(user.value!.uid, petId),
             fetchPetVisits(user.value!.uid, petId),
@@ -111,28 +112,24 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
             nextAntiparasitic: getNextAntiparasitic(logs),
             weight: getCurrentWeight(logs)
         };
+        loading.value = false;
     };
 
     const addNewVaccine = async (newVaccine: VaccineRecord, petId: string) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             await addVaccine(newVaccine, petId, user.value!.uid);
             await refreshPetHealth(petId);
         }, () => {
-            loading.value = false;
             isAddingHealth.vaccine = false;
         })
     };
 
     const updateSelectedVaccine = async (vaccine: VaccineExtended, petId: string, data: VaccineRecord) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             await updateVaccine(vaccine.id, petId, user.value!.uid, data);
             await refreshPetHealth(petId);
             selectVaccine(null);
-        }, () => {
-            loading.value = false;
-        })
+        });
     };
 
     const deleteSelectedVaccine = async (vaccine: VaccineExtended, petId: string,) => {
@@ -145,59 +142,52 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
 
     const addNewVetVisit = async (newVisit: VisitRecord, petId: string) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             await addVetVisit(newVisit, petId, user.value!.uid);
             await refreshPetHealth(petId);
         }, () => {
-            loading.value = false;
             isAddingHealth.visit = false;
-        })
+        });
     };
 
     const updateSelectedVisit = async (visit: VisitExtended, petId: string, data: VisitRecord) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             await updateVetVisit(visit.id, petId, user.value!.uid, data);
             await refreshPetHealth(petId);
             selectVisit(null);
-        }, () => {
-            loading.value = false;
-        })
+        });
     };
 
     const deleteSelectedVisit = async (visit: VisitExtended, petId: string,) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             selectVisit(null);
             await deleteVisit(visit.id, petId, user.value!.uid);
             await refreshPetHealth(petId);
-        }, () => {
-            loading.value = false;
-        })
+        });
     };
 
     const fetchUserVets = async () => {
         await handleHealthAction(async () => {
-            loading.value = true;
+            vetLoading.value = true;
             vets.value = await fetchVets(user.value!.uid);
         },
-            () => loading.value = false
+            () => vetLoading.value = false
         );
     };
 
     const addNewVet = async (newVet: Vet) => {
         await handleHealthAction(async () => {
-            loading.value = true;
+            vetLoading.value = true;
             await addVet(newVet, user.value!.uid);
             await fetchUserVets();
         }, () => {
-            loading.value = false;
+            vetLoading.value = false;
             isAddingHealth.vet = false
         });
     };
 
     const updateSelectedVet = async (vet: VetExtended, data: Partial<Vet>) => {
         await handleHealthAction(async () => {
+            vetLoading.value = true;
             await updateVet(vet.id, user.value!.uid, data);
             const index = vets.value.findIndex(v => v.id === vet.id);
             const updatedVet: VetExtended = {
@@ -205,90 +195,76 @@ export const useHealth = (pets: Ref<PetExtended[]>) => {
                 ...data,
             };
             vets.value.splice(index, 1, updatedVet);
-        });
+        }, () => vetLoading.value = false
+        );
     };
 
     const deleteSelectedVet = async (vet: VetExtended) => {
         await handleHealthAction(async () => {
-            loading.value = true;
+            vetLoading.value = true;
             if (selectedVet.value === vet) selectedVet.value = null;
             await deleteVet(vet.id, user.value!.uid);
             await fetchUserVets();
-        }, () => loading.value = false
+        }, () => vetLoading.value = false
         );
     };
 
     const addNewLog = async (newLog: Log, petId: string) => {
         return await handleHealthAction(async () => {
-            loading.value = true;
             const logId = await addLog(newLog, petId, user.value!.uid);
             await refreshPetHealth(petId);
             return logId;
-        }, () => {
-            loading.value = false;
-        })
+        });
     };
 
     const updateSelectedLog = async (log: LogExtended, petId: string, data: Log) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             await updateLog(log.id, petId, user.value!.uid, data);
             await refreshPetHealth(petId);
             const updatedLog = logs.value.find(l => l.id === log.id);
             if (updatedLog?.type === "antiparasite") selectedLog.antiparasitic = updatedLog as AntiparasiteLogExtended;
             else if (updatedLog?.type === "medication") selectLog(null, updatedLog?.type);
-        }, () => {
-            loading.value = false;
-        })
+        });
     };
 
     const deleteSelectedLog = async (log: LogExtended, petId: string,) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             await deleteLog(log.id, petId, user.value!.uid);
             await refreshPetHealth(petId);
         }, () => {
-            loading.value = false;
             resetLogs(selectedLog);
         })
     };
 
     const addNewTreatment = async (newTreatment: TreatmentRecord, petId: string) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             await addTreatment(newTreatment, petId, user.value!.uid);
             await refreshPetHealth(petId);
         }, () => {
-            loading.value = false;
             isAddingHealth.treatment = false;
         })
     };
 
     const updateSelectedTreatment = async (treatment: TreatmentExtended, petId: string, data: TreatmentRecord) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             await updateTreatment(treatment.id, petId, user.value!.uid, data);
             await refreshPetHealth(petId);
             selectTreatment(null);
-        }, () => {
-            loading.value = false;
-        })
+        });
     };
 
     const deleteSelectedTreatment = async (treatment: TreatmentExtended, petId: string,) => {
         await handleHealthAction(async () => {
-            loading.value = true;
             selectTreatment(null);
             await deleteTreatment(treatment.id, petId, user.value!.uid);
             await refreshPetHealth(petId);
-        }, () => {
-            loading.value = false;
-        })
+        });
     };
 
     return {
         error,
         loading,
+        vetLoading,
         vaccines,
         vetVisits,
         selectedVaccine,

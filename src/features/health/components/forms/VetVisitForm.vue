@@ -19,11 +19,11 @@ import type { VisitExtended } from '../../types';
 import { resetForm } from '../../utils';
 import VetSelector from './VetSelector.vue';
 
-const { loading, selectedPet, selectedVisit, isAddingHealth, healthLoading, selectedVet, vets } = usePets();
+const { selectedPet, selectedVisit, isAddingHealth, selectedVet, vets, vetLoading } = usePets();
 const { mode, isReadonly } = useFormMode();
 const { selectedDate } = useEvents();
 const { t } = useI18n();
-const { formData, defaultForm, handleClose, handleSubmit, handleDelete } = useVetVisitForm();
+const { formData, defaultForm, handleClose, handleSubmit, handleDelete, loading } = useVetVisitForm();
 const { title, date, vet, notes } = vetVisitFields;
 provide('readonly', isReadonly);
 
@@ -85,7 +85,7 @@ watch(() => mode.value, (mode) => {
 <template>
     <Transition name="panel" appear>
         <Panel v-if="isAddingHealth.visit || selectedVisit" :onClose="handleClose">
-            <LoadingPuppy v-if="loading || healthLoading" />
+            <LoadingPuppy v-if="loading || vetLoading" />
             <div v-else class="md:max-w-max">
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">
                     <div v-if="selectedVisit && selectedPet"
@@ -121,11 +121,11 @@ watch(() => mode.value, (mode) => {
                         </label>
                         <div class="flex gap-0.5 mt-1 items-center ml-auto" v-if="!selectedVisit || mode === 'edit'">
                             <Button v-if="selectedVisit && mode === 'edit'" variant="secondary" size="sm" type="button"
-                                :disabled="healthLoading" @click="mode = 'view'">
+                                :disabled="loading" @click="mode = 'view'">
                                 {{ t("common.button.cancel") }}
                             </Button>
-                            <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVisit")
-                            }}
+                            <Button size="sm" :disabled="loading">{{ t("health.cta.saveVisit")
+                                }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>

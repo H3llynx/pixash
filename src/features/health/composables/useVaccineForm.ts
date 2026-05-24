@@ -10,8 +10,6 @@ import type { VaccineExtended, VaccineTypes } from "../types";
 import { getVaccineTypes, resetForm, showTypes } from "../utils";
 import { useEvents } from "./useEvents";
 
-const vaccineLoading = ref<boolean>(false);
-
 export const useVaccineForm = () => {
     const { selectedPet, isAddingHealth, vets, selectedVet, selectedVaccine, selectVaccine, addNewVaccine, healthError, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
     const { selectedDate } = useEvents();
@@ -19,6 +17,7 @@ export const useVaccineForm = () => {
     const { open } = useDialog();
     const { t } = useI18n();
 
+    const loading = ref<boolean>(false);
     const vaccineTypes = ref<VaccineTypes[]>([]);
     const error = ref<boolean>(false);
     const vetTextInput = ref<boolean>(false);
@@ -73,8 +72,8 @@ export const useVaccineForm = () => {
             return;
         };
         const typesSnapshot = [...formData.types];
+        loading.value = true;
         try {
-            vaccineLoading.value = true;
             if (isAddingHealth.vaccine) {
                 await addNewVaccine({ ...formData }, selectedPet.value.id);
                 show({
@@ -104,7 +103,7 @@ export const useVaccineForm = () => {
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-        } finally { vaccineLoading.value = false; }
+        } finally { loading.value = false; }
     };
 
     const handleDelete = async () => {
@@ -116,8 +115,8 @@ export const useVaccineForm = () => {
             message: t("dialog.deleteEvent.message", { name: pet.name, title: showTypes(vaccine.types, pet) }),
             isDelete: true,
             onConfirm: async () => {
+                loading.value = true;
                 try {
-                    vaccineLoading.value = true;
                     await deleteSelectedVaccine(vaccine, pet.id);
                     show({
                         type: "success",
@@ -126,7 +125,7 @@ export const useVaccineForm = () => {
                     });
                 } catch (error) {
                     show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-                } finally { vaccineLoading.value = false; }
+                } finally { loading.value = false; }
             }
         });
         resetForm(formData, defaultForm);
@@ -183,5 +182,5 @@ export const useVaccineForm = () => {
             : "";
     });
 
-    return { vaccineLoading, vetTextInput, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete }
+    return { loading, vetTextInput, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete }
 }

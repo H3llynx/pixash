@@ -17,7 +17,7 @@ import { vetFormFields } from '../../config';
 import type { Vet } from '../../types';
 import { resetForm } from '../../utils';
 
-const { pets, isAddingHealth, selectedVet, isUpdatingVet, healthLoading, healthError, addNewVet, updateSelectedVet, deleteSelectedVet } = usePets();
+const { pets, isAddingHealth, selectedVet, isUpdatingVet, vetLoading, healthError, addNewVet, updateSelectedVet, deleteSelectedVet } = usePets();
 const { t } = useI18n();
 const { show } = useToast();
 const { open } = useDialog();
@@ -124,7 +124,7 @@ watch(() => selectedVet.value,
 <template>
     <Transition name="panel" appear>
         <Panel v-if="isAddingHealth.vet || (selectedVet && isUpdatingVet)" :onClose="handleClose">
-            <LoadingPuppy v-if="healthLoading" />
+            <LoadingPuppy v-if="vetLoading" />
             <div v-else class="md:max-w-max">
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">
                     <h1>
@@ -169,7 +169,7 @@ watch(() => selectedVet.value,
                             <p>{{ t(hours.label) }}</p>
                             <textarea v-model="formData.hours" :id="hours.id" />
                         </label>
-                        <Button size="sm" :disabled="healthLoading" class="md:ml-auto">{{ t("health.cta.saveVet",
+                        <Button size="sm" :disabled="vetLoading" class="md:ml-auto">{{ t("health.cta.saveVet",
                             { name: formData.name }) }}
                             <Paw class="w-1 -rotate-12" />
                         </Button>

@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDialog } from "../../../composables/useDialog";
 import { useToast } from "../../../composables/useToast";
@@ -34,6 +34,7 @@ export const useTreatmentForm = () => {
     };
 
     const formData = reactive<TreatmentRecord>({ ...defaultForm });
+    const loading = ref<boolean>(false);
 
     const handleClose = () => {
         resetForm(formData, defaultForm);
@@ -45,6 +46,7 @@ export const useTreatmentForm = () => {
     const handleSubmit = async () => {
         if (!selectedPet.value) return;
         const nameSnapshot = formData.name;
+        loading.value = true;
         try {
             if (isAddingHealth.treatment) {
                 await addNewTreatment({ ...formData }, selectedPet.value.id);
@@ -77,7 +79,8 @@ export const useTreatmentForm = () => {
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-        };
+        }
+        finally { loading.value = false; }
     };
 
     const handleDelete = async () => {
@@ -89,7 +92,9 @@ export const useTreatmentForm = () => {
             message: t("dialog.deleteEvent.message", { name: pet.name, title: treatment.name }),
             isDelete: true,
             onConfirm: async () => {
+                loading.value = true;
                 try {
+                    loading.value = true;
                     await deleteSelectedTreatment(treatment, pet.id);
                     show({
                         type: "success",
@@ -98,11 +103,11 @@ export const useTreatmentForm = () => {
                     });
                 } catch (error) {
                     show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-                }
+                } finally { loading.value = false; }
             }
         });
         resetForm(formData, defaultForm);
     };
 
-    return { formData, defaultForm, addMedicine, handleClose, handleSubmit, handleDelete }
+    return { formData, defaultForm, addMedicine, handleClose, handleSubmit, handleDelete, loading }
 }

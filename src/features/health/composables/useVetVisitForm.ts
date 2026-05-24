@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDialog } from "../../../composables/useDialog";
 import { useToast } from "../../../composables/useToast";
@@ -22,6 +22,7 @@ export const useVetVisitForm = () => {
     };
 
     const formData = reactive({ ...defaultForm });
+    const loading = ref<boolean>(false);
 
     const handleClose = () => {
         resetForm(formData, defaultForm);
@@ -33,6 +34,7 @@ export const useVetVisitForm = () => {
     const handleSubmit = async () => {
         if (!selectedPet.value) return;
         const titleSnapshot = formData.title;
+        loading.value = true;
         try {
             if (isAddingHealth.visit) {
                 await addNewVetVisit({ ...formData }, selectedPet.value.id);
@@ -54,7 +56,8 @@ export const useVetVisitForm = () => {
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-        };
+        }
+        finally { loading.value = false };
     };
 
     const handleDelete = async () => {
@@ -66,6 +69,7 @@ export const useVetVisitForm = () => {
             message: t("dialog.deleteEvent.message", { name: pet.name, title: visit.title }),
             isDelete: true,
             onConfirm: async () => {
+                loading.value = true;
                 try {
                     await deleteSelectedVisit(visit, pet.id);
                     show({
@@ -75,11 +79,11 @@ export const useVetVisitForm = () => {
                     });
                 } catch (error) {
                     show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-                }
+                } finally { loading.value = false; }
             }
         });
         resetForm(formData, defaultForm);
     };
 
-    return { defaultForm, formData, handleClose, handleSubmit, handleDelete };
+    return { loading, defaultForm, formData, handleClose, handleSubmit, handleDelete };
 }

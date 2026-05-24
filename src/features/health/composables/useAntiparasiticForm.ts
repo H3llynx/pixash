@@ -15,7 +15,9 @@ export const useAntiparasiticForm = () => {
     const { t } = useI18n();
     const { show } = useToast();
     const { open } = useDialog();
+
     const antiparasitics = ref<AntiparasiteTypes[]>([]);
+    const loading = ref<boolean>(false);
     const error = ref<boolean>(false);
     const newLog = ref<PetEvent | null>(null);
     const today = todayAsInput();
@@ -53,6 +55,7 @@ export const useAntiparasiticForm = () => {
             isDelete: true,
             onConfirm: async () => {
                 try {
+                    loading.value = true;
                     await deleteSelectedLog(log, pet.id);
                     show({
                         type: "success",
@@ -61,7 +64,7 @@ export const useAntiparasiticForm = () => {
                     });
                 } catch (error) {
                     show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-                }
+                } finally { loading.value = false; }
             }
         });
     };
@@ -73,6 +76,7 @@ export const useAntiparasiticForm = () => {
             return;
         };
         const log: Log = { ...formData, type: "antiparasite" };
+        loading.value = true
         try {
             if (isAddingHealth.antiparasitic) {
                 const logId = await addNewLog(log, selectedPet.value.id);
@@ -94,7 +98,8 @@ export const useAntiparasiticForm = () => {
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
-        };
+        }
+        finally { loading.value = false; }
     };
 
     watch(() => isAddingHealth.antiparasitic, (adding) => {
@@ -123,5 +128,5 @@ export const useAntiparasiticForm = () => {
         },
         { immediate: true }
     );
-    return { formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error }
+    return { formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error, loading }
 }

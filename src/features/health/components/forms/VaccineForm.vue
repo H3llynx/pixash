@@ -18,10 +18,10 @@ import { vaccineFields } from '../../config';
 import { showTypes } from '../../utils';
 import VetSelector from './VetSelector.vue';
 
-const { loading, selectedPet, isAddingHealth, selectedVaccine, healthLoading } = usePets();
+const { selectedPet, isAddingHealth, selectedVaccine, vetLoading } = usePets();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
-const { vetTextInput, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete } = useVaccineForm();
+const { vetTextInput, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete, loading } = useVaccineForm();
 provide('readonly', isReadonly);
 const { types, stage, given, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
 const today = todayAsInput();
@@ -46,7 +46,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
 <template>
     <Transition name="panel">
         <Panel v-if="isAddingHealth.vaccine || selectedVaccine" :onClose="handleClose">
-            <LoadingPuppy v-if="loading || healthLoading" />
+            <LoadingPuppy v-if="loading || vetLoading" />
             <div class="md:max-w-max" v-else>
                 <div class="flex gap-1 justify-between my-1 default-padding">
                     <h1 v-if="isAddingHealth.vaccine">{{ t("health.title.addVaccine") }}</h1>
@@ -128,10 +128,10 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                             </div>
                             <div class="flex gap-0.5 flex-col-reverse md:flex-row shrink-0 w-full sm:w-max">
                                 <Button type="button" v-if="selectedVaccine && mode === 'edit'" variant="secondary"
-                                    size="sm" :disabled="healthLoading" @click="mode = 'view'">
+                                    size="sm" :disabled="loading" @click="mode = 'view'">
                                     {{ t("common.button.cancel") }}
                                 </Button>
-                                <Button size="sm" :disabled="healthLoading">{{ t("health.cta.saveVaccine")
+                                <Button size="sm" :disabled="loading">{{ t("health.cta.saveVaccine")
                                     }}</Button>
                             </div>
                         </div>
