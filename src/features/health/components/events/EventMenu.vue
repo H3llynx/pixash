@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { BugOff, ChevronLeft, ChevronUp, NotebookPen, Stethoscope, Syringe } from '@lucide/vue';
+import { BugOff, ChevronLeft, Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Panel from '../../../../components/Panel.vue';
 import { useMedia } from '../../../../composables/useMedia';
-import { resetLogs, resetState, todayAsInput } from '../../../../utils';
+import { resetLogs, resetState } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';
 import { useEvents } from '../../composables/useEvents';
 
-const { isAddingHealth, selectedLog, selectVaccine, selectVisit } = usePets();
+const { isAddingHealth, selectedLog, selectVaccine, selectVisit, handleAdd } = usePets();
 const { selectedDate } = useEvents();
 const { t, locale } = useI18n();
 const { isMd } = useMedia();
@@ -25,13 +25,7 @@ onClickOutside(menuRef, () => {
 });
 
 const handleClick = (action: string) => {
-    resetState(isAddingHealth);
-    resetLogs(selectedLog);
-    selectVaccine(null);
-    selectVisit(null);
-    if (action === "vaccine") isAddingHealth.vaccine = true;
-    else if (action === "visit") isAddingHealth.visit = true;
-    else if (action === "antiparasitic") isAddingHealth.antiparasitic = true;
+    handleAdd(action)
     visible.value = false;
 }
 
@@ -63,13 +57,18 @@ watch(() => visible.value, (visible) => {
                     <span>{{ t("addMenu.vetVisit") }}</span>
                     <Stethoscope :size="18" />
                 </Button>
-                <Button v-if="selectedDate && selectedDate <= todayAsInput()" variant="ghost" size="xxs"
+                <Button variant="ghost" size="xxs" @click="handleClick('antiparasitic')"
+                    :aria-label="t('addMenu.antiparasitic')">
+                    <span>{{ t("addMenu.antiparasitic") }}</span>
+                    <BugOff :size="18" />
+                </Button>
+                <!--                 <Button v-if="selectedDate && selectedDate <= todayAsInput()" variant="ghost" size="xxs"
                     @click="submenu = true" :aria-label="t('addMenu.antiparasitic')">
                     <span>{{ t("addMenu.log") }}</span>
                     <NotebookPen :size="isMd ? 18 : 20" />
-                </Button>
+                </Button> -->
             </div>
-            <div v-else class="flex gap-[3px] flex-col">
+            <!--             <div v-else class="flex gap-[3px] flex-col">
                 <Button variant="ghost" size="xs" class="no-border mx-auto" @click="submenu = false" v-if="submenu"
                     :aria-label="t('common.button.back')">
                     <ChevronUp />
@@ -79,7 +78,7 @@ watch(() => visible.value, (visible) => {
                     <span>{{ t("addMenu.antiparasitic") }}</span>
                     <BugOff :size="18" />
                 </Button>
-            </div>
+            </div> -->
         </div>
     </Transition>
 
@@ -110,15 +109,6 @@ watch(() => visible.value, (visible) => {
                     </div>
                     <span>{{ t("addMenu.vetVisit") }}</span>
                 </Button>
-                <Button v-if="selectedDate && selectedDate <= todayAsInput()" variant="secondary" size="sm"
-                    @click="submenu = true" :aria-label="t('addMenu.antiparasitic')">
-                    <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
-                        <NotebookPen :size="20" />
-                    </div>
-                    <span>{{ t("addMenu.log") }}</span>
-                </Button>
-            </div>
-            <div v-else class="flex flex-col gap-1 p-1">
                 <Button variant="secondary" size="sm" @click="handleClick('antiparasitic')"
                     :aria-label="t('addMenu.antiparasitic')">
                     <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
@@ -126,7 +116,23 @@ watch(() => visible.value, (visible) => {
                     </div>
                     <span>{{ t("addMenu.antiparasitic") }}</span>
                 </Button>
+                <!--                 <Button v-if="selectedDate && selectedDate <= todayAsInput()" variant="secondary" size="sm"
+                    @click="submenu = true" :aria-label="t('addMenu.antiparasitic')">
+                    <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
+                        <NotebookPen :size="20" />
+                    </div>
+                    <span>{{ t("addMenu.log") }}</span>
+                </Button> -->
             </div>
+            <!--             <div v-else class="flex flex-col gap-1 p-1">
+                <Button variant="secondary" size="sm" @click="handleClick('antiparasitic')"
+                    :aria-label="t('addMenu.antiparasitic')">
+                    <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
+                        <BugOff :size="20" />
+                    </div>
+                    <span>{{ t("addMenu.antiparasitic") }}</span>
+                </Button>
+            </div> -->
         </Panel>
     </Transition>
 </template>

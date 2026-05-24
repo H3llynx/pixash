@@ -83,7 +83,7 @@ const markAsDone = async (event: PetEvent) => {
 </script>
 <template>
     <div tabindex="0" role="button"
-        class="card cursor-pointer flex-row p-1 w-full md:max-w-md border border-border gap-1.5 justify-between"
+        class="card hover-gradient cursor-pointer flex-row p-1 w-full md:max-w-md border border-border gap-1.5 justify-between"
         @click="handleClick(event)" @keydown.enter="handleClick(event)">
         <div class="flex gap-0.5 w-full min-w-0 h-full">
             <Syringe v-if="event.eventType === 'vaccine'" class="card-icon" :size="20" />
@@ -118,44 +118,11 @@ const markAsDone = async (event: PetEvent) => {
 </template>
 
 <style scoped>
-.card {
-    background: var(--color-bg-2);
-    position: relative;
-    overflow: hidden;
-    transition: 1s ease;
-
-    &::before {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        inset: 0;
-        background-image: var(--background-image-card);
-        background-size: 150% 100%;
-        opacity: 0;
-        z-index: -1;
-        transition: 1s ease;
-    }
-}
-
 @media (width >=48rem) {
 
     h4,
     p {
         font-size: clamp(0.85rem, 0.5vw, 1rem);
-    }
-}
-
-
-@media (hover: hover) and (pointer: fine) {
-    .card:hover {
-        color: var(--color-brand);
-        transform: scale(1.02);
-
-        &::before {
-            animation: move-overlay 10s ease-out infinite;
-            opacity: 1;
-        }
     }
 }
 </style>

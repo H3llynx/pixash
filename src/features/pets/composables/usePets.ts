@@ -58,6 +58,17 @@ const {
 
 const hasVets = computed(() => vets.value.length > 0);
 
+const handleAdd = (action: string) => {
+  resetPetActions();
+  if (action === "vaccine") isAddingHealth.vaccine = true;
+  else if (action === "pet") isAddingPet.value = true;
+  else if (action === "visit") isAddingHealth.visit = true;
+  else if (action === "vet") isAddingHealth.vet = true;
+  else if (action === "antiparasitic") isAddingHealth.antiparasitic = true;
+  else if (action === "treatment") isAddingHealth.treatment = true;
+  else return;
+}
+
 const selectPet = (pet: PetExtended | null) => {
   isAddingPet.value = false;
   isUpdatingPet.value = false;
@@ -296,6 +307,7 @@ export const usePets = () => {
     addNewTreatment,
     updateSelectedTreatment,
     deleteSelectedTreatment,
-    selectTreatment
+    selectTreatment,
+    handleAdd
   };
 };

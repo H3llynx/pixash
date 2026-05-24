@@ -68,7 +68,7 @@ export default {
         vaccine: "New vaccine",
         vet: "Add vet",
         log: "New log",
-        antiparasitic: "Log antiparasitic",
+        antiparasitic: "Add antiparasitic",
         treatment: "Add treatment"
     },
     userMenu: {
@@ -207,7 +207,8 @@ export default {
             treated: "What did you treat?",
             notes: "Other information",
             validationTypes: "You must select what was treated",
-            viewTitle: "Antiparasitic"
+            viewTitle: "Antiparasitic",
+            notGiven: "{name} has not yet received this antiparasitic",
         },
         vaccineForm: {
             types: "Vaccine",

@@ -118,7 +118,8 @@ export type LogTypes = "antiparasite" | "weight";
 
 export type AntiparasiteRecord = {
     treated: AntiparasiteTypes["id"][];
-    givenAt: string;
+    given?: boolean;
+    givenAt?: string;
     dueOn?: string;
     notes?: string;
 };

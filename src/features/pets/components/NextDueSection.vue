@@ -2,19 +2,12 @@
 import { Plus } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
-import { resetState } from '../../../utils';
 import HealthCard from '../../health/components/events/HealthCard.vue';
 import type { PetEvent } from '../../health/types';
 import { usePets } from '../composables/usePets';
 
-const { selectedPet, isAddingHealth } = usePets();
+const { selectedPet, handleAdd } = usePets();
 const { t } = useI18n();
-
-const handleClick = (action: string) => {
-    resetState(isAddingHealth);
-    if (action === "vaccine") isAddingHealth.vaccine = true;
-    else isAddingHealth.visit = true;
-}
 </script>
 
 <template>
@@ -28,13 +21,17 @@ const handleClick = (action: string) => {
             :data="(selectedPet.nextAntiparasitic as PetEvent)" :title="t('dashboard.title.nextAntiparasitic')" />
     </div>
     <div v-else class="flex gap-0.5 py-0.5 default-padding">
-        <Button variant="add" class="w-1/2 md:w-14 flex-col h-6" @click="handleClick('vaccine')">
+        <Button variant="add" class="hover-gradient w-1/2 md:w-14 flex-col h-6" @click="handleAdd('vaccine')">
             <span>{{ t("health.title.addVaccine") }}</span>
-            <Plus />
+            <Plus color="var(--color-text-secondary)" />
         </Button>
-        <Button variant="add" class="w-1/2 md:w-14 flex-col h-6" @click="handleClick('visit')">
+        <Button variant="add" class="hover-gradient w-1/2 md:w-14 flex-col h-6" @click="handleAdd('visit')">
             <span>{{ t("health.title.addVetVisit") }}</span>
-            <Plus />
+            <Plus color="var(--color-text-secondary)" />
+        </Button>
+        <Button variant="add" class="hover-gradient w-1/2 md:w-14 flex-col h-6" @click="handleAdd('antiparasitic')">
+            <span>{{ t("health.title.logAntiparasitic") }}</span>
+            <Plus color="var(--color-text-secondary)" />
         </Button>
     </div>
 </template>

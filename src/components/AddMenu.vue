@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { usePets } from '../features/pets/composables/usePets';
 import Button from './Button.vue';
 
-const { isAddingPet, isAddingHealth } = usePets();
+const { handleAdd } = usePets();
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -23,12 +23,7 @@ onClickOutside(menuRef, () => {
 
 
 const handleClick = (action: string) => {
-    if (action === "vaccine") isAddingHealth.vaccine = true;
-    else if (action === "pet") isAddingPet.value = true;
-    else if (action === "visit") isAddingHealth.visit = true;
-    else if (action === "vet") isAddingHealth.vet = true;
-    else if (action === "antiparasitic") isAddingHealth.antiparasitic = true;
-    else if (action === "treatment") isAddingHealth.treatment = true;
+    handleAdd(action)
     visible.value = false;
 }
 </script>

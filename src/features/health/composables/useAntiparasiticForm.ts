@@ -26,12 +26,14 @@ export const useAntiparasiticForm = () => {
         Object.assign(formData, {
             treated: [...log.treated],
             givenAt: tsToDate(log.givenAt, "input"),
+            notGiven: log.givenAt ? false : true,
             dueOn: tsToDate(log.dueOn, "input"),
             notes: log.notes ?? "",
         })
     };
     const defaultForm = {
         treated: [ANTIPARASITE_TYPES.default[0].id] as AntiparasiteTypes["id"][],
+        notGiven: false,
         givenAt: "",
         dueOn: "",
         notes: "",
@@ -129,5 +131,18 @@ export const useAntiparasiticForm = () => {
         },
         { immediate: true }
     );
+
+    watch(() => formData.notGiven, (notGiven) => {
+        if (notGiven) {
+            formData.givenAt = ""
+            if (selectedDate.value) formData.dueOn = selectedDate.value;
+        } else {
+            formData.givenAt = selectedLog.antiparasitic?.givenAt
+                ? tsToDate(selectedLog.antiparasitic.givenAt, "input") as string
+                : formData.dueOn ? ""
+                    : selectedDate.value || todayAsInput()
+        };
+    });
+
     return { formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error, loading }
 }

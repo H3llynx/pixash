@@ -119,6 +119,10 @@ export const antiparasiteFields = {
         type: "checkbox",
         options: ANTIPARASITE_TYPES,
     },
+    notGiven: {
+        id: "vaccine-given",
+        label: "health.antiparasiteForm.notGiven",
+    },
     givenDate: {
         id: "antiparasite-given-date",
         label: "health.sharedDateFields.givenDate",

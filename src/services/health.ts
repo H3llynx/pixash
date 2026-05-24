@@ -344,7 +344,7 @@ export const updateLog = async (
             petId: petId,
             userId: userId,
             treated: log.treated,
-            givenAt: tsFromInput(log.givenAt),
+            givenAt: log.givenAt ? tsFromInput(log.givenAt) : null,
             dueOn: log.dueOn ? tsFromInput(log.dueOn) : null,
             notes: log.notes,
         };

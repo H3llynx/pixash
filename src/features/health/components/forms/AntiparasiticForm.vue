@@ -7,6 +7,7 @@ import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
+import Toggle from '../../../../components/Toggle.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
 import { todayAsInput } from '../../../../utils';
 import PetIcon from '../../../pets/components/PetIcon.vue';
@@ -23,7 +24,7 @@ const { mode, isReadonly } = useFormMode();
 const today = todayAsInput();
 provide('readonly', isReadonly);
 
-const { treated, givenDate, dueDate, notes } = antiparasiteFields;
+const { treated, notGiven, givenDate, dueDate, notes } = antiparasiteFields;
 watch(() => isAddingHealth.antiparasitic, (adding) => {
     if (adding) mode.value = "edit";
 });
@@ -49,7 +50,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                        }}
+                    }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"
@@ -69,15 +70,17 @@ watch(() => mode.value, (mode) => {
                             t("health.antiparasiteForm.validationTypes") }}</p>
                     </Selector>
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-model="formData.givenAt" :id="givenDate.id" :label="t(givenDate.label)"
-                            :type="givenDate.type" :max="today" required>
+                        <Input v-if="!formData.notGiven" v-model="formData.givenAt" :id="givenDate.id"
+                            :label="t(givenDate.label)" :type="givenDate.type" :max="today" required>
                             <template #addon>
                                 <CalendarCheck class="mr-0.5" color="var(--color-brand)" />
                             </template>
                         </Input>
+                        <Toggle v-if="mode === 'edit'" v-model="formData.notGiven"
+                            :label="t(notGiven.label, { name: selectedPet!.name })" :id="notGiven.id" />
                         <Input v-if="selectedLog.antiparasitic?.dueOn || mode === 'edit'" v-model="formData.dueOn"
                             :id="dueDate.id" :label="t(dueDate.label)" :type="dueDate.type"
-                            :min="formData.givenAt || today">
+                            :min="formData.givenAt || today" :required="!formData.givenAt">
                             <template #addon>
                                 <CalendarClock v-if="!formData.dueOn" class="mr-0.5" color="var(--color-border)" />
                                 <Button v-else type="button" variant="ghost" size="xs" @click="formData.dueOn = ''">{{
@@ -93,7 +96,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="loading">{{ t("health.cta.logTreatment")
-                            }}</Button>
+                                }}</Button>
                         </div>
                         <Button v-if="selectedLog.antiparasitic && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
                             @click="mode = 'edit'">
