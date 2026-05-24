@@ -55,7 +55,8 @@ watch(() => props.treatments, () => {
                 <template v-else>
                     <TreatmentCard v-if="treatments.length" v-for="treatment in paginatedTreatments" :key="treatment.id"
                         :treatment="treatment" />
-                    <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noActiveTreatment") }}
+                    <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noActiveTreatment",
+                        { name: selectedPet?.name }) }}
                     </p>
                 </template>
             </div>

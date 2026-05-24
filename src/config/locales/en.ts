@@ -21,7 +21,7 @@ export default {
             noEventText: "You don't have any event scheduled.",
             noHistoryText: "You don't have any past event registered.",
             noPastTreatments: "{name} has no past medical treatment recorded.",
-            noActiveTreatment: "Your pet has no active medical treatments.",
+            noActiveTreatment: "{name} has no active medical treatments.",
             noWeightLog: "No weight log registered.",
             lastLogged: "Last logged",
             done: "Done!",
@@ -250,6 +250,8 @@ export default {
         treatment: {
             ongoing: "Ongoing treatment",
             started: "Started: ",
+            until: "until ",
+            ended: "ended: "
         },
         medicine: {
             title: "Medicine {index}",
