@@ -53,7 +53,7 @@ onBeforeRouteLeave(() => {
         </section>
         <section
             class="flex flex-col-reverse gap-1.5 h-full lg:flex-col lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
-            <div class="flex flex-col gap-1.5">
+            <div class="flex flex-col gap-1.5 md:mb-1">
                 <EventList :title="getTitle()" :events="filteredMonthEvents" />
                 <TreatmentsThisMonth />
             </div>

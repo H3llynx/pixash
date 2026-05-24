@@ -10,7 +10,10 @@ export const useHistory = () => {
     const { selectedPet, treatments } = usePets();
 
     const petHistory = computed(() => history.value.filter(h => h.petId === selectedPet.value?.id) as PetEvent[]);
-    const finishedTreatments = computed(() => treatments.value.filter(t => t.endDate && t.endDate.toDate() < new Date()));
+    const finishedTreatments = computed(() => treatments.value
+        .filter(t => t.endDate && t.endDate.toDate() < new Date())
+        .filter(t => t.petId === selectedPet.value?.id)
+    );
 
     const filteredPetHistory = computed(() => eventType.value
         ? petHistory.value.filter(e => {

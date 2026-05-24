@@ -20,8 +20,8 @@ export default {
         text: {
             noEventText: "You don't have any event scheduled.",
             noHistoryText: "You don't have any past event registered.",
-            noPastTreatments: "You don't have any past event registered.",
-            noActiveTreatment: "You don't have any ongoing treatment",
+            noPastTreatments: "{name} has no past medical treatment recorded.",
+            noActiveTreatment: "Your pet has no active medical treatments.",
             noWeightLog: "No weight log registered.",
             lastLogged: "Last logged",
             done: "Done!",
@@ -198,10 +198,11 @@ export default {
             cancelLog: "Cancel log",
             editMedTime: "Update medication given time"
         },
-        sharedDateFields: {
+        sharedFields: {
             givenDate: "Date given",
             nextDose: "Next dose scheduled?",
             dueDate: "Next due",
+            notesPlaceholder: "Comments (optional)",
         },
         antiparasiteForm: {
             treated: "What did you treat?",

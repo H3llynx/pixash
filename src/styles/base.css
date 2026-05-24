@@ -266,13 +266,6 @@
       background: var(--color-brand-light);
     }
 
-    &:has(input:not(input[type="radio"], input[type="checkbox"]):not(:required)) p::after,
-    &:has(textarea:not(:read-only)) p::after {
-      content: "(optional)";
-      margin-left: 10px;
-      color: var(--color-text-secondary);
-      font-size: small;
-    }
   }
 
   input::-webkit-outer-spin-button,

@@ -50,7 +50,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                    }}
+                        }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"
@@ -88,7 +88,8 @@ watch(() => mode.value, (mode) => {
                             </template>
                         </Input>
                         <Input v-if="selectedLog.antiparasitic?.notes || mode === 'edit'" v-model="formData.notes"
-                            :id="notes.id" :label="t(notes.label)" :type="notes.type" />
+                            :id="notes.id" :label="t(notes.label)" :type="notes.type"
+                            :placeholder="t(notes.placeholder)" />
                         <div class="flex gap-0.5 mt-1 items-center ml-auto"
                             v-if="!selectedLog.antiparasitic || mode === 'edit'">
                             <Button type="button" v-if="selectedLog.antiparasitic && mode === 'edit'"
@@ -96,7 +97,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="loading">{{ t("health.cta.logTreatment")
-                                }}</Button>
+                            }}</Button>
                         </div>
                         <Button v-if="selectedLog.antiparasitic && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
                             @click="mode = 'edit'">

@@ -11,7 +11,7 @@ import TreatmentCard from './TreatmentCard.vue';
 
 const { isMd } = useMedia();
 const { t } = useI18n();
-const { loading } = usePets();
+const { loading, selectedPet } = usePets();
 
 const props = withDefaults(defineProps<{
     title?: string
@@ -48,7 +48,8 @@ watch(() => props.treatments, () => {
                 <template v-if="history">
                     <TreatmentCard v-if="treatments.length" v-for="treatment in paginatedTreatments" :key="treatment.id"
                         :treatment="treatment" />
-                    <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noPastTreatments") }}
+                    <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noPastTreatments",
+                        { name: selectedPet ? selectedPet.name : "Your pet" }) }}
                     </p>
                 </template>
                 <template v-else>

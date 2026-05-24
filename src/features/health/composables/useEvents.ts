@@ -81,10 +81,10 @@ export const useEvents = () => {
             .filter(treatment => isForSpecificPet(treatment.petId))
             .map((treatment, index) => {
                 let endDate;
-                if (treatment.medication.some(med => med.noEnd)) {
+                if (!treatment.endDate) {
                     endDate = new Date(2099, 11, 31).toISOString().split('T')[0];
                 } else {
-                    const end = treatment.endDate!.toDate();
+                    const end = treatment.endDate.toDate();
                     end.setDate(end.getDate() + 1);
                     const pad = (n: number) => String(n).padStart(2, "0");
                     endDate = `${end.getFullYear()}-${pad(end.getMonth() + 1)}-${pad(end.getDate())}`;
@@ -162,6 +162,13 @@ export const useEvents = () => {
         : treatmentsThisMonth.value
     );
 
+    const activeTreatments = computed(() => {
+        const now = new Date();
+        return treatments.value
+            .filter(t => t.startDate.toDate() <= now && (!t.endDate || t.endDate.toDate() >= now))
+            .filter(t => t.petId === selectedPet.value?.id)
+    });
+
     return {
         selectedDate,
         currentMonth,
@@ -174,6 +181,7 @@ export const useEvents = () => {
         petUpcomingEvents,
         useEventData,
         history,
-        filteredMonthTreatments
+        filteredMonthTreatments,
+        activeTreatments
     }
 }

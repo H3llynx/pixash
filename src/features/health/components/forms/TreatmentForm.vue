@@ -116,7 +116,8 @@ watch(() => mode.value, (mode) => {
                         </Input>
                         <VetSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput" required />
                         <Input v-if="selectedTreatment?.notes || mode === 'edit'" v-model="formData.notes"
-                            :id="notes.id" :label="t(notes.label)" :type="notes.type" />
+                            :id="notes.id" :label="t(notes.label)" :type="notes.type"
+                            :placeholder="t(notes.placeholder)" />
                         <MedicineArea v-model="formData.medication" />
                         <div class="flex gap-0.5 mt-1 items-center ml-auto"
                             v-if="!selectedTreatment || mode === 'edit'">

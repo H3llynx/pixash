@@ -11,10 +11,10 @@ const { isMd } = useMedia();
 </script>
 
 <template>
-    <div class="flex flex-col gap-1.5 md:mb-1">
-        <PetSelector v-if="selectedPet && !isMd" />
+    <div v-if="selectedPet" class="flex flex-col gap-1.5 md:mb-1">
+        <PetSelector v-if="!isMd" />
         <NextDueSection />
         <ProfileSection />
-        <ActiveTreatments v-if="selectedPet?.treatments.length" :pet="selectedPet" class="default-padding" />
+        <ActiveTreatments />
     </div>
 </template>

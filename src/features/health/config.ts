@@ -125,18 +125,19 @@ export const antiparasiteFields = {
     },
     givenDate: {
         id: "antiparasite-given-date",
-        label: "health.sharedDateFields.givenDate",
+        label: "health.sharedFields.givenDate",
         type: "date",
     },
     dueDate: {
         id: "antiparasite-due-date",
-        label: "health.sharedDateFields.dueDate",
+        label: "health.sharedFields.dueDate",
         type: "date",
     },
     notes: {
         id: "antiparasite-notes",
         label: "health.antiparasiteForm.notes",
         type: "text",
+        placeholder: "health.sharedFields.notesPlaceholder"
     },
 } as const;
 
@@ -158,16 +159,16 @@ export const vaccineFields = {
     },
     givenDate: {
         id: "vaccine-given-date",
-        label: "health.sharedDateFields.givenDate",
+        label: "health.sharedFields.givenDate",
         type: "date",
     },
     nextDose: {
         id: "vaccine-followUp",
-        label: "health.sharedDateFields.nextDose",
+        label: "health.sharedFields.nextDose",
     },
     dueDate: {
         id: "vaccine-due-date",
-        label: "health.sharedDateFields.dueDate",
+        label: "health.sharedFields.dueDate",
         type: "date",
     },
     vet: {
@@ -178,6 +179,7 @@ export const vaccineFields = {
     notes: {
         id: "vaccine-notes",
         label: "health.vaccineForm.notes",
+        placeholder: "health.sharedFields.notesPlaceholder"
     },
 } as const;
 
@@ -199,6 +201,7 @@ export const vetVisitFields = {
     notes: {
         id: "visit-notes",
         label: "health.vetVisitForm.notes",
+        placeholder: "health.sharedFields.notesPlaceholder"
     },
 } as const;
 
@@ -276,5 +279,6 @@ export const treatmentFields = {
         id: "treatment-notes",
         label: "health.treatmentForm.notes",
         type: "text",
+        placeholder: "health.sharedFields.notesPlaceholder"
     },
 } as const;

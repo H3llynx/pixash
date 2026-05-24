@@ -117,7 +117,7 @@ watch(() => mode.value, (mode) => {
                         <label :for="notes.id" v-if="selectedVisit?.notes || mode === 'edit'">
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id"
-                                :readonly="!!selectedVisit && mode === 'view'" />
+                                :readonly="!!selectedVisit && mode === 'view'" :placeholder="t(notes.placeholder)" />
                         </label>
                         <div class="flex gap-0.5 mt-1 items-center ml-auto" v-if="!selectedVisit || mode === 'edit'">
                             <Button v-if="selectedVisit && mode === 'edit'" variant="secondary" size="sm" type="button"
@@ -125,7 +125,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="loading">{{ t("health.cta.saveVisit")
-                                }}
+                            }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>

@@ -103,7 +103,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                         <label :for="notes.id" v-if="selectedVaccine?.notes || mode === 'edit'">
                             <p>{{ t(notes.label) }}</p>
                             <textarea v-model="formData.notes" :id="notes.id"
-                                :readonly="!!selectedVaccine && mode === 'view'" />
+                                :readonly="!!selectedVaccine && mode === 'view'" :placeholder="t(notes.placeholder)" />
                         </label>
 
                         <div class="flex gap-1 mt-1 justify-between items-center flex-wrap"
@@ -120,7 +120,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                                         showTypes(formData.types, selectedPet) }}
                                 </p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
-                                    t("health.sharedDateFields.dueDate")
+                                    t("health.sharedFields.dueDate")
                                     }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
