@@ -27,12 +27,11 @@ onBeforeRouteLeave(() => {
     <Header />
     <VetSkeleton v-if="loading || vetLoading" />
     <main v-else class="mt-1 md:mt-0 lg:gap-0 lg:grid lg:grid-cols-[55%_45%] xl:grid-cols-[65%_1fr]">
-        <PetSelector v-if="!isMd" />
         <VetSummary />
-        <section
-            class="flex flex-col gap-1.5 pb-1 lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
+        <section class="px-0 flex flex-col gap-1.5 pb-1 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
+            <PetSelector v-if="!isMd" />
             <TreatmentList v-if="activeTreatments" :treatments="activeTreatments"
-                :title="t('dashboard.title.activeTreatments')" />
+                :title="t('dashboard.title.activeTreatments')" class="default-padding lg:px-1.5" />
             <AddButton vet />
         </section>
     </main>
