@@ -20,13 +20,13 @@ const { t } = useI18n();
 <template>
     <Header />
     <HistorySkeleton v-if="loading" />
-    <main v-else-if="hasPets" class="lg:grid lg:grid-cols-[55%_45%] lg:gap-0 md:pb-1">
-        <div class="flex flex-col gap-1.5">
-            <PetSelector v-if="!isMd" />
-            <EventSelector />
+    <main v-else-if="hasPets" class="w-full">
+        <PetSelector v-if="!isMd" class="w-full" />
+        <EventSelector />
+        <div class="flex flex-col gap-1.5 lg:grid lg:grid-cols-[55%_45%] lg:gap-0 md:pb-1">
             <EventList :events="filteredPetHistory" history />
+            <TreatmentList v-if="finishedTreatments" :treatments="finishedTreatments"
+                :title="t('dashboard.title.pastTreatments')" history />
         </div>
-        <TreatmentList v-if="finishedTreatments" :treatments="finishedTreatments"
-            :title="t('dashboard.title.pastTreatments')" history />
     </main>
 </template>
