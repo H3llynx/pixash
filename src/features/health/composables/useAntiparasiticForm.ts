@@ -21,7 +21,8 @@ export const useAntiparasiticForm = () => {
     const error = ref<boolean>(false);
     const newLog = ref<PetEvent | null>(null);
     const today = todayAsInput();
-    const givenAt = computed(() => selectedDate.value && selectedDate.value <= today ? selectedDate.value : today);
+    const givenAt = computed(() => selectedDate.value && selectedDate.value <= today ? selectedDate.value : formData.notGiven ? "" : today);
+    const dueOn = computed(() => selectedDate.value && selectedDate.value > givenAt.value ? selectedDate.value : "");
     const fillLogData = (log: AntiparasiteLogExtended) => {
         Object.assign(formData, {
             treated: [...log.treated],
@@ -108,7 +109,8 @@ export const useAntiparasiticForm = () => {
     watch(() => isAddingHealth.antiparasitic, (adding) => {
         if (adding) {
             formData.givenAt = givenAt.value;
-        }
+            formData.dueOn = dueOn.value
+        };
     });
 
     watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
@@ -143,6 +145,11 @@ export const useAntiparasiticForm = () => {
                     : selectedDate.value || todayAsInput()
         };
     });
+
+    watch(() => selectedDate.value, (date) => {
+        if (date && date > today) formData.notGiven = true;
+        else formData.notGiven = false;
+    })
 
     return { formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error, loading }
 }

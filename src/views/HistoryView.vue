@@ -21,7 +21,7 @@ const { t } = useI18n();
     <Header />
     <HistorySkeleton v-if="loading" />
     <main v-else-if="hasPets" class="lg:grid lg:grid-cols-[55%_45%] lg:gap-0">
-        <div class="flex flex-col gap-1.5">
+        <div class="flex flex-col gap-1.5 md:pb-1">
             <PetSelector v-if="!isMd" />
             <EventSelector />
             <EventList :events="filteredPetHistory" history />
