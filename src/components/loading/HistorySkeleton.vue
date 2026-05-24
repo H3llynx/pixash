@@ -9,10 +9,11 @@ import EventCardSkeleton from './EventCardSkeleton.vue';
         <div class="flex flex-col gap-1.5">
             <!-- Event type switcher chips -->
             <div class="flex gap-0.5">
-                <div class="h-2 w-5 rounded-full bg-grey-light opacity-30"></div>
-                <div class="h-2 w-5 rounded-full bg-grey-light opacity-20"></div>
-                <div class="h-2 w-5 rounded-full bg-grey-light opacity-30"></div>
-                <div class="h-2 w-5 rounded-full bg-grey-light opacity-20"></div>
+                <div class="h-2 w-4 rounded-full bg-grey-light opacity-30"></div>
+                <div class="h-2 w-6 rounded-full bg-grey-light opacity-20"></div>
+                <div class="h-2 w-6 rounded-full bg-grey-light opacity-30"></div>
+                <div class="h-2 w-6.5 rounded-full bg-grey-light opacity-20"></div>
+                <div class="h-2 w-7 rounded-full bg-grey-light opacity-30"></div>
             </div>
             <!-- Upcoming events -->
             <div class="flex flex-col gap-1">
@@ -20,6 +21,7 @@ import EventCardSkeleton from './EventCardSkeleton.vue';
             </div>
         </div>
         <div class="flex flex-col gap-1.5 pb-1 lg:px-1.5 lg:pt-1.5 lg:h-full">
+            <!-- Past treatments -->
             <div class="flex flex-col gap-1 w-full">
                 <div class="h-1 w-7 rounded bg-grey-light opacity-30"></div>
                 <div class="flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 w-full">
