@@ -251,7 +251,8 @@ export default {
             ongoing: "Ongoing treatment",
             started: "Started: ",
             until: "until ",
-            ended: "ended: "
+            ended: "ended: ",
+            summaryLabel: "view log actions"
         },
         medicine: {
             title: "Medicine {index}",

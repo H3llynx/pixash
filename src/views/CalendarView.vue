@@ -16,7 +16,7 @@ import { usePets } from '../features/pets/composables/usePets';
 const { resetPetActions } = usePets();
 const { selectedDate, currentMonth, currentMonthName, filteredCalendarEvents, filteredMonthEvents, petId } = useEvents();
 const { t } = useI18n();
-const { isMd } = useMedia();
+const { isMd, is2xl } = useMedia();
 
 const getTitle = () => {
     const now = new Date().getMonth();
@@ -54,7 +54,7 @@ onBeforeRouteLeave(() => {
         <section
             class="flex flex-col-reverse gap-1.5 h-full lg:flex-col lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
             <div class="flex flex-col gap-1.5 md:mb-1">
-                <EventList :title="getTitle()" :events="filteredMonthEvents" />
+                <EventList :title="getTitle()" :events="filteredMonthEvents" :itemsPerPage="is2xl ? 6 : 4" />
                 <TreatmentsThisMonth />
             </div>
             <CalendarLegend />

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useMedia } from '../../../composables/useMedia.ts';
 import WeightChart from '../../health/components/charts/WeightChart.vue';
 import EventList from '../../health/components/events/EventList.vue';
 import LogWeightModal from '../../health/components/LogWeightModal.vue';
@@ -10,13 +11,14 @@ import { usePets } from '../composables/usePets';
 const { selectedPet } = usePets();
 const { petUpcomingEvents } = useEvents();
 const { t } = useI18n();
+const { is2xl } = useMedia();
 
 const weightLogs = computed(() => selectedPet.value?.logs.filter(log => log.type === "weight") ?? []);
 </script>
 
 <template>
     <section class="flex flex-col gap-1.5 md:mb-3 lg:px-1.5">
-        <EventList :title="t('dashboard.title.upcoming')" :events="petUpcomingEvents" />
+        <EventList :title="t('dashboard.title.upcoming')" :events="petUpcomingEvents" :itemsPerPage="is2xl ? 6 : 4" />
         <WeightChart v-if="selectedPet" :logs="weightLogs" :pet="selectedPet" />
     </section>
     <LogWeightModal v-if="selectedPet" :pet="selectedPet" />

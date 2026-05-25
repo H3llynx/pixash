@@ -441,6 +441,7 @@
 
   .tag {
     display: flex;
+    align-items: center;
     width: max-content;
     padding: 2px 0.5rem;
     border-radius: 10px;
