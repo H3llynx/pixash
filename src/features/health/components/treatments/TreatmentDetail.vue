@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Edit2 } from '@lucide/vue';
+import { Edit2, NotepadText } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
@@ -27,7 +27,6 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
                 <Edit2 :size="15" />
             </Button>
         </div>
-        <p v-if="treatment.notes" class="text-text-secondary">{{ treatment.notes }}</p>
         <div class="text-sm text-text-secondary">
             <div class="text-xs">
                 <span v-if="!treatment.endDate">{{ t("health.treatment.started") }}</span>
@@ -39,7 +38,12 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
             </div>
             <ProgressBar v-if="progress" :progress="progress" :color="color" />
         </div>
-        <div v-for="medication in treatment.medication" class="text-sm flex flex-col mt-0.5">
+        <p v-if="treatment.notes" class="text-sm italic flex gap-0.5 items-center my-0.5">
+            <NotepadText />
+            {{ treatment.notes }}
+        </p>
+        <div v-for="medication in treatment.medication"
+            class="bg-bg-rgba p-0.75 rounded-xl border border-brand-light text-sm flex flex-col mt-0.5">
             <p>{{ medication.name }}</p>
             <p class="italic font-medium text-text-secondary text-xs">{{
                 t(getLabel(medication.frequency,
