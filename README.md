@@ -6,7 +6,7 @@
 
 > Pet care, beautifully organised.
 
-Pixash is a full-stack pet care tracker built with Vue 3 and Firebase. It helps pet owners keep track of vaccines, vet visits and upcoming health events — all in one place.
+Pixash is a full-stack pet care tracker built with Vue 3 and Firebase, designed to help pet owners stay on top of vaccinations, vet visits, medications, treatments, and upcoming health events.
 
 The name comes from my two pets: **Pixie** (a chubby affectionate tabby cat) and **Sasha** (an energetic and extremely friendly mini pitbull). I built it because I actually needed it — no more digging through passport documents to keep track og the vaccines dates.
 
@@ -20,7 +20,7 @@ The name comes from my two pets: **Pixie** (a chubby affectionate tabby cat) and
 - **Tailwind CSS v4** — utility-first styling with custom design tokens
 - **Tailwind Variants** — variant-based component styling
 - **Vue Router** — client-side routing with navigation guards
-- **VueUse** — composable utilities (`useLocalStorage`, `onClickOutside`, `useSwipe`)
+- **VueUse** — composable utilities (`useLocalStorage`, `useFocusTrap`, `onClickOutside`, `useSwipe`...)
 - **Lucide Vue** — icon library
 - **FullCalendar** — calendar component
 - **Vue I18n** - internationalization plugin to make the app multi-languages
@@ -31,7 +31,7 @@ The name comes from my two pets: **Pixie** (a chubby affectionate tabby cat) and
 
 - Google OAuth and email/password authentication
 - Protected routes
-- Pet profiles
+- Pet and vet profiles
 - Vaccine and vet visit tracking
 - Calendar
 - Light / dark mode with system preference detection and manual toggle
@@ -88,22 +88,31 @@ npm run dev
 
 ## Status
 
-Work in progress — actively developed as a portfolio project to deepen Vue 3 knowledge after a React specialisation.
+Work in progress — Currently in active development as both a portfolio project and a real-world application, created to strengthen my Vue 3 skills after specializing in React.
 
 Current progress:
 - [x] Authentication (Google + email/password)
 - [x] Protected routing
-- [x] Pet profile creation
+- [x] Pet profile creation (species, breed, microchip, sterilization...)
 - [x] Vaccine and antiparasitic logs and management
 - [x] Vet visit creation and management
+- [x] Weight monitoring
 - [x] Vet view and management
-- [ IN PROGRESS ] Medical treatment creation and management
-- [ ] History view and management
+- [x] Medical treatment creation and management
+- [x] Custom user and pet profile pictures
+- [IN PROGRESS] Missed medicine tracking
+- [IN PROGRESS] History view per pet and health event
+- [] Lump tracking
+- [] Other logs (feeding, symptoms / observations, grooming appointments)
+- [] Documents upload (insurance policy, medical prescriptions, lab results...)
+- [] Photo timeline
 
 ---
 
 ## About
 
-Built by a junior frontend developer coming from a React specialization, using Pixash as a real-world project to learn Vue 3 deeply — reactivity system, composables, directives, lifecycle hooks and the Vue ecosystem.
+Built by a junior frontend developer transitioning from a React specialization, Pixash was created as a real-world project to gain in-depth experience with Vue 3 — including its reactivity system, composables, directives, lifecycle hooks, and broader ecosystem.
 
-No tutorial was followed. Every feature was built from scratch with a focus on accessibility, clean architecture and production-quality code.
+No tutorials were followed. Every feature was designed and developed from scratch with a strong focus on accessibility, clean architecture, and production-quality code.
+
+And while Vitest handled the unit testing, my cat occasionally stepped in as an unofficial code reviewer. 😸
