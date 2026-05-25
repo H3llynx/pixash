@@ -44,14 +44,12 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
         </p>
         <details v-for="medication in treatment.medication"
             class="bg-bg-rgba rounded-xl border border-border text-sm flex flex-col mt-0.5 overflow-hidden">
-            <summary class="flex items-center justify-between cursor-pointer p-0.75"
+            <summary class="flex flex-wrap items-center justify-between cursor-pointer p-0.75"
                 :aria-label="t('health.treatment.summaryLabel')">
                 <p>{{ medication.name }}</p>
-                <p class="flex gap-1">
-                    <span class="tag bg-bg-3 border border-border text-xs">{{
-                        t(getLabel(medication.frequency, MED_FREQUENCY)) }}</span>
-                    <ChevronDown class="chevron default-transition" />
-                </p>
+                <span class="tag bg-bg-3 border border-border text-xs ml-auto">{{
+                    t(getLabel(medication.frequency, MED_FREQUENCY)) }}</span>
+                <ChevronDown class="chevron default-transition ml-1" />
             </summary>
             <div class="px-0.5 pb-0.75">
                 <ProgressBar v-if="!treatment.endDate && medication.endDate"
