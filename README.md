@@ -102,10 +102,10 @@ Current progress:
 - [x] Custom user and pet profile pictures
 - [IN PROGRESS] Missed medicine tracking
 - [IN PROGRESS] History view per pet and health event
-- [] Lump tracking
-- [] Other logs (feeding, symptoms / observations, grooming appointments)
-- [] Documents upload (insurance policy, medical prescriptions, lab results...)
-- [] Photo timeline
+- [ ] Lump tracking
+- [ ] Other logs (feeding, symptoms / observations, grooming appointments)
+- [ ] Documents upload (insurance policy, medical prescriptions, lab results...)
+- [ ] Photo timeline
 
 ---
 
