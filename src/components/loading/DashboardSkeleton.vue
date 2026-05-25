@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import EventCardSkeleton from './EventCardSkeleton.vue';
+import PetChipsSkeleton from './PetChipsSkeleton.vue';
 </script>
 
 <template>
     <div
         class="animate-pulse overflow-hidden flex-1 flex flex-col gap-1.5 md:pl-18 pb-6.5 md:pb-1 lg:grid lg:grid-cols-[55%_45%] lg:gap-0">
-        <!-- Pet switcher chips -->
-        <div class="flex gap-0.5 md:hidden default-padding">
-            <div class="h-2 w-5 rounded-full bg-grey-light opacity-30"></div>
-            <div class="h-2 w-5 rounded-full bg-grey-light opacity-20"></div>
-        </div>
-
+        <PetChipsSkeleton />
         <div class="flex flex-col gap-1.5 default-padding">
             <!-- Stat row -->
             <div class="flex gap-0.5 md:gap-1 md:h-6">

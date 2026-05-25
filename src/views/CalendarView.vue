@@ -3,6 +3,7 @@ import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { onBeforeRouteLeave } from 'vue-router';
 import Header from '../components/header/Header.vue';
+import PetChipsSkeleton from '../components/loading/PetChipsSkeleton.vue';
 import { useMedia } from '../composables/useMedia';
 import Calendar from '../features/health/components/events/Calendar.vue';
 import CalendarLegend from '../features/health/components/events/CalendarLegend.vue';
@@ -13,7 +14,7 @@ import { useEvents } from '../features/health/composables/useEvents';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 
-const { resetPetActions } = usePets();
+const { resetPetActions, loading } = usePets();
 const { selectedDate, currentMonth, currentMonthName, filteredCalendarEvents, filteredMonthEvents, petId } = useEvents();
 const { t } = useI18n();
 const { isMd, is2xl } = useMedia();
@@ -47,7 +48,10 @@ onBeforeRouteLeave(() => {
     <Header />
     <main class="lg:gap-0 lg:grid lg:grid-cols-[55%_45%] xl:grid-cols-[1fr_35%]">
         <section class="p-0 bg-brand-dark md:bg-bg md:pb-1">
-            <PetSelector v-if="!isMd" calendar v-model:petId="petId" />
+            <template v-if="!isMd">
+                <PetChipsSkeleton v-if="loading" />
+                <PetSelector v-else calendar v-model:petId="petId" />
+            </template>
             <Calendar :events="filteredCalendarEvents" @update-month="currentMonth = $event"
                 @update-monthName="currentMonthName = $event" @date-click="handleDateClick" />
         </section>
