@@ -5,7 +5,6 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FreeModal from '../../../../components/FreeModal.vue';
 import Input from '../../../../components/Input.vue';
-import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import { tsToDate } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';
 import type { PetExtended } from '../../../pets/types';
@@ -21,11 +20,10 @@ const props = defineProps<{
 }>();
 
 const isEditing = defineModel<boolean>();
-const loading = ref<boolean>(false);
 const timeData = ref<string>("");
 
 const handleSubmit = async () => {
-    if (!timeData.value || !props.log) return;
+    if (!timeData.value) return;
     const [hourStr, minuteStr = "0", secondStr = "0"] = timeData.value.split(":");
     const hours = Number(hourStr);
     const minutes = Number(minuteStr);
@@ -38,9 +36,9 @@ const handleSubmit = async () => {
         medicineId: props.medication.id,
         givenAt: Timestamp.fromDate(date)
     };
-    await updateSelectedLog(props.log, props.pet.id, updatedLog);
-    loading.value = false;
     isEditing.value = false;
+    selectLog(null, "medication");
+    await updateSelectedLog(props.log, props.pet.id, updatedLog);
 };
 
 const handleCancel = () => {
@@ -57,8 +55,7 @@ onMounted(() => {
 
 <template>
     <FreeModal v-model="isEditing">
-        <LoadingPuppy v-if="loading" class="max-w-xs" />
-        <form v-else-if="log" class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
+        <form class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
             <h3 class="font-title">When did you give {{ medication.name }} to {{ pet.name }}?</h3>
             <div class="flex gap-0.5">
                 <Input v-model="timeData" type="time" id="medication-time-log" class="text-base" />
@@ -66,7 +63,7 @@ onMounted(() => {
             <Button>{{ t("common.button.confirm") }}</Button>
             <Button type="button" variant="ghost" @click="handleCancel">{{
                 t("common.button.cancel")
-            }}</Button>
+                }}</Button>
         </form>
     </FreeModal>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Edit2, NotepadText } from '@lucide/vue';
+import { ChevronDown, Edit2, NotepadText } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
@@ -42,16 +42,28 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
             <NotepadText />
             {{ treatment.notes }}
         </p>
-        <div v-for="medication in treatment.medication"
-            class="bg-bg-rgba p-0.75 rounded-xl border border-brand-light text-sm flex flex-col mt-0.5">
-            <p>{{ medication.name }}</p>
-            <p class="italic font-medium text-text-secondary text-xs">{{
-                t(getLabel(medication.frequency,
-                    MED_FREQUENCY))
-            }}</p>
-            <ProgressBar v-if="!treatment.endDate && medication.endDate"
-                :progress="getMedicationProgress(treatment, medication)!" :color="color" />
-            <TreatmentLogs :pet="pet" :color="color" :treatment="treatment" :medication="medication" />
-        </div>
+        <details v-for="medication in treatment.medication"
+            class="bg-bg-rgba rounded-xl border border-border text-sm flex flex-col mt-0.5 overflow-hidden">
+            <summary class="flex items-center justify-between cursor-pointer p-0.75"
+                :aria-label="t('health.treatment.summaryLabel')">
+                <p>{{ medication.name }}</p>
+                <p class="flex gap-1">
+                    <span class="tag bg-bg-3 border border-border text-xs">{{
+                        t(getLabel(medication.frequency, MED_FREQUENCY)) }}</span>
+                    <ChevronDown class="chevron default-transition" />
+                </p>
+            </summary>
+            <div class="px-0.5 pb-0.75">
+                <ProgressBar v-if="!treatment.endDate && medication.endDate"
+                    :progress="getMedicationProgress(treatment, medication)!" :color="color" />
+                <TreatmentLogs :pet="pet" :color="color" :treatment="treatment" :medication="medication" />
+            </div>
+        </details>
     </div>
 </template>
+
+<style scoped>
+details[open] summary .chevron {
+    transform: rotate(180deg);
+}
+</style>

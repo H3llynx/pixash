@@ -92,7 +92,7 @@ const editLogTime = async (log: MedicationLogExtended) => {
             }) }}</p>
             <div class="absolute -top-[10px] -right-[5px] flex gap-0.25">
                 <Button :disabled="loading" variant="ghost" size="xxs" :aria-label="t('health.cta.editMedTime')"
-                    @click="editLogTime(log)" class="log-btn hover:bg-green-pale">
+                    @click="editLogTime(log)" v-model="isEditing" class="log-btn hover:bg-green-pale">
                     <Pen :size="13" />
                 </Button>
                 <Button :disabled="loading" variant="ghost" size="xxs" :aria-label="t('health.cta.cancelLog')"
