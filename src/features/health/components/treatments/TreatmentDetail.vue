@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronDown, Edit2, NotepadText } from '@lucide/vue';
+import { ChevronDown, Edit2, MessageCircleWarning, NotepadText } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
@@ -44,14 +44,18 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
         </p>
         <details v-for="medication in treatment.medication"
             class="bg-bg-rgba rounded-xl border border-border text-sm flex flex-col mt-0.5 overflow-hidden">
-            <summary class="flex flex-wrap items-center justify-between cursor-pointer p-0.75"
+            <summary class="flex flex-wrap items-center justify-between cursor-pointer p-0.75 bg-bg-rgba"
                 :aria-label="t('health.treatment.summaryLabel')">
-                <p>{{ medication.name }}</p>
+                <p class="font-medium">{{ medication.name }}</p>
                 <span class="tag bg-bg-3 border border-border text-xs ml-auto">{{
                     t(getLabel(medication.frequency, MED_FREQUENCY)) }}</span>
                 <ChevronDown class="chevron default-transition ml-1" />
             </summary>
             <div class="px-0.5 pb-0.75">
+                <p v-if="medication.instructions"
+                    class="font-light italic flex gap-0.25 items-center my-0.5 p-0.5 rounded-xl">
+                    <MessageCircleWarning :size="20" />{{ medication.instructions }}
+                </p>
                 <ProgressBar v-if="!treatment.endDate && medication.endDate"
                     :progress="getMedicationProgress(treatment, medication)!" :color="color" />
                 <TreatmentLogs :pet="pet" :color="color" :treatment="treatment" :medication="medication" />
@@ -61,7 +65,11 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
 </template>
 
 <style scoped>
-details[open] summary .chevron {
-    transform: rotate(180deg);
+details[open] summary {
+    border-bottom: 1px solid var(--color-separator);
+
+    .chevron {
+        transform: rotate(180deg);
+    }
 }
 </style>

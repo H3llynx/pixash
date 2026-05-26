@@ -4,7 +4,7 @@ export default {
         button: {
             cancel: "Cancel",
             confirm: "Confirm",
-            update: "Update",
+            save: "Save",
             clear: "Clear",
             back: "Back",
             next: "Next",
@@ -142,8 +142,7 @@ export default {
                 nextVaccine: "Edit next vaccine",
             },
             addChip: "Add {name}'s microchip",
-            insured: "Insured?",
-            addInsurance: "Add insurance documentation"
+            insured: "Insured",
         },
         form: {
             name: "Name",
@@ -168,6 +167,12 @@ export default {
             male: "male",
             female: "female",
         },
+        insurance: {
+            company: "Company",
+            policy: "Policy n°",
+            contact: "Phone n°",
+            web: "Website"
+        }
     },
     health: {
         title: {
@@ -334,6 +339,7 @@ export default {
             genericTitle: "Error",
             generic: "An unexpected error occurred",
             errorPicture: "Your picture could not be loaded. Please try again",
+            errorFile: "Your document could not be loaded. Please try again",
         }
     },
     dialog: {

@@ -159,7 +159,6 @@ const addNewPet = async (newPet: Pet) => {
 
 const updateSelectedPet = async (pet: PetExtended, data: Partial<Pet>) => {
   await handlePetAction(async () => {
-    loading.value = true;
     await updatePet(pet.id, user.value!.uid, data);
     const index = pets.value.findIndex(p => p.id === pet.id);
     const updatedPet: PetExtended = {
@@ -168,8 +167,7 @@ const updateSelectedPet = async (pet: PetExtended, data: Partial<Pet>) => {
     };
     pets.value.splice(index, 1, updatedPet);
     selectPet(updatedPet);
-  }, () => loading.value = false
-  );
+  });
 };
 
 const deleteSelectedPet = async (pet: PetExtended) => {
@@ -308,6 +306,6 @@ export const usePets = () => {
     updateSelectedTreatment,
     deleteSelectedTreatment,
     selectTreatment,
-    handleAdd
+    handleAdd,
   };
 };
