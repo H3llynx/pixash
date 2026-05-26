@@ -37,7 +37,7 @@ const handleSubmit = async () => {
             <h2>{{ t('pet.profile.edit.weight', { name: pet.name }) }}</h2>
             <div class="flex gap-0.5">
                 <Input v-model="weightForm.data" type="number" id="first-weight-log"
-                    :step="weightForm.unit === 'kg' ? '0.001' : '1'" ref="weightInputRef" class="text-base" />
+                    :step="weightForm.unit === 'kg' ? '0.001' : '1'" ref="weightInputRef" />
                 <div class="input-container w-max">
                     <select v-model="weightForm.unit">
                         <option>kg</option>
@@ -48,7 +48,7 @@ const handleSubmit = async () => {
             <Button>{{ t("common.button.confirm") }}</Button>
             <Button type="button" variant="ghost" @click="isAddingHealth.weight = false">{{
                 t("common.button.cancel")
-            }}</Button>
+                }}</Button>
         </form>
     </FreeModal>
 </template>

@@ -518,3 +518,9 @@
     }
   }
 }
+
+@media (width < 48rem) {
+  input:not([type="radio"], [type="checkbox"], [type="file"]) {
+    font-size: medium !important;
+  }
+}
