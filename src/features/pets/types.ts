@@ -13,7 +13,8 @@ export type Pet = {
     weight?: number;
     microchip?: string;
     photo?: string;
-    insurance?: string;
+    insured?: boolean;
+    insurance?: Insurance;
 }
 
 export type PetExtended = Pet & {
@@ -27,4 +28,11 @@ export type PetExtended = Pet & {
     nextVaccine?: VaccineExtended;
     nextVetVisit?: VisitExtended;
     nextAntiparasitic?: LogExtended;
+}
+
+export type Insurance = {
+    company: string;
+    policy: string;
+    contact: string;
+    dashboard?: string | null;
 }
