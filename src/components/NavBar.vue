@@ -47,11 +47,12 @@ const route = useRoute();
 .dog {
     position: absolute;
     bottom: 0;
-    width: 100%;
+    width: 110%;
+    left: -5%;
 }
 
 .cat {
-    width: 80%;
+    width: 90%;
 }
 
 nav {
