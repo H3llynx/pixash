@@ -266,6 +266,9 @@
       background: var(--color-brand-light);
     }
 
+    &:has(input[type="file"]) {
+      cursor: pointer;
+    }
   }
 
   input::-webkit-outer-spin-button,
@@ -295,28 +298,6 @@
 
   h3 {
     @apply text-lg font-medium;
-  }
-
-  label:has(input[type="file"]) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem 2rem;
-    border-radius: 0.75rem;
-    background: var(--background-image-card);
-    border: 1px solid var(--color-brand);
-    cursor: pointer;
-
-    &:has(:focus-visible) {
-      outline-width: 2px;
-      outline-style: solid;
-      outline-offset: 1px;
-      outline-color: var(--color-gold);
-    }
-
-    &:hover {
-      background: var(--color-brand-light);
-    }
   }
 }
 

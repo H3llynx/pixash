@@ -10,6 +10,7 @@ import { usePetDetails } from '../composables/usePetDetails';
 import { usePets } from '../composables/usePets';
 import type { PetExtended } from '../types';
 import { getAge, getBreedOptions } from '../utils';
+import InsuranceRow from './InsuranceRow.vue';
 import MicrochipRow from './MicrochipRow.vue';
 import PetIcon from './PetIcon.vue';
 import PetPictureUpdate from './PetPictureUpdate.vue';
@@ -87,6 +88,7 @@ const handleDelete = async () => {
             </div>
         </div>
         <MicrochipRow :pet="pet" />
+        <InsuranceRow :pet="pet" />
     </div>
     <PetPictureUpdate v-model:petPicVisible="isEditingPicture" />
 </template>

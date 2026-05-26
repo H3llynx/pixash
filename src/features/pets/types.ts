@@ -13,6 +13,7 @@ export type Pet = {
     weight?: number;
     microchip?: string;
     photo?: string;
+    insurance?: string;
 }
 
 export type PetExtended = Pet & {

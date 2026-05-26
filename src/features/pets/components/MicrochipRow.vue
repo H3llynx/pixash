@@ -92,9 +92,9 @@ watch(() => clipboardText.value, (clipboard) => {
             <Plus />{{ t("pet.profile.addChip", { name: pet.name }) }}
         </Button>
         <form ref="updateRef" v-if="editing" @submit.prevent="handleSubmit()" class="mini-form flex gap-0.5 font-mono">
-            <Input v-model="chipData" :id="`pet-microchip`" class="text-base" />
+            <Input v-model="chipData" :id="`pet-microchip`" />
             <Button v-if="chipData.length && chipData !== pet.microchip" size="xxs"
-                :aria-label="t('common.button.update')">
+                :aria-label="t('common.button.save')">
                 <Forward :size="15" class="rotate-180" />
             </Button>
             <Button v-else type="button" size="xxs" variant="ghost" @click="editing = false"

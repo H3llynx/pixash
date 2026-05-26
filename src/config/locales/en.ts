@@ -45,7 +45,7 @@ export default {
             history: "History",
             myPets: "My pets"
         },
-        fileInputLabel: "Upload a picture from your device."
+        fileInputLabel: "Upload from your device."
     },
     auth: {
         password: {
@@ -142,6 +142,8 @@ export default {
                 nextVaccine: "Edit next vaccine",
             },
             addChip: "Add {name}'s microchip",
+            insured: "Insured?",
+            addInsurance: "Add insurance documentation"
         },
         form: {
             name: "Name",
