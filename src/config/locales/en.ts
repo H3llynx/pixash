@@ -5,6 +5,7 @@ export default {
             cancel: "Cancel",
             confirm: "Confirm",
             save: "Save",
+            edit: "Edit",
             clear: "Clear",
             back: "Back",
             next: "Next",
