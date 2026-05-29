@@ -171,7 +171,8 @@ export default {
             company: "Company",
             policy: "Policy n°",
             contact: "Phone n°",
-            web: "Website"
+            web: "Website",
+            petInsuranceUploaded: "{name}'s insurance information uploaded",
         }
     },
     health: {

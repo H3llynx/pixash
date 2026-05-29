@@ -43,7 +43,7 @@ const handleSubmit = async () => {
 
 watch(() => props.pet.insured, (insured) => {
     if (insured) isInsured.value = true;
-});
+}, { immediate: true });
 </script>
 
 <template>
