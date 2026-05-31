@@ -14,7 +14,7 @@ export type Pet = {
     microchip?: string;
     photo?: string;
     insured?: boolean;
-    insurance?: Insurance;
+    insurance?: Insurance | null;
 }
 
 export type PetExtended = Pet & {

@@ -29,7 +29,7 @@ const toggleInsurance = async () => {
     loading.value = true;
     try {
         if (isInsured.value && !props.pet.insured) await updateSelectedPet(props.pet, { insured: true });
-        else if (!isInsured.value && props.pet.insured) await updateSelectedPet(props.pet, { insured: false });
+        else if (!isInsured.value && props.pet.insured) await updateSelectedPet(props.pet, { insured: false, insurance: null });
         else return;
     } catch (e) {
         show({ type: "error", title: t("toast.error.genericTitle"), message: error.value || "" });
@@ -66,13 +66,17 @@ watch(() => props.pet.insured, (insured) => {
             {{ t('pet.insurance.update') }}
         </Button>
         <Transition name="toast">
-            <form v-if="isUpdating" class="flex gap-0.5 flex-wrap w-full" @submit.prevent="handleSubmit">
+            <form v-if="isUpdating" class="flex gap-0.5 flex-wrap w-full text-sm" @submit.prevent="handleSubmit">
                 <Input v-model="insuranceData.company" :label="t('pet.insurance.company')" />
                 <Input v-model="insuranceData.policy" :label="t('pet.insurance.policy')" />
                 <Input v-model="insuranceData.contact" type="tel" :label="t('pet.insurance.contact')"
                     :pattern="phonePattern" />
                 <Input v-model="insuranceData.web" type="url" :label="t('pet.insurance.web')" />
-                <Button size="xxs" class="px-1 ml-auto mt-0.5">{{ t('common.button.save') }}</Button>
+                <div class="flex gap-0.5 ml-auto mt-0.5">
+                    <Button type="button" variant="secondary" size="sm" @click="isUpdating = false">{{
+                        t('common.button.cancel') }}</Button>
+                    <Button size="sm">{{ t('common.button.save') }}</Button>
+                </div>
             </form>
         </Transition>
     </div>
