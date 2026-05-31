@@ -169,7 +169,7 @@ export default {
             female: "female",
         },
         insurance: {
-            company: "Company",
+            company: "Insurance company",
             policy: "Policy n°",
             contact: "Phone n°",
             web: "Website",
@@ -334,7 +334,8 @@ export default {
                 treatmentUpdated: "{name}'s {title} successfully updated",
                 eventDeleted: "{name}'s {title} has been successfully deleted",
                 logDeleted: "{type} deleted",
-                markedDone: "All set, this care task has been completed."
+                markedDone: "All set, this care task has been completed.",
+                insuranceUpdated: "{name}'s insurance information successfully updated",
             },
         },
         error: {
