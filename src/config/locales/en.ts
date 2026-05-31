@@ -173,7 +173,7 @@ export default {
             policy: "Policy n°",
             contact: "Phone n°",
             web: "Website",
-            petInsuranceUploaded: "{name}'s insurance information uploaded",
+            update: "Update insurance information",
         }
     },
     health: {

@@ -19,7 +19,7 @@ defineEmits(["update:modelValue"]);
                 : 'toggle-track-md',
             { active: modelValue }
         ]">
-            <input type="checkbox" :id="id" class="sr-only" :checked="modelValue" tabindex="0"
+            <input v-bind="$attrs" type="checkbox" :id="id" class="sr-only" :checked="modelValue" tabindex="0"
                 @change="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)" />
             <div class="toggle-knob"></div>
         </div>
@@ -77,5 +77,10 @@ defineEmits(["update:modelValue"]);
 
 .toggle-track-sm.active .toggle-knob {
     transform: translateX(18px);
+}
+
+label:has(input:disabled) .toggle-track {
+    cursor: not-allowed;
+    opacity: 0.4;
 }
 </style>
