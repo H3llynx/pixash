@@ -34,5 +34,5 @@ export type Insurance = {
     company: string;
     policy: string;
     contact: string;
-    dashboard?: string | null;
+    web?: string;
 }

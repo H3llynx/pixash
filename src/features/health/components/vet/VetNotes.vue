@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CheckCircle, PenLine } from '@lucide/vue';
+import { PenLine, Save, XCircle } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -28,8 +28,7 @@ const toggleNoteEdit = () => {
     if (isUpdatingNotes.value) {
         notesRef.value?.focus();
         notesRef.value?.setSelectionRange(notesData.value.length, notesData.value.length);
-
-    }
+    };
 };
 
 const handleNoteEdit = async () => {
@@ -40,17 +39,20 @@ const handleNoteEdit = async () => {
 
 
 <template>
-
     <div class="relative flex flex-col gap-0.75">
         <Button :variant="isMd ? 'ghost' : 'vetOptions'" size="xs" @click="toggleNoteEdit"
             :aria-label="isUpdatingNotes ? t('vet.cta.saveNotes') : t('vet.cta.notes')" ref="toggleRef"
-            :class="isMd && 'absolute -top-0.5 -right-0.5 rounded-xl bg-transparent'">
-            <CheckCircle v-if="isUpdatingNotes" :size="isMd ? 18 : 24" />
+            :class="isMd && 'absolute bottom-0.25 right-0.5 rounded-xl bg-transparent'">
+            <template v-if="isUpdatingNotes">
+                <Save v-if="notesData !== props.vet.notes" :size="isMd ? 18 : 24" />
+                <XCircle v-else :size="isMd ? 18 : 24" />
+            </template>
             <PenLine v-else :size="isMd ? 15 : 24" />
         </Button>
         <textarea v-model="notesData" :readonly="!isUpdatingNotes" ref="notesRef"
             :placeholder="t('vet.notesPlaceholder')"
-            :class="{ 'italic py-0.5 px-1 border-0 bg-bg md:text-sm': true, 'text-text-secondary': !isUpdatingNotes, 'pr-1.5': isMd }"
-            @change="handleNoteEdit" />
+            :class="{ 'italic py-0.5 px-1 border-0 bg-bg': true, 'text-text-secondary': !isUpdatingNotes, 'pr-1.5': isMd }"
+            @change="handleNoteEdit" :maxlength="500" />
     </div>
+    <span v-if="isUpdatingNotes" class="ml-auto text-xs text-brand-light">{{ notesData.length }}/500</span>
 </template>

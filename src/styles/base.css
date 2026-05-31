@@ -183,7 +183,6 @@
 
     &[readonly] {
       background: var(--color-brand-rgba);
-      pointer-events: none;
 
       &:focus-visible {
         outline: none;
@@ -520,7 +519,9 @@
 }
 
 @media (width < 48rem) {
-  input:not([type="radio"], [type="checkbox"], [type="file"]) {
+
+  input:not([type="radio"], [type="checkbox"], [type="file"]),
+  textarea {
     font-size: medium !important;
   }
 }

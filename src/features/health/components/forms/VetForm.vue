@@ -8,8 +8,10 @@ import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
+import Textarea from '../../../../components/Textarea.vue';
 import { useDialog } from '../../../../composables/useDialog';
 import { useToast } from '../../../../composables/useToast';
+import { phonePattern } from '../../../../config/config.ts';
 import { shallowEqual } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';
 import { getIcon } from '../../../pets/utils';
@@ -161,13 +163,14 @@ watch(() => selectedVet.value,
                     <div class="default-padding flex flex-col gap-1">
                         <label :for="notes.id">
                             <p>{{ t(notes.label) }}</p>
-                            <textarea v-model="formData.notes" :id="notes.id" />
+                            <Textarea v-model="formData.notes" :id="notes.id" :maxLength="500" />
                         </label>
                         <Input v-for="[key, field] in contactFields" v-model="formData[key as keyof typeof formData]"
-                            :key="field.id" :type="field.type" :id="field.id" :label="t(field.label)" />
+                            :key="field.id" :type="field.type" :id="field.id" :label="t(field.label)"
+                            :pattern="field.type === 'tel' ? phonePattern : undefined" />
                         <label :for="hours.id">
                             <p>{{ t(hours.label) }}</p>
-                            <textarea v-model="formData.hours" :id="hours.id" />
+                            <Textarea v-model="formData.hours" :id="hours.id" :maxLength="200" />
                         </label>
                         <Button size="sm" :disabled="vetLoading" class="md:ml-auto">{{ t("health.cta.saveVet",
                             { name: formData.name }) }}

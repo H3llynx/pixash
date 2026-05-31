@@ -8,3 +8,5 @@ export const DB = {
     logs: "logs",
     weightLogs: "weightLogs"
 } as const;
+
+export const phonePattern = "\\+?[\\d\\s]{6,15}";

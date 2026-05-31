@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { Plus, X } from '@lucide/vue';
+import { Plus, Save, X } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
+import { phonePattern } from '../../../../config/config.ts';
 import type { VetExtended } from '../../../health/types';
 import { usePets } from '../../../pets/composables/usePets';
 
@@ -43,9 +44,13 @@ const handleSubmit = async () => {
             <Plus :size="18" />
         </Button>
         <template v-else>
-            <form @submit.prevent="handleSubmit" @keydown.enter.exact="handleSubmit" class="mini-form flex gap-0.5"
-                ref="updateForm">
-                <input v-model=formData :id="`vet-${data}`">
+            <form @submit.prevent="handleSubmit" class="mini-form flex gap-0.5" ref="updateForm">
+                <input v-model=formData :id="`vet-${data}`"
+                    :type="data === 'phone' ? 'tel' : data === 'email' ? 'email' : 'text'"
+                    :pattern="data === 'phone' ? phonePattern : undefined" required />
+                <Button size="xs" variant="summaryCta" :aria-label="t('common.button.save')">
+                    <Save :size="18" />
+                </Button>
             </form>
             <Button size="xs" variant="ghost" @click="isUpdating = false">
                 <X :size="18" color="var(--color-brand-light)" />

@@ -7,6 +7,7 @@ import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
+import Textarea from '../../../../components/Textarea.vue';
 import Toggle from '../../../../components/Toggle.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
 import { dateFromInput, todayAsInput } from '../../../../utils';
@@ -100,11 +101,14 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                             </template>
                         </Input>
                         <VetSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput" />
-                        <label :for="notes.id" v-if="selectedVaccine?.notes || mode === 'edit'">
-                            <p>{{ t(notes.label) }}</p>
-                            <textarea v-model="formData.notes" :id="notes.id"
-                                :readonly="!!selectedVaccine && mode === 'view'" :placeholder="t(notes.placeholder)" />
-                        </label>
+                        <div class="flex flex-col">
+                            <label :for="notes.id" v-if="selectedVaccine?.notes || mode === 'edit'">
+                                <p>{{ t(notes.label) }}</p>
+                                <Textarea v-model="formData.notes" :id="notes.id"
+                                    :readonly="!!selectedVaccine && mode === 'view'" :placeholder="t(notes.placeholder)"
+                                    :maxlength="500" />
+                            </label>
+                        </div>
 
                         <div class="flex gap-1 mt-1 justify-between items-center flex-wrap"
                             v-if="!selectedVaccine || mode === 'edit'">
@@ -121,7 +125,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                                 </p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.sharedFields.dueDate")
-                                    }}:
+                                }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
@@ -132,7 +136,7 @@ watch(() => isAddingHealth.vaccine, (adding) => {
                                     {{ t("common.button.cancel") }}
                                 </Button>
                                 <Button size="sm" :disabled="loading">{{ t("health.cta.saveVaccine")
-                                    }}</Button>
+                                }}</Button>
                             </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"

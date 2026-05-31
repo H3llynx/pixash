@@ -48,12 +48,12 @@ const handleVetUpdate = () => {
 </script>
 
 <template>
-    <div class="card w-full md:w-sm shrink-0">
+    <div class="card w-full md:w-sm shrink-0 text-sm">
         <div class="flex items-start gap-0.5 py-1">
             <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                 <BriefcaseMedical />
             </div>
-            <div class="px-1 text-text-secondary text-sm w-full">
+            <div class="px-1 text-text-secondary w-full">
                 <div class="flex gap-0.5 items-start justify-between">
                     <h1>{{ vet.name }}</h1>
                     <Button variant="ghost" size="xs" :aria-label="t('vet.cta.edit', { name: vet.name })"

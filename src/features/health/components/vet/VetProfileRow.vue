@@ -17,7 +17,11 @@ const props = defineProps<{
 const handleMail = () => {
     if (!props.vet.email) return;
     window.location.href = `mailto:${props.vet.email}`;
-}
+};
+const handleCall = () => {
+    if (!props.vet.phone) return;
+    window.location.href = `tel:${props.vet.phone.replace(/\s/g, "")}`;
+};
 </script>
 
 <template>
@@ -27,12 +31,13 @@ const handleMail = () => {
             <Button v-if="vet[data]" variant="ghost" size="xs" class="truncate" @click="handleMail"
                 :aria-label="t('vet.cta.email', { name: vet.name })">
                 <Mail :size="16" class="shrink-0" />
-                <span :class="{ 'text-sm': isMd, truncate: true }">{{ vet.email }}</span>
+                <span class="truncate">{{ vet.email }}</span>
             </Button>
             <AddVetDetail data="email" :vet="vet" v-else />
         </template>
         <template v-else-if="data === 'phone'">
-            <span v-if="vet.phone" class="text-blue font-medium">{{ vet.phone }}</span>
+            <Button v-if="vet[data]" variant="ghost" size="xs" class="phone-btn" @click="handleCall">{{
+                vet.phone }}</Button>
             <AddVetDetail data="phone" :vet="vet" v-else />
         </template>
         <template v-else-if="data === 'hours'">
@@ -41,3 +46,9 @@ const handleMail = () => {
         </template>
     </div>
 </template>
+
+<style scoped>
+.phone-btn {
+    color: var(--color-blue);
+}
+</style>

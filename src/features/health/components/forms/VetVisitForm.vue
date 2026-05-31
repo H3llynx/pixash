@@ -7,6 +7,7 @@ import Paw from '../../../../components/icons/Paw.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import Panel from '../../../../components/Panel.vue';
+import Textarea from '../../../../components/Textarea.vue';
 import { useFormMode } from '../../../../composables/useFormMode';
 import { tsToDate } from '../../../../utils';
 import PetIcon from '../../../pets/components/PetIcon.vue';
@@ -116,8 +117,9 @@ watch(() => mode.value, (mode) => {
                         <VetSelector :vet="vet" v-model="formData.vet" v-model:vetTextInput="vetTextInput" required />
                         <label :for="notes.id" v-if="selectedVisit?.notes || mode === 'edit'">
                             <p>{{ t(notes.label) }}</p>
-                            <textarea v-model="formData.notes" :id="notes.id"
-                                :readonly="!!selectedVisit && mode === 'view'" :placeholder="t(notes.placeholder)" />
+                            <Textarea v-model="formData.notes" :id="notes.id"
+                                :readonly="!!selectedVisit && mode === 'view'" :placeholder="t(notes.placeholder)"
+                                :maxLength="500" />
                         </label>
                         <div class="flex gap-0.5 mt-1 items-center ml-auto" v-if="!selectedVisit || mode === 'edit'">
                             <Button v-if="selectedVisit && mode === 'edit'" variant="secondary" size="sm" type="button"
@@ -125,7 +127,7 @@ watch(() => mode.value, (mode) => {
                                 {{ t("common.button.cancel") }}
                             </Button>
                             <Button size="sm" :disabled="loading">{{ t("health.cta.saveVisit")
-                            }}
+                                }}
                                 <Paw class="w-1 -rotate-12" />
                             </Button>
                         </div>
