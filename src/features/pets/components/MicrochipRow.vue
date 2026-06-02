@@ -6,6 +6,7 @@ import { nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Input from '../../../components/Input.vue';
+import { useClipboard } from '../../../composables/useClipboard';
 import { useMedia } from '../../../composables/useMedia';
 import { usePetDetails } from '../composables/usePetDetails';
 import { usePets } from '../composables/usePets';
@@ -17,8 +18,8 @@ const { isMd } = useMedia();
 const props = defineProps<{ pet: PetExtended }>();
 const editing = ref<boolean>(false);
 const updateRef = ref<HTMLFormElement>();
-const clipboardText = ref<string | null>(null);
 const { chipData, loading } = usePetDetails(props.pet);
+const { copyToClipboard, clipboardText } = useClipboard();
 
 onClickOutside(updateRef, () => {
     if (editing.value) editing.value = false;
@@ -49,22 +50,11 @@ const handleDelete = async () => {
     editing.value = false;
 };
 
-const copyToClipboard = () => {
-    if (!props.pet.microchip) return;
-    navigator.clipboard.writeText(props.pet.microchip)
-        .then(() => clipboardText.value = t("common.text.copied"))
-        .catch(() => clipboardText.value = t("common.text.errorCopy"))
-};
-
 watch(() => editing.value, async (editing) => {
     if (editing) {
         await nextTick();
         activate();
     } else deactivate();
-});
-
-watch(() => clipboardText.value, (clipboard) => {
-    if (clipboard) setTimeout(() => clipboardText.value = null, 2000)
 });
 </script>
 
@@ -81,7 +71,7 @@ watch(() => clipboardText.value, (clipboard) => {
                 <Button variant="ghost" size="xxs" :aria-label="t('pet.profile.edit.microchip')" @click="startUpdating">
                     <Edit2 v-if="pet.microchip" :size="15" />
                 </Button>
-                <Button size="xxs" :aria-label="t('pet.profile.edit.microchip')" @click="copyToClipboard"
+                <Button size="xxs" :aria-label="t('pet.profile.edit.microchip')" @click="copyToClipboard(pet.microchip)"
                     class="p-[6px]">
                     <Copy v-if="pet.microchip && !clipboardText" :size="15" />
                     <span v-if="clipboardText">{{ clipboardText }}</span>
