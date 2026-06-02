@@ -81,6 +81,7 @@ export const useVaccineForm = () => {
                     title: t("toast.success.title.generic"),
                     message: t("toast.success.message.vaccineAdded", { name: selectedPet.value.name, type: showTypes(typesSnapshot, selectedPet.value) }),
                 });
+                resetForm(formData, defaultForm);
             }
             else if (selectedVaccine.value) {
                 const originalData = {
@@ -98,9 +99,9 @@ export const useVaccineForm = () => {
                         title: t("toast.success.title.generic"),
                         message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showTypes(typesSnapshot, selectedPet.value) }),
                     });
+                    resetForm(formData, defaultForm);
                 }
             };
-            resetForm(formData, defaultForm);
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });

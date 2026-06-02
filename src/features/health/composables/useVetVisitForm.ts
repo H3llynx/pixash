@@ -43,6 +43,7 @@ export const useVetVisitForm = () => {
                     title: t("toast.success.title.generic"),
                     message: t("toast.success.message.visitAdded", { name: selectedPet.value.name, title: titleSnapshot }),
                 });
+                resetForm(formData, defaultForm);
             }
             else if (selectedVisit.value && !shallowEqual(formData,
                 { ...selectedVisit.value, date: tsToDate(selectedVisit.value.date, "datetime") })) {
@@ -52,8 +53,8 @@ export const useVetVisitForm = () => {
                     title: t("toast.success.title.generic"),
                     message: t("toast.success.message.visitUpdated", { name: selectedPet.value.name, title: titleSnapshot }),
                 });
+                resetForm(formData, defaultForm);
             };
-            resetForm(formData, defaultForm);
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });

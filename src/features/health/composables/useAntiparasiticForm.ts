@@ -83,22 +83,24 @@ export const useAntiparasiticForm = () => {
         try {
             if (isAddingHealth.antiparasitic) {
                 const logId = await addNewLog(log, selectedPet.value.id);
-                if (logId) newLog.value = logs.value.find(l => l.id === logId) as AntiparasiteLogExtended ?? null
+                if (logId) newLog.value = logs.value.find(l => l.id === logId) as AntiparasiteLogExtended ?? null;
+                resetForm(formData, defaultForm);
             }
             else if (selectedLog.antiparasitic) {
                 const originalData = {
-                    treated: selectedLog.antiparasitic.treated,
+                    ...selectedLog.antiparasitic,
                     givenAt: tsToDate(selectedLog.antiparasitic.givenAt, "input"),
                     dueOn: tsToDate(selectedLog.antiparasitic.dueOn, "input"),
                     notes: selectedLog.antiparasitic.notes ?? "",
+                    notGiven: selectedLog.antiparasitic.givenAt ? false : true,
                 };
                 if (!shallowEqual(formData, originalData)) {
                     const logId = selectedLog.antiparasitic.id;
                     await updateSelectedLog(selectedLog.antiparasitic, selectedPet.value.id, log);
-                    newLog.value = logs.value.find(l => l.id === logId) as AntiparasiteLogExtended ?? null
+                    newLog.value = logs.value.find(l => l.id === logId) as AntiparasiteLogExtended ?? null;
+                    resetForm(formData, defaultForm);
                 };
             };
-            resetForm(formData, defaultForm);
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
