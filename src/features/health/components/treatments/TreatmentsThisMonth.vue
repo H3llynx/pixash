@@ -39,7 +39,7 @@ const { t } = useI18n();
                         :color="treatment.color" />
                     <span v-else class="inline ml-0.5 float-right tag bg-separator text-text-secondary">{{
                         t("health.treatment.ongoing")
-                    }}</span>
+                        }}</span>
                 </div>
             </Button>
         </div>
@@ -50,5 +50,6 @@ const { t } = useI18n();
 <style scoped>
 button {
     background: var(--color-bg-2);
+    gap: 1rem;
 }
 </style>
