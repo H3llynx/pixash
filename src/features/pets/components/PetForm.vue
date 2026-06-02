@@ -52,7 +52,7 @@ const handleSubmit = async () => {
                 message: t("toast.success.message.nameAdded", { name: formData.name }),
             });
         } else if (selectedPet.value && !shallowEqual(formData, selectedPet.value)) {
-            await updateSelectedPet(selectedPet.value, formData);
+            await updateSelectedPet(selectedPet.value, { ...formData });
             const updated = pets.value.find(pet => pet.id === selectedPet.value!.id);
             if (updated) selectedPet.value = updated;
             show({
@@ -126,7 +126,7 @@ watch(() => formData.species, () => {
                             <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
                                 <option v-for="option in sex.options" :value="option.id" :key="option.id">{{
                                     t(option.label)
-                                }}
+                                    }}
                                 </option>
                             </Dropdown>
                         </div>
