@@ -6,30 +6,30 @@ import Input from '../../../components/Input.vue';
 import Toggle from '../../../components/Toggle.vue';
 import { useToast } from '../../../composables/useToast.ts';
 import { phonePattern } from '../../../config/config.ts';
+import { shallowEqual } from '../../../utils.ts';
 import { usePets } from '../composables/usePets.ts';
-import type { PetExtended } from '../types.ts';
 
-const props = defineProps<{ pet: PetExtended }>();
-
-const { updateSelectedPet, error } = usePets();
+const { updateSelectedPet, error, selectedPet } = usePets();
 const { show } = useToast();
 const { t } = useI18n();
 
 const isInsured = ref<boolean>(false);
 const loading = ref<boolean>(false);
 const isUpdating = ref<boolean>(false);
+
 const insuranceData = reactive({
-    company: props.pet.insurance?.company || "",
-    policy: props.pet.insurance?.policy || "",
-    contact: props.pet.insurance?.contact || "",
-    web: props.pet.insurance?.web || "",
+    company: "",
+    policy: "",
+    contact: "",
+    web: "",
 });
 
 const toggleInsurance = async () => {
+    if (!selectedPet.value) return;
     loading.value = true;
     try {
-        if (isInsured.value && !props.pet.insured) await updateSelectedPet(props.pet, { insured: true });
-        else if (!isInsured.value && props.pet.insured) await updateSelectedPet(props.pet, { insured: false, insurance: null });
+        if (isInsured.value && !selectedPet.value?.insured) await updateSelectedPet(selectedPet.value, { insured: true });
+        else if (!isInsured.value && selectedPet.value?.insured) await updateSelectedPet(selectedPet.value, { insured: false, insurance: null });
         else return;
     } catch (e) {
         show({ type: "error", title: t("toast.error.genericTitle"), message: error.value || "" });
@@ -39,32 +39,40 @@ const toggleInsurance = async () => {
 };
 
 const handleSubmit = async () => {
-    if (insuranceData === props.pet.insurance || Object.values(insuranceData).every(value => value === "")) return;
+    if (!selectedPet.value) return
+    if (selectedPet.value.insurance && shallowEqual(insuranceData, selectedPet.value.insurance)) return;
     try {
         loading.value = true;
-        await updateSelectedPet(props.pet, { insurance: insuranceData });
-        show({ type: "success", title: t("toast.success.title.generic"), message: t("toast.success.message.insuranceUpdated", { name: props.pet.name }) });
+        if (Object.values(insuranceData).every(value => value === "")) await updateSelectedPet(selectedPet.value, { insurance: null });
+        else await updateSelectedPet(selectedPet.value, { insurance: { ...insuranceData } });
+        show({ type: "success", title: t("toast.success.title.generic"), message: t("toast.success.message.insuranceUpdated", { name: selectedPet.value.name }) });
     } catch (e) {
         show({ type: "error", title: t("toast.error.genericTitle"), message: error.value || "" });
     } finally {
         loading.value = false;
         isUpdating.value = false;
-    };
+    }
 };
 
-watch(() => props.pet.insured, (insured) => {
+watch(() => selectedPet.value?.insured, (insured) => {
     if (insured) isInsured.value = true;
+}, { immediate: true });
+
+watch(() => selectedPet.value?.insurance, (insurance) => {
+    if (insurance) Object.assign(insuranceData, insurance);
 }, { immediate: true });
 </script>
 
 <template>
     <div class="flex flex-col items-end gap-1">
-        <Toggle class="w-max text-sm" v-model="isInsured" :label="t('pet.profile.insured')" size="sm"
-            :disabled="loading" @change="toggleInsurance" />
-        <Button v-if="props.pet.insured" variant="ghost" size="xxs" :aria-label="t('pet.profile.insurance.update')"
-            @click="isUpdating = true" :disabled="loading">
-            {{ t('pet.insurance.update') }}
-        </Button>
+        <div class="flex flex-row-reverse items-center gap-0.5">
+            <Toggle class="w-max text-sm" v-model="isInsured" :label="t('pet.profile.labels.insured')" size="sm"
+                :disabled="loading" @change="toggleInsurance" />
+            <Button v-if="selectedPet?.insured" variant="ghost" size="xxs" :aria-label="t('pet.insurance.update')"
+                @click="isUpdating = true" :disabled="loading">
+                {{ t('pet.insurance.update') }}
+            </Button>
+        </div>
         <Transition name="toast">
             <form v-if="isUpdating" class="flex gap-0.5 flex-wrap w-full text-sm" @submit.prevent="handleSubmit">
                 <Input v-model="insuranceData.company" :label="t('pet.insurance.company')" />
@@ -73,9 +81,10 @@ watch(() => props.pet.insured, (insured) => {
                     :pattern="phonePattern" />
                 <Input v-model="insuranceData.web" type="url" :label="t('pet.insurance.web')" />
                 <div class="flex gap-0.5 ml-auto mt-0.5">
-                    <Button type="button" variant="secondary" size="sm" @click="isUpdating = false">{{
-                        t('common.button.cancel') }}</Button>
-                    <Button size="sm">{{ t('common.button.save') }}</Button>
+                    <Button :disabled="loading" type="button" variant="secondary" size="sm"
+                        @click="isUpdating = false">{{
+                            t('common.button.cancel') }}</Button>
+                    <Button size="sm" :disabled="loading">{{ t('common.button.save') }}</Button>
                 </div>
             </form>
         </Transition>

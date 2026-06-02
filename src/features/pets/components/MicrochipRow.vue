@@ -37,7 +37,7 @@ const startUpdating = () => {
 };
 
 const handleSubmit = async () => {
-    if (!chipData.value) return;
+    if (!chipData.value || chipData.value === props.pet.microchip) return;
     loading.value = true;
     await updateSelectedPet(props.pet, { microchipped: true, microchip: chipData.value });
     editing.value = false;

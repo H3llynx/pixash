@@ -134,7 +134,9 @@ export default {
                 microchipped: "Microchipped",
                 microchip: "Microchip",
                 generalInformation: "General information",
-                nextVaccine: "Next vaccine"
+                nextVaccine: "Next vaccine",
+                insurance: "Insurance",
+                insured: "Insured",
             },
             edit: {
                 weight: "Log {name}'s weight",
@@ -143,7 +145,6 @@ export default {
                 nextVaccine: "Edit next vaccine",
             },
             addChip: "Add {name}'s microchip",
-            insured: "Insured",
         },
         form: {
             name: "Name",
@@ -171,9 +172,9 @@ export default {
         insurance: {
             company: "Insurance company",
             policy: "Policy n°",
-            contact: "Phone n°",
+            contact: "Claims line",
             web: "Website",
-            update: "Update insurance information",
+            update: "Insurance details",
         }
     },
     health: {
