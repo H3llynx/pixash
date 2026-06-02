@@ -12,7 +12,7 @@ const text = defineModel<string>();
 
 <template>
     <div class="flex flex-col gap-0.25">
-        <textarea v-model="text" :maxlength="maxLength" />
+        <textarea v-model="text" :maxlength="maxLength" :readonly="readonly" />
         <span v-if="!readonly" class="ml-auto text-brand-light text-xs">{{ (text ?? "").length }}/{{ maxLength }}</span>
     </div>
 </template>
