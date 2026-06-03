@@ -38,29 +38,23 @@ watch(() => props.treatments, () => {
 </script>
 
 <template>
-    <article :class="['pet-section', history && 'default-padding']">
+    <article class="pet-section">
         <h2 v-if="title">{{ title }}</h2>
         <div v-if="loading" class="flex flex-col gap-1">
             <EventCardSkeleton v-for="i in 3" :key="i" />
         </div>
-        <template v-else>
-            <div class="grid grid-cols-1 gap-1 auto-rows-fr">
-                <template v-if="history">
-                    <TreatmentCard v-if="treatments.length" v-for="treatment in paginatedTreatments" :key="treatment.id"
-                        :treatment="treatment" />
-                    <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noPastTreatments",
-                        { name: selectedPet ? selectedPet.name : "Your pet" }) }}
-                    </p>
-                </template>
-                <template v-else>
-                    <TreatmentCard v-if="treatments.length" v-for="treatment in paginatedTreatments" :key="treatment.id"
-                        :treatment="treatment" />
-                    <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noActiveTreatment",
-                        { name: selectedPet?.name }) }}
-                    </p>
-                </template>
-            </div>
-            <div v-if="!history && totalPages > 1" class="flex gap-0.5 h-max justify-end mt-1">
+        <div v-else class="grid grid-cols-1 gap-1">
+            <TreatmentCard v-if="treatments.length" v-for="treatment in paginatedTreatments" :key="treatment.id"
+                :treatment="treatment" />
+            <p v-else-if="!loading && !history" class="text-text-secondary text-sm">{{
+                t("common.text.noActiveTreatment",
+                    { name: selectedPet?.name }) }}
+            </p>
+            <p v-else-if="!loading && history" class="text-text-secondary text-sm">{{
+                t("common.text.noPastTreatments",
+                    { name: selectedPet ? selectedPet.name : "Your pet" }) }}
+            </p>
+            <div v-if="totalPages > 1" class="flex gap-0.5 h-max justify-end mt-1">
                 <Button variant="ghost" size="xs" :disabled="currentPage === 1" @click="goPrev"
                     :aria-label="t('common.button.back')">
                     <ChevronLeft />
@@ -70,6 +64,6 @@ watch(() => props.treatments, () => {
                     <ChevronRight />
                 </Button>
             </div>
-        </template>
+        </div>
     </article>
 </template>

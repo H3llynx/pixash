@@ -43,7 +43,7 @@ defineProps<{ treatment: TreatmentExtended }>();
                     <p>{{ medication.name }}</p>
                     <span class="italic font-medium text-brand text-xs">{{ t(getLabel(medication.frequency,
                         MED_FREQUENCY))
-                    }}</span>
+                        }}</span>
                     <span v-if="medication.endDate" class="italic font-medium text-text-secondary text-xs ml-0.5">
                         <span v-if="route.path === ROUTES.history">{{ t("health.treatment.ended") }}</span>
                         <span v-else>{{ t("health.treatment.until") }}</span>
@@ -56,7 +56,7 @@ defineProps<{ treatment: TreatmentExtended }>();
                     :color="getTreatmentColor(index)" class="w-full my-0.25" />
                 <span v-else class="tag bg-separator text-text-secondary inline float-right">{{
                     t("health.treatment.ongoing")
-                    }}</span>
+                }}</span>
             </template>
         </div>
     </div>
