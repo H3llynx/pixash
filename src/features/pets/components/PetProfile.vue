@@ -50,7 +50,7 @@ const handleDelete = async () => {
 </script>
 
 <template>
-    <div class="card">
+    <div class="card gap-1">
         <div class="flex items-center gap-1">
             <button @click="isEditingPicture = true" :aria-label="t('pet.cta.updatePic', { name: pet.name })"
                 class="group update-pic-btn rounded-full md:overflow-hidden w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center relative">

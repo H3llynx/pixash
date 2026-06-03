@@ -59,7 +59,7 @@ watch(() => editing.value, async (editing) => {
 </script>
 
 <template>
-    <div class="flex gap-0.5 items-center text-sm mt-0.5">
+    <div class="flex gap-0.5 items-center text-sm">
         <template v-if="pet.microchip">
             <div class="rounded-xl w-2 h-2 bg-separator flex shrink-0 justify-center items-center">
                 <Cpu color="var(--color-text-secondary)" />

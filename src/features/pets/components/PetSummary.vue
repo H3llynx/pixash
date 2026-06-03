@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useMedia } from '../../../composables/useMedia';
-import ActiveTreatments from '../../health/components/treatments/ActiveTreatments.vue';
 import { usePets } from '../composables/usePets';
 import InsuranceSection from './InsuranceSection.vue';
 import NextDueSection from './NextDueSection.vue';
@@ -16,7 +15,6 @@ const { isMd } = useMedia();
         <PetSelector v-if="!isMd" />
         <NextDueSection />
         <ProfileSection />
-        <ActiveTreatments />
         <InsuranceSection />
     </div>
 </template>

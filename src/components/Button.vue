@@ -11,6 +11,7 @@ const button = tv({
         variant: {
             primary: "btn-hover-fill bg-brand border border-brand text-bg",
             secondary: "btn-hover-fill border border-brand text-brand bg-bg-rgba",
+            tertiary: "btn-hover-fill rounded-xl text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba border border-border",
             ghost: "btn-hover-fill-ghost rounded-xl text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba",
             addon: "text-text-secondary addon-focus",
             chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary capitalize",

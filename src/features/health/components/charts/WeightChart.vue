@@ -120,7 +120,7 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
         <h2>{{ t("dashboard.title.weightTracking") }}</h2>
         <div class="card w-full text-text" v-if="logs.length">
             <div class="flex gap-1 justify-between items-start">
-                <Button @click="isAddingHealth.weight = true" size="xxs">
+                <Button @click="isAddingHealth.weight = true" variant="tertiary" size="xxs">
                     {{ t("health.cta.logWeight") }}
                 </Button>
                 <div class="ml-auto text-right">

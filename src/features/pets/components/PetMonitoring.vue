@@ -5,6 +5,7 @@ import { useMedia } from '../../../composables/useMedia.ts';
 import WeightChart from '../../health/components/charts/WeightChart.vue';
 import EventList from '../../health/components/events/EventList.vue';
 import LogWeightModal from '../../health/components/LogWeightModal.vue';
+import ActiveTreatments from '../../health/components/treatments/ActiveTreatments.vue';
 import { useEvents } from '../../health/composables/useEvents';
 import { usePets } from '../composables/usePets';
 
@@ -19,6 +20,7 @@ const weightLogs = computed(() => selectedPet.value?.logs.filter(log => log.type
 <template>
     <section class="flex flex-col gap-1.5 md:mb-3 lg:px-1.5">
         <EventList :title="t('dashboard.title.upcoming')" :events="petUpcomingEvents" :itemsPerPage="is2xl ? 6 : 4" />
+        <ActiveTreatments />
         <WeightChart v-if="selectedPet" :logs="weightLogs" :pet="selectedPet" />
     </section>
     <LogWeightModal v-if="selectedPet" :pet="selectedPet" />

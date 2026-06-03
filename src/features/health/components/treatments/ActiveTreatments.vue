@@ -11,7 +11,7 @@ const { activeTreatments } = useEvents();
 </script>
 
 <template>
-    <article class="pet-section default-padding">
+    <article class="pet-section">
         <h2>{{ t("dashboard.title.activeTreatments") }}</h2>
         <div class="grid grid-cols-1 gap-1">
             <TreatmentDetail v-if="activeTreatments.length" v-for="(treatment, index) in activeTreatments"

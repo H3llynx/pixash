@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Pencil } from '@lucide/vue';
 import { reactive, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
@@ -65,11 +66,12 @@ watch(() => selectedPet.value?.insurance, (insurance) => {
 
 <template>
     <div class="flex flex-col items-end gap-1">
-        <div class="flex flex-row-reverse items-center gap-0.5">
+        <div class="flex flex-row-reverse items-center gap-0.75">
             <Toggle class="w-max text-sm" v-model="isInsured" :label="t('pet.profile.labels.insured')" size="sm"
                 :disabled="loading" @change="toggleInsurance" />
-            <Button v-if="selectedPet?.insured" variant="ghost" size="xxs" :aria-label="t('pet.insurance.update')"
+            <Button v-if="selectedPet?.insured" variant="tertiary" size="xxs" :aria-label="t('pet.insurance.update')"
                 @click="isUpdating = true" :disabled="loading">
+                <Pencil :size="14" />
                 {{ t('pet.insurance.update') }}
             </Button>
         </div>
