@@ -11,10 +11,10 @@ const { eventType } = useHistory();
 
 <template>
     <div class="pet-selector">
-        <Button variant="chip" size="sm" @click="eventType = null" :class="{ active: eventType === null }">
+        <Button variant="ghost" size="sm" @click="eventType = null" :class="{ active: eventType === null }">
             <Paw class="w-1 -rotate-20" /> {{ t("common.button.allChip") }}
         </Button>
-        <Button variant="chip" size="sm" v-for="type in EVENT_TYPES" :class="{ active: type.id === eventType }"
+        <Button variant="ghost" size="sm" v-for="type in EVENT_TYPES" :class="{ active: type.id === eventType }"
             @click="eventType = type.id">
             {{ t(type.label) }}
         </Button>
@@ -22,10 +22,37 @@ const { eventType } = useHistory();
 </template>
 
 <style scoped>
+button {
+    background: transparent;
+
+    &:not(.active) {
+        background: transparent;
+    }
+}
+
 .active {
-    background: var(--color-brand);
-    color: var(--color-text-chip);
-    border-color: var(--color-brand);
-    font-weight: 500;
+    position: relative;
+    color: var(--color-brand-light);
+
+    &::after {
+        content: "";
+        position: absolute;
+        animation: apearLeft 0.3s ease forwards;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background: var(--color-brand-light);
+        border-radius: 2rem;
+    }
+}
+
+@keyframes apearLeft {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
 }
 </style>
