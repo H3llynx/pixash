@@ -6,8 +6,7 @@ import Input from '../../../components/Input.vue';
 import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
 import { usePetDetails } from '../../pets/composables/usePetDetails';
 import { usePets } from '../../pets/composables/usePets';
-import type { PetExtended } from '../../pets/types';
-import type { Log } from '../types';
+import type { Log, PetExtended } from '../../pets/types';
 
 const { isAddingHealth, addNewLog } = usePets();
 const { t } = useI18n();
@@ -48,7 +47,7 @@ const handleSubmit = async () => {
             <Button>{{ t("common.button.confirm") }}</Button>
             <Button type="button" variant="ghost" @click="isAddingHealth.weight = false">{{
                 t("common.button.cancel")
-                }}</Button>
+            }}</Button>
         </form>
     </FreeModal>
 </template>

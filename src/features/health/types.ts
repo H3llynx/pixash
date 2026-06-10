@@ -134,11 +134,6 @@ export type MedicationRecord = {
     givenAt?: Timestamp
 };
 
-export type Log =
-    | (AntiparasiteRecord & { type: "antiparasite" })
-    | (WeightRecord & { type: "weight" })
-    | (MedicationRecord & { type: "medication" });
-
 export type AntiparasiteLogExtended = {
     id: string;
     petId: string;
@@ -171,6 +166,4 @@ export type MedicationLogExtended = {
     medicineId: string,
     givenAt: Timestamp,
     type: "medication"
-}
-
-export type LogExtended = AntiparasiteLogExtended | WeightLogExtended | MedicationLogExtended;
+};

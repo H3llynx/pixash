@@ -1,9 +1,9 @@
 import { Timestamp } from "firebase/firestore";
 import { tsToDay } from "../../utils";
 import { SPECIES } from "../pets/config";
-import type { PetExtended } from "../pets/types";
+import type { LogExtended, PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, MED_FREQUENCY, PARASITES, TREATMENTCOLORS, VACCINE_TYPES } from "./config";
-import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, MedicineDb, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
+import type { AntiparasiteLogExtended, AntiparasiteTypes, MedicineDb, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
 
 export const resetForm = <T extends object>(
     formData: T,

@@ -154,7 +154,11 @@ export default {
             sex: "Sex",
             sterilized: "Spayed / neutered",
             microchipped: "Microchipped",
-            placeholderBreed: "Select breed..."
+            placeholderBreed: "Select breed...",
+            logType: "What...",
+            date: "Date",
+            notes: "Notes",
+            notesPlaceholder: "Additional information (optional)",
         },
         species: {
             dog: "Dog",
@@ -175,7 +179,17 @@ export default {
             contact: "Claims line",
             web: "Website",
             update: "Insurance details",
-        }
+        },
+        logs: {
+            feeding: "Feeding",
+            water: "Hydration",
+            cleaning: "Cleaning",
+            behavior: "Behavior",
+            activity: "Activity",
+            grooming: "Grooming",
+            reproduction: "Reproduction",
+            other: "Other",
+        },
     },
     health: {
         title: {

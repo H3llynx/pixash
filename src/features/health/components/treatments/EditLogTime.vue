@@ -7,8 +7,8 @@ import FreeModal from '../../../../components/FreeModal.vue';
 import Input from '../../../../components/Input.vue';
 import { tsToDate } from '../../../../utils';
 import { usePets } from '../../../pets/composables/usePets';
-import type { PetExtended } from '../../../pets/types';
-import type { Log, MedicationLogExtended, MedicineDb } from '../../types';
+import type { Log, PetExtended } from '../../../pets/types';
+import type { MedicationLogExtended, MedicineDb } from '../../types';
 
 const { updateSelectedLog, selectLog } = usePets();
 const { t } = useI18n();
@@ -63,7 +63,7 @@ onMounted(() => {
             <Button>{{ t("common.button.confirm") }}</Button>
             <Button type="button" variant="ghost" @click="handleCancel">{{
                 t("common.button.cancel")
-                }}</Button>
+            }}</Button>
         </form>
     </FreeModal>
 </template>

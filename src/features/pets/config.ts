@@ -9,6 +9,17 @@ export const SPECIES = [
     { id: "amphibian", name: "pet.species.amphibian", hasBreed: false, icon: "🐸", prefersKg: false },
 ] as const;
 
+export const LOG_TYPES = [
+    { id: "feeding", label: "pet.logs.feeding" },
+    { id: "water", label: "pet.logs.water" },
+    { id: "cleaning", label: "pet.logs.cleaning" },
+    { id: "behavior", label: "pet.logs.behavior" },
+    { id: "activity", label: "pet.logs.activity" },
+    { id: "grooming", label: "pet.logs.grooming" },
+    { id: "reproduction", label: "pet.logs.reproduction" },
+    { id: "other", label: "pet.logs.other" },
+] as const;
+
 export const dogBreeds = [
     { label: "Akita", id: "akita" },
     { label: "American Staffordshire Terrier", id: "amstaff" },
@@ -123,3 +134,22 @@ export const petFields = {
         label: "pet.form.microchipped",
     }
 };
+
+export const logFields = {
+    subtype: {
+        label: "pet.form.logType",
+        type: "radio",
+        options: LOG_TYPES,
+    },
+    date: {
+        id: "log-date",
+        label: "pet.form.date",
+        type: "date",
+    },
+    notes: {
+        id: "log-notes",
+        label: "pet.form.notes",
+        type: "text",
+        placeholder: "pet.form.notesPlaceholder"
+    },
+} as const;

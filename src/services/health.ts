@@ -1,8 +1,9 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where, writeBatch } from "firebase/firestore";
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
-import type { AntiparasiteLogExtended, Log, LogExtended, MedicationLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/health/types";
+import type { AntiparasiteLogExtended, MedicationLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/health/types";
 import { getTreatmentEndDate } from "../features/health/utils";
+import type { Log, LogExtended } from "../features/pets/types";
 import { tsFromInput } from "../utils";
 
 export const fetchPetVaccines = async (userId: string, petId: string): Promise<VaccineExtended[]> => {

@@ -1,7 +1,8 @@
-import { describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
-import { useHealth } from '../../features/health/composables/useHealth'
-import type { LogExtended, TreatmentExtended, VaccineExtended, VisitExtended } from '../../features/health/types'
+import { describe, expect, it, vi } from 'vitest';
+import { ref } from 'vue';
+import { useHealth } from '../../features/health/composables/useHealth';
+import type { TreatmentExtended, VaccineExtended, VisitExtended } from '../../features/health/types';
+import type { LogExtended } from '../../features/pets/types';
 import {
     addLog,
     addTreatment,
@@ -17,8 +18,8 @@ import {
     fetchPetVaccines, fetchPetVisits,
     fetchVets,
     updateVaccine
-} from '../../services/health'
-import { createMockAntiparasiteLog, createMockPet, createMockTreatment, createMockVaccine, createMockVaccineRecord, createMockVisit, createMockVisitRecord, mockVet, withSetup } from '../setup'
+} from '../../services/health';
+import { createMockAntiparasiteLog, createMockPet, createMockTreatment, createMockVaccine, createMockVaccineRecord, createMockVisit, createMockVisitRecord, mockVet, withSetup } from '../setup';
 
 const mockRefresh = (
     vaccines: VaccineExtended[] = [],

@@ -1,5 +1,5 @@
 import type { Timestamp } from "firebase/firestore";
-import type { LogExtended, TreatmentExtended, VaccineExtended, VisitExtended } from "../health/types";
+import type { AntiparasiteLogExtended, AntiparasiteRecord, MedicationLogExtended, MedicationRecord, TreatmentExtended, VaccineExtended, VisitExtended, WeightLogExtended, WeightRecord } from "../health/types";
 import type { SPECIES } from "./config";
 
 export type Pet = {
@@ -36,3 +36,27 @@ export type Insurance = {
     contact: string;
     web?: string;
 }
+
+export type Log =
+    | (AntiparasiteRecord & { type: "antiparasite" })
+    | (WeightRecord & { type: "weight" })
+    | (MedicationRecord & { type: "medication" })
+    | {
+        type: "other";
+        subtype: string;
+        date: string;
+        notes?: string;
+    };
+
+export type OtherLogExtended = {
+    id: string;
+    petId: string;
+    userId: string;
+    eventType: "log";
+    ts: Timestamp;
+    type: "other";
+    subtype: string;
+    date: Timestamp;
+    notes?: string;
+};
+export type LogExtended = AntiparasiteLogExtended | WeightLogExtended | MedicationLogExtended | OtherLogExtended;

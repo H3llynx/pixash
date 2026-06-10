@@ -5,8 +5,8 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { useToast } from '../../../../composables/useToast';
 import { usePets } from '../../../pets/composables/usePets';
-import type { PetExtended } from '../../../pets/types';
-import type { Log, LogExtended, MedicationLogExtended, MedicineDb, TreatmentExtended } from '../../types';
+import type { Log, LogExtended, PetExtended } from '../../../pets/types';
+import type { MedicationLogExtended, MedicineDb, TreatmentExtended } from '../../types';
 import { getDailyDose } from '../../utils';
 import EditLogTime from './EditLogTime.vue';
 

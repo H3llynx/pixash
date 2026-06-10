@@ -8,9 +8,10 @@ import { useToast } from '../../../../composables/useToast';
 import { todayAsInput, tsToDate } from '../../../../utils';
 import PetIndicator from '../../../pets/components/PetIndicator.vue';
 import { usePets } from '../../../pets/composables/usePets';
+import type { LogExtended } from '../../../pets/types';
 import { useEvents } from '../../composables/useEvents';
 import type { STAGE } from '../../config';
-import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, PetEvent, VaccineExtended, VaccineRecord, VaccineTypes, VisitExtended } from '../../types';
+import type { AntiparasiteLogExtended, AntiparasiteTypes, PetEvent, VaccineExtended, VaccineRecord, VaccineTypes, VisitExtended } from '../../types';
 import DateTag from './DateTag.vue';
 
 const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, healthError } = usePets();

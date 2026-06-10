@@ -4,8 +4,9 @@ import { useDialog } from "../../../composables/useDialog";
 import { useToast } from "../../../composables/useToast";
 import { resetLogs, shallowEqual, todayAsInput, tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
+import type { Log } from "../../pets/types";
 import { ANTIPARASITE_TYPES } from "../config";
-import type { AntiparasiteLogExtended, AntiparasiteTypes, Log, PetEvent } from "../types";
+import type { AntiparasiteLogExtended, AntiparasiteTypes, PetEvent } from "../types";
 import { getAntiparasites, resetForm } from "../utils";
 import { useEvents } from "./useEvents";
 

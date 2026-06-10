@@ -6,7 +6,7 @@ import { resetLogs, resetState } from "../../../utils";
 import { useHealth } from "../../health/composables/useHealth";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../../health/utils";
 import { useAuth } from "../../user/composables/useAuth";
-import type { Pet, PetExtended } from "../types";
+import type { OtherLogExtended, Pet, PetExtended } from "../types";
 
 const { user } = useAuth();
 
@@ -17,6 +17,8 @@ const error = ref<string | null>(null);
 const hasPets = computed(() => pets.value.length > 0);
 const isAddingPet = ref<boolean>(false);
 const isUpdatingPet = ref<boolean>(false);
+const isAddingLog = ref<boolean>(false);
+const selectedOtherLog = ref<OtherLogExtended | null>(null);
 
 const {
   error: healthError,
@@ -307,5 +309,7 @@ export const usePets = () => {
     deleteSelectedTreatment,
     selectTreatment,
     handleAdd,
+    isAddingLog,
+    selectedOtherLog
   };
 };

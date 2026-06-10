@@ -2,9 +2,9 @@ import { FirebaseError } from "firebase/app";
 import { computed, reactive, ref, type Ref } from "vue";
 import { addLog, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchPetLogs, fetchPetTreatments, fetchPetVaccines, fetchPetVisits, fetchVets, updateLog, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/health";
 import { resetLogs, resetState } from "../../../utils";
-import type { PetExtended } from "../../pets/types";
+import type { Log, LogExtended, PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { AntiparasiteLogExtended, Log, LogExtended, MedicationLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { AntiparasiteLogExtended, MedicationLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
 
 export const useHealth = (pets: Ref<PetExtended[]>) => {
