@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { computed, reactive, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../../../components/Button.vue';
-import Dropdown from '../../../components/Dropdown.vue';
-import Paw from '../../../components/icons/Paw.vue';
-import Input from '../../../components/Input.vue';
-import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
-import Panel from '../../../components/Panel.vue';
-import Toggle from '../../../components/Toggle.vue';
-import { useToast } from '../../../composables/useToast';
-import { shallowEqual } from '../../../utils';
-import { resetForm } from '../../health/utils';
-import { usePets } from '../composables/usePets';
-import { petFields } from '../config';
-import type { Pet } from '../types';
-import { getBreedOptions } from '../utils';
-import BreedSelector from './BreedSelector.vue';
+import Button from '../../../../components/Button.vue';
+import Dropdown from '../../../../components/Dropdown.vue';
+import Paw from '../../../../components/icons/Paw.vue';
+import Input from '../../../../components/Input.vue';
+import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import Panel from '../../../../components/Panel.vue';
+import Toggle from '../../../../components/Toggle.vue';
+import { useToast } from '../../../../composables/useToast.ts';
+import { shallowEqual } from '../../../../utils.ts';
+import { resetForm } from '../../../health/utils.ts';
+import { usePets } from '../../composables/usePets.ts';
+import { petFields } from '../../config.ts';
+import type { Pet } from '../../types.ts';
+import { getBreedOptions } from '../../utils.ts';
+import BreedSelector from '../BreedSelector.vue';
 
 const { name, species, breed, birthDate, sex, sterilized, microchipped } = petFields;
 const { loading, pets, error, isAddingPet, isUpdatingPet, hasPets, addNewPet, selectedPet, updateSelectedPet } = usePets();

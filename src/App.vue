@@ -6,7 +6,7 @@ import AntiparasiticForm from './features/health/components/forms/AntiparasiticF
 import TreatmentForm from './features/health/components/forms/TreatmentForm.vue';
 import VaccineForm from './features/health/components/forms/VaccineForm.vue';
 import VetVisitForm from './features/health/components/forms/VetVisitForm.vue';
-import PetForm from './features/pets/components/PetForm.vue';
+import PetForm from './features/pets/components/forms/PetForm.vue';
 import { useAuth } from './features/user/composables/useAuth';
 import LoadingView from './views/LoadingView.vue';
 
