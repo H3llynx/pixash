@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CalendarCheck, Trash2 } from '@lucide/vue';
-import { reactive, ref, watch } from 'vue';
+import { provide, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
@@ -25,7 +25,9 @@ const { selectedDate } = useEvents();
 const { t } = useI18n();
 const { show } = useToast();
 const { open } = useDialog();
-const { mode } = useFormMode();
+const { mode, isReadonly } = useFormMode();
+provide('readonly', isReadonly);
+
 const { subtype, date, notes } = logFields;
 const loading = ref<boolean>(false);
 const error = ref<boolean>(false);
