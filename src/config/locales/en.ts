@@ -351,7 +351,7 @@ export default {
                 visitUpdated: "{name}'s {title} successfully updated",
                 treatmentAdded: "{name}'s {title} successfully added",
                 treatmentUpdated: "{name}'s {title} successfully updated",
-                logAdded: "{name}'s {subtitle} log successfully added",
+                logAdded: "{name}'s {subtype} log successfully added",
                 eventDeleted: "{name}'s {title} has been successfully deleted",
                 logDeleted: "{type} log deleted",
                 markedDone: "All set, this care task has been completed.",

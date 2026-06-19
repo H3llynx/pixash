@@ -61,7 +61,7 @@ const handleSubmit = async () => {
             show({
                 type: "success",
                 title: t("toast.success.title.generic"),
-                message: t("toast.success.message.logAdded", { name: selectedPet.value.name, type: t(`pet.logs.${formData.subtype}`) }),
+                message: t("toast.success.message.logAdded", { name: selectedPet.value.name, subtype: t(`pet.logs.${formData.subtype}`) }),
             });
             resetForm(formData, defaultForm);
         }
@@ -139,7 +139,7 @@ watch(() => mode.value, (mode) => {
                         subtype:
                             t(`pet.logs.${selectedLog.other!.subtype}`).toLowerCase()
                     })
-                    }}
+                        }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.other" variant="ghost" size="xs"
@@ -178,7 +178,7 @@ watch(() => mode.value, (mode) => {
                                 subtype:
                                     t(`pet.logs.${formData.subtype}`).toLowerCase()
                             })
-                            }}</Button>
+                                }}</Button>
                         </div>
                         <Button v-if="selectedLog.other && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
                             @click="mode = 'edit'">
