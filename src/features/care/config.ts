@@ -47,6 +47,17 @@ export const VET_TYPES = [{ id: "primary", label: "health.vetTypes.primary" }, {
 
 export const EVENT_TYPES = [{ id: "vaccine", label: "events.vaccines" }, { id: "visit", label: "events.visits" }, { id: "weight", label: "events.weightLog" }, { id: "antiparasite", label: "events.antiparasitics" }, { id: "other", label: "events.other" }];
 
+export const LOG_SUBTYPES = [
+    { id: "feeding", label: "pet.logs.feeding" },
+    { id: "water", label: "pet.logs.water" },
+    { id: "cleaning", label: "pet.logs.cleaning" },
+    { id: "behavior", label: "pet.logs.behavior" },
+    { id: "activity", label: "pet.logs.activity" },
+    { id: "grooming", label: "pet.logs.grooming" },
+    { id: "reproduction", label: "pet.logs.reproduction" },
+    { id: "other", label: "pet.logs.other" },
+] as const;
+
 export const MED_FREQUENCY = [
     {
         id: "daily",

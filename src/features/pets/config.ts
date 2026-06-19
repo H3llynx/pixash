@@ -1,3 +1,4 @@
+import { LOG_SUBTYPES } from "../care/config";
 
 export const SPECIES = [
     { id: "dog", name: "pet.species.dog", hasBreed: true, icon: "🐶", prefersKg: true },
@@ -7,17 +8,6 @@ export const SPECIES = [
     { id: "fish", name: "pet.species.fish", hasBreed: false, icon: "🐠", prefersKg: false },
     { id: "reptile", name: "pet.species.reptile", hasBreed: false, icon: "🦎", prefersKg: false },
     { id: "amphibian", name: "pet.species.amphibian", hasBreed: false, icon: "🐸", prefersKg: false },
-] as const;
-
-export const LOG_TYPES = [
-    { id: "feeding", label: "pet.logs.feeding" },
-    { id: "water", label: "pet.logs.water" },
-    { id: "cleaning", label: "pet.logs.cleaning" },
-    { id: "behavior", label: "pet.logs.behavior" },
-    { id: "activity", label: "pet.logs.activity" },
-    { id: "grooming", label: "pet.logs.grooming" },
-    { id: "reproduction", label: "pet.logs.reproduction" },
-    { id: "other", label: "pet.logs.other" },
 ] as const;
 
 export const dogBreeds = [
@@ -139,7 +129,7 @@ export const logFields = {
     subtype: {
         label: "pet.form.logType",
         type: "radio",
-        options: LOG_TYPES,
+        options: LOG_SUBTYPES,
     },
     date: {
         id: "log-date",
