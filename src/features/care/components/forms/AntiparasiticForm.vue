@@ -25,6 +25,7 @@ const today = todayAsInput();
 provide('readonly', isReadonly);
 
 const { treated, notGiven, givenDate, dueDate, notes } = antiparasiteFields;
+
 watch(() => isAddingCare.antiparasitic, (adding) => {
     if (adding) mode.value = "edit";
 });

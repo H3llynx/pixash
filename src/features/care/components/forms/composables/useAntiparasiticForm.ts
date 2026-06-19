@@ -53,7 +53,7 @@ export const useAntiparasiticForm = () => {
         const log = selectedLog.antiparasitic;
         if (!log || !pet) return;
         open({
-            title: t("dialog.deleteLog.title", { type: log.type }),
+            title: t("dialog.deleteLog.titleAntiparasitic"),
             message: t("dialog.deleteLog.message"),
             isDelete: true,
             onConfirm: async () => {
@@ -63,7 +63,7 @@ export const useAntiparasiticForm = () => {
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
-                        message: t("toast.success.message.logDeleted", { type: log.type }),
+                        message: t("toast.success.message.logDeleted"),
                     });
                 } catch (error) {
                     show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
