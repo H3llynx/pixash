@@ -1,6 +1,6 @@
 import { FirebaseError } from "firebase/app";
 import { computed, ref, watch } from "vue";
-import { fetchPetLogs, fetchPetTreatments, fetchPetVaccines, fetchPetVisits } from "../../../services/health";
+import { fetchPetLogs, fetchPetTreatments, fetchPetVaccines, fetchPetVisits } from "../../../services/care";
 import { addPet, deletePet, deletePetField, fetchPets, updatePet } from "../../../services/pets";
 import { resetLogs, resetState } from "../../../utils";
 import { useHealth } from "../../health/composables/useHealth";
@@ -68,6 +68,7 @@ const handleAdd = (action: string) => {
   else if (action === "vet") isAddingHealth.vet = true;
   else if (action === "antiparasitic") isAddingHealth.antiparasitic = true;
   else if (action === "treatment") isAddingHealth.treatment = true;
+  else if (action === "log") isAddingLog.value = true;
   else return;
 }
 

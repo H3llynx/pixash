@@ -116,7 +116,7 @@ vi.mock('../services/pets', () => ({
     deletePetField: vi.fn(),
 }));
 
-vi.mock('../services/health', () => ({
+vi.mock('../services/careq', () => ({
     fetchPetVaccines: vi.fn().mockResolvedValue([]),
     fetchPetVisits: vi.fn().mockResolvedValue([]),
     fetchPetTreatments: vi.fn().mockResolvedValue([]),

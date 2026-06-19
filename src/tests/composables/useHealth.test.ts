@@ -18,7 +18,7 @@ import {
     fetchPetVaccines, fetchPetVisits,
     fetchVets,
     updateVaccine
-} from '../../services/health';
+} from '../../services/care';
 import { createMockAntiparasiteLog, createMockPet, createMockTreatment, createMockVaccine, createMockVaccineRecord, createMockVisit, createMockVisitRecord, mockVet, withSetup } from '../setup';
 
 const mockRefresh = (
@@ -161,7 +161,6 @@ describe("useHealth", () => {
             unmount();
         })
     });
-
 
     describe("vet visits", () => {
         it("addNewVetVisit calls service and refreshes pet", async () => {
