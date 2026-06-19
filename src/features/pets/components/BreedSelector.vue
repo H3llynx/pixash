@@ -2,6 +2,9 @@
 import { onClickOutside, onKeyStroke } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
 import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
     id: string
@@ -12,7 +15,7 @@ const props = defineProps<{
 
 const model = defineModel<string | undefined | null>();
 const dropdownRef = ref<HTMLUListElement>();
-const search = ref(model.value ? props.breeds.find(breed => breed.id === model.value)?.label : "");
+const search = ref<string>("");
 const open = ref(false);
 
 const filtered = computed(() =>
@@ -22,7 +25,7 @@ const filtered = computed(() =>
 );
 
 const handleSelect = (option: { id: string, label: string }) => {
-    search.value = option.label;
+    search.value = t(option.label);
     model.value = option.id;
     open.value = false;
 };
@@ -30,7 +33,7 @@ const handleSelect = (option: { id: string, label: string }) => {
 const handleFocusOut = (e: FocusEvent) => {
     if (dropdownRef.value?.contains(e.relatedTarget as Node)) return;
     const selected = props.breeds.find(breed => breed.id === model.value);
-    search.value = selected?.label ?? "";
+    search.value = selected ? t(selected.label) : "";
     open.value = false;
 };
 
@@ -46,6 +49,17 @@ watch(() => open.value, (open) => {
     if (open) activate();
     else deactivate();
 });
+
+watch(() => model.value, (value) => {
+    if (!value) {
+        search.value = "";
+        return;
+    }
+    const breed = props.breeds.find(b => b.id === value);
+    search.value = breed ? t(breed.label) : "";
+},
+    { immediate: true }
+);
 </script>
 
 <template>
@@ -61,7 +75,7 @@ watch(() => open.value, (open) => {
                     v-for="option in filtered" :key="option.id" :id="option.id"
                     @mousedown.prevent="handleSelect(option)" @touchend.prevent="handleSelect(option)"
                     @keydown.enter="handleSelect(option)">
-                    {{ option.label }}</li>
+                    {{ t(option.label) }}</li>
             </ul>
         </div>
     </label>

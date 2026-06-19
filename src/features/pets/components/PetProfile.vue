@@ -72,7 +72,8 @@ const handleDelete = async () => {
                     </Button>
                 </div>
                 <div class="text-text-secondary text-sm mb-0.5">
-                    <span v-if="pet.breed" class="capitalize">{{ getLabel(pet.breed, getBreedOptions(pet.species)) }} ·
+                    <span v-if="pet.breed" class="capitalize">{{ t(getLabel(pet.breed, getBreedOptions(pet.species))) }}
+                        ·
                     </span>
                     <span>{{ getAge(pet)?.text }} · </span>
                     <span class="capitalize">{{ pet.sex }}</span>

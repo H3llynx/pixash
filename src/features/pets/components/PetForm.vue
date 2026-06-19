@@ -44,6 +44,18 @@ const selectedSpecies = computed(() =>
 );
 const hasBreed = computed(() => selectedSpecies.value?.hasBreed ?? false);
 
+const fillPetData = (pet: Pet) => {
+    Object.assign(formData, {
+        name: pet.name,
+        species: pet.species,
+        breed: pet.breed ?? "",
+        birthDate: pet.birthDate,
+        sex: pet.sex,
+        sterilized: pet.sterilized,
+        microchipped: pet.microchipped
+    })
+};
+
 const handleSubmit = async () => {
     try {
         if (isAddingPet.value) {
@@ -70,7 +82,10 @@ const handleSubmit = async () => {
 
 const handleClose = () => {
     isAddingPet.value = false;
-    isUpdatingPet.value = false;
+    if (isUpdatingPet.value) {
+        fillPetData(selectedPet.value!);
+        isUpdatingPet.value = false;
+    }
 };
 
 watch(existingPet, (pet) => {
@@ -78,19 +93,17 @@ watch(existingPet, (pet) => {
         resetForm(formData, defaultForm);
         return;
     }
-    Object.assign(formData, {
-        name: pet.name,
-        species: pet.species,
-        breed: pet.breed ?? "",
-        birthDate: pet.birthDate,
-        sex: pet.sex,
-        sterilized: pet.sterilized,
-        microchipped: pet.microchipped
-    })
+    fillPetData(pet);
 }, { immediate: true });
 
 watch(() => formData.species, () => {
-    if (!hasBreed.value) formData.breed = null;
+    if (!hasBreed.value) {
+        formData.breed = null;
+    } else {
+        formData.breed = selectedPet.value && selectedPet.value.species === formData.species
+            ? selectedPet.value.breed
+            : "";
+    };
 });
 </script>
 
