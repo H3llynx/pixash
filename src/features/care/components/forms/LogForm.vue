@@ -89,7 +89,7 @@ const handleDelete = () => {
     const log = selectedLog.other;
     if (!log || !pet) return;
     open({
-        title: t("dialog.deleteLog.title", { type: log.type }),
+        title: t("dialog.deleteLog.title", { subtype: t(`pet.logs.${selectedLog.other!.subtype}`) }),
         message: t("dialog.deleteLog.message"),
         isDelete: true,
         onConfirm: async () => {
@@ -99,7 +99,7 @@ const handleDelete = () => {
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.logDeleted", { type: log.type }),
+                    message: t("toast.success.message.logDeleted"),
                 });
             } catch (error) {
                 show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
@@ -134,12 +134,12 @@ watch(() => mode.value, (mode) => {
                         class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
                         <PetIcon :pet="selectedPet" />
                     </div>
-                    <h1 v-if="mode === 'edit'">{{ t("pet.title.addLog") }}</h1>
-                    <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("pet.title.editLog", {
+                    <h1 v-if="mode === 'edit'">{{ t("pet.title.log") }}</h1>
+                    <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("pet.title.otherLog", {
                         subtype:
-                            t(`pet.logs.${selectedLog.other!.subtype}`).toLowerCase()
+                            t(`pet.logs.${selectedLog.other!.subtype}`)
                     })
-                        }}
+                    }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.other" variant="ghost" size="xs"
@@ -151,7 +151,7 @@ watch(() => mode.value, (mode) => {
                 </div>
                 <PetSelector v-if="isAddingCare.other" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">
-                    <Selector :legend="t(subtype.label)" class="mb-0.5">
+                    <Selector v-if="mode === 'edit'" :legend="t(subtype.label)" class="mb-0.5">
                         <Input v-model="formData.subtype" v-for="option in subtype.options" :id="option.id"
                             :value="option.id" :key="option.id" :label="t(option.label)" :type="subtype.type" />
                     </Selector>
@@ -178,7 +178,7 @@ watch(() => mode.value, (mode) => {
                                 subtype:
                                     t(`pet.logs.${formData.subtype}`).toLowerCase()
                             })
-                                }}</Button>
+                            }}</Button>
                         </div>
                         <Button v-if="selectedLog.other && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
                             @click="mode = 'edit'">
