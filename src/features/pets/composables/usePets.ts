@@ -3,10 +3,10 @@ import { computed, ref, watch } from "vue";
 import { fetchPetLogs, fetchPetTreatments, fetchPetVaccines, fetchPetVisits } from "../../../services/care";
 import { addPet, deletePet, deletePetField, fetchPets, updatePet } from "../../../services/pets";
 import { resetLogs, resetState } from "../../../utils";
-import { useHealth } from "../../health/composables/useHealth";
-import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../../health/utils";
+import { useCare } from "../../care/composables/useCare";
+import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../../care/utils";
 import { useAuth } from "../../user/composables/useAuth";
-import type { OtherLogExtended, Pet, PetExtended } from "../types";
+import type { Pet, PetExtended } from "../types";
 
 const { user } = useAuth();
 
@@ -18,13 +18,12 @@ const hasPets = computed(() => pets.value.length > 0);
 const isAddingPet = ref<boolean>(false);
 const isUpdatingPet = ref<boolean>(false);
 const isAddingLog = ref<boolean>(false);
-const selectedOtherLog = ref<OtherLogExtended | null>(null);
 
 const {
   error: healthError,
   loading: healthLoading,
   vetLoading,
-  isAddingHealth,
+  isAddingCare,
   vaccines,
   vetVisits,
   selectedVaccine,
@@ -56,19 +55,19 @@ const {
   updateSelectedTreatment,
   deleteSelectedTreatment,
   selectTreatment
-} = useHealth(pets);
+} = useCare(pets);
 
 const hasVets = computed(() => vets.value.length > 0);
 
 const handleAdd = (action: string) => {
   resetPetActions();
-  if (action === "vaccine") isAddingHealth.vaccine = true;
+  if (action === "vaccine") isAddingCare.vaccine = true;
   else if (action === "pet") isAddingPet.value = true;
-  else if (action === "visit") isAddingHealth.visit = true;
-  else if (action === "vet") isAddingHealth.vet = true;
-  else if (action === "antiparasitic") isAddingHealth.antiparasitic = true;
-  else if (action === "treatment") isAddingHealth.treatment = true;
-  else if (action === "log") isAddingLog.value = true;
+  else if (action === "visit") isAddingCare.visit = true;
+  else if (action === "vet") isAddingCare.vet = true;
+  else if (action === "antiparasitic") isAddingCare.antiparasitic = true;
+  else if (action === "treatment") isAddingCare.treatment = true;
+  else if (action === "log") isAddingCare.other = true;
   else return;
 }
 
@@ -85,7 +84,7 @@ const selectPet = (pet: PetExtended | null) => {
 const resetPetActions = () => {
   isAddingPet.value = false;
   isUpdatingPet.value = false;
-  resetState(isAddingHealth);
+  resetState(isAddingCare);
   resetLogs(selectedLog);
   selectVaccine(null);
   selectVisit(null);
@@ -217,7 +216,7 @@ watch(
 
 watch(isAddingPet, (adding) => {
   if (adding) {
-    resetState(isAddingHealth);
+    resetState(isAddingCare);
     resetLogs(selectedLog);
     isUpdatingPet.value = false;
     selectVaccine(null);
@@ -227,7 +226,7 @@ watch(isAddingPet, (adding) => {
 
 watch(isUpdatingPet, (editing) => {
   if (editing) {
-    resetState(isAddingHealth);
+    resetState(isAddingCare);
     resetLogs(selectedLog);
     isAddingPet.value = false;
     selectVaccine(null);
@@ -281,7 +280,7 @@ export const usePets = () => {
     selectedVaccine,
     selectVaccine,
     selectLog,
-    isAddingHealth,
+    isAddingCare,
     addNewVaccine,
     updateSelectedVaccine,
     deleteSelectedVaccine,
@@ -311,6 +310,5 @@ export const usePets = () => {
     selectTreatment,
     handleAdd,
     isAddingLog,
-    selectedOtherLog
   };
 };

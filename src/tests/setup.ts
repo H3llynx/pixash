@@ -1,7 +1,7 @@
 import { Timestamp } from 'firebase/firestore'
 import { vi } from 'vitest'
 import { createApp, ref } from 'vue'
-import type { AntiparasiteLogExtended, TreatmentExtended, VaccineExtended, VaccineRecord, VisitExtended, VisitRecord } from '../features/health/types'
+import type { AntiparasiteLogExtended, TreatmentExtended, VaccineExtended, VaccineRecord, VisitExtended, VisitRecord } from '../features/care/types'
 import type { PetExtended } from '../features/pets/types'
 
 
@@ -116,7 +116,7 @@ vi.mock('../services/pets', () => ({
     deletePetField: vi.fn(),
 }));
 
-vi.mock('../services/careq', () => ({
+vi.mock('../services/care', () => ({
     fetchPetVaccines: vi.fn().mockResolvedValue([]),
     fetchPetVisits: vi.fn().mockResolvedValue([]),
     fetchPetTreatments: vi.fn().mockResolvedValue([]),

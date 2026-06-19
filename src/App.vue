@@ -2,11 +2,12 @@
 import Dialog from './components/Dialog.vue';
 import NavBar from './components/NavBar.vue';
 import Toast from './components/Toast.vue';
-import AntiparasiticForm from './features/health/components/forms/AntiparasiticForm.vue';
-import TreatmentForm from './features/health/components/forms/TreatmentForm.vue';
-import VaccineForm from './features/health/components/forms/VaccineForm.vue';
-import VetVisitForm from './features/health/components/forms/VetVisitForm.vue';
-import PetForm from './features/pets/components/forms/PetForm.vue';
+import AntiparasiticForm from './features/care/components/forms/AntiparasiticForm.vue';
+import LogForm from './features/care/components/forms/LogForm.vue';
+import TreatmentForm from './features/care/components/forms/TreatmentForm.vue';
+import VaccineForm from './features/care/components/forms/VaccineForm.vue';
+import VetVisitForm from './features/care/components/forms/VetVisitForm.vue';
+import PetForm from './features/pets/components/PetForm.vue';
 import { useAuth } from './features/user/composables/useAuth';
 import LoadingView from './views/LoadingView.vue';
 
@@ -21,6 +22,7 @@ const { loading, user } = useAuth();
   <VetVisitForm />
   <TreatmentForm />
   <AntiparasiticForm />
+  <LogForm />
   <PetForm />
   <Toast />
   <Dialog />

@@ -1,0 +1,68 @@
+<script setup lang="ts">
+import { Plus, Save, X } from '@lucide/vue';
+import { onClickOutside } from '@vueuse/core';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import Button from '../../../../components/Button.vue';
+import { phonePattern } from '../../../../config/config.ts';
+import { usePets } from '../../../pets/composables/usePets.ts';
+import type { VetExtended } from '../../types.ts';
+
+const { updateSelectedVet } = usePets();
+const { t } = useI18n();
+
+const props = defineProps<{
+    vet: VetExtended
+    data: "phone" | "email" | "hours"
+}>();
+
+const updateForm = ref<HTMLFormElement>();
+const formData = ref<string>();
+const isUpdating = ref<boolean>(false);
+
+onClickOutside(updateForm, () => {
+    if (isUpdating.value) {
+        isUpdating.value = false;
+    }
+});
+
+const startUpdating = () => {
+    isUpdating.value = true;
+};
+
+const handleSubmit = async () => {
+    if (!formData) return;
+    const update = { [props.data]: formData.value }
+    await updateSelectedVet(props.vet, update);
+};
+</script>
+
+<template>
+    <div class="flex h-2 gap-[3px]">
+        <Button v-if="!isUpdating" @click="startUpdating" variant="summaryCta" size="xxs"
+            :aria-label="t('vet.addProfileLabel.' + data)">
+            <Plus :size="18" />
+        </Button>
+        <template v-else>
+            <form @submit.prevent="handleSubmit" class="mini-form flex gap-0.5" ref="updateForm">
+                <input v-model=formData :id="`vet-${data}`"
+                    :type="data === 'phone' ? 'tel' : data === 'email' ? 'email' : 'text'"
+                    :pattern="data === 'phone' ? phonePattern : undefined" required />
+                <Button size="xs" variant="summaryCta" :aria-label="t('common.button.save')">
+                    <Save :size="18" />
+                </Button>
+            </form>
+            <Button size="xs" variant="ghost" @click="isUpdating = false">
+                <X :size="18" color="var(--color-brand-light)" />
+            </Button>
+        </template>
+    </div>
+</template>
+
+<style scoped>
+input {
+    border-radius: 0.5rem;
+    padding: 5px 0.5rem;
+    font-weight: 500;
+}
+</style>

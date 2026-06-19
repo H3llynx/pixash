@@ -1,4 +1,4 @@
-import { STAGE } from "../health/config";
+import { STAGE } from "../care/config";
 import { catBreeds, dogBreeds, SPECIES } from "./config";
 import type { Pet } from "./types";
 

@@ -2,8 +2,8 @@
 import { Plus } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
-import HealthCard from '../../health/components/events/HealthCard.vue';
-import type { PetEvent } from '../../health/types';
+import HealthCard from '../../care/components/events/HealthCard.vue';
+import type { PetEvent } from '../../care/types.ts';
 import { usePets } from '../composables/usePets';
 
 const { selectedPet, handleAdd } = usePets();

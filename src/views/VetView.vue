@@ -5,10 +5,10 @@ import AddButton from '../components/AddButton.vue';
 import Header from '../components/header/Header.vue';
 import VetSkeleton from '../components/loading/VetSkeleton.vue';
 import { useMedia } from '../composables/useMedia';
-import VetForm from '../features/health/components/forms/VetForm.vue';
-import TreatmentList from '../features/health/components/treatments/TreatmentList.vue';
-import VetSummary from '../features/health/components/vet/VetSummary.vue';
-import { useEvents } from '../features/health/composables/useEvents';
+import VetForm from '../features/care/components/forms/VetForm.vue';
+import TreatmentList from '../features/care/components/treatments/TreatmentList.vue';
+import VetSummary from '../features/care/components/vet/VetSummary.vue';
+import { useEvents } from '../features/care/composables/useEvents.ts';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 

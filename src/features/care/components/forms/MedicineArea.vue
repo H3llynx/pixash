@@ -1,0 +1,29 @@
+<script setup lang="ts">
+import { X } from '@lucide/vue';
+import { inject, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import Button from '../../../../components/Button.vue';
+import type { Medicine } from '../../types.ts';
+import { useTreatmentForm } from './composables/useTreatmentForm.ts';
+import MedicineBox from './MedicineBox.vue';
+
+const { t } = useI18n();
+const { addMedicine } = useTreatmentForm();
+const readonly = inject("readonly", ref(false));
+const medicineList = defineModel<Medicine[]>();
+</script>
+
+<template>
+    <div v-if="medicineList?.length" v-for="(med, index) in medicineList" :key="med.id" class="relative">
+        <MedicineBox :index="index + 1" v-model="medicineList[index]" />
+        <Button v-if="medicineList?.length > 1 && !readonly" variant="ghost" size="xs"
+            @click="medicineList = medicineList.filter((_m, i) => i !== index)"
+            class="absolute top-px right-px bg-transparent" :aria-label="t('health.medicine.delete')">
+            <X color="var(--color-border)" />
+        </Button>
+    </div>
+    <Button v-if="!readonly" type="button" variant="add"
+        @click="medicineList = medicineList ? [...medicineList, addMedicine()] : [addMedicine()]">{{
+            t("health.medicine.cta")
+        }}</Button>
+</template>

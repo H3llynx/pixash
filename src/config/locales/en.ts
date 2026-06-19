@@ -117,12 +117,16 @@ export default {
             addFirstPet: "Your pet care starts here",
             addPet: "Add a pet",
             editPet: "Edit {name}",
+            addLog: "Add a log",
+            editLog: "Edit {subtype} log",
         },
         addFirstPet: "You haven't added any pets yet.",
         cta: {
             save: "Save {name}",
             delete: "Delete {name}",
-            updatePic: "Update {name}'s picture"
+            updatePic: "Update {name}'s picture",
+            saveLog: "Save {subtype} log",
+            deleteLog: "Delete {subtype} log",
         },
         profile: {
             labels: {
@@ -347,8 +351,9 @@ export default {
                 visitUpdated: "{name}'s {title} successfully updated",
                 treatmentAdded: "{name}'s {title} successfully added",
                 treatmentUpdated: "{name}'s {title} successfully updated",
+                logAdded: "{name}'s {subtitle} log successfully added",
                 eventDeleted: "{name}'s {title} has been successfully deleted",
-                logDeleted: "{type} deleted",
+                logDeleted: "{type} log deleted",
                 markedDone: "All set, this care task has been completed.",
                 insuranceUpdated: "{name}'s insurance information successfully updated",
             },

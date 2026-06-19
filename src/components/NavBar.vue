@@ -6,7 +6,7 @@ import { RouterLink, useRoute } from 'vue-router';
 import happyDog from '../assets/animations/happy-dog.json';
 import kitty from '../assets/animations/kitty.json';
 import { useMedia } from '../composables/useMedia';
-import { useEvents } from '../features/health/composables/useEvents';
+import { useEvents } from '../features/care/composables/useEvents.ts';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 import { ROUTES } from '../router/config';

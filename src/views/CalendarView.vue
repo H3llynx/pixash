@@ -5,12 +5,12 @@ import { onBeforeRouteLeave } from 'vue-router';
 import Header from '../components/header/Header.vue';
 import PetChipsSkeleton from '../components/loading/PetChipsSkeleton.vue';
 import { useMedia } from '../composables/useMedia';
-import Calendar from '../features/health/components/events/Calendar.vue';
-import CalendarLegend from '../features/health/components/events/CalendarLegend.vue';
-import EventList from '../features/health/components/events/EventList.vue';
-import EventMenu from '../features/health/components/events/EventMenu.vue';
-import TreatmentsThisMonth from '../features/health/components/treatments/TreatmentsThisMonth.vue';
-import { useEvents } from '../features/health/composables/useEvents';
+import Calendar from '../features/care/components/events/Calendar.vue';
+import CalendarLegend from '../features/care/components/events/CalendarLegend.vue';
+import EventList from '../features/care/components/events/EventList.vue';
+import EventMenu from '../features/care/components/events/EventMenu.vue';
+import TreatmentsThisMonth from '../features/care/components/treatments/TreatmentsThisMonth.vue';
+import { useEvents } from '../features/care/composables/useEvents.ts';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 

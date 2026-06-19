@@ -3,10 +3,10 @@ import { useI18n } from 'vue-i18n';
 import Header from '../components/header/Header.vue';
 import HistorySkeleton from '../components/loading/HistorySkeleton.vue';
 import { useMedia } from '../composables/useMedia';
-import EventList from '../features/health/components/events/EventList.vue';
-import EventSelector from '../features/health/components/events/EventSelector.vue';
-import TreatmentList from '../features/health/components/treatments/TreatmentList.vue';
-import { useHistory } from '../features/health/composables/useHistory';
+import EventList from '../features/care/components/events/EventList.vue';
+import EventSelector from '../features/care/components/events/EventSelector.vue';
+import TreatmentList from '../features/care/components/treatments/TreatmentList.vue';
+import { useHistory } from '../features/care/composables/useHistory.ts';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 
