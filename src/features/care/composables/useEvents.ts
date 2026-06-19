@@ -45,12 +45,12 @@ export const useEvents = () => {
             .flatMap(log => {
                 const events = [];
                 if (log.givenAt) events.push({
-                    title: `🐛 ${log.type}`,
+                    title: `🐛 ${t("events.antiparasitics")}`,
                     date: tsToDate(log.givenAt, "input"),
                     event: log,
                 });
                 if (log.dueOn) events.push({
-                    title: `🐛 ${log.type}`,
+                    title: `🐛 ${t("events.antiparasitics")}`,
                     date: tsToDate(log.dueOn, "input"),
                     event: log,
                 });
@@ -60,7 +60,7 @@ export const useEvents = () => {
             .filter(log => isForSpecificPet(log.petId))
             .filter(log => log.type === "other")
             .map(log => ({
-                title: `📝 ${log.subtype}`,
+                title: `📝 ${t(`pet.logs.${log.subtype}`)}`,
                 date: tsToDate(log.date, "input"),
                 event: log
             })),

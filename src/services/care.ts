@@ -390,7 +390,7 @@ export const updateLog = async (
             type: log.type,
             subtype: log.subtype,
             notes: log.notes,
-            date: log.date
+            date: tsFromInput(log.date)
         };
     else {
         throw new Error("Unsupported log type");

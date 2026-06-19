@@ -117,8 +117,8 @@ export default {
             addFirstPet: "Your pet care starts here",
             addPet: "Add a pet",
             editPet: "Edit {name}",
-            addLog: "Add a log",
-            editLog: "Edit {subtype} log",
+            log: "Log care",
+            otherLog: "{subtype} log",
         },
         addFirstPet: "You haven't added any pets yet.",
         cta: {
@@ -327,6 +327,7 @@ export default {
         visits: "Vet visits",
         vaccines: "Vaccines",
         antiparasitics: "Antiparasitics",
+        other: "Other events",
         weightLog: "Weight log"
     },
     toast: {
@@ -353,7 +354,7 @@ export default {
                 treatmentUpdated: "{name}'s {title} successfully updated",
                 logAdded: "{name}'s {subtype} log successfully added",
                 eventDeleted: "{name}'s {title} has been successfully deleted",
-                logDeleted: "{type} log deleted",
+                logDeleted: "log deleted",
                 markedDone: "All set, this care task has been completed.",
                 insuranceUpdated: "{name}'s insurance information successfully updated",
             },
@@ -379,7 +380,8 @@ export default {
             message: "This will remove {name}'s contact information. This action cannot be undone. Are you sure you'd like to proceed?",
         },
         deleteLog: {
-            title: "Delete {type} ?",
+            title: "Delete {subtype} log?",
+            titleAntiparasitic: "Delete antiparasitic?",
             message: "This action cannot be undone. Are you sure you'd like to proceed?",
         },
         deletePicture: {

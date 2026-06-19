@@ -58,7 +58,7 @@ const calendarOptions = computed(() => ({
             if (info.event.extendedProps.event.type === "antiparasite")
                 selectLog(info.event.extendedProps.event, "antiparasitic");
             else selectLog(info.event.extendedProps.event, "other");
-        }
+        };
     }
 }));
 </script>
