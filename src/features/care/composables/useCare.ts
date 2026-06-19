@@ -87,6 +87,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
             } else {
                 error.value = "An unexpected error occurred";
             }
+            console.error(e)
             throw e;
         } finally {
             if (onFinal) onFinal();
