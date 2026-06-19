@@ -4,7 +4,7 @@ import { tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import { getIcon } from "../../pets/utils";
 import { type PetEvent } from "../types";
-import { checkOverlapsMonth, getLogTs, getTreatmentBackground, getTreatmentColor, showTypes } from "../utils";
+import { checkOverlapsMonth, getTreatmentBackground, getTreatmentColor, showTypes } from "../utils";
 
 const selectedDate = ref<string | null>(null);
 const currentMonth = ref<Date>(new Date());
@@ -12,29 +12,8 @@ const currentMonthName = ref<string>("");
 const petId = ref<string>("");
 
 export const useEvents = () => {
-    const { vaccines, pets, vetVisits, treatments, logs, vets, selectedPet } = usePets();
+    const { vaccines, pets, vetVisits, treatments, logs, vets, selectedPet, isForSpecificPet } = usePets();
     const { t } = useI18n();
-
-    const isForSpecificPet = (petId: string) => pets.value.some(pet => pet.id === petId)
-
-    const history = computed(() => [
-        ...vaccines.value
-            .filter(vaccine => isForSpecificPet(vaccine.petId))
-            .filter(vaccine => vaccine.givenAt && vaccine.givenAt.toDate() <= new Date())
-            .map(vaccine => ({ ...vaccine, ts: vaccine.givenAt! })),
-        ...vetVisits.value
-            .filter(visit => isForSpecificPet(visit.petId))
-            .filter(visit => visit.date?.toDate() <= new Date())
-            .map(visit => ({ ...visit, ts: visit.date })),
-        ...logs.value
-            .filter(log => isForSpecificPet(log.petId))
-            .filter(log => {
-                if (log.type === "antiparasite") return log.givenAt && log.givenAt.toDate() <= new Date();
-                else if (log.type === "weight") return log.measuredAt && log.measuredAt.toDate() <= new Date();
-                else return;
-            })
-            .map(log => ({ ...log, ts: getLogTs(log) })),
-    ].sort((a, b) => b.ts!.seconds - a.ts!.seconds));
 
     const calendarEvents = computed(() => [
         ...vaccines.value
@@ -144,7 +123,8 @@ export const useEvents = () => {
             if (e.eventType === "vaccine" && e.types && pet.value) return showTypes(e.types, pet.value);
             if (e.eventType === "visit") return e.title;
             if (e.type === "weight") return t("events.weightLog");
-            return t("events.antiparasitics");
+            if (e.type === "antiparasite") return t("events.antiparasitics")
+            return t(`pet.logs.${e.subtype}`);
         });
         return { pet, vet, title };
     };
@@ -188,7 +168,6 @@ export const useEvents = () => {
         petId,
         petUpcomingEvents,
         useEventData,
-        history,
         filteredMonthTreatments,
         activeTreatments
     }

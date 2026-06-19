@@ -75,6 +75,7 @@ export const getCurrentWeight = (logs: LogExtended[]) => {
 export const getLogTs = (log: LogExtended) => {
     if (log.type === "antiparasite") return log.dueOn ?? log.givenAt!;
     else if (log.type === "weight") return log.measuredAt;
+    else if (log.type === "other") return log.date;
     return;
 };
 

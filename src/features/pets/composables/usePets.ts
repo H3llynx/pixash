@@ -17,7 +17,6 @@ const error = ref<string | null>(null);
 const hasPets = computed(() => pets.value.length > 0);
 const isAddingPet = ref<boolean>(false);
 const isUpdatingPet = ref<boolean>(false);
-const isAddingLog = ref<boolean>(false);
 
 const {
   error: healthError,
@@ -193,6 +192,8 @@ const deleteSelectedPetField = async (pet: PetExtended, data: keyof Pet) => {
   });
 };
 
+const isForSpecificPet = (petId: string) => pets.value.some(pet => pet.id === petId)
+
 watch(user, async (newUser) => {
   if (!newUser) {
     pets.value = [];
@@ -309,6 +310,6 @@ export const usePets = () => {
     deleteSelectedTreatment,
     selectTreatment,
     handleAdd,
-    isAddingLog,
+    isForSpecificPet
   };
 };
