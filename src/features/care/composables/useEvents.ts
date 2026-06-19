@@ -77,6 +77,14 @@ export const useEvents = () => {
                 });
                 return events;
             }),
+        ...logs.value
+            .filter(log => isForSpecificPet(log.petId))
+            .filter(log => log.type === "other")
+            .map(log => ({
+                title: `📝 ${log.subtype}`,
+                date: tsToDate(log.date, "input"),
+                event: log
+            })),
         ...treatments.value
             .filter(treatment => isForSpecificPet(treatment.petId))
             .map((treatment, index) => {
