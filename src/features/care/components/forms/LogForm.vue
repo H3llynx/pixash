@@ -66,6 +66,7 @@ const handleSubmit = async () => {
                 message: t("toast.success.message.logAdded", { name: selectedPet.value.name, subtype: t(`pet.logs.${formData.subtype}`) }),
             });
             resetForm(formData, defaultForm);
+            isAddingCare.other = false;
         }
         else if (selectedLog.other) {
             const originalData = {
