@@ -2,7 +2,6 @@
 import { Pill } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import Loading from '../../../../components/loading/Loading.vue';
 import { tsToDate } from '../../../../utils.ts';
 import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
@@ -10,7 +9,7 @@ import { useEvents } from '../../composables/useEvents.ts';
 import { getTreatmentProgress } from '../../utils.ts';
 import ProgressBar from './ProgressBar.vue';
 
-const { selectTreatment, healthLoading, selectedTreatment, pets } = usePets();
+const { selectTreatment, treatmentLoading, selectedTreatment, pets } = usePets();
 const { filteredMonthTreatments } = useEvents();
 const { t } = useI18n();
 </script>
@@ -21,10 +20,9 @@ const { t } = useI18n();
         <div class="grid grid-cols-1 gap-1">
             <Button v-for="treatment in filteredMonthTreatments" variant="ghost" size="sm"
                 @click="selectTreatment(treatment)" :aria-label="t('health.cta.editTreatment')"
-                class="w-full h-full md:max-w-md border border-border">
+                :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'w-full h-full md:max-w-md border border-border': true }">
                 <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
-                    <Loading v-if="healthLoading && (selectedTreatment === treatment)" />
-                    <Pill v-else />
+                    <Pill />
                 </div>
                 <div class="text-left w-full text-sm py-0.25">
                     <div class="flex gap-1 justify-between mb-0.25 items-end">
@@ -39,7 +37,7 @@ const { t } = useI18n();
                         :color="treatment.color" />
                     <span v-else class="inline ml-0.5 float-right tag bg-separator text-text-secondary">{{
                         t("health.treatment.ongoing")
-                    }}</span>
+                        }}</span>
                 </div>
             </Button>
         </div>

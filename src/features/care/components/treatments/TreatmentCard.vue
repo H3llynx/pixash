@@ -14,7 +14,7 @@ import { getMedicationProgress, getTreatmentColor } from '../../utils.ts';
 import DateTag from '../events/DateTag.vue';
 import ProgressBar from './ProgressBar.vue';
 
-const { pets, selectTreatment } = usePets();
+const { pets, selectTreatment, treatmentLoading, selectedTreatment } = usePets();
 const { t } = useI18n();
 const route = useRoute();
 
@@ -22,7 +22,8 @@ defineProps<{ treatment: TreatmentExtended }>();
 </script>
 
 <template>
-    <div class="card p-1 w-full md:max-w-md border border-border gap-1">
+    <div
+        :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'card p-1 w-full md:max-w-md border border-border gap-1': true }">
         <div class="flex gap-1 justify-between w-full items-start">
             <div class="flex gap-0.5 items-start">
                 <div>

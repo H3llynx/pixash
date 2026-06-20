@@ -11,7 +11,7 @@ import { getMedicationProgress, getTreatmentProgress } from '../../utils.ts';
 import ProgressBar from './ProgressBar.vue';
 import TreatmentLogs from './TreatmentLogs.vue';
 
-const { selectTreatment, pets } = usePets();
+const { selectTreatment, pets, treatmentLoading, selectedTreatment } = usePets();
 const { t } = useI18n();
 const props = defineProps<{ treatment: TreatmentExtended; color: string }>();
 const progress = computed(() => getTreatmentProgress(props.treatment));
@@ -19,7 +19,8 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
 </script>
 
 <template>
-    <div class="card" v-if="pet">
+    <div :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'card': true }"
+        v-if="pet">
         <div class="flex gap-1 justify-between">
             <h3 class="text-base">{{ treatment.name }}</h3>
             <Button variant="ghost" size="xs" @click="selectTreatment(treatment)"

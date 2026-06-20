@@ -2,7 +2,6 @@
 import { BugOff, MapPinned, Stethoscope, Syringe, Weight } from '@lucide/vue';
 import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import EventCardSkeleton from '../../../../components/loading/EventCardSkeleton.vue';
 import Loading from '../../../../components/loading/Loading.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { prefersKg } from '../../../pets/utils.ts';
@@ -13,7 +12,7 @@ import TypeTag from './TypeTag.vue';
 
 const { healthLoading, vets, pets } = usePets();
 const { locale, t } = useI18n();
-const { useEventData } = useEvents();
+const { useEventData, selectedEvent } = useEvents();
 
 const props = defineProps<{ event: PetEvent }>();
 const { vet, title } = useEventData(toRef(props, "event"));
@@ -33,9 +32,10 @@ const weight = computed(() => {
 </script>
 
 <template>
-    <EventCardSkeleton v-if="healthLoading" />
-    <div v-else
-        class="rounded-xl border border-border gap-1.5 justify-between items-start text-left p-1 w-full md:max-w-md bg-bg-3">
+    <div :class="{
+        'animate-pulse': healthLoading && selectedEvent?.id === event.id,
+        'rounded-xl border border-border gap-1.5 justify-between items-start text-left p-1 w-full md:max-w-md bg-bg-3': true
+    }">
         <div class="flex gap-0.5 w-full min-w-0 h-full">
             <Syringe v-if="event.eventType === 'vaccine'" class="card-icon" :size="20" />
             <Stethoscope v-if="event.eventType === 'visit'" class="card-icon" :size="20" />

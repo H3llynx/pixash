@@ -10,6 +10,7 @@ const selectedDate = ref<string | null>(null);
 const currentMonth = ref<Date>(new Date());
 const currentMonthName = ref<string>("");
 const petId = ref<string>("");
+const selectedEvent = ref<PetEvent | null>(null);
 
 export const useEvents = () => {
     const { vaccines, pets, vetVisits, treatments, logs, vets, selectedPet, isForSpecificPet } = usePets();
@@ -168,6 +169,7 @@ export const useEvents = () => {
         petId,
         petUpcomingEvents,
         useEventData,
+        selectedEvent,
         filteredMonthTreatments,
         activeTreatments
     }

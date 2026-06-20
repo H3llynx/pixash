@@ -3,7 +3,6 @@ import { ChevronLeft, ChevronRight } from '@lucide/vue';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import EventCardSkeleton from '../../../../components/loading/EventCardSkeleton.vue';
 import { useMedia } from '../../../../composables/useMedia.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import type { TreatmentExtended } from '../../types.ts';
@@ -40,10 +39,7 @@ watch(() => props.treatments, () => {
 <template>
     <article class="pet-section">
         <h2 v-if="title">{{ title }}</h2>
-        <div v-if="loading" class="flex flex-col gap-1">
-            <EventCardSkeleton v-for="i in 3" :key="i" />
-        </div>
-        <div v-else class="grid grid-cols-1 gap-1">
+        <div class="grid grid-cols-1 gap-1">
             <TreatmentCard v-if="treatments.length" v-for="treatment in paginatedTreatments" :key="treatment.id"
                 :treatment="treatment" />
             <p v-else-if="!loading && !history" class="text-text-secondary text-sm">{{

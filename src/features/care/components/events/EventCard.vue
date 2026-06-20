@@ -13,9 +13,9 @@ import type { STAGE } from '../../config.ts';
 import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, PetEvent, VaccineExtended, VaccineRecord, VaccineTypes, VisitExtended } from '../../types.ts';
 import DateTag from './DateTag.vue';
 
-const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, healthError } = usePets();
+const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, healthError, healthLoading } = usePets();
 const { locale, t } = useI18n();
-const { useEventData } = useEvents();
+const { useEventData, selectedEvent } = useEvents();
 const { show } = useToast();
 
 const props = defineProps<{ event: PetEvent }>();
@@ -27,14 +27,19 @@ const handleClick = (event: PetEvent) => {
     if (event.eventType === "vaccine") {
         const vaccine = vaccines.value.find(v => v.id === event.id) as VaccineExtended;
         selectVaccine(vaccine);
+        selectedEvent.value = vaccine;
     } else if (event.eventType === "visit") {
         const visit = vetVisits.value.find(v => v.id === event.id) as VisitExtended;
         selectVisit(visit);
+        selectedEvent.value = visit;
     } else if (event.type === "antiparasite") {
         const log = logs.value.find(l => l.id === event.id) as AntiparasiteLogExtended;
         selectLog(log, "antiparasitic");
-    } else return;
-}
+        selectedEvent.value = log;
+    } else {
+        selectedEvent.value = null;
+    }
+};
 
 const markAsDone = async (event: PetEvent) => {
     if (!pet.value) return;
@@ -82,9 +87,10 @@ const markAsDone = async (event: PetEvent) => {
 
 </script>
 <template>
-    <div tabindex="0" role="button"
-        class="card hover-gradient cursor-pointer flex-row p-1 w-full md:max-w-md border border-border gap-1.5 justify-between"
-        @click="handleClick(event)" @keydown.enter="handleClick(event)">
+    <div tabindex="0" role="button" :class="{
+        'animate-pulse': healthLoading && selectedEvent?.id === event.id,
+        'card hover-gradient cursor-pointer flex-row p-1 w-full md:max-w-md border border-border gap-1.5 justify-between': true
+    }" @click="handleClick(event)" @keydown.enter="handleClick(event)">
         <div class="flex gap-0.5 w-full min-w-0 h-full">
             <Syringe v-if="event.eventType === 'vaccine'" class="card-icon" :size="20" />
             <Stethoscope v-else class="card-icon" :size="20" />
