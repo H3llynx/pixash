@@ -8,7 +8,7 @@ import { getAge } from "../../../../pets/utils";
 import { useEvents } from "../../../composables/useEvents";
 import { STAGE, VACCINE_TYPES } from "../../../config";
 import type { VaccineExtended, VaccineTypes } from "../../../types";
-import { getVaccineTypes, resetForm, showTypes } from "../../../utils";
+import { getVaccineTypes, resetForm, showVaccines } from "../../../utils";
 
 export const useVaccineForm = () => {
     const { selectedPet, isAddingCare, vets, selectedVet, selectedVaccine, selectVaccine, addNewVaccine, healthError, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
@@ -79,7 +79,7 @@ export const useVaccineForm = () => {
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.vaccineAdded", { name: selectedPet.value.name, type: showTypes(typesSnapshot, selectedPet.value) }),
+                    message: t("toast.success.message.vaccineAdded", { name: selectedPet.value.name, type: showVaccines(typesSnapshot, selectedPet.value, t) }),
                 });
                 resetForm(formData, defaultForm);
             }
@@ -97,7 +97,7 @@ export const useVaccineForm = () => {
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
-                        message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showTypes(typesSnapshot, selectedPet.value) }),
+                        message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showVaccines(typesSnapshot, selectedPet.value, t) }),
                     });
                     resetForm(formData, defaultForm);
                 }
@@ -116,8 +116,8 @@ export const useVaccineForm = () => {
         const vaccine = selectedVaccine.value;
         if (!vaccine || !pet) return;
         open({
-            title: t("dialog.deleteEvent.title", { title: showTypes(vaccine.types, pet) }),
-            message: t("dialog.deleteEvent.message", { name: pet.name, title: showTypes(vaccine.types, pet) }),
+            title: t("dialog.deleteEvent.title", { title: showVaccines(vaccine.types, pet, t) }),
+            message: t("dialog.deleteEvent.message", { name: pet.name, title: showVaccines(vaccine.types, pet, t) }),
             isDelete: true,
             onConfirm: async () => {
                 loading.value = true;
@@ -126,7 +126,7 @@ export const useVaccineForm = () => {
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
-                        message: t("toast.success.message.eventDeleted", { name: pet.name, title: showTypes(vaccine.types, pet) }),
+                        message: t("toast.success.message.eventDeleted", { name: pet.name, title: showVaccines(vaccine.types, pet, t) }),
                     });
                 } catch (error) {
                     show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });

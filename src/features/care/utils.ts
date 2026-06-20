@@ -40,8 +40,7 @@ export const getNextAntiparasitic = (logs: LogExtended[]) => {
     );
 };
 
-export const showTypes = (vaccineType: VaccineTypes["id"][], pet?: PetExtended) => {
-    if (!pet) return;
+export const showVaccines = (vaccineType: VaccineTypes["id"][], pet: PetExtended, t: (key: string) => string) => {
     const vaccines = getVaccineTypes(pet.species);
     if (!vaccines) return;
     const labels: string[] = [];
@@ -49,8 +48,8 @@ export const showTypes = (vaccineType: VaccineTypes["id"][], pet?: PetExtended) 
         const vaccine = vaccines.find(t => t.id === type);
         if (vaccine) labels.push(vaccine.label);
     })
-    return labels.join(" + ");
-}
+    return labels.map(l => t(l)).join(" + ");
+};
 
 export const getAntiparasites = (species: typeof SPECIES[number]["id"] | "default") => {
     if (!species) return;

@@ -1,22 +1,22 @@
 export const VACCINE_TYPES = {
     dog: [
-        { id: "rabies", label: "Rabies" },
-        { id: "core-combo", label: "Core combo (DAPP)" },
-        { id: "leish", label: "Leishmaniosis" },
+        { id: "rabies", label: "health.vaccineTypes.rabies" },
+        { id: "core-combo", label: "health.vaccineTypes.dog.combo" },
+        { id: "leish", label: "health.vaccineTypes.dog.leish" },
     ],
     cat: [
-        { id: "rabies", label: "Rabies" },
-        { id: "core-combo", label: "Core combo (FVRCP)" },
-        { id: "felv", label: "Feline leukemia (FeLV)" },
-        { id: "fiv", label: "Feline immunodeficiency (FIV)" },
+        { id: "rabies", label: "health.vaccineTypes.rabies" },
+        { id: "core-combo", label: "health.vaccineTypes.cat.combo" },
+        { id: "felv", label: "health.vaccineTypes.cat.felv" },
+        { id: "fiv", label: "health.vaccineTypes.cat.fiv" },
     ],
     smallMammal: [
-        { id: "rabbit-myxorhd", label: "Rabbit: Myxomatosis + RHD" },
-        { id: "ferret-rabies", label: "Ferret: Rabies" },
-        { id: "ferret-distemper", label: "Ferret: Distemper" },
+        { id: "rabbit-myxorhd", label: "health.vaccineTypes.smallMammal.myxo" },
+        { id: "rabies", label: "health.vaccineTypes.rabies" },
+        { id: "ferret-distemper", label: "health.vaccineTypes.smallMammal.distemper" },
     ],
     default: [
-        { id: "other", label: 'Other vaccine' },
+        { id: "other", label: "health.vaccineTypes.other" },
     ],
 } as const;
 

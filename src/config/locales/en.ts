@@ -394,6 +394,23 @@ export default {
             protozoa: "Protozoa",
             other: "Other treatment"
         },
+        vaccineTypes: {
+            rabies: "Rabies",
+            other: "Other vaccines",
+            dog: {
+                combo: "Core combo (DAPP)",
+                leish: "Leishmaniosis"
+            },
+            cat: {
+                combo: "Core combo (FVRCP)",
+                felv: "Feline leukemia (FeLV)",
+                fiv: "Feline immunodeficiency (FIV)",
+            },
+            smallMammal: {
+                myxo: "Myxomatosis + RHD",
+                distemper: "Distemper",
+            },
+        }
     },
     events: {
         thisMonth: "This month",

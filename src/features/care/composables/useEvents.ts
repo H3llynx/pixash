@@ -4,7 +4,7 @@ import { tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import { getIcon } from "../../pets/utils";
 import { type PetEvent } from "../types";
-import { checkOverlapsMonth, getTreatmentBackground, getTreatmentColor, showTypes } from "../utils";
+import { checkOverlapsMonth, getTreatmentBackground, getTreatmentColor, showVaccines } from "../utils";
 
 const selectedDate = ref<string | null>(null);
 const currentMonth = ref<Date>(new Date());
@@ -22,12 +22,12 @@ export const useEvents = () => {
                 const pet = pets.value.find(pet => pet.id === vaccine.petId)!;
                 const events = [];
                 if (vaccine.givenAt) events.push({
-                    title: `${getIcon(pet)} ${showTypes(vaccine.types, pet)}`,
+                    title: `${getIcon(pet)} ${showVaccines(vaccine.types, pet, t)}`,
                     date: tsToDate(vaccine.givenAt, "input"),
                     event: vaccine,
                 });
                 if (vaccine.dueOn) events.push({
-                    title: `${getIcon(pet)} ${showTypes(vaccine.types, pet)}`,
+                    title: `${getIcon(pet)} ${showVaccines(vaccine.types, pet, t)}`,
                     date: tsToDate(vaccine.dueOn, "input"),
                     event: vaccine,
                 });
@@ -120,7 +120,7 @@ export const useEvents = () => {
         });
         const title = computed(() => {
             const e = event.value;
-            if (e.eventType === "vaccine" && e.types && pet.value) return showTypes(e.types, pet.value);
+            if (e.eventType === "vaccine" && e.types && pet.value) return showVaccines(e.types, pet.value, t);
             if (e.eventType === "visit") return e.title;
             if (e.type === "weight") return t("events.weightLog");
             if (e.type === "antiparasite") return t("events.antiparasitics")

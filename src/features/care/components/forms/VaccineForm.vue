@@ -15,7 +15,7 @@ import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { vaccineFields } from '../../config.ts';
-import { showTypes } from '../../utils.ts';
+import { showVaccines } from '../../utils.ts';
 import { useVaccineForm } from './composables/useVaccineForm.ts';
 import VetSelector from './VetSelector.vue';
 
@@ -58,7 +58,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                             class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
                             <PetIcon :pet="selectedPet" />
                         </div>
-                        <h1>{{ selectedPet!.name }} · {{ showTypes(formData.types, selectedPet!) }}</h1>
+                        <h1>{{ selectedPet!.name }} · {{ showVaccines(formData.types, selectedPet!, t) }}</h1>
                     </div>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedVaccine" variant="ghost" size="xs"
@@ -72,8 +72,8 @@ watch(() => isAddingCare.vaccine, (adding) => {
                     <Selector :legend="t(types.label)">
                         <Input v-model="formData.types"
                             v-for="option in isReadonly ? vaccineTypes.filter(o => formData.types.includes(o.id)) : vaccineTypes"
-                            :id="option.id" :value="option.id" :key="option.id" :label="option.label" :type="types.type"
-                            @input="error = false" />
+                            :id="option.id" :value="option.id" :key="option.id" :label="t(option.label)"
+                            :type="types.type" @input="error = false" />
                         <p v-if="error" class="text-sm w-full text-error pb-0.5">{{
                             t("health.vaccineForm.validationTypes") }}</p>
                     </Selector>
@@ -121,11 +121,11 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                     {{
                                         selectedPet.name
                                     }} · {{
-                                        showTypes(formData.types, selectedPet) }}
+                                        showVaccines(formData.types, selectedPet, t) }}
                                 </p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.sharedFields.dueDate")
-                                    }}:
+                                }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
@@ -136,7 +136,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                     {{ t("common.button.cancel") }}
                                 </Button>
                                 <Button size="sm" :disabled="loading">{{ t("health.cta.saveVaccine")
-                                    }}</Button>
+                                }}</Button>
                             </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
