@@ -9,6 +9,16 @@ import { MED_FREQUENCY } from "../../../config";
 import type { TreatmentRecord } from "../../../types";
 import { resetForm } from "../../../utils";
 
+const defaultForm = {
+    name: "",
+    startDate: "",
+    vet: "",
+    notes: "",
+    medication: [],
+};
+
+const formData = reactive<TreatmentRecord>({ ...defaultForm });
+
 export const useTreatmentForm = () => {
     const { isAddingCare, selectedTreatment, selectTreatment, selectedPet, addNewTreatment, updateSelectedTreatment, healthError, deleteSelectedTreatment } = usePets();
     const { selectedDate } = useEvents();
@@ -25,15 +35,6 @@ export const useTreatmentForm = () => {
         endDate: ""
     });
 
-    const defaultForm = {
-        name: "",
-        startDate: "",
-        vet: "",
-        notes: "",
-        medication: [],
-    };
-
-    const formData = reactive<TreatmentRecord>({ ...defaultForm });
     const loading = ref<boolean>(false);
 
     const handleClose = () => {
