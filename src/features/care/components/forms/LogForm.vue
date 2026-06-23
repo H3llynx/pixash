@@ -162,6 +162,10 @@ watch(() => mode.value, () => {
         pictures.value = [];
     };
 });
+
+watch(() => formData.pictures, (pictures) => {
+    imgsRef.value = pictures;
+});
 </script>
 
 <template>
