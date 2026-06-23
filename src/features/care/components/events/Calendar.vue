@@ -100,6 +100,10 @@ const calendarOptions = computed(() => ({
     background-color: var(--color-brand-rgba);
 }
 
+:deep(.fc-button-active) {
+    background-color: var(--color-brand-light) !important;
+}
+
 :deep(.fc-daygrid-day, .fc-day-today) {
     border-radius: 10px;
     cursor: pointer;
@@ -160,6 +164,10 @@ const calendarOptions = computed(() => ({
     pointer-events: none;
 }
 
+:deep(.fc-dayGridWeek-view .fc-daygrid-day-frame) {
+    min-height: 30vh;
+}
+
 @media (width >=48rem) {
     .fc {
         background: transparent;
@@ -175,10 +183,6 @@ const calendarOptions = computed(() => ({
 
     :deep(.treatment-event) {
         border: 1px solid var(--color-separator);
-    }
-
-    :deep(.fc-dayGridWeek-view .fc-daygrid-day-frame) {
-        min-height: 30vh;
     }
 }
 
