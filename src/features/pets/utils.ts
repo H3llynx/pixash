@@ -2,7 +2,7 @@ import { STAGE } from "../care/config";
 import { catBreeds, dogBreeds, SPECIES } from "./config";
 import type { Pet } from "./types";
 
-export const getIcon = (pet: Pet) => {
+export const getPetIcon = (pet: Pet) => {
     if (!pet) return;
     return SPECIES.find(s => s.id === pet.species)?.icon;
 }

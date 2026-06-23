@@ -14,7 +14,7 @@ import { useToast } from '../../../../composables/useToast.ts';
 import { phonePattern } from '../../../../config/config.ts';
 import { shallowEqual } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
-import { getIcon } from '../../../pets/utils.ts';
+import { getPetIcon } from '../../../pets/utils.ts';
 import { vetFormFields } from '../../config.ts';
 import type { Vet } from '../../types.ts';
 import { resetForm } from '../../utils.ts';
@@ -158,7 +158,7 @@ watch(() => selectedVet.value,
                     </Selector>
                     <Selector :legend="t(assignedPets.label)" class="mb-1">
                         <Input v-model="formData.assignedPets" v-for="pet in pets" :id="pet.id" :value="pet.id"
-                            :key="pet.id" :label="`${getIcon(pet)} ${pet.name}`" :type="assignedPets.type" />
+                            :key="pet.id" :label="`${getPetIcon(pet)} ${pet.name}`" :type="assignedPets.type" />
                     </Selector>
                     <div class="default-padding flex flex-col gap-1">
                         <label :for="notes.id">

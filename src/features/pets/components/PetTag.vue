@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SPECIES } from '../config';
 import type { PetExtended } from '../types';
-import { getIcon } from '../utils';
+import { getPetIcon } from '../utils';
 
 const props = withDefaults(defineProps<{
     pet: PetExtended
@@ -25,7 +25,7 @@ const getTagStyle = () => {
 
 <template>
     <div :class="getTagStyle()">
-        <span aria-hidden>{{ getIcon(pet) }}</span>
+        <span aria-hidden>{{ getPetIcon(pet) }}</span>
         {{ pet.name }}
     </div>
 </template>

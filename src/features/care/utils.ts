@@ -2,8 +2,8 @@ import { Timestamp } from "firebase/firestore";
 import { tsToDay } from "../../utils";
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
-import { ANTIPARASITE_TYPES, MED_FREQUENCY, PARASITES, TREATMENTCOLORS, VACCINE_TYPES } from "./config";
-import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, MedicineDb, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
+import { ANTIPARASITE_TYPES, LOG_SUBTYPES, MED_FREQUENCY, PARASITES, TREATMENTCOLORS, VACCINE_TYPES } from "./config";
+import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, MedicineDb, OtherLogExtended, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
 
 export const resetForm = <T extends object>(
     formData: T,
@@ -140,3 +140,8 @@ export const checkOverlapsMonth = (startDate: Timestamp, endDate: Timestamp | un
     const treatmentEnd = endDate ? endDate.toDate() : new Date(2099, 11, 31);
     return treatmentStart <= monthEnd && treatmentEnd >= monthStart;
 };
+
+export const getLogIcon = (log: OtherLogExtended) => {
+    if (!log) return;
+    return LOG_SUBTYPES.find(s => s.id === log.subtype)?.icon;
+}

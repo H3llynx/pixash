@@ -2,9 +2,9 @@ import { computed, ref, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
-import { getIcon } from "../../pets/utils";
+import { getPetIcon } from "../../pets/utils";
 import { type PetEvent } from "../types";
-import { checkOverlapsMonth, getTreatmentBackground, getTreatmentColor, showVaccines } from "../utils";
+import { checkOverlapsMonth, getLogIcon, getTreatmentBackground, getTreatmentColor, showVaccines } from "../utils";
 
 const selectedDate = ref<string | null>(null);
 const currentMonth = ref<Date>(new Date());
@@ -23,12 +23,12 @@ export const useEvents = () => {
                 const pet = pets.value.find(pet => pet.id === vaccine.petId)!;
                 const events = [];
                 if (vaccine.givenAt) events.push({
-                    title: `${getIcon(pet)} ${showVaccines(vaccine.types, pet, t)}`,
+                    title: `${getPetIcon(pet)} ${showVaccines(vaccine.types, pet, t)}`,
                     date: tsToDate(vaccine.givenAt, "input"),
                     event: vaccine,
                 });
                 if (vaccine.dueOn) events.push({
-                    title: `${getIcon(pet)} ${showVaccines(vaccine.types, pet, t)}`,
+                    title: `${getPetIcon(pet)} ${showVaccines(vaccine.types, pet, t)}`,
                     date: tsToDate(vaccine.dueOn, "input"),
                     event: vaccine,
                 });
@@ -36,7 +36,7 @@ export const useEvents = () => {
             }),
         ...vetVisits.value.filter(visit => isForSpecificPet(visit.petId))
             .map(visit => ({
-                title: `${getIcon(pets.value.find(pet => pet.id === visit.petId)!)} ${visit.title}`,
+                title: `${getPetIcon(pets.value.find(pet => pet.id === visit.petId)!)} ${visit.title}`,
                 date: tsToDate(visit.date, "datetime"),
                 event: visit,
             })),
@@ -61,7 +61,7 @@ export const useEvents = () => {
             .filter(log => isForSpecificPet(log.petId))
             .filter(log => log.type === "other")
             .map(log => ({
-                title: `📝 ${t(`pet.logs.${log.subtype}`)}`,
+                title: `${getLogIcon(log)} ${t(`pet.logs.${log.subtype}`)}`,
                 date: tsToDate(log.date, "input"),
                 event: log
             })),
