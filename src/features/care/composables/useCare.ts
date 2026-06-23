@@ -241,6 +241,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
             const updatedLog = logs.value.find(l => l.id === log.id);
             if (updatedLog?.type === "antiparasite") selectedLog.antiparasitic = updatedLog as AntiparasiteLogExtended;
             else if (updatedLog?.type === "medication") selectLog(null, updatedLog?.type);
+            else if (updatedLog?.type === "other") selectedLog.other = updatedLog as OtherLogExtended;
         }, () => {
             loading.value = false;
         });

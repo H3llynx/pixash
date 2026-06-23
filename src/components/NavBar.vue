@@ -13,7 +13,7 @@ import { ROUTES } from '../router/config';
 import Logo from './Logo.vue';
 
 const { isMd } = useMedia();
-const { loading } = usePets();
+const { loading, hasPets } = usePets();
 const { petId } = useEvents();
 const { t } = useI18n();
 const route = useRoute();
@@ -26,13 +26,13 @@ const route = useRoute();
         <RouterLink :to="ROUTES.dashboard" tabindex="0">
             <LayoutGrid />{{ t("common.navbar.home") }}
         </RouterLink>
-        <RouterLink :to="ROUTES.calendar" tabindex="0">
+        <RouterLink v-if="hasPets" :to="ROUTES.calendar" tabindex="0">
             <Calendar />{{ t("common.navbar.calendar") }}
         </RouterLink>
-        <RouterLink :to="ROUTES.vet" tabindex="0">
+        <RouterLink v-if="hasPets" :to="ROUTES.vet" tabindex="0">
             <MapPin />{{ t("common.navbar.vet") }}
         </RouterLink>
-        <RouterLink :to="ROUTES.history" tabindex="0">
+        <RouterLink v-if="hasPets" :to="ROUTES.history" tabindex="0">
             <History />{{ t("common.navbar.history") }}
         </RouterLink>
         <PetSelector v-if="isMd && !loading" :calendar="route.path === ROUTES.calendar" nav v-model:petId="petId" />

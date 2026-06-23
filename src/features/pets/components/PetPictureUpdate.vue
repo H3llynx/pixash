@@ -33,7 +33,10 @@ const handleX = () => {
             onConfirm: async () => {
                 try {
                     await updateSelectedPet(selectedPet.value!, { photo: "" });
-                } catch (error) { console.log(error) }
+                } catch (error) {
+                    console.log(error);
+                    show({ type: "error", title: t("toast.error.genericTitle"), message: t("toast.error.errorDeletionPicture") });
+                }
             }
         })
     };
@@ -89,7 +92,7 @@ const handleCancel = () => {
                 <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
                 <Button type="button" variant="ghost" @click="handleCancel">{{
                     t("common.button.cancel")
-                }}</Button>
+                    }}</Button>
             </form>
         </template>
     </FreeModal>

@@ -20,10 +20,11 @@ The name comes from my two pets: **Pixie** (a chubby affectionate tabby cat) and
 - **Tailwind CSS v4** — utility-first styling with custom design tokens
 - **Tailwind Variants** — variant-based component styling
 - **Vue Router** — client-side routing with navigation guards
-- **VueUse** — composable utilities (`useLocalStorage`, `useFocusTrap`, `onClickOutside`, `useSwipe`...)
+- **VueUse** — composable utilities (`useLocalStorage`, `useFocusTrap`, `onClickOutside`...)
 - **Lucide Vue** — icon library
 - **FullCalendar** — calendar component
 - **Vue I18n** - internationalization plugin to make the app multi-languages
+- **vue-easy-lightbox** - image zoom and slideshow
 
 ---
 
@@ -93,18 +94,17 @@ Work in progress — Currently in active development as both a portfolio project
 Current progress:
 - [x] Authentication (Google + email/password)
 - [x] Protected routing
-- [x] Pet profile creation (species, breed, microchip, sterilization...)
+- [x] Pet profile creation (species, breed, microchip, sterilization, insurance info...)
 - [x] Vaccine and antiparasitic logs and management
 - [x] Vet visit creation and management
 - [x] Weight monitoring
 - [x] Vet view and management
 - [x] Medical treatment creation and management
 - [x] Custom user and pet profile pictures
+- [x] History view per pet and care event
+- [x] Other logs (feeding, activity, grooming, etc...)
 - [IN PROGRESS] Missed medicine tracking
-- [IN PROGRESS] History view per pet and health event
 - [ ] Lump tracking
-- [ ] Other logs (feeding, symptoms / observations, grooming appointments)
-- [ ] Documents upload (insurance policy, medical prescriptions, lab results...)
 - [ ] Photo timeline
 
 ---

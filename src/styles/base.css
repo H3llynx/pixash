@@ -474,6 +474,16 @@
     }
   }
 
+  .preview-container {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: scroll;
+
+    &&::-webkit-scrollbar {
+      height: 6px;
+    }
+  }
+
   .hover-gradient {
     background: var(--color-bg-2);
     position: relative;
@@ -492,6 +502,15 @@
       z-index: -1;
       transition: 1s ease;
     }
+  }
+
+  .delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border-radius: 8px;
+    padding: 3px;
+    border: 1px solid var(--color-separator);
   }
 }
 

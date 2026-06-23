@@ -454,8 +454,9 @@ export default {
         error: {
             genericTitle: "Error",
             generic: "An unexpected error occurred",
-            errorPicture: "Your picture could not be loaded. Please try again",
-            errorFile: "Your document could not be loaded. Please try again",
+            errorPicture: "Your picture could not be uploaded. Please try again",
+            errorFile: "Your document could not be uploaded. Please try again",
+            errorDeletionPicture: "Your picture could not be deleted. Please try again"
         }
     },
     dialog: {

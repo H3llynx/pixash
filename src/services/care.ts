@@ -110,6 +110,7 @@ export const fetchPetLogs = async (userId: string, petId: string): Promise<LogEx
                     type: "other",
                     subtype: data.subtype,
                     date: data.date,
+                    pictures: data.pictures,
                     notes: data.notes,
                 } as OtherLogExtended;
                 return log;
@@ -336,6 +337,7 @@ export const addLog = async (log: Log, petId: string, userId: string) => {
             userId: userId,
             type: log.type,
             subtype: log.subtype,
+            pictures: log.pictures,
             notes: log.notes,
             date: tsFromInput(log.date)
         };
@@ -389,6 +391,7 @@ export const updateLog = async (
             userId: userId,
             type: log.type,
             subtype: log.subtype,
+            pictures: log.pictures,
             notes: log.notes,
             date: tsFromInput(log.date)
         };

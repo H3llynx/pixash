@@ -177,6 +177,7 @@ export type Log =
         type: "other";
         subtype: string;
         date: string;
+        pictures?: string[];
         notes?: string;
     };
 
@@ -189,6 +190,7 @@ export type OtherLogExtended = {
     type: "other";
     subtype: string;
     date: Timestamp;
+    pictures?: string[];
     notes?: string;
 };
 

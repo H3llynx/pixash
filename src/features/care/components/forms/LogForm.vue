@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import { CalendarCheck, Trash2 } from '@lucide/vue';
+import { CalendarCheck, Trash2, X } from '@lucide/vue';
 import { provide, reactive, ref, watch } from 'vue';
+import VueEasyLightbox, { useEasyLightbox } from 'vue-easy-lightbox';
 import { useI18n } from 'vue-i18n';
+import AddPictures from '../../../../components/AddPictures.vue';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import Textarea from '../../../../components/Textarea.vue';
+import { useAddPictures } from '../../../../composables/useAddPictures.ts';
 import { useDialog } from '../../../../composables/useDialog.ts';
 import { useFormMode } from '../../../../composables/useFormMode.ts';
 import { useToast } from '../../../../composables/useToast.ts';
+import { hostImg } from '../../../../services/img-hosting.ts';
 import { shallowEqual, tsToDate } from '../../../../utils.ts';
 import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
@@ -26,6 +30,7 @@ const { t } = useI18n();
 const { show } = useToast();
 const { open } = useDialog();
 const { mode, isReadonly } = useFormMode();
+const { pictures } = useAddPictures();
 provide('readonly', isReadonly);
 
 const { subtype, date, notes } = logFields;
@@ -34,14 +39,21 @@ const error = ref<boolean>(false);
 const defaultForm = {
     subtype: subtype.options[0].id,
     date: "",
+    pictures: [] as string[],
     notes: ""
 };
 const formData = reactive({ ...defaultForm });
+
+const { show: showLightbox, onHide, visibleRef, indexRef, imgsRef } = useEasyLightbox({
+    imgs: formData.pictures,
+    initIndex: 0
+})
 
 const fillLogData = (log: OtherLogExtended) => {
     Object.assign(formData, {
         subtype: log.subtype,
         date: tsToDate(log.date, "input"),
+        pictures: log.pictures,
         notes: log.notes ?? "",
     })
 };
@@ -51,13 +63,33 @@ const handleClose = () => {
     selectedDate.value = null;
     isAddingCare.other = false;
     selectedLog.other = null;
+    pictures.value = [];
+};
+
+const hostPictures = async () => {
+    for (const picture of pictures.value) {
+        try {
+            const url = await hostImg(picture.file);
+            formData.pictures.push(url);
+            pictures.value = pictures.value.filter(p => p !== picture);
+
+        } catch (error) {
+            console.error(error);
+            show({ type: "error", title: t("toast.error.genericTitle"), message: t("toast.error.errorPicture") });
+        }
+    };
+};
+
+const deletePicture = async (picture: string) => {
+    formData.pictures = formData.pictures.filter(p => p !== picture);
 };
 
 const handleSubmit = async () => {
     if (!selectedPet.value) return;
-    const log: Log = { ...formData, type: "other" };
-    loading.value = true
+    loading.value = true;
     try {
+        if (pictures.value.length) await hostPictures();
+        const log: Log = { ...formData, type: "other" };
         if (isAddingCare.other) {
             await addNewLog(log, selectedPet.value.id);
             show({
@@ -67,17 +99,17 @@ const handleSubmit = async () => {
             });
             resetForm(formData, defaultForm);
             isAddingCare.other = false;
+            pictures.value = [];
         }
         else if (selectedLog.other) {
             const originalData = {
                 ...selectedLog.other,
-                subtype: selectedLog.other.subtype,
                 date: tsToDate(selectedLog.other.date, "input"),
                 notes: selectedLog.other.notes ?? "",
             };
             if (!shallowEqual(formData, originalData)) {
                 await updateSelectedLog(selectedLog.other, selectedPet.value.id, log);
-                resetForm(formData, defaultForm);
+                pictures.value = [];
             };
         };
     }
@@ -120,10 +152,14 @@ watch(() => isAddingCare.other, (adding) => {
 
 watch(() => selectedLog.other, (log) => {
     mode.value = log ? "view" : "edit";
-});
+    if (log) fillLogData(selectedLog.other!);
+}, { deep: true });
 
-watch(() => mode.value, (mode) => {
-    if (mode === "view") fillLogData(selectedLog.other!);
+watch(() => mode.value, () => {
+    if (mode.value === 'view' && selectedLog.other?.pictures?.length) {
+        Object.assign(formData, { pictures: [...selectedLog.other.pictures] });
+        pictures.value = [];
+    };
 });
 </script>
 
@@ -165,6 +201,21 @@ watch(() => mode.value, (mode) => {
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
+                        <div class="preview-container">
+                            <div v-if="formData.pictures.length" v-for="(picture, index) in formData.pictures"
+                                class="relative rounded-lg mb-0.25 min-w-[160px] cursor-pointer">
+                                <img :src="picture" class="rounded-lg relative" @click="showLightbox(index)" />
+                                <Button v-if="mode === 'edit'" type="button" variant="ghost" size="xxs"
+                                    :aria-label="t('health.cta.cancelLog')" @click.stop="deletePicture(picture)"
+                                    class="delete-btn hover:bg-error">
+                                    <X :size="20" />
+                                </Button>
+                            </div>
+                            <AddPictures v-if="mode === 'edit'" />
+                        </div>
+
+                        <VueEasyLightbox :visible="visibleRef" :imgs="imgsRef" :index="indexRef" :loop="true"
+                            @hide="onHide" />
                         <label :for="notes.id" v-if="selectedLog.other?.notes || mode === 'edit'">
                             <p>{{ t(notes.label) }}</p>
                             <Textarea v-model="formData.notes" :id="notes.id"
