@@ -155,6 +155,7 @@ watch(() => isAddingCare.other, (adding) => {
 watch(() => selectedLog.other, (log) => {
     mode.value = log ? "view" : "edit";
     if (log) fillLogData(selectedLog.other!);
+    else resetForm(formData, defaultForm);
 }, { deep: true });
 
 watch(() => mode.value, () => {
@@ -184,7 +185,7 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedLog.other!.subtype}`)
                     })
-                    }}
+                        }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.other" variant="ghost" size="xs"

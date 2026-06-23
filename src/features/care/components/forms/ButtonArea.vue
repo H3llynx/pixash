@@ -6,7 +6,7 @@ import type { LogExtended, TreatmentExtended, VisitExtended } from '../../types.
 const { t } = useI18n();
 
 defineProps<{
-    selectedCare: LogExtended | VisitExtended | TreatmentExtended;
+    selectedCare: LogExtended | VisitExtended | TreatmentExtended | null;
     loading: boolean;
     customCta: string;
 }>();
