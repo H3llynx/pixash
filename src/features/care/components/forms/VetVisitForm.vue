@@ -3,7 +3,6 @@ import { CalendarCheck, Trash2 } from '@lucide/vue';
 import { computed, provide, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import Paw from '../../../../components/icons/Paw.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import Panel from '../../../../components/Panel.vue';
@@ -17,6 +16,7 @@ import { useEvents } from '../../composables/useEvents.ts';
 import { vetVisitFields } from '../../config.ts';
 import type { VisitExtended } from '../../types.ts';
 import { resetForm } from '../../utils.ts';
+import ButtonArea from './ButtonArea.vue';
 import { useVetVisitForm } from './composables/useVetVisitForm.ts';
 import VetSelector from './VetSelector.vue';
 
@@ -121,20 +121,8 @@ watch(() => mode.value, (mode) => {
                                 :readonly="!!selectedVisit && mode === 'view'" :placeholder="t(notes.placeholder)"
                                 :maxLength="500" />
                         </label>
-                        <div class="flex gap-0.5 mt-1 items-center ml-auto" v-if="!selectedVisit || mode === 'edit'">
-                            <Button v-if="selectedVisit && mode === 'edit'" variant="secondary" size="sm" type="button"
-                                :disabled="loading" @click="mode = 'view'">
-                                {{ t("common.button.cancel") }}
-                            </Button>
-                            <Button size="sm" :disabled="loading">{{ t("health.cta.saveVisit")
-                                }}
-                                <Paw class="w-1 -rotate-12" />
-                            </Button>
-                        </div>
-                        <Button v-if="selectedVisit && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
-                            @click="mode = 'edit'">
-                            {{ t("health.cta.editVetVisit") }}
-                        </Button>
+                        <ButtonArea v-model="mode" :loading="loading" :selectedCare="(selectedVisit as VisitExtended)"
+                            :customCta="t('health.cta.saveVisit')" />
                     </div>
                 </form>
             </div>

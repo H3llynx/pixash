@@ -15,6 +15,7 @@ import { useEvents } from '../../composables/useEvents.ts';
 import { treatmentFields } from '../../config.ts';
 import type { TreatmentExtended } from '../../types.ts';
 import { resetForm } from '../../utils.ts';
+import ButtonArea from './ButtonArea.vue';
 import { useTreatmentForm } from './composables/useTreatmentForm.ts';
 import MedicineArea from './MedicineArea.vue';
 import VetSelector from './VetSelector.vue';
@@ -119,20 +120,10 @@ watch(() => mode.value, (mode) => {
                             :id="notes.id" :label="t(notes.label)" :type="notes.type"
                             :placeholder="t(notes.placeholder)" />
                         <MedicineArea v-model="formData.medication" />
-                        <div class="flex gap-0.5 mt-1 items-center ml-auto"
-                            v-if="!selectedTreatment || mode === 'edit'">
-                            <Button v-if="selectedTreatment && mode === 'edit'" variant="secondary" size="sm"
-                                type="button" :disabled="loading" @click="mode = 'view'">
-                                {{ t("common.button.cancel") }}
-                            </Button>
-                            <Button size="sm" :disabled="loading">{{ isAddingCare.treatment ?
-                                t("health.cta.startTreatment") :
-                                t("health.cta.saveTreatment") }}</Button>
-                        </div>
-                        <Button v-if="selectedTreatment && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
-                            @click="mode = 'edit'">
-                            {{ t("health.cta.editTreatment") }}
-                        </Button>
+                        <ButtonArea v-model="mode" :loading="loading"
+                            :selectedCare="(selectedTreatment as TreatmentExtended)" :customCta="isAddingCare.treatment
+                                ? t('health.cta.startTreatment')
+                                : t('health.cta.saveTreatment')" />
                     </div>
                 </form>
             </div>

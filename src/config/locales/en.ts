@@ -290,7 +290,6 @@ export default {
             deleteVisit: "Delete vet visit",
             saveVet: "Save {name}",
             deleteVet: "Delete vet",
-            editVetVisit: "Edit vet appointment",
             logTreatment: "Log treatment",
             logWeight: "Log weight",
             editLog: "Edit log",

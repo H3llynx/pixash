@@ -14,7 +14,9 @@ import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { antiparasiteFields } from '../../config.ts';
+import type { LogExtended } from '../../types.ts';
 import LogSuccess from '../LogSuccess.vue';
+import ButtonArea from './ButtonArea.vue';
 import { useAntiparasiticForm } from './composables/useAntiparasiticForm.ts';
 
 const { isAddingCare, selectedLog, selectedPet } = usePets();
@@ -91,19 +93,9 @@ watch(() => mode.value, (mode) => {
                         <Input v-if="selectedLog.antiparasitic?.notes || mode === 'edit'" v-model="formData.notes"
                             :id="notes.id" :label="t(notes.label)" :type="notes.type"
                             :placeholder="t(notes.placeholder)" />
-                        <div class="flex gap-0.5 mt-1 items-center ml-auto"
-                            v-if="!selectedLog.antiparasitic || mode === 'edit'">
-                            <Button type="button" v-if="selectedLog.antiparasitic && mode === 'edit'"
-                                variant="secondary" size="sm" :disabled="loading" @click="mode = 'view'">
-                                {{ t("common.button.cancel") }}
-                            </Button>
-                            <Button size="sm" :disabled="loading">{{ t("health.cta.logTreatment")
-                                }}</Button>
-                        </div>
-                        <Button v-if="selectedLog.antiparasitic && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
-                            @click="mode = 'edit'">
-                            {{ t("common.button.edit") }}
-                        </Button>
+                        <ButtonArea v-model="mode" :loading="loading"
+                            :selectedCare="(selectedLog.antiparasitic as LogExtended)"
+                            :customCta="t('health.cta.logTreatment')" />
                     </div>
                 </form>
             </div>

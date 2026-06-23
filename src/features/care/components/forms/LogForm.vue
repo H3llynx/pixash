@@ -21,8 +21,9 @@ import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { logFields } from '../../../pets/config.ts';
 import { useEvents } from '../../composables/useEvents.ts';
-import type { Log, OtherLogExtended } from '../../types.ts';
+import type { Log, LogExtended, OtherLogExtended } from '../../types.ts';
 import { resetForm } from '../../utils.ts';
+import ButtonArea from './ButtonArea.vue';
 
 const { selectedPet, deleteSelectedLog, healthError, isAddingCare, selectedLog, addNewLog, updateSelectedLog } = usePets();
 const { selectedDate } = useEvents();
@@ -183,7 +184,7 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedLog.other!.subtype}`)
                     })
-                        }}
+                    }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.other" variant="ghost" size="xs"
@@ -226,22 +227,8 @@ watch(() => formData.pictures, (pictures) => {
                                 :readonly="!!selectedLog.other && mode === 'view'" :placeholder="t(notes.placeholder)"
                                 :maxLength="500" />
                         </label>
-                        <div class="flex gap-0.5 mt-1 items-center ml-auto"
-                            v-if="!selectedLog.other || mode === 'edit'">
-                            <Button type="button" v-if="selectedLog.other && mode === 'edit'" variant="secondary"
-                                size="sm" :disabled="loading" @click="mode = 'view'">
-                                {{ t("common.button.cancel") }}
-                            </Button>
-                            <Button size="sm" :disabled="loading">{{ t("pet.cta.saveLog", {
-                                subtype:
-                                    t(`pet.logs.${formData.subtype}`).toLowerCase()
-                            })
-                                }}</Button>
-                        </div>
-                        <Button v-if="selectedLog.other && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
-                            @click="mode = 'edit'">
-                            {{ t("common.button.edit") }}
-                        </Button>
+                        <ButtonArea v-model="mode" :loading="loading" :selectedCare="(selectedLog.other as LogExtended)"
+                            :customCta="t('pet.cta.saveLog', { subtype: t(`pet.logs.${formData.subtype}`).toLowerCase() })" />
                     </div>
                 </form>
             </div>
