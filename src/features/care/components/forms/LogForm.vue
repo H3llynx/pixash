@@ -64,6 +64,7 @@ const handleClose = () => {
     isAddingCare.other = false;
     selectedLog.other = null;
     pictures.value = [];
+    resetForm(formData, defaultForm);
 };
 
 const hostPictures = async () => {
@@ -178,7 +179,7 @@ watch(() => mode.value, () => {
                         subtype:
                             t(`pet.logs.${selectedLog.other!.subtype}`)
                     })
-                    }}
+                        }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.other" variant="ghost" size="xs"
@@ -213,7 +214,6 @@ watch(() => mode.value, () => {
                             </div>
                             <AddPictures v-if="mode === 'edit'" />
                         </div>
-
                         <VueEasyLightbox :visible="visibleRef" :imgs="imgsRef" :index="indexRef" :loop="true"
                             @hide="onHide" />
                         <label :for="notes.id" v-if="selectedLog.other?.notes || mode === 'edit'">
@@ -232,7 +232,7 @@ watch(() => mode.value, () => {
                                 subtype:
                                     t(`pet.logs.${formData.subtype}`).toLowerCase()
                             })
-                            }}</Button>
+                                }}</Button>
                         </div>
                         <Button v-if="selectedLog.other && mode === 'view'" size="sm" class="mt-1 md:ml-auto"
                             @click="mode = 'edit'">
