@@ -4,9 +4,11 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { type DateClickArg } from "@fullcalendar/interaction";
 import FullCalendar from '@fullcalendar/vue3';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { usePets } from '../../../pets/composables/usePets';
 
 const { selectVaccine, selectVisit, selectLog } = usePets();
+const { locale } = useI18n();
 
 const props = defineProps<{
     events?: EventInput
@@ -25,13 +27,14 @@ const eventColors: Record<string, string> = {
 };
 
 const calendarOptions = computed(() => ({
+    locale: locale.value,
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: "dayGridMonth",
     events: props.events,
     height: "auto",
     headerToolbar: {
         left: "title",
-        right: "today,prev,next"
+        right: "dayGridMonth,dayGridWeek,today,prev,next"
     },
     eventDidMount(info: EventMountArg) {
         const type = info.event.extendedProps.event.eventType;
@@ -100,6 +103,7 @@ const calendarOptions = computed(() => ({
 :deep(.fc-daygrid-day, .fc-day-today) {
     border-radius: 10px;
     cursor: pointer;
+    padding-inline: 3px;
 
     &:hover {
         background-color: var(--color-brand-rgba);
@@ -128,10 +132,6 @@ const calendarOptions = computed(() => ({
     font-size: small;
     color: var(--color-text-secondary);
     height: 50px;
-}
-
-:deep(.fc-daygrid-day-frame) {
-    aspect-ratio: 1;
 }
 
 :deep(.fc-button),
@@ -175,6 +175,31 @@ const calendarOptions = computed(() => ({
 
     :deep(.treatment-event) {
         border: 1px solid var(--color-separator);
+    }
+
+    :deep(.fc-dayGridWeek-view .fc-daygrid-day-frame) {
+        min-height: 30vh;
+    }
+}
+
+@media (width >=64rem) {
+    :deep(.fc-dayGridWeek-view .fc-daygrid-day-frame) {
+        min-height: 50vh;
+    }
+}
+
+@media (width < 48rem) {
+    .fc {
+        padding-bottom: 1rem
+    }
+
+    :deep(.fc-header-toolbar) {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    :deep(.fc-toolbar-chunk:first-child) {
+        width: 100%;
     }
 }
 </style>
