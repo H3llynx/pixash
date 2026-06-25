@@ -25,7 +25,7 @@ import type { Log, LogExtended, OtherLogExtended } from '../../types.ts';
 import { resetForm } from '../../utils.ts';
 import ButtonArea from './ButtonArea.vue';
 
-const { selectedPet, deleteSelectedLog, healthError, isAddingCare, selectedLog, addNewLog, updateSelectedLog } = usePets();
+const { selectedPet, deleteSelectedLog, careError, isAddingCare, selectedLog, addNewLog, updateSelectedLog } = usePets();
 const { selectedDate } = useEvents();
 const { t } = useI18n();
 const { show } = useToast();
@@ -118,7 +118,7 @@ const handleSubmit = async () => {
         };
     }
     catch (e) {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+        show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
     }
     finally { loading.value = false; }
 };
@@ -128,7 +128,7 @@ const handleDelete = () => {
     const log = selectedLog.other;
     if (!log || !pet) return;
     open({
-        title: t("dialog.deleteLog.title", { subtype: t(`pet.logs.${selectedLog.other!.subtype}`) }),
+        title: t("dialog.deleteRecord.title", { title: t(`pet.logs.${selectedLog.other!.subtype}`) }),
         message: t("dialog.deleteGenericMsg"),
         isDelete: true,
         onConfirm: async () => {
@@ -141,7 +141,7 @@ const handleDelete = () => {
                     message: t("toast.success.message.logDeleted"),
                 });
             } catch (error) {
-                show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+                show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
             } finally { loading.value = false; }
         }
     });
@@ -188,12 +188,11 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedLog.other!.subtype}`)
                     })
-                    }}
+                        }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.other" variant="ghost" size="xs"
-                            :aria-label="t('pet.cta.deleteLog', { subtype: t(`pet.logs.${selectedLog.other!.subtype}`) })"
-                            @click="handleDelete">
+                            :aria-label="t('common.button.deleteRecord')" @click="handleDelete">
                             <Trash2 :size="22" color="var(--color-brand-light)" />
                         </Button>
                     </div>

@@ -20,7 +20,7 @@ const defaultForm = {
 const formData = reactive<TreatmentRecord>({ ...defaultForm });
 
 export const useTreatmentForm = () => {
-    const { isAddingCare, selectedTreatment, selectTreatment, selectedPet, addNewTreatment, updateSelectedTreatment, healthError, deleteSelectedTreatment } = usePets();
+    const { isAddingCare, selectedTreatment, selectTreatment, selectedPet, addNewTreatment, updateSelectedTreatment, careError, deleteSelectedTreatment } = usePets();
     const { selectedDate } = useEvents();
     const { show } = useToast();
     const { open } = useDialog();
@@ -78,7 +78,7 @@ export const useTreatmentForm = () => {
             resetForm(formData, defaultForm);
         }
         catch (e) {
-            show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+            show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
         }
         finally {
             loading.value = false;
@@ -90,8 +90,8 @@ export const useTreatmentForm = () => {
         const treatment = selectedTreatment.value;
         if (!treatment || !pet) return;
         open({
-            title: t("dialog.deleteEvent.title", { title: treatment.name }),
-            message: t("dialog.deleteEvent.message", { name: pet.name, title: treatment.name }),
+            title: t("dialog.deleteRecord.title", { title: treatment.name }),
+            message: t("dialog.deleteRecord.message", { name: pet.name, title: treatment.name }),
             isDelete: true,
             onConfirm: async () => {
                 loading.value = true;
@@ -104,7 +104,7 @@ export const useTreatmentForm = () => {
                         message: t("toast.success.message.eventDeleted", { name: pet.name, title: treatment.name }),
                     });
                 } catch (error) {
-                    show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+                    show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
                 } finally { loading.value = false; }
             }
         });

@@ -16,7 +16,7 @@ import type { STAGE } from '../../config.ts';
 import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, PetEvent, VaccineExtended, VaccineRecord, VaccineTypes, VisitExtended } from '../../types.ts';
 import DateTag from './DateTag.vue';
 
-const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, healthError, healthLoading } = usePets();
+const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, careError, careLoading } = usePets();
 const { locale, t } = useI18n();
 const { useEventData, selectedEvent } = useEvents();
 const { show } = useToast();
@@ -100,7 +100,7 @@ const markAsDone = async (event: PetEvent) => {
         };
         show({ type: "success", title: t("toast.success.title.generic"), message: t("toast.success.message.markedDone") });
     } catch {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+        show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
     } finally {
         nextDueModal.value = false;
         loading.value = false;
@@ -116,7 +116,7 @@ const cancelMarkDone = () => {
 </script>
 <template>
     <div tabindex="0" role="button" :class="{
-        'animate-pulse': healthLoading && selectedEvent?.id === event.id,
+        'animate-pulse': careLoading && selectedEvent?.id === event.id,
         'card hover-gradient cursor-pointer flex-row p-1 w-full md:max-w-md border border-border gap-1.5 justify-between': true
     }" @click="handleClick(event)" @keydown.enter="handleClick(event)">
         <div class="flex gap-0.5 w-full min-w-0 h-full">

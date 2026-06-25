@@ -19,7 +19,7 @@ import { vetFormFields } from '../../config.ts';
 import type { Vet } from '../../types.ts';
 import { resetForm } from '../../utils.ts';
 
-const { pets, isAddingCare, selectedVet, isUpdatingVet, vetLoading, healthError, addNewVet, updateSelectedVet, deleteSelectedVet } = usePets();
+const { pets, isAddingCare, selectedVet, isUpdatingVet, vetLoading, careError, addNewVet, updateSelectedVet, deleteSelectedVet } = usePets();
 const { t } = useI18n();
 const { show } = useToast();
 const { open } = useDialog();
@@ -70,7 +70,7 @@ const handleSubmit = async () => {
             });
         }
     } catch (e) {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+        show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
     }
 };
 
@@ -90,7 +90,7 @@ const handleDelete = async () => {
                     message: t("toast.success.message.nameDeleted", { name: vet.name }),
                 });
             } catch (error) {
-                show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+                show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
             }
         }
     });

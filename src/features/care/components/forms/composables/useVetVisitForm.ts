@@ -8,7 +8,7 @@ import { useEvents } from "../../../composables/useEvents";
 import { resetForm } from "../../../utils";
 
 export const useVetVisitForm = () => {
-    const { selectedPet, selectedVisit, selectVisit, isAddingCare, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, healthError } = usePets();
+    const { selectedPet, selectedVisit, selectVisit, isAddingCare, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, careError } = usePets();
     const { selectedDate } = useEvents();
     const { show } = useToast();
     const { open } = useDialog();
@@ -57,7 +57,7 @@ export const useVetVisitForm = () => {
             };
         }
         catch (e) {
-            show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+            show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
         }
         finally {
             loading.value = false;
@@ -69,8 +69,8 @@ export const useVetVisitForm = () => {
         const visit = selectedVisit.value;
         if (!visit || !pet) return;
         open({
-            title: t("dialog.deleteEvent.title", { title: visit.title }),
-            message: t("dialog.deleteEvent.message", { name: pet.name, title: visit.title }),
+            title: t("dialog.deleteRecord.title", { title: visit.title }),
+            message: t("dialog.deleteRecord.message", { name: pet.name, title: visit.title }),
             isDelete: true,
             onConfirm: async () => {
                 loading.value = true;
@@ -81,12 +81,12 @@ export const useVetVisitForm = () => {
                         title: t("toast.success.title.generic"),
                         message: t("toast.success.message.eventDeleted", { name: pet.name, title: visit.title }),
                     });
+                    resetForm(formData, defaultForm);
                 } catch (error) {
-                    show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+                    show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
                 } finally { loading.value = false; }
             }
         });
-        resetForm(formData, defaultForm);
     };
 
     return { loading, defaultForm, formData, handleClose, handleSubmit, handleDelete };

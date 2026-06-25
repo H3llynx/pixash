@@ -7,7 +7,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { usePets } from '../../../pets/composables/usePets';
 
-const { selectVaccine, selectVisit, selectLog, loading, healthLoading } = usePets();
+const { selectVaccine, selectVisit, selectLog, loading, careLoading } = usePets();
 const { locale } = useI18n();
 
 const props = defineProps<{
@@ -67,7 +67,7 @@ const calendarOptions = computed(() => ({
 </script>
 
 <template>
-    <div :class="{ 'animate-pulse': loading || healthLoading }">
+    <div :class="{ 'animate-pulse': loading || careLoading }">
         <FullCalendar :options="calendarOptions" />
     </div>
 </template>

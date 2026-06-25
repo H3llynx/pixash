@@ -13,7 +13,8 @@ export default {
             allChip: "All",
             backDash: "Back to dashboard",
             backCal: "Back to calendar",
-            markDone: "Mark as done"
+            markDone: "Mark as done",
+            deleteRecord: "Delete record"
         },
         panel: {
             hide: "Close form"
@@ -125,8 +126,7 @@ export default {
             save: "Save {name}",
             delete: "Delete {name}",
             updatePic: "Update {name}'s picture",
-            saveLog: "Save {subtype} log",
-            deleteLog: "Delete {subtype} log",
+            saveLog: "Save {subtype} record",
         },
         profile: {
             labels: {
@@ -296,8 +296,7 @@ export default {
             startTreatment: "Start treatment",
             saveTreatment: "Save treatment",
             editTreatment: "Modify treatment",
-            logDose: "Log dose",
-            cancelLog: "Cancel log",
+            logDose: "Log medication",
             editMedTime: "Update medication given time"
         },
         sharedFields: {
@@ -420,7 +419,7 @@ export default {
         vaccines: "Vaccines",
         antiparasitics: "Antiparasitics",
         other: "Other events",
-        weightLog: "Weight log"
+        weightLog: "Weight log",
     },
     toast: {
         dismiss: "Dismiss notification",
@@ -466,17 +465,13 @@ export default {
             title: "Delete {name} ?",
             message: "This will remove {name}'s profile and tracked information. This action cannot be undone. Are you sure you'd like to proceed?",
         },
-        deleteEvent: {
-            title: "Delete {title} ?",
-            message: "This will remove {name}'s {title}. This action cannot be undone. Are you sure you'd like to proceed?",
+        deleteRecord: {
+            title: "Delete {title} record?",
+            message: "This will permanently delete {name}'s {title} record. This action cannot be undone. Are you sure you'd like to proceed?",
         },
         deleteVet: {
             title: "Delete {name} ?",
             message: "This will remove {name}'s contact information. This action cannot be undone. Are you sure you'd like to proceed?",
-        },
-        deleteLog: {
-            title: "Delete {subtype} log?",
-            titleAntiparasitic: "Delete antiparasitic?",
         },
         deletePicture: {
             title: "Delete picture ?",

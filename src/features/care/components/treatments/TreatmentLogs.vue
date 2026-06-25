@@ -17,7 +17,7 @@ const props = defineProps<{
     color: string
 }>();
 
-const { addNewLog, deleteSelectedLog, healthError, selectLog, selectedLog } = usePets();
+const { addNewLog, deleteSelectedLog, careError, selectLog, selectedLog } = usePets();
 const { t, locale } = useI18n();
 const { show } = useToast();
 const loading = ref<boolean>(false);
@@ -58,7 +58,7 @@ const logDose = async (medication: MedicineDb) => {
     try {
         await addNewLog(log, props.pet.id);
     } catch (e) {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+        show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
     } finally { loading.value = false; }
 };
 
@@ -67,7 +67,7 @@ const deleteDose = async (log: LogExtended) => {
     try {
         await deleteSelectedLog(log, props.pet.id);
     } catch (e) {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+        show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
     } finally { loading.value = false; }
 }
 

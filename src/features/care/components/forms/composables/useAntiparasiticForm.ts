@@ -10,7 +10,7 @@ import type { AntiparasiteLogExtended, AntiparasiteTypes, Log, PetEvent } from "
 import { getAntiparasites, resetForm } from "../../../utils";
 
 export const useAntiparasiticForm = () => {
-    const { logs, isAddingCare, healthError, selectedLog, selectedPet, addNewLog, updateSelectedLog, deleteSelectedLog } = usePets();
+    const { logs, isAddingCare, careError, selectedLog, selectedPet, addNewLog, updateSelectedLog, deleteSelectedLog } = usePets();
     const { selectedDate } = useEvents();
     const { t } = useI18n();
     const { show } = useToast();
@@ -52,7 +52,7 @@ export const useAntiparasiticForm = () => {
         const log = selectedLog.antiparasitic;
         if (!log || !pet) return;
         open({
-            title: t("dialog.deleteLog.titleAntiparasitic"),
+            title: t("dialog.deleteRecord.title", { title: t("events.antiparasitics") }),
             message: t("dialog.deleteGenericMsg"),
             isDelete: true,
             onConfirm: async () => {
@@ -65,7 +65,7 @@ export const useAntiparasiticForm = () => {
                         message: t("toast.success.message.logDeleted"),
                     });
                 } catch (error) {
-                    show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+                    show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
                 } finally { loading.value = false; }
             }
         });
@@ -102,7 +102,7 @@ export const useAntiparasiticForm = () => {
             };
         }
         catch (e) {
-            show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+            show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
         }
         finally { loading.value = false; }
     };

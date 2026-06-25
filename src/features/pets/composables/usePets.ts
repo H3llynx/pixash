@@ -19,8 +19,8 @@ const isAddingPet = ref<boolean>(false);
 const isUpdatingPet = ref<boolean>(false);
 
 const {
-  error: healthError,
-  loading: healthLoading,
+  error: careError,
+  loading: careLoading,
   vetLoading,
   treatmentLoading,
   isAddingCare,
@@ -266,10 +266,10 @@ export const usePets = () => {
     selectPet,
     loading,
     vetLoading,
-    healthLoading,
+    careLoading,
     treatmentLoading,
     error,
-    healthError,
+    careError,
     isAddingPet,
     isUpdatingPet,
     fetchUserPets,

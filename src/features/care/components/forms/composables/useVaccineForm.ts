@@ -11,7 +11,7 @@ import type { VaccineExtended, VaccineTypes } from "../../../types";
 import { getVaccineTypes, resetForm, showVaccines } from "../../../utils";
 
 export const useVaccineForm = () => {
-    const { selectedPet, isAddingCare, vets, selectedVet, selectedVaccine, selectVaccine, addNewVaccine, healthError, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
+    const { selectedPet, isAddingCare, vets, selectedVet, selectedVaccine, selectVaccine, addNewVaccine, careError, updateSelectedVaccine, deleteSelectedVaccine } = usePets();
     const { selectedDate } = useEvents();
     const { show } = useToast();
     const { open } = useDialog();
@@ -104,7 +104,7 @@ export const useVaccineForm = () => {
             };
         }
         catch (e) {
-            show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+            show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
         }
         finally {
             loading.value = false;
@@ -116,8 +116,8 @@ export const useVaccineForm = () => {
         const vaccine = selectedVaccine.value;
         if (!vaccine || !pet) return;
         open({
-            title: t("dialog.deleteEvent.title", { title: showVaccines(vaccine.types, pet, t) }),
-            message: t("dialog.deleteEvent.message", { name: pet.name, title: showVaccines(vaccine.types, pet, t) }),
+            title: t("dialog.deleteRecord.title", { title: showVaccines(vaccine.types, pet, t) }),
+            message: t("dialog.deleteRecord.message", { name: pet.name, title: showVaccines(vaccine.types, pet, t) }),
             isDelete: true,
             onConfirm: async () => {
                 loading.value = true;
@@ -128,12 +128,12 @@ export const useVaccineForm = () => {
                         title: t("toast.success.title.generic"),
                         message: t("toast.success.message.eventDeleted", { name: pet.name, title: showVaccines(vaccine.types, pet, t) }),
                     });
+                    resetForm(formData, defaultForm);
                 } catch (error) {
-                    show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+                    show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
                 } finally { loading.value = false; }
             }
         });
-        resetForm(formData, defaultForm);
     };
 
     watch(() => [selectedPet.value, selectedVaccine.value, selectedDate.value] as const,
