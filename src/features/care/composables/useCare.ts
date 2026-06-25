@@ -69,7 +69,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
 
     const selectLog = <K extends keyof typeof selectedLog>(log: typeof selectedLog[K], logType: K) => {
         resetState(isAddingCare);
-        resetState(selectedLog);
+        resetLogs(selectedLog);
         selectedVaccine.value = null;
         selectedVisit.value = null;
         selectedLog[logType] = log;

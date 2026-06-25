@@ -7,7 +7,7 @@ export const resetState = (state: Record<string, boolean>) => {
     });
 };
 
-export const resetLogs = (log: any) => {
+export const resetLogs = (log: Record<string, any>) => {
     Object.keys(log).forEach((key) => {
         log[key] = null;
     });
