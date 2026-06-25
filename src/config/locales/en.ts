@@ -20,8 +20,8 @@ export default {
             hide: "Close form"
         },
         text: {
-            noEventText: "You don't have any event scheduled.",
-            noHistoryText: "You don't have any past event registered.",
+            noEventText: "No upcoming care scheduled.",
+            noHistoryText: "No records found for the selected category",
             noPastTreatments: "{name} has no past medical treatment recorded.",
             noActiveTreatment: "{name} has no active medical treatments.",
             noWeightLog: "No weight log registered.",
