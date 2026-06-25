@@ -23,7 +23,6 @@ const { isAddingCare, selectedLog, selectedPet } = usePets();
 const { loading, formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error } = useAntiparasiticForm();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
-const today = todayAsInput();
 provide('readonly', isReadonly);
 
 const { treated, notGiven, givenDate, dueDate, notes } = antiparasiteFields;
@@ -53,7 +52,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                    }}
+                        }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"
@@ -74,7 +73,7 @@ watch(() => mode.value, (mode) => {
                     </Selector>
                     <div class="default-padding flex flex-col gap-1">
                         <Input v-if="!formData.notGiven" v-model="formData.givenAt" :id="givenDate.id"
-                            :label="t(givenDate.label)" :type="givenDate.type" :max="today" required>
+                            :label="t(givenDate.label)" :type="givenDate.type" :max="todayAsInput()" required>
                             <template #addon>
                                 <CalendarCheck class="mr-0.5" color="var(--color-brand)" />
                             </template>
@@ -83,7 +82,7 @@ watch(() => mode.value, (mode) => {
                             :label="t(notGiven.label, { name: selectedPet!.name })" :id="notGiven.id" />
                         <Input v-if="selectedLog.antiparasitic?.dueOn || mode === 'edit'" v-model="formData.dueOn"
                             :id="dueDate.id" :label="t(dueDate.label)" :type="dueDate.type"
-                            :min="formData.givenAt || today" :required="!formData.givenAt">
+                            :min="formData.givenAt || todayAsInput()" :required="!formData.givenAt">
                             <template #addon>
                                 <CalendarClock v-if="!formData.dueOn" class="mr-0.5" color="var(--color-border)" />
                                 <Button v-else type="button" variant="ghost" size="xs" @click="formData.dueOn = ''">{{

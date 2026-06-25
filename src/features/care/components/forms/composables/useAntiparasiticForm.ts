@@ -20,8 +20,7 @@ export const useAntiparasiticForm = () => {
     const loading = ref<boolean>(false);
     const error = ref<boolean>(false);
     const newLog = ref<PetEvent | null>(null);
-    const today = todayAsInput();
-    const givenAt = computed(() => selectedDate.value && selectedDate.value <= today ? selectedDate.value : formData.notGiven ? "" : today);
+    const givenAt = computed(() => selectedDate.value && selectedDate.value <= todayAsInput() ? selectedDate.value : formData.notGiven ? "" : todayAsInput());
     const dueOn = computed(() => selectedDate.value && selectedDate.value > givenAt.value ? selectedDate.value : "");
     const fillLogData = (log: AntiparasiteLogExtended) => {
         Object.assign(formData, {
