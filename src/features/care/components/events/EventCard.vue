@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { Check, MapPinned, Stethoscope, Syringe } from '@lucide/vue';
-import { computed, toRef } from 'vue';
+import { CalendarClock, Check, MapPinned, Stethoscope, Syringe } from '@lucide/vue';
+import { computed, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
+import FreeModal from '../../../../components/FreeModal.vue';
+import Input from '../../../../components/Input.vue';
 import Loading from '../../../../components/loading/Loading.vue';
+import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
 import { useToast } from '../../../../composables/useToast.ts';
 import { todayAsInput, tsToDate } from '../../../../utils.ts';
 import PetIndicator from '../../../pets/components/PetIndicator.vue';
@@ -22,6 +25,10 @@ const props = defineProps<{ event: PetEvent }>();
 const { pet, vet, title } = useEventData(toRef(props, "event"));
 
 const date = computed(() => props.event.dueOn ?? props.event.date ?? props.event.ts);
+const nextDueModal = ref<boolean>(false);
+const nextDueInput = ref<boolean>(false);
+const nextDueDate = ref<string>("");
+const loading = ref<boolean>(false);
 
 const handleClick = (event: PetEvent) => {
     if (event.eventType === "vaccine") {
@@ -44,6 +51,7 @@ const handleClick = (event: PetEvent) => {
 const markAsDone = async (event: PetEvent) => {
     if (!pet.value) return;
     const today = todayAsInput();
+    loading.value = true;
     try {
         if (event.eventType === "vaccine") {
             const baseData: VaccineRecord = {
@@ -58,14 +66,15 @@ const markAsDone = async (event: PetEvent) => {
                     givenAt: tsToDate(event.givenAt, "input") as string,
                     dueOn: ""
                 });
-                await addNewVaccine({ ...baseData, givenAt: today }, pet.value.id);
+                await addNewVaccine({ ...baseData, givenAt: today, dueOn: nextDueDate.value }, pet.value.id);
             } else {
                 await updateSelectedVaccine(event as VaccineExtended, pet.value.id, {
                     ...baseData,
                     givenAt: today,
-                    dueOn: ""
+                    dueOn: nextDueDate.value
                 });
             }
+            selectVaccine(null);
         };
         if (event.eventType === "log" && event.type === "antiparasite") {
             const baseData = {
@@ -79,20 +88,30 @@ const markAsDone = async (event: PetEvent) => {
                     givenAt: tsToDate(event.givenAt, "input") as string,
                     dueOn: ""
                 });
-                await addNewLog({ ...baseData, givenAt: today }, pet.value.id);
+                await addNewLog({ ...baseData, givenAt: today, dueOn: nextDueDate.value }, pet.value.id);
             } else {
                 await updateSelectedLog(event as LogExtended, pet.value.id, {
                     ...baseData,
                     givenAt: today,
-                    dueOn: ""
+                    dueOn: nextDueDate.value
                 });
             }
+            selectLog(null, "antiparasitic");
         };
         show({ type: "success", title: t("toast.success.title.generic"), message: t("toast.success.message.markedDone") });
     } catch {
         show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
+    } finally {
+        nextDueModal.value = false;
+        loading.value = false;
     }
 };
+
+const cancelMarkDone = () => {
+    selectVaccine(null);
+    selectLog(null, "antiparasitic")
+    nextDueModal.value = false;
+}
 
 </script>
 <template>
@@ -118,7 +137,7 @@ const markAsDone = async (event: PetEvent) => {
                         }) }}</p>
                     <Button
                         v-if="event.eventType === 'vaccine' || event.eventType === 'log' && event.type === 'antiparasite'"
-                        size="xxs" variant="tertiary" @click="markAsDone(event)">
+                        size="xxs" variant="tertiary" @click="nextDueModal = true">
                         <Check :size="16" />{{ t("common.button.markDone") }}
                     </Button>
                 </div>
@@ -130,6 +149,25 @@ const markAsDone = async (event: PetEvent) => {
         </div>
         <PetIndicator :pet="pet!" />
     </div>
+    <FreeModal v-model="nextDueModal" class="relative">
+        <LoadingPuppy v-if="loading" />
+        <template v-else>
+            <h3 class="font-title">Is there a next due date?</h3>
+            <Button v-if="!nextDueInput" @click="nextDueInput = true">Yes</Button>
+            <Button v-if="!nextDueDate" variant="secondary" @click="markAsDone(event)">No need</Button>
+            <template v-if="nextDueInput">
+                <Input v-model="nextDueDate" type="date" :min="todayAsInput()">
+                    <template #addon>
+                        <CalendarClock v-if="!nextDueDate" class="mr-0.5" color="var(--color-border)" />
+                        <Button v-else variant="ghost" size="xs" @click="nextDueDate = ''">{{
+                            t("common.button.clear") }}</Button>
+                    </template>
+                </Input>
+                <Button v-if="nextDueDate" @click="markAsDone(event)">{{ t("common.button.confirm") }}</Button>
+            </template>
+            <Button variant="ghost" @click="cancelMarkDone">{{ t("common.button.cancel") }}</Button>
+        </template>
+    </FreeModal>
 </template>
 
 <style scoped>
