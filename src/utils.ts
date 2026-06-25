@@ -1,9 +1,9 @@
 import equal from 'fast-deep-equal';
 import { Timestamp } from "firebase/firestore";
 
-export const resetState = (state: any) => {
+export const resetState = (state: Record<string, boolean>) => {
     Object.keys(state).forEach((key) => {
-        (state as Record<string, boolean>)[key] = false;
+        state[key] = false;
     });
 };
 
