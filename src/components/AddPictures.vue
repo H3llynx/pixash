@@ -4,6 +4,11 @@ import { useI18n } from 'vue-i18n';
 import { useAddPictures } from '../composables/useAddPictures.ts';
 import Button from './Button.vue';
 
+defineProps<{
+    initialImages: number
+    max: number
+}>();
+
 const { t } = useI18n();
 const { pictures, onFileChange, deletePicture } = useAddPictures();
 </script>
@@ -18,9 +23,10 @@ const { pictures, onFileChange, deletePicture } = useAddPictures();
         </Button>
     </div>
     <label for="pictures" :aria-label="t('common.fileInputLabel')"
-        class="min-w-[160px] max-h-[160px] mb-0.25 border border-dashed border-text-secondary text-text-secondary rounded-xl flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed p-0.5 hover:text-brand-light hover:border-brand-light">
-        <input id="pictures" type="file" accept="image/*" class="sr-only" tabindex="0" multiple @change="onFileChange"
-            @click="(e) => (e.target as HTMLInputElement).value = ''" :disabled="pictures.length >= 10" />
+        class="w-[160px] h-[120px] mb-0.25 border border-dashed border-text-secondary text-text-secondary rounded-xl flex items-center gap-[5px] justify-center p-0.5 hover:text-brand-light hover:border-brand-light has-disabled:cursor-not-allowed has-disabled:opacity-40">
+        <input id="pictures" type="file" accept="image/*" class="sr-only" tabindex="0" multiple
+            @change="onFileChange($event, max, initialImages)" @click="(e) => (e.target as HTMLInputElement).value = ''"
+            :disabled="pictures.length + initialImages >= max" />
         <Camera class="shrink-0" />
     </label>
 </template>

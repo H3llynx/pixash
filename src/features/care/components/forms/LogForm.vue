@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarCheck, Trash2, X } from '@lucide/vue';
+import { CalendarCheck, ImageIcon, Trash2, X } from '@lucide/vue';
 import { provide, reactive, ref, watch } from 'vue';
 import VueEasyLightbox, { useEasyLightbox } from 'vue-easy-lightbox';
 import { useI18n } from 'vue-i18n';
@@ -37,6 +37,7 @@ provide('readonly', isReadonly);
 const { subtype, date, notes } = logFields;
 const loading = ref<boolean>(false);
 const error = ref<boolean>(false);
+const loadedPictures = reactive(new Set<number>());
 const defaultForm = {
     subtype: subtype.options[0].id,
     date: "",
@@ -65,6 +66,7 @@ const handleClose = () => {
     isAddingCare.other = false;
     selectedLog.other = null;
     pictures.value = [];
+    loadedPictures.clear();
     resetForm(formData, defaultForm);
 };
 
@@ -154,6 +156,7 @@ watch(() => isAddingCare.other, (adding) => {
 
 watch(() => selectedLog.other, (log) => {
     mode.value = log ? "view" : "edit";
+    loadedPictures.clear();
     if (log) fillLogData(selectedLog.other!);
     else resetForm(formData, defaultForm);
 }, { deep: true });
@@ -211,14 +214,19 @@ watch(() => formData.pictures, (pictures) => {
                         <div class="preview-container">
                             <div v-if="formData.pictures.length" v-for="(picture, index) in formData.pictures"
                                 class="relative rounded-lg mb-0.25 min-w-[160px] cursor-pointer">
-                                <img :src="picture" class="rounded-lg relative" @click="showLightbox(index)" />
+                                <div v-if="!loadedPictures.has(index)"
+                                    class="rounded-lg min-w-[160px] h-[120px] bg-separator flex items-center justify-center">
+                                    <ImageIcon :size="28" class="opacity-30 animate-pulse" />
+                                </div>
+                                <img :src="picture" @load="loadedPictures.add(index)" class="rounded-lg relative"
+                                    @click="showLightbox(index)" :class="{ 'hidden': !loadedPictures.has(index) }" />
                                 <Button v-if="mode === 'edit'" type="button" variant="ghost" size="xxs"
                                     :aria-label="t('health.cta.cancelLog')" @click.stop="deletePicture(picture)"
                                     class="delete-btn hover:bg-error">
                                     <X :size="20" />
                                 </Button>
                             </div>
-                            <AddPictures v-if="mode === 'edit'" />
+                            <AddPictures v-if="mode === 'edit'" :initialImages="formData.pictures.length" :max="10" />
                         </div>
                         <VueEasyLightbox :visible="visibleRef" :imgs="imgsRef" :index="indexRef" :loop="true"
                             @hide="onHide" />

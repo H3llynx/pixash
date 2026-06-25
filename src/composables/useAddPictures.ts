@@ -8,10 +8,15 @@ type Picture = {
 const pictures = ref<Picture[]>([]);
 
 export const useAddPictures = () => {
-    const onFileChange = async (e: Event) => {
+    const onFileChange = async (e: Event, max?: number, initialImages: number = 0) => {
         const target = e.target as HTMLInputElement;
         const files = target.files ? Array.from(target.files) : [];
         if (!files.length) return;
+        if (max !== undefined) {
+            const remaining = max - initialImages - pictures.value.length;
+            if (remaining <= 0) return;
+            files.splice(remaining);
+        };
         files.forEach(file => {
             pictures.value.push({
                 file,

@@ -475,13 +475,10 @@
   }
 
   .preview-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-rows: masonry;
     gap: 0.5rem;
-    overflow-x: scroll;
-
-    &&::-webkit-scrollbar {
-      height: 6px;
-    }
   }
 
   .hover-gradient {
