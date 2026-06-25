@@ -22,7 +22,7 @@ import VetSelector from './VetSelector.vue';
 const { selectedPet, isAddingCare, selectedVaccine, vetLoading } = usePets();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
-const { vetTextInput, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete, loading } = useVaccineForm();
+const { vetTextInput, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete, loading } = useVaccineForm();
 provide('readonly', isReadonly);
 const { types, stage, given, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
 const today = todayAsInput();
@@ -39,7 +39,6 @@ watch(() => isAddingCare.vaccine, (adding) => {
     if (adding) {
         mode.value = "edit";
         formData.vet = givenBy.value;
-        formData.dueOn = date.value;
     }
 });
 </script>

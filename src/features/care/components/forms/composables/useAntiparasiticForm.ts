@@ -115,7 +115,7 @@ export const useAntiparasiticForm = () => {
         };
     });
 
-    watch(() => [selectedPet.value, selectedLog.antiparasitic] as const,
+    watch(() => [selectedPet.value, selectedLog.antiparasitic, selectedDate.value] as const,
         ([pet, log]) => {
             if (!pet) {
                 resetForm(formData, defaultForm);
@@ -124,12 +124,17 @@ export const useAntiparasiticForm = () => {
             const options = getAntiparasites(pet.species);
             if (!options || !options.length) return;
             antiparasitics.value = options;
-            if (log) fillLogData(log);
-            else if (!selectedLog.antiparasitic) {
+            if (log) {
+                fillLogData(log);
+            } else {
                 resetForm(formData, defaultForm);
+                const isPast = !!selectedDate.value && selectedDate.value <= todayAsInput();
+                const isFuture = !!selectedDate.value && selectedDate.value > todayAsInput();
                 Object.assign(formData, {
                     treated: [antiparasitics.value[0].id],
-                    givenAt: givenAt.value
+                    notGiven: isFuture,
+                    givenAt: isPast ? selectedDate.value : "",
+                    dueOn: isFuture ? selectedDate.value : "",
                 });
             }
         },
@@ -147,11 +152,6 @@ export const useAntiparasiticForm = () => {
                     : selectedDate.value || todayAsInput()
         };
     });
-
-    watch(() => selectedDate.value, (date) => {
-        if (date && date > today) formData.notGiven = true;
-        else formData.notGiven = false;
-    })
 
     return { formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error, loading }
 }

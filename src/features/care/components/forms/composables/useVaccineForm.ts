@@ -2,7 +2,7 @@ import { computed, reactive, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDialog } from "../../../../../composables/useDialog";
 import { useToast } from "../../../../../composables/useToast";
-import { getOneYearLaterInput, shallowEqual, tsToDate } from "../../../../../utils";
+import { getOneYearLaterInput, shallowEqual, todayAsInput, tsToDate } from "../../../../../utils";
 import { usePets } from "../../../../pets/composables/usePets";
 import { getAge } from "../../../../pets/utils";
 import { useEvents } from "../../../composables/useEvents";
@@ -136,7 +136,7 @@ export const useVaccineForm = () => {
         resetForm(formData, defaultForm);
     };
 
-    watch(() => [selectedPet.value, selectedVaccine.value] as const,
+    watch(() => [selectedPet.value, selectedVaccine.value, selectedDate.value] as const,
         ([pet, vaccine]) => {
             if (!pet) {
                 resetForm(formData, defaultForm);
@@ -145,13 +145,19 @@ export const useVaccineForm = () => {
             const options = getVaccineTypes(pet.species);
             if (!options || !options.length) return;
             vaccineTypes.value = options;
-            if (vaccine) fillVaccineData(vaccine);
-            else {
+            if (vaccine) {
+                fillVaccineData(vaccine);
+            } else {
                 resetForm(formData, defaultForm);
+                const isPast = !!selectedDate.value && selectedDate.value <= todayAsInput();
+                const isFuture = !!selectedDate.value && selectedDate.value > todayAsInput();
                 Object.assign(formData, {
                     types: [vaccineTypes.value[0].id],
                     stage: getAge(pet)?.stage,
-                    dueOn: date.value,
+                    given: isPast,
+                    givenAt: isPast ? date.value : "",
+                    nextDose: isFuture,
+                    dueOn: isFuture ? date.value : "",
                     vet: givenBy.value
                 });
             }
@@ -164,15 +170,15 @@ export const useVaccineForm = () => {
             formData.givenAt = selectedVaccine.value?.givenAt
                 ? tsToDate(selectedVaccine.value.givenAt, "input") as string
                 : date.value;
-            formData.nextDose = selectedVaccine.value?.dueOn ? true : false;
+            formData.nextDose = !!selectedVaccine.value?.dueOn;
             formData.dueOn = (formData.nextDose && selectedVaccine.value?.dueOn)
-                ? tsToDate(selectedVaccine.value?.dueOn, "input") as string
-                : ""
+                ? tsToDate(selectedVaccine.value.dueOn, "input") as string
+                : "";
         } else {
             formData.givenAt = "";
             formData.nextDose = false;
             formData.dueOn = selectedVaccine.value?.dueOn
-                ? tsToDate(selectedVaccine.value?.dueOn, "input") as string
+                ? tsToDate(selectedVaccine.value.dueOn, "input") as string
                 : date.value;
         }
     });
@@ -181,10 +187,12 @@ export const useVaccineForm = () => {
         if (nextDose) {
             formData.dueOn = selectedVaccine.value?.dueOn
                 ? tsToDate(selectedVaccine.value.dueOn, "input") as string
-                : getOneYearLaterInput(formData.givenAt) ?? date.value
-        } else formData.dueOn = (!formData.givenAt && selectedVaccine.value?.dueOn)
-            ? tsToDate(selectedVaccine.value?.dueOn, "input") as string
-            : "";
+                : getOneYearLaterInput(formData.givenAt) ?? date.value;
+        } else {
+            formData.dueOn = (!formData.givenAt && selectedVaccine.value?.dueOn)
+                ? tsToDate(selectedVaccine.value.dueOn, "input") as string
+                : "";
+        }
     });
 
     return { loading, vetTextInput, date, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete }
