@@ -115,7 +115,7 @@ export type Vet = {
 
 export type VetExtended = Vet & { id: string; };
 
-export type LogTypes = "antiparasite" | "weight";
+export type LogTypes = "antiparasite" | "weight" | "other";
 
 export type AntiparasiteRecord = {
     treated: AntiparasiteTypes["id"][];

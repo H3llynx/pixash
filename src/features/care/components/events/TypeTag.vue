@@ -1,22 +1,29 @@
 <script setup lang="ts">
-import type { PetEvent } from '../../types';
+import { useI18n } from 'vue-i18n';
+import type { OtherLogExtended, PetEvent } from '../../types';
+import { getLogIcon } from '../../utils';
+
+const { t } = useI18n();
 
 const props = defineProps<{ event: PetEvent }>();
 
 const getTagStyle = () => {
     return {
-        "tag capitalize": true,
+        "tag": true,
         "vaccine": props.event.eventType === "vaccine",
         "visit": props.event.eventType === "visit",
         "antiparasite": props.event.type === "antiparasite",
         "weight": props.event.type === "weight",
+        "bg-separator border border-border": props.event.type === "other"
     };
 };
 </script>
 
 <template>
-    <span v-if="event.eventType !== 'log'" :class="getTagStyle()">{{ event.eventType }}</span>
-    <span v-else :class="getTagStyle()">{{ event.type }}</span>
+    <span v-if="event.eventType !== 'log'" :class="getTagStyle()">{{ t(`events.eventTag.${event.eventType}`) }}</span>
+    <span v-else :class="getTagStyle()">{{ t(`events.eventTag.${event.type}`) }}
+        <span v-if="event.type === 'other'" class="ml-[5px]">{{ getLogIcon(event as OtherLogExtended) }}</span>
+    </span>
 </template>
 
 <style scoped>

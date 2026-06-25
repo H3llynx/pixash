@@ -66,7 +66,7 @@ const handleDelete = () => {
 <template>
     <div :class="{
         'animate-pulse': careLoading && selectedEvent?.id === event.id,
-        'rounded-xl border border-border gap-1.5 flex justify-between items-start text-left p-0.25 w-full md:max-w-md bg-bg-3': true
+        'rounded-xl border border-border gap-0.5 flex justify-between items-start text-left p-0.25 w-full md:max-w-md bg-bg-3': true
     }">
         <div class="flex gap-0.5 w-full min-w-0 h-full px-0.5 py-1">
             <Syringe v-if="event.eventType === 'vaccine'" class="card-icon" :size="20" />

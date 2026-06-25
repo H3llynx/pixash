@@ -418,7 +418,14 @@ export default {
         antiparasitics: "Antiparasitics",
         other: "Other events",
         weightLog: "Weight log",
-        treatments: "Treatments"
+        treatments: "Treatments",
+        eventTag: {
+            vaccine: "Vaccine",
+            visit: "Vet visit",
+            antiparasite: "Antiparasitic",
+            other: "Other",
+            weight: "Weight"
+        }
     },
     toast: {
         dismiss: "Dismiss notification",
