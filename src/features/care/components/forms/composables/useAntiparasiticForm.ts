@@ -53,7 +53,7 @@ export const useAntiparasiticForm = () => {
         if (!log || !pet) return;
         open({
             title: t("dialog.deleteLog.titleAntiparasitic"),
-            message: t("dialog.deleteLog.message"),
+            message: t("dialog.deleteGenericMsg"),
             isDelete: true,
             onConfirm: async () => {
                 try {

@@ -127,7 +127,7 @@ const handleDelete = () => {
     if (!log || !pet) return;
     open({
         title: t("dialog.deleteLog.title", { subtype: t(`pet.logs.${selectedLog.other!.subtype}`) }),
-        message: t("dialog.deleteLog.message"),
+        message: t("dialog.deleteGenericMsg"),
         isDelete: true,
         onConfirm: async () => {
             try {
@@ -185,7 +185,7 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedLog.other!.subtype}`)
                     })
-                        }}
+                    }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.other" variant="ghost" size="xs"

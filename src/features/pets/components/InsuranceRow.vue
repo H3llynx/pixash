@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Input from '../../../components/Input.vue';
 import Toggle from '../../../components/Toggle.vue';
+import { useDialog } from '../../../composables/useDialog.ts';
 import { useToast } from '../../../composables/useToast.ts';
 import { phonePattern } from '../../../config/config.ts';
 import { shallowEqual } from '../../../utils.ts';
@@ -13,6 +14,7 @@ import { usePets } from '../composables/usePets.ts';
 const { updateSelectedPet, error, selectedPet } = usePets();
 const { show } = useToast();
 const { t } = useI18n();
+const { open } = useDialog();
 
 const isInsured = ref<boolean>(false);
 const loading = ref<boolean>(false);
@@ -30,7 +32,22 @@ const toggleInsurance = async () => {
     loading.value = true;
     try {
         if (isInsured.value && !selectedPet.value?.insured) await updateSelectedPet(selectedPet.value, { insured: true });
-        else if (!isInsured.value && selectedPet.value?.insured) await updateSelectedPet(selectedPet.value, { insured: false, insurance: null });
+        else if (!isInsured.value && selectedPet.value?.insured) {
+            open({
+                title: t("dialog.deleteInsurance.title"),
+                message: t("dialog.deleteGenericMsg"),
+                isDelete: true,
+                onConfirm: async () => {
+                    await updateSelectedPet(selectedPet.value!, { insured: false, insurance: null })
+                    show({
+                        type: "success",
+                        title: t("toast.success.title.generic"),
+                        message: t("toast.success.message.insuranceDeleted"),
+                    });
+                }
+            });
+            isInsured.value = true;
+        }
         else return;
     } catch (e) {
         show({ type: "error", title: t("toast.error.genericTitle"), message: error.value || "" });
@@ -56,7 +73,7 @@ const handleSubmit = async () => {
 };
 
 watch(() => selectedPet.value?.insured, (insured) => {
-    if (insured) isInsured.value = true;
+    isInsured.value = insured ? true : false;
 }, { immediate: true });
 
 watch(() => selectedPet.value?.insurance, (insurance) => {

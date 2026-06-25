@@ -445,7 +445,8 @@ export default {
                 treatmentUpdated: "{name}'s {title} successfully updated",
                 logAdded: "{name}'s {subtype} log successfully added",
                 eventDeleted: "{name}'s {title} has been successfully deleted",
-                logDeleted: "log deleted",
+                logDeleted: "Log deleted",
+                insuranceDeleted: "Isurance information deleted",
                 markedDone: "All set, this care task has been completed.",
                 insuranceUpdated: "{name}'s insurance information successfully updated",
             },
@@ -459,6 +460,7 @@ export default {
         }
     },
     dialog: {
+        deleteGenericMsg: "This action cannot be undone. Are you sure you'd like to proceed?",
         deletePet: {
             title: "Delete {name} ?",
             message: "This will remove {name}'s profile and tracked information. This action cannot be undone. Are you sure you'd like to proceed?",
@@ -474,12 +476,13 @@ export default {
         deleteLog: {
             title: "Delete {subtype} log?",
             titleAntiparasitic: "Delete antiparasitic?",
-            message: "This action cannot be undone. Are you sure you'd like to proceed?",
         },
         deletePicture: {
             title: "Delete picture ?",
-            message: "This action cannot be undone. Are you sure you'd like to proceed?",
         },
+        deleteInsurance: {
+            title: "Delete insurance information?"
+        }
     },
     tsToDate: {
         today: "Today",

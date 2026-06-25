@@ -29,7 +29,7 @@ const handleX = () => {
     } else if (user.value?.photoURL) {
         open({
             title: t("dialog.deletePicture.title"),
-            message: t("dialog.deletePicture.message"),
+            message: t("dialog.deleteGenericMsg"),
             isDelete: true,
             onConfirm: async () => {
                 try {
@@ -93,7 +93,7 @@ const handleCancel = () => {
                 <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
                 <Button type="button" variant="ghost" @click="handleCancel">{{
                     t("common.button.cancel")
-                }}</Button>
+                    }}</Button>
             </form>
         </template>
     </FreeModal>
