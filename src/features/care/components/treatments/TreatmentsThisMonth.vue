@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Pill } from '@lucide/vue';
+import { Calendar, Pill } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { tsToDate } from '../../../../utils.ts';
@@ -16,7 +16,7 @@ const { t } = useI18n();
 
 <template>
     <article class="pet-section" v-if="filteredMonthTreatments.length">
-        <h2>{{ t("dashboard.title.activeTreatments") }}</h2>
+        <h2>{{ t("events.treatments") }}</h2>
         <div class="grid grid-cols-1 gap-1">
             <Button v-for="treatment in filteredMonthTreatments" variant="ghost" size="sm"
                 @click="selectTreatment(treatment)" :aria-label="t('health.cta.editTreatment')"
@@ -29,10 +29,14 @@ const { t } = useI18n();
                         <h4>{{ treatment.name }}</h4>
                         <PetTag :pet="pets.find(pet => pet.id === treatment.petId)!" :color="false" />
                     </div>
-                    <span class="text-text-secondary italic text-xs">{{ t("health.treatment.started") }} {{
-                        tsToDate(treatment.startDate, "date") }}</span>
-                    <span v-if="treatment.endDate" class="text-text-secondary italic text-xs inline"> - {{
-                        tsToDate(treatment.endDate, "date") }}</span>
+                    <p class="flex items-center gap-[5px] mt-0.5 text-text-secondary italic text-xs">
+                        <Calendar :size="18" />
+                        <span>
+                            {{ tsToDate(treatment.startDate, "date") }}
+                        </span>
+                        <span v-if="treatment.endDate"> - {{
+                            tsToDate(treatment.endDate, "date") }}</span>
+                    </p>
                     <ProgressBar v-if="treatment.endDate" :progress="getTreatmentProgress(treatment)!"
                         :color="treatment.color" />
                     <span v-else class="inline ml-0.5 float-right tag bg-separator text-text-secondary">{{

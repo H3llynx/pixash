@@ -87,7 +87,6 @@ export default {
             nextAntiparasitic: "Next antiparasitic",
             weightTracking: "Weight tracking",
             activeTreatments: "Active treatments",
-            pastTreatments: "Past treatments"
         }
     },
     vet: {
@@ -350,7 +349,6 @@ export default {
         },
         treatment: {
             ongoing: "Ongoing treatment",
-            started: "Started: ",
             until: "until ",
             ended: "ended: ",
             summaryLabel: "view log actions",
@@ -420,6 +418,7 @@ export default {
         antiparasitics: "Antiparasitics",
         other: "Other events",
         weightLog: "Weight log",
+        treatments: "Treatments"
     },
     toast: {
         dismiss: "Dismiss notification",

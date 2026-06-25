@@ -25,8 +25,8 @@ const { t } = useI18n();
         <EventSelector />
         <div class="flex flex-col gap-1.5 lg:grid lg:grid-cols-[55%_45%] lg:gap-0 md:pb-1">
             <EventList :events="filteredPetHistory" history />
-            <TreatmentList v-if="finishedTreatments" :treatments="finishedTreatments"
-                :title="t('dashboard.title.pastTreatments')" history class="default-padding lg:px-1.5" />
+            <TreatmentList v-if="finishedTreatments" :treatments="finishedTreatments" :title="t('events.treatments')"
+                history class="default-padding lg:px-1.5" />
         </div>
     </main>
 </template>

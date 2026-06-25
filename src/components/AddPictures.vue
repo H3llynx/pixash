@@ -14,7 +14,7 @@ const { pictures, onFileChange, deletePicture } = useAddPictures();
 </script>
 
 <template>
-    <div v-if="pictures.length" class="relative rounded-lg mb-0.25 min-w-[160px] max-w-1/2" v-for="picture in pictures"
+    <div v-if="pictures.length" class="relative rounded-lg mb-0.25 min-w-[140px] max-w-1/2" v-for="picture in pictures"
         :key="picture.preview">
         <img :src="picture.preview" alt="image preview" class="rounded-lg" />
         <Button type="button" variant="ghost" size="xxs" :aria-label="t('health.cta.cancelLog')"

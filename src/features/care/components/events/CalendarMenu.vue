@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BugOff, ChevronLeft, NotebookPen, Stethoscope, Syringe } from '@lucide/vue';
+import { BugOff, ChevronLeft, NotebookPen, Pill, Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -49,21 +49,24 @@ watch(() => visible.value, (visible) => {
     <Transition name="toast" v-if="isMd">
         <div v-if="visible" ref="menuRef" role="menu" class="absolute -translate-x-1/2 w-max ">
             <div v-if="!submenu" class="flex gap-[3px] flex-col">
-                <Button variant="ghost" size="xxs" @click="handleClick('vaccine')" :aria-label="t('addMenu.vaccine')">
+                <Button variant="ghost" size="xxs" @click="handleClick('vaccine')">
                     <span>{{ t("addMenu.vaccine") }}</span>
                     <Syringe :size="18" />
                 </Button>
-                <Button variant="ghost" size="xxs" @click="handleClick('visit')" :aria-label="t('addMenu.vetVisit')">
+                <Button variant="ghost" size="xxs" @click="handleClick('visit')">
                     <span>{{ t("addMenu.vetVisit") }}</span>
                     <Stethoscope :size="18" />
                 </Button>
-                <Button variant="ghost" size="xxs" @click="handleClick('antiparasitic')"
-                    :aria-label="t('addMenu.antiparasitic')">
+                <Button variant="ghost" size="xxs" @click="handleClick('antiparasitic')">
                     <span>{{ t("addMenu.antiparasitic") }}</span>
                     <BugOff :size="18" />
                 </Button>
+                <Button variant="ghost" size="xxs" @click="handleClick('treatment')">
+                    <span>{{ t("addMenu.treatment") }}</span>
+                    <Pill :size="18" />
+                </Button>
                 <Button v-if="selectedDate && selectedDate <= todayAsInput()" variant="ghost" size="xxs"
-                    @click="handleClick('log')" :aria-label="t('addMenu.log')">
+                    @click="handleClick('log')">
                     <span>{{ t("addMenu.log") }}</span>
                     <NotebookPen :size="isMd ? 18 : 20" />
                 </Button>
@@ -85,28 +88,32 @@ watch(() => visible.value, (visible) => {
                 }) }}</h2>
             </div>
             <div v-if="!submenu" class="flex flex-col gap-1 p-1">
-                <Button variant="secondary" size="sm" @click="handleClick('vaccine')"
-                    :aria-label="t('addMenu.vaccine')">
+                <Button variant="secondary" size="sm" @click="handleClick('vaccine')">
                     <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
                         <Syringe :size="20" />
                     </div>
                     <span>{{ t("addMenu.vaccine") }}</span>
                 </Button>
-                <Button variant="secondary" size="sm" @click="handleClick('visit')" :aria-label="t('addMenu.vetVisit')">
+                <Button variant="secondary" size="sm" @click="handleClick('visit')">
                     <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
                         <Stethoscope :size="20" />
                     </div>
                     <span>{{ t("addMenu.vetVisit") }}</span>
                 </Button>
-                <Button variant="secondary" size="sm" @click="handleClick('antiparasitic')"
-                    :aria-label="t('addMenu.antiparasitic')">
+                <Button variant="secondary" size="sm" @click="handleClick('antiparasitic')">
                     <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
                         <BugOff :size="20" />
                     </div>
                     <span>{{ t("addMenu.antiparasitic") }}</span>
                 </Button>
+                <Button variant="secondary" size="sm" @click="handleClick('treatment')">
+                    <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
+                        <Pill :size="20" />
+                    </div>
+                    <span>{{ t("addMenu.treatment") }}</span>
+                </Button>
                 <Button v-if="selectedDate && selectedDate <= todayAsInput()" variant="secondary" size="sm"
-                    @click="handleClick('log')" :aria-label="t('addMenu.log')">
+                    @click="handleClick('log')">
                     <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
                         <NotebookPen :size="20" />
                     </div>

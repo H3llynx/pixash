@@ -7,8 +7,8 @@ import PetChipsSkeleton from '../components/loading/PetChipsSkeleton.vue';
 import { useMedia } from '../composables/useMedia';
 import Calendar from '../features/care/components/events/Calendar.vue';
 import CalendarLegend from '../features/care/components/events/CalendarLegend.vue';
+import CalendarMenu from '../features/care/components/events/CalendarMenu.vue';
 import EventList from '../features/care/components/events/EventList.vue';
-import EventMenu from '../features/care/components/events/EventMenu.vue';
 import TreatmentsThisMonth from '../features/care/components/treatments/TreatmentsThisMonth.vue';
 import { useEvents } from '../features/care/composables/useEvents.ts';
 import PetSelector from '../features/pets/components/PetSelector.vue';
@@ -56,13 +56,13 @@ onBeforeRouteLeave(() => {
                 @update-monthName="currentMonthName = $event" @date-click="handleDateClick" />
         </section>
         <section
-            class="flex flex-col-reverse gap-1.5 h-full lg:flex-col lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
-            <div class="flex flex-col gap-1.5 md:mb-1">
+            class="flex flex-col-reverse gap-2.5 h-full lg:flex-col lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
+            <div class="flex flex-col gap-2.5">
                 <EventList :title="getTitle()" :events="filteredMonthEvents" :itemsPerPage="is2xl ? 6 : 4" />
                 <TreatmentsThisMonth />
             </div>
             <CalendarLegend />
         </section>
     </main>
-    <EventMenu v-model:visible="menu.visible" :style="isMd ? { left: menu.x + 'px', top: menu.y + 'px' } : {}" />
+    <CalendarMenu v-model:visible="menu.visible" :style="isMd ? { left: menu.x + 'px', top: menu.y + 'px' } : {}" />
 </template>

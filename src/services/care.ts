@@ -253,7 +253,7 @@ export const fetchVets = async (userId: string): Promise<VetExtended[]> => {
 };
 
 export const addVet = async (vet: Vet, userId: string) => {
-    const newPet = {
+    const newVet = {
         name: vet.name,
         address1: vet.address1,
         address2: vet.address2,
@@ -269,7 +269,7 @@ export const addVet = async (vet: Vet, userId: string) => {
         createdAt: serverTimestamp()
     };
     try {
-        const docRef = await addDoc(getVetCollection(userId), newPet);
+        const docRef = await addDoc(getVetCollection(userId), newVet);
         return docRef.id;
     } catch (error) {
         console.error("Error adding vet: ", error);

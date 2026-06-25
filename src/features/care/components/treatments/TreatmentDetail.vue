@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronDown, Edit2, MessageCircleWarning, NotepadText } from '@lucide/vue';
+import { Calendar, ChevronDown, Edit2, MessageCircleWarning, NotepadText } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
@@ -29,13 +29,13 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
             </Button>
         </div>
         <div class="text-sm text-text-secondary">
-            <div class="text-xs">
-                <span v-if="!treatment.endDate">{{ t("health.treatment.started") }}</span>
+            <div class="flex gap-[5px] items-center text-xs">
+                <Calendar :size="18" />
                 <span>{{ tsToDate(treatment.startDate, "date") }}</span>
                 <span v-if="treatment.endDate"> - {{ tsToDate(treatment.endDate, "date") }}</span>
-                <span v-else class="inline ml-0.5 float-right tag bg-separator text-text-secondary">{{
+                <span v-else class="ml-auto tag bg-separator text-text-secondary">{{
                     t("health.treatment.ongoing")
-                    }}</span>
+                }}</span>
             </div>
             <ProgressBar v-if="progress" :progress="progress" :color="color" />
         </div>

@@ -102,7 +102,7 @@ export const useEvents = () => {
 
     const eventsInTs = computed<PetEvent[]>(() => [
         ...vaccines.value.filter(v => v.dueOn).map(v => ({ ...v, ts: v.dueOn! })),
-        ...vetVisits.value.filter(visit => visit.date).map(visit => ({ ...visit, ts: visit.date! })),
+        ...vetVisits.value.filter(visit => visit.date).filter(visit => visit.date.toDate() >= new Date).map(visit => ({ ...visit, ts: visit.date! })),
         ...logs.value.filter(log => log.type === "antiparasite").filter(log => log.dueOn).map(log => ({ ...log, ts: log.dueOn! })),
     ].sort((a, b) => a.ts!.seconds - b.ts!.seconds));
 
@@ -134,14 +134,13 @@ export const useEvents = () => {
         const now = new Date();
         return treatments.value
             .filter(t => {
-                const isActive = t.startDate.toDate() <= now &&
-                    (!t.endDate || t.endDate.toDate() >= now);
                 const overlapsMonth = checkOverlapsMonth(
                     t.startDate,
                     t.endDate!,
                     currentMonth.value
                 );
-                return isActive && overlapsMonth;
+                const isNotExpired = !t.endDate || t.endDate.toDate() >= now;
+                return overlapsMonth && isNotExpired;
             })
             .map((t, index) => ({ ...t, color: getTreatmentColor(index) }))
     });

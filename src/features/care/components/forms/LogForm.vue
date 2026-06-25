@@ -212,7 +212,7 @@ watch(() => formData.pictures, (pictures) => {
                         </Input>
                         <div class="preview-container">
                             <div v-if="formData.pictures.length" v-for="(picture, index) in formData.pictures"
-                                class="relative rounded-lg mb-0.25 min-w-[160px] cursor-pointer">
+                                class="relative rounded-lg mb-0.25 min-w-[140px] cursor-pointer">
                                 <div v-if="!loadedPictures.has(index)"
                                     class="rounded-lg min-w-[160px] h-[120px] bg-separator flex items-center justify-center">
                                     <ImageIcon :size="28" class="opacity-30 animate-pulse" />
