@@ -118,7 +118,7 @@ export default {
             addPet: "Add a pet",
             editPet: "Edit {name}",
             log: "Log care",
-            otherLog: "{subtype} log",
+            otherLog: "{subtype} record",
         },
         addFirstPet: "You haven't added any pets yet.",
         cta: {
