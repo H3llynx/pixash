@@ -56,14 +56,15 @@ onMounted(() => {
 <template>
     <FreeModal v-model="isEditing">
         <form class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
-            <h3 class="font-title">When did you give {{ medication.name }} to {{ pet.name }}?</h3>
+            <h3 class="font-title">{{ t("health.treatment.editMedTime", { medication: medication.name, name: pet.name }) }}
+            </h3>
             <div class="flex gap-0.5">
                 <Input v-model="timeData" type="time" id="medication-time-log" class="text-base" />
             </div>
             <Button>{{ t("common.button.confirm") }}</Button>
             <Button type="button" variant="ghost" @click="handleCancel">{{
                 t("common.button.cancel")
-            }}</Button>
+                }}</Button>
         </form>
     </FreeModal>
 </template>

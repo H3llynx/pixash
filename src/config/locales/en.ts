@@ -354,7 +354,8 @@ export default {
             started: "Started: ",
             until: "until ",
             ended: "ended: ",
-            summaryLabel: "view log actions"
+            summaryLabel: "view log actions",
+            editMedTime: "When did you give {medication} to {name}?",
         },
         medicine: {
             title: "Medicine {index}",
