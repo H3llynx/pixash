@@ -53,16 +53,20 @@ const markAsDone = async (event: PetEvent) => {
                 notes: event.notes,
             };
             if (event.givenAt && event.dueOn) {
-                const newData = {
+                await updateSelectedVaccine(event as VaccineExtended, pet.value.id, {
                     ...baseData,
                     givenAt: tsToDate(event.givenAt, "input") as string,
                     dueOn: ""
-                };
-                await updateSelectedVaccine(event as VaccineExtended, pet.value.id, newData);
-                await addNewVaccine({ ...baseData, givenAt: today }, pet.value.id)
-            } else await updateSelectedVaccine(event as VaccineExtended, pet.value.id, { ...baseData, givenAt: today, dueOn: "" }
-            );
-        }
+                });
+                await addNewVaccine({ ...baseData, givenAt: today }, pet.value.id);
+            } else {
+                await updateSelectedVaccine(event as VaccineExtended, pet.value.id, {
+                    ...baseData,
+                    givenAt: today,
+                    dueOn: ""
+                });
+            }
+        };
         if (event.eventType === "log" && event.type === "antiparasite") {
             const baseData = {
                 treated: event.treated as AntiparasiteTypes["id"][],
@@ -70,15 +74,20 @@ const markAsDone = async (event: PetEvent) => {
                 type: event.type,
             };
             if (event.givenAt && event.dueOn) {
-                const newData = {
+                await updateSelectedLog(event as LogExtended, pet.value.id, {
                     ...baseData,
                     givenAt: tsToDate(event.givenAt, "input") as string,
                     dueOn: ""
-                };
-                await updateSelectedLog(event as LogExtended, pet.value.id, newData);
-                await addNewLog({ ...baseData, givenAt: today }, pet.value.id)
-            };
-        }
+                });
+                await addNewLog({ ...baseData, givenAt: today }, pet.value.id);
+            } else {
+                await updateSelectedLog(event as LogExtended, pet.value.id, {
+                    ...baseData,
+                    givenAt: today,
+                    dueOn: ""
+                });
+            }
+        };
         show({ type: "success", title: t("toast.success.title.generic"), message: t("toast.success.message.markedDone") });
     } catch {
         show({ type: "error", title: t("toast.error.genericTitle"), message: healthError.value || "" });
