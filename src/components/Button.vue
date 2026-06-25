@@ -83,8 +83,9 @@ withDefaults(defineProps<{
     display: flex;
     justify-content: center;
     margin: auto;
-    padding: 1rem 2rem 0.5rem;
+    padding: 1rem 2rem 1.5rem 0.5rem;
     height: 1.5rem;
+    width: 100%;
 }
 
 @media (width >=48rem) {
@@ -92,6 +93,7 @@ withDefaults(defineProps<{
         align-items: center;
         padding: 0.5rem;
         margin: 1rem 1rem auto auto;
+        width: auto;
     }
 }
 
