@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 defineProps<{
-    id: string
-    label: string
+    id?: string
+    label?: string
 }>();
 
 const model = defineModel<string | undefined | null>();

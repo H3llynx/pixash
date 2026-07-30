@@ -2,8 +2,9 @@
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useMedia } from '../../composables/useMedia';
+import LanguageSwitcher from '../../features/language/components/LanguageSwitcher.vue';
 import { usePets } from '../../features/pets/composables/usePets';
-import ThemeSwitcher from '../../features/theme/composants/ThemeSwitcher.vue';
+import ThemeSwitcher from '../../features/theme/components/ThemeSwitcher.vue';
 import UserPicture from '../../features/user/components/UserPicture.vue';
 import { ROUTES } from '../../router/config';
 import Logo from '../Logo.vue';
@@ -39,6 +40,7 @@ const getHeaderStyle = () => {
         <div :class="[hasPets ? 'z-2' : 'z-3', 'flex gap-0.5 relative items-start']">
             <ThemeSwitcher />
             <UserPicture />
+            <LanguageSwitcher />
         </div>
     </header>
 </template>

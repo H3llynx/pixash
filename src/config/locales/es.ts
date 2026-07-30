@@ -1,23 +1,52 @@
 export default {
     common: {
         button: {
-            addChip: "Añadir",
+            cancel: "Cancelar",
+            confirm: "Confirmar",
+            save: "Guardar",
+            edit: "Editar",
+            clear: "Borrar",
+            back: "Atrás",
+            next: "Siguiente",
+            add: "Añadir",
             allChip: "Todos",
-            scrollRight: "Desplazar a la derecha",
-            scrollLeft: "Desplazar a la izquierda",
+            backDash: "Volver al panel",
+            backCal: "Volver al calendario",
+            markDone: "Marcar como hecho",
+            deleteRecord: "Eliminar registro"
         },
         panel: {
             hide: "Cerrar formulario"
         },
         text: {
-            noEventText: "No tienes ningún evento programado.",
+            noEventText: "No hay citas ni cuidados programados.",
+            noHistoryText: "No se encontraron registros para la categoría seleccionada",
+            noPastTreatments: "{name} no tiene tratamientos médicos pasados registrados.",
+            noActiveTreatment: "{name} no tiene tratamientos médicos activos.",
+            noWeightLog: "No hay registros de peso.",
+            lastLogged: "Último registro",
+            done: "¡Hecho!",
+            antiparasiticLogged: "Antiparasitario contra {parasites} registrado para {name}.",
+            addPicture: "Añadir una foto de perfil",
+            copied: "¡Copiado!",
+            errorCopy: "Error al copiar",
         },
         header: {
-            greetings: "Bienvenida",
+            greetings: "Bienvenid@",
             calendar: "Calendario",
-            vetH2: "Cuidados veterinarios",
+            vetH2: "Cuidado veterinario",
             vetSpan: "Clínicas, tratamientos y visitas",
-        }
+            historyH2: "Historial de salud",
+            historySpan: "Registros médicos y estadísticas por mascota",
+        },
+        navbar: {
+            home: "Inicio",
+            calendar: "Calendario",
+            vet: "Veterinario",
+            history: "Historial",
+            myPets: "Mis mascotas"
+        },
+        fileInputLabel: "Subir desde tu dispositivo."
     },
     auth: {
         password: {
@@ -28,13 +57,20 @@ export default {
         loginWithGoogle: "Iniciar sesión con Google",
         register: "Registrarse",
         switchToLogin: "Ya tengo una cuenta",
-        logOut: "Cerrar sesión"
+        logOut: "Cerrar sesión",
+        nameLabel: "¿Cómo debemos llamarte?",
+        namePlaceholder: "El dueño de Sasha",
+        emailLabel: "Correo electrónico",
+        passwordLabel: "Contraseña",
     },
     addMenu: {
         pet: "Añadir mascota",
-        vetVisit: "Visita al veterinario",
+        vetVisit: "Nueva visita veterinaria",
         vaccine: "Nueva vacuna",
-        vet: "Añadir veterinario"
+        vet: "Añadir veterinario",
+        log: "Nuevo registro",
+        antiparasitic: "Añadir antiparasitario",
+        treatment: "Añadir tratamiento"
     },
     userMenu: {
         logout: "Cerrar sesión",
@@ -44,7 +80,12 @@ export default {
     dashboard: {
         title: {
             petProfile: "Perfil de {name}",
-            petProfiles: "Perfiles de mascotas",
+            upcoming: "Próximamente",
+            nextVaccine: "Próxima vacuna",
+            nextVetVisit: "Próxima visita veterinaria",
+            nextAntiparasitic: "Próximo antiparasitario",
+            weightTracking: "Seguimiento de peso",
+            activeTreatments: "Tratamientos activos",
         }
     },
     vet: {
@@ -60,45 +101,52 @@ export default {
             email: "Añadir correo electrónico",
         },
         cta: {
-            delete: "Eliminar {name}",
+            delete: "Eliminar a {name}",
             call: "📞 Llamar",
-            maps: "🗺️  Mapas",
+            maps: "🗺️  Mapa",
             visit: "Visitar",
-            email: "Escribir a {name}",
+            email: "Enviar correo a {name}",
             edit: "Editar {name}",
-            notes: "Añadir o editar notas",
-            saveNotes: "Finalizar edición de notas"
+            notes: "Editar notas",
+            saveNotes: "Dejar de editar notas"
         },
     },
     pet: {
         title: {
             addFirstPet: "El cuidado de tu mascota empieza aquí",
-            addPet: "Añadir mascota",
-            editPet: "Editar a {name}",
+            addPet: "Añadir una mascota",
+            editPet: "Editar {name}",
+            log: "Registrar cuidado",
+            otherLog: "Registro de {subtype}",
         },
-        addFirstPet: "Todavía no has añadido ninguna mascota.",
+        addFirstPet: "Aún no has añadido ninguna mascota.",
         cta: {
             save: "Guardar {name}",
             delete: "Eliminar {name}",
+            updatePic: "Actualizar la foto de {name}",
+            saveLog: "Guardar registro de {subtype}",
         },
         profile: {
-            label: {
+            labels: {
                 sterilized: {
                     male: "Castrado",
                     female: "Esterilizada"
                 },
                 weight: "Peso",
+                microchipped: "Con microchip",
                 microchip: "Microchip",
+                generalInformation: "Información general",
                 nextVaccine: "Próxima vacuna",
-                nextVetVisit: "Próxima visita al veterinario",
-                generalInformation: "información general",
+                insurance: "Seguro",
+                insured: "Asegurado",
             },
             edit: {
-                weight: "Actualizar el peso de {name}",
+                weight: "Registrar el peso de {name}",
                 microchip: "Editar el microchip de {name}",
-                generalInformation: "Editar la información general de {name}",
-                nextVaccine: "Editar o añadir próxima vacuna",
-            }
+                generalInformation: "Editar {name}",
+                nextVaccine: "Editar próxima vacuna",
+            },
+            addChip: "Añadir el microchip de {name}",
         },
         form: {
             name: "Nombre",
@@ -106,9 +154,13 @@ export default {
             breed: "Raza",
             birthDate: "Fecha de nacimiento",
             sex: "Sexo",
-            sterilized: "Esterilizado / castrado",
+            sterilized: "Esterilizado/a",
             microchipped: "Con microchip",
-            placeholderBreed: "Selecciona una raza..."
+            placeholderBreed: "Selecciona una raza...",
+            logType: "¿Qué...",
+            date: "Fecha",
+            notes: "Notas",
+            notesPlaceholder: "Información adicional (opcional)",
         },
         species: {
             dog: "Perro",
@@ -119,9 +171,101 @@ export default {
             reptile: "Reptil",
             amphibian: "Anfibio"
         },
+        breeds: {
+            dog: {
+                akita: "Akita",
+                amstaff: "Staffordshire Americano",
+                australianShepherd: "Pastor Australiano",
+                basset: "Basset Hound",
+                beagle: "Beagle",
+                bernese: "Boyero de Berna",
+                bichon: "Bichón Frisé",
+                borderCollie: "Border Collie",
+                bostonTerrier: "Boston Terrier",
+                boxer: "Bóxer",
+                brittany: "Braco de Bretaña",
+                bulldog: "Bulldog",
+                canaryMastiff: "Presa Canario",
+                caneCorso: "Cane Corso",
+                kingCharles: "Cavalier King Charles Spaniel",
+                chihuahua: "Chihuahua",
+                cocker: "Cocker Spaniel",
+                collie: "Collie",
+                dachshund: "Teckel",
+                doberman: "Dóberman",
+                englishSetter: "Setter Inglés",
+                englishSpringer: "Springer Spaniel Inglés",
+                frenchBulldog: "Bulldog Francés",
+                germanShepherd: "Pastor Alemán",
+                germanShorthaired: "Braco Alemán de Pelo Corto",
+                goldenRetriever: "Golden Retriever",
+                greatDane: "Gran Danés",
+                havanese: "Habanero",
+                irishSetter: "Setter Irlandés",
+                jackRussell: "Jack Russell Terrier",
+                labrador: "Labrador Retriever",
+                maltese: "Bichón Maltés",
+                mastiff: "Mastín",
+                schnauzer: "Schnauzer Miniatura",
+                mixed: "Mestizo",
+                newfoundland: "Terranova",
+                corgi: "Corgi Galés de Pembroke",
+                pitbull: "Pit Bull Terrier",
+                pomeranian: "Pomerania",
+                poodle: "Caniche",
+                pug: "Carlino",
+                rottweiler: "Rottweiler",
+                samoyed: "Samoyedo",
+                shetland: "Pastor de Shetland",
+                shibaInu: "Shiba Inu",
+                shihTzu: "Shih Tzu",
+                husky: "Husky Siberiano",
+                staffie: "Staffordshire Bull Terrier",
+                vizsla: "Vizsla",
+                weimaraner: "Braco de Weimar",
+                yorkshire: "Yorkshire Terrier",
+            },
+            cat: {
+                abyssinian: "Abisinio",
+                bengal: "Bengalí",
+                birman: "Birmano",
+                britishShorthair: "Británico de Pelo Corto",
+                devonRex: "Devon Rex",
+                domesticLonghair: "Doméstico de Pelo Largo",
+                domesticShorthair: "Doméstico de Pelo Corto",
+                maineCoon: "Maine Coon",
+                mixed: "Mestizo",
+                norwegianForestCat: "Bosque de Noruega",
+                orientalShorthair: "Oriental de Pelo Corto",
+                persian: "Persa",
+                ragdoll: "Ragdoll",
+                russianBlue: "Azul Ruso",
+                scottishFold: "Scottish Fold",
+                siamese: "Siamés",
+                sphynx: "Sphynx",
+            },
+            unknown: "Desconocida",
+        },
         sex: {
             male: "macho",
             female: "hembra",
+        },
+        insurance: {
+            company: "Compañía de seguros",
+            policy: "N° de póliza",
+            contact: "Línea de reclamos",
+            web: "Sitio web",
+            update: "Datos del seguro",
+        },
+        logs: {
+            feeding: "Alimentación",
+            water: "Hidratación",
+            cleaning: "Limpieza",
+            behavior: "Comportamiento",
+            activity: "Actividad",
+            grooming: "Aseo",
+            reproduction: "Reproducción",
+            other: "Otro",
         },
     },
     health: {
@@ -129,10 +273,13 @@ export default {
             addVaccine: "Añadir vacuna",
             addVetVisit: "Añadir cita veterinaria",
             editVaccine: "Editar vacuna",
-            editVetVisit: "Editar cita veterinaria de {name}",
+            editVetVisit: "Editar la cita veterinaria de {name}",
             addVet: "Añadir veterinario",
             editVet: "Editar {name}",
             myVets: "Mis veterinarios",
+            logAntiparasitic: "Registrar antiparasitario",
+            addTreatment: "Añadir tratamiento",
+            editTreatment: "Editar tratamiento"
         },
         cta: {
             saveVaccine: "Guardar vacuna",
@@ -140,15 +287,33 @@ export default {
             saveVisit: "Guardar visita veterinaria",
             deleteVisit: "Eliminar visita veterinaria",
             saveVet: "Guardar {name}",
-            deleteVet: "Eliminar veterinario"
+            deleteVet: "Eliminar veterinario",
+            logTreatment: "Registrar tratamiento",
+            logWeight: "Registrar peso",
+            editLog: "Editar registro",
+            startTreatment: "Iniciar tratamiento",
+            saveTreatment: "Guardar tratamiento",
+            editTreatment: "Modificar tratamiento",
+            logDose: "Registrar medicación",
+            editMedTime: "Actualizar hora de administración"
+        },
+        sharedFields: {
+            givenDate: "Fecha de administración",
+            nextDose: "¿Próxima dosis programada?",
+            dueDate: "Próxima fecha",
+            notesPlaceholder: "Comentarios (opcional)",
+        },
+        antiparasiteForm: {
+            treated: "¿Qué trataste?",
+            notes: "Otra información",
+            validationTypes: "Debes seleccionar qué se trató",
+            viewTitle: "Antiparasitario",
+            notGiven: "{name} aún no ha recibido este antiparasitario",
         },
         vaccineForm: {
             types: "Vacuna",
             stage: "Etapa",
             given: "{name} ya ha recibido esta vacuna",
-            givenDate: "Fecha de administración",
-            nextDose: "¿Próxima dosis programada?",
-            dueDate: "Próxima fecha",
             vet: "Veterinario",
             notes: "Notas",
             validationTypes: "Debes seleccionar un tipo de vacuna",
@@ -162,11 +327,17 @@ export default {
             placeholderVet: "Escribe el nombre de tu veterinario...",
             chooseExisting: "Elegir de mis veterinarios"
         },
+        treatmentForm: {
+            name: "Nombre del tratamiento",
+            startDate: "Fecha de inicio",
+            vet: "Prescrito por",
+            notes: "Notas",
+        },
         vetForm: {
             name: "Nombre",
-            address1: "Dirección (línea 1)",
-            address2: "Dirección (línea 2)",
-            city: "Ciudad",
+            address1: "Dirección línea 1",
+            address2: "Dirección línea 2",
+            city: "Localidad/Ciudad",
             postCode: "Código postal",
             types: "Rol(es) del veterinario",
             assignedPets: "Mascota(s) asignada(s)",
@@ -175,6 +346,31 @@ export default {
             email: "Correo electrónico",
             hours: "Horario de atención"
         },
+        treatment: {
+            ongoing: "Tratamiento en curso",
+            until: "hasta ",
+            ended: "finalizado: ",
+            summaryLabel: "ver acciones del registro",
+            editMedTime: "¿Cuándo le diste {medication} a {name}?",
+        },
+        medicine: {
+            title: "Medicamento {index}",
+            name: "Nombre del medicamento",
+            instructions: "Instrucciones de la medicación",
+            frequency: {
+                label: "Frecuencia de la medicación",
+                daily: "Diaria",
+                twiceDaily: "Dos veces al día",
+                threeDaily: "Tres veces al día",
+                every48: "Cada 48h",
+                custom: "Personalizada"
+            },
+            noEnd: "Sin fecha de fin",
+            endDate: "Fecha de fin",
+            validationFrequency: "Debes seleccionar una frecuencia",
+            cta: "Añadir medicamento",
+            delete: "Eliminar medicamento"
+        },
         stage: {
             adult: "Adulto",
             young: "Joven",
@@ -182,69 +378,120 @@ export default {
         vetTypes: {
             primary: "Principal",
             secondary: "Secundario",
-            emergency: "Urgencias"
+            emergency: "Emergencia"
         },
+        parasites: {
+            worms: "Gusanos intestinales",
+            fleas: "Pulgas",
+            ticks: "Garrapatas",
+            heartworms: "Gusano del corazón",
+            mites: "Ácaros",
+            lice: "Piojos",
+            protozoa: "Protozoos",
+            other: "Otro tratamiento"
+        },
+        vaccineTypes: {
+            rabies: "Rabia",
+            other: "Otras vacunas",
+            dog: {
+                combo: "Combo básico (DAPP)",
+                leish: "Leishmaniosis"
+            },
+            cat: {
+                combo: "Combo básico (FVRCP)",
+                felv: "Leucemia felina (FeLV)",
+                fiv: "Inmunodeficiencia felina (FIV)",
+            },
+            smallMammal: {
+                myxo: "Mixomatosis + RHD",
+                distemper: "Moquillo",
+            },
+        }
     },
     events: {
-        upcoming: "Próximos",
         thisMonth: "Este mes",
+        nextAntiparasitic: "Próximo antiparasitario",
         legend: "Leyenda",
-        visits: "Visitas",
-        vaccines: "Vacunas"
+        visits: "Visitas veterinarias",
+        vaccines: "Vacunas",
+        antiparasitics: "Antiparasitarios",
+        other: "Otros eventos",
+        weightLog: "Registro de peso",
+        treatments: "Tratamientos",
+        eventTag: {
+            vaccine: "Vacuna",
+            visit: "Visita veterinaria",
+            antiparasite: "Antiparasitario",
+            other: "Otro",
+            weight: "Peso"
+        }
     },
     toast: {
-        dismiss: "Cerrar notificación",
+        dismiss: "Descartar notificación",
         success: {
             title: {
-                generic: "Correcto",
-                newUser: "Hola {name}!",
-                loggedUser: "¡Bienvenida de nuevo!"
+                generic: "Éxito",
+                newUser: "¡Hola {name}!",
+                loggedUser: "¡Bienvenido de nuevo!"
             },
             message: {
                 userAuthenticated: "Has iniciado sesión correctamente.",
+                usernameUpdated: "Tu nombre se ha cambiado correctamente a {name}",
+                userPictureUpdated: "Tu foto de perfil se ha actualizado correctamente",
+                petPictureUpdated: "La foto de {name} se ha actualizado correctamente",
                 nameAdded: "{name} se ha añadido correctamente",
                 nameUpdated: "{name} se ha actualizado correctamente",
                 nameDeleted: "{name} se ha eliminado correctamente",
-                vaccineAdded: "Se ha añadido correctamente la vacuna {type} de {name}",
-                vaccineUpdated: "Se ha actualizado correctamente la vacuna {type} de {name}",
-                vaccineDeleted: "Se ha eliminado correctamente la vacuna {type} de {name}",
-                visitAdded: "Se ha añadido correctamente la visita {title} de {name}",
-                visitUpdated: "Se ha actualizado correctamente la visita {title} de {name}",
-                visitDeleted: "Se ha eliminado correctamente la visita {title} de {name}",
+                vaccineAdded: "{type} de {name} añadida correctamente",
+                vaccineUpdated: "{type} de {name} actualizada correctamente",
+                visitAdded: "{title} de {name} añadida correctamente",
+                visitUpdated: "{title} de {name} actualizada correctamente",
+                treatmentAdded: "{title} de {name} añadido correctamente",
+                treatmentUpdated: "{title} de {name} actualizado correctamente",
+                logAdded: "Registro de {subtype} de {name} añadido correctamente",
+                eventDeleted: "{title} de {name} se ha eliminado correctamente",
+                logDeleted: "Registro eliminado",
+                insuranceDeleted: "Información del seguro eliminada",
+                markedDone: "Listo, esta tarea de cuidado se ha completado.",
+                insuranceUpdated: "La información del seguro de {name} se ha actualizado correctamente",
             },
         },
         error: {
             genericTitle: "Error",
-            generic: "Ha ocurrido un error inesperado",
+            generic: "Se produjo un error inesperado",
+            errorPicture: "No se pudo subir tu foto. Por favor, inténtalo de nuevo",
+            errorFile: "No se pudo subir tu documento. Por favor, inténtalo de nuevo",
+            errorDeletionPicture: "No se pudo eliminar tu foto. Por favor, inténtalo de nuevo"
         }
     },
     dialog: {
-        common: {
-            cancel: "Cancelar",
-            confirm: "Confirmar",
-        },
+        deleteGenericMsg: "Esta acción no se puede deshacer. ¿Seguro que deseas continuar?",
         deletePet: {
             title: "¿Eliminar a {name}?",
-            message: "Esto eliminará el perfil de {name} y toda la información registrada. Esta acción no se puede deshacer. ¿Seguro que quieres continuar?",
+            message: "Esto eliminará el perfil de {name} y la información registrada. Esta acción no se puede deshacer. ¿Seguro que deseas continuar?",
         },
-        deleteVaccine: {
-            title: "¿Eliminar {type}?",
-            message: "Esto eliminará la vacuna {type} de {name}. Esta acción no se puede deshacer. ¿Seguro que quieres continuar?",
-        },
-        deleteVetVisit: {
-            title: "¿Eliminar {title}?",
-            message: "Esto eliminará la visita {title} de {name}. Esta acción no se puede deshacer. ¿Seguro que quieres continuar?",
+        deleteRecord: {
+            title: "¿Eliminar el registro de {title}?",
+            message: "Esto eliminará permanentemente el registro de {title} de {name}. Esta acción no se puede deshacer. ¿Seguro que deseas continuar?",
         },
         deleteVet: {
-            title: "¿Eliminar {name}?",
-            message: "Esto eliminará la información de contacto de {name}. Esta acción no se puede deshacer. ¿Seguro que quieres continuar?",
+            title: "¿Eliminar a {name}?",
+            message: "Esto eliminará la información de contacto de {name}. Esta acción no se puede deshacer. ¿Seguro que deseas continuar?",
         },
+        deletePicture: {
+            title: "¿Eliminar foto?",
+        },
+        deleteInsurance: {
+            title: "¿Eliminar información del seguro?"
+        }
     },
     tsToDate: {
         today: "Hoy",
         tomorrow: "Mañana",
         yesterday: "Ayer",
-        daysAgo: "Hace {number} días",
-        daysUntil: "Dentro de {number} días"
+        daysAgo: "hace {number} días",
+        daysUntil: "en {number} días",
+        monthsUntil: "en {number} mes",
+        monthsAgo: "hace {number} mes",
     }
 };

@@ -26,13 +26,16 @@ const route = useRoute();
         <RouterLink :to="ROUTES.dashboard" tabindex="0">
             <LayoutGrid />{{ t("common.navbar.home") }}
         </RouterLink>
-        <RouterLink v-if="hasPets" :to="ROUTES.calendar" tabindex="0">
+        <RouterLink :to="ROUTES.calendar" :tabindex="hasPets ? 0 : -1" :aria-disabled="!hasPets"
+            :class="{ 'animate-pulse pointer-events-none': !hasPets }" @click="!hasPets && $event.preventDefault()">
             <Calendar />{{ t("common.navbar.calendar") }}
         </RouterLink>
-        <RouterLink v-if="hasPets" :to="ROUTES.vet" tabindex="0">
+        <RouterLink :to="ROUTES.vet" :tabindex="hasPets ? 0 : -1" :aria-disabled="!hasPets"
+            :class="{ 'animate-pulse pointer-events-none': !hasPets }" @click="!hasPets && $event.preventDefault()">
             <MapPin />{{ t("common.navbar.vet") }}
         </RouterLink>
-        <RouterLink v-if="hasPets" :to="ROUTES.history" tabindex="0">
+        <RouterLink :to="ROUTES.history" :tabindex="hasPets ? 0 : -1" :aria-disabled="!hasPets"
+            :class="{ 'animate-pulse pointer-events-none': !hasPets }" @click="!hasPets && $event.preventDefault()">
             <History />{{ t("common.navbar.history") }}
         </RouterLink>
         <PetSelector v-if="isMd && !loading" :calendar="route.path === ROUTES.calendar" nav v-model:petId="petId" />
@@ -73,6 +76,11 @@ nav a {
 
     &:not(.router-link-exact-active) {
         opacity: 0.8
+    }
+
+    &:focus-visible {
+        outline: none;
+        color: var(--color-gold);
     }
 }
 
