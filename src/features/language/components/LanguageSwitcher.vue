@@ -18,7 +18,7 @@ const changeLanguage = (e: Event) => {
 </script>
 
 <template>
-    <Dropdown v-model="locale" @change="changeLanguage" class="ml-0.5">
+    <Dropdown v-model="locale" @change="changeLanguage" class="ml-0.5 w-max shrink-0">
         <option v-for="lang in SUPPORTED_LANGUAGES" :key="lang" :value="lang">
             {{ labels[lang] }}
         </option>

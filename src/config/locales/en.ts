@@ -36,9 +36,9 @@ export default {
             greetings: "Welcome",
             calendar: "Calendar",
             vetH2: "Vet care",
-            vetSpan: "Clinics, treatments & visits",
-            historyH2: "Health history",
-            historySpan: "Medical records & stats per pet",
+            vetSpan: "Clinics & treatments",
+            historyH2: "History",
+            historySpan: "Health records & stats per pet",
         },
         navbar: {
             home: "Home",

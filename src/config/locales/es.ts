@@ -35,9 +35,9 @@ export default {
             greetings: "Bienvenid@",
             calendar: "Calendario",
             vetH2: "Cuidado veterinario",
-            vetSpan: "Clínicas, tratamientos y visitas",
-            historyH2: "Historial de salud",
-            historySpan: "Registros médicos y estadísticas por mascota",
+            vetSpan: "Clínicas y tratamientos",
+            historyH2: "Historial",
+            historySpan: "Registros médicos por mascota",
         },
         navbar: {
             home: "Inicio",
