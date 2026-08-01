@@ -1,22 +1,19 @@
 import { useI18n } from "vue-i18n";
-import { detectBrowserLanguage, STORED_LANGUAGE, SUPPORTED_LANGUAGES } from "../../../config/i18n";
+import { detectBrowserLanguage, SUPPORTED_LANGUAGES } from "../config/i18n";
 
 export const useLanguageSwitcher = () => {
     const { locale } = useI18n({ useScope: "global" });
 
-    const setLanguage = (newLocale: string) => {
-        if (!SUPPORTED_LANGUAGES.includes(newLocale)) return;
-
-        locale.value = newLocale;
-        if (newLocale === detectBrowserLanguage()) {
-            localStorage.removeItem(STORED_LANGUAGE);
+    const setLanguage = (newLanguage: string) => {
+        const isSupportedLanguage = SUPPORTED_LANGUAGES.some(({ id }) => id === newLanguage);
+        if (!isSupportedLanguage) return;
+        locale.value = newLanguage;
+        if (newLanguage === detectBrowserLanguage()) {
+            localStorage.removeItem("language");
         } else {
-            localStorage.setItem(STORED_LANGUAGE, newLocale);
+            localStorage.setItem("language", newLanguage);
         }
     }
 
-    return {
-        locale,
-        setLanguage
-    };
+    return { setLanguage, locale };
 }

@@ -37,7 +37,7 @@ export default {
             vetH2: "Cuidado veterinario",
             vetSpan: "Clínicas y tratamientos",
             historyH2: "Historial",
-            historySpan: "Registros médicos por mascota",
+            historySpan: "Registros por mascota",
         },
         navbar: {
             home: "Inicio",
@@ -253,7 +253,7 @@ export default {
         insurance: {
             company: "Compañía de seguros",
             policy: "N° de póliza",
-            contact: "Línea de reclamos",
+            contact: "Teléfono",
             web: "Sitio web",
             update: "Datos del seguro",
         },

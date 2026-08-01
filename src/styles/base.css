@@ -307,6 +307,7 @@
 @layer components {
   #app {
     min-height: 100dvh;
+    min-width: 350px;
     display: flex;
     flex-direction: column;
   }
@@ -412,7 +413,7 @@
   }
 
   .card {
-    @apply flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 min-w-xs;
+    @apply flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2;
   }
 
   .card::-webkit-scrollbar {
