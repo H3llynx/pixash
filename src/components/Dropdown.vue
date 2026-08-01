@@ -10,7 +10,7 @@ const model = defineModel<string | undefined | null>();
 
 <template>
     <label :for="id">
-        <p>{{ label }}</p>
+        <p v-if="label">{{ label }}</p>
         <div class="input-container">
             <select v-model="model" v-bind="$attrs" :id="id">
                 <slot />

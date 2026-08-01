@@ -32,7 +32,7 @@ export default {
             errorCopy: "Error al copiar",
         },
         header: {
-            greetings: "Bienvenid@",
+            greetings: "Hola",
             calendar: "Calendario",
             vetH2: "Cuidado veterinario",
             vetSpan: "Clínicas y tratamientos",
@@ -432,7 +432,7 @@ export default {
             title: {
                 generic: "Éxito",
                 newUser: "¡Hola {name}!",
-                loggedUser: "¡Bienvenido de nuevo!"
+                loggedUser: "¡Hola de nuevo!"
             },
             message: {
                 userAuthenticated: "Has iniciado sesión correctamente.",

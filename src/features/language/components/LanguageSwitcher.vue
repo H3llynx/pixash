@@ -18,3 +18,9 @@ const changeLanguage = (e: Event) => {
         </option>
     </Dropdown>
 </template>
+
+<style scoped>
+label:has(select) {
+    width: fit-content
+}
+</style>
