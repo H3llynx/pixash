@@ -34,7 +34,7 @@ watch(() => visible.value, (visible) => {
 
 <style scoped>
 button {
-    background: linear-gradient(145deg, #d8a756 0%, var(--color-gold) 40%, #b07f2c 100%);
+    background: linear-gradient(145deg, #e9b96a 0%, var(--color-gold) 40%, #b07f2c 100%);
     transition: 1s ease;
     overflow: hidden;
 
