@@ -4,7 +4,7 @@ import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const props = defineProps<{
     id: string
@@ -20,7 +20,7 @@ const open = ref(false);
 
 const filtered = computed(() =>
     search.value?.length
-        ? props.breeds.filter(breed => breed.label.toLowerCase().includes(search.value!.toLowerCase()))
+        ? props.breeds.filter(breed => t(breed.label).toLowerCase().includes(search.value!.toLowerCase()))
         : props.breeds
 );
 
@@ -60,6 +60,12 @@ watch(() => model.value, (value) => {
 },
     { immediate: true }
 );
+
+watch(locale, () => {
+    if (open.value) return;
+    const breed = props.breeds.find(b => b.id === model.value);
+    search.value = breed ? t(breed.label) : "";
+});
 </script>
 
 <template>
