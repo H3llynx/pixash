@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Calendar, ChevronDown, Edit2, MessageCircleWarning, NotepadText } from '@lucide/vue';
+import { Calendar, ChevronDown, Ellipsis, MessageCircleWarning, NotepadText } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
@@ -24,8 +24,8 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
         <div class="flex gap-1 justify-between">
             <h3 class="text-base">{{ treatment.name }}</h3>
             <Button variant="ghost" size="xs" @click="selectTreatment(treatment)"
-                :aria-label="t('health.cta.editTreatment')">
-                <Edit2 :size="15" />
+                :aria-label="t('health.cta.viewTreatment')">
+                <Ellipsis :size="18" />
             </Button>
         </div>
         <div class="text-sm text-text-secondary">
@@ -35,7 +35,7 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
                 <span v-if="treatment.endDate"> - {{ tsToDate(treatment.endDate, "date") }}</span>
                 <span v-else class="ml-auto tag bg-separator text-text-secondary">{{
                     t("health.treatment.ongoing")
-                }}</span>
+                    }}</span>
             </div>
             <ProgressBar v-if="progress" :progress="progress" :color="color" />
         </div>

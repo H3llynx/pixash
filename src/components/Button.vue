@@ -47,7 +47,7 @@ withDefaults(defineProps<{
         <slot />
     </button>
 
-    <button v-else :aria-label="t('common.panel.hide')" tabindex="0" class="hide-btn">
+    <button v-else :aria-label="t('common.button.close')" tabindex="0" class="hide-btn">
         <div class="h-[7px] w-4 rounded-full bg-border md:hidden"></div>
         <X class="hidden md:block focus-within:bg-gold" />
     </button>

@@ -46,7 +46,7 @@ onBeforeRouteLeave(() => {
 
 <template>
     <Header />
-    <main class="lg:gap-0 lg:grid lg:grid-cols-[55%_45%] xl:grid-cols-[1fr_35%]">
+    <main class="lg:gap-0 lg:grid lg:grid-cols-[55%_45%] xl:grid-cols-[1fr_35%] md:pb-1.5">
         <section class="p-0 bg-brand-dark md:bg-bg md:pb-1">
             <template v-if="!isMd">
                 <PetChipsSkeleton v-if="loading" />
@@ -56,7 +56,7 @@ onBeforeRouteLeave(() => {
                 @update-monthName="currentMonthName = $event" @date-click="handleDateClick" />
         </section>
         <section
-            class="flex flex-col-reverse gap-2.5 h-full lg:flex-col lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
+            class="flex flex-col-reverse gap-2.5 h-full lg:flex-col lg:px-1.5 lg:bg-bg-rgba md:pt-1.5 lg:border-l lg:border-border lg:h-full">
             <div class="flex flex-col gap-2.5">
                 <EventList :title="getTitle()" :events="filteredMonthEvents" :itemsPerPage="is2xl ? 6 : 4" />
                 <TreatmentsThisMonth />

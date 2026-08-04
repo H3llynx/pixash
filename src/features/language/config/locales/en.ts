@@ -3,6 +3,8 @@ export default {
     common: {
         button: {
             cancel: "Cancel",
+            close: "Close",
+            hide: "Hide",
             confirm: "Confirm",
             save: "Save",
             edit: "Edit",
@@ -15,9 +17,6 @@ export default {
             backCal: "Back to calendar",
             markDone: "Mark as done",
             deleteRecord: "Delete record"
-        },
-        panel: {
-            hide: "Close form"
         },
         text: {
             noEventText: "No upcoming care scheduled.",
@@ -294,7 +293,7 @@ export default {
             editLog: "Edit log",
             startTreatment: "Start treatment",
             saveTreatment: "Save treatment",
-            editTreatment: "Modify treatment",
+            viewTreatment: "View treatment detail",
             logDose: "Log medication",
             editMedTime: "Update medication given time"
         },
@@ -419,6 +418,7 @@ export default {
         other: "Other events",
         weightLog: "Weight log",
         treatments: "Treatments",
+        pastTreatments: "Past treatments",
         eventTag: {
             vaccine: "Vaccine",
             visit: "Vet visit",

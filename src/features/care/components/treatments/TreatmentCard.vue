@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Calendar, Eye, Hospital } from '@lucide/vue';
+import { Calendar, Ellipsis, Hospital } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
@@ -28,25 +28,23 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
 <template>
     <div
         :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'card p-1 w-full md:max-w-md border border-border gap-1': true }">
-        <div class="flex gap-1 justify-between w-full items-start">
-            <div class="flex gap-0.5 items-start">
-                <div>
-                    <h4 class="font-medium">{{ treatment.name }}</h4>
-                    <p class="flex items-center gap-[5px] my-0.5 text-xs italic text-text-secondary">
-                        <Calendar :size="18" />
-                        {{ tsToDate(treatment.startDate, "date") }}
-                    </p>
-                </div>
-                <Button variant="ghost" size="xs" @click="selectTreatment(treatment)"
-                    :aria-label="t('health.cta.editTreatment')">
-                    <Eye :size="15" />
-                </Button>
-            </div>
-            <div class="flex flex-col gap-[5px]">
+        <div>
+            <div class="flex gap-0.5 w-full justify-between items-start">
+                <h4 class="font-medium inline">{{ treatment.name }}</h4>
                 <PetTag class="ml-auto" :pet="pets.find((pet: PetExtended) => pet.id === treatment.petId)!"
                     :color="false" />
-                <p class="text-brand text-xs flex items-center gap-[5px]">
-                    <Hospital :size="15" /> {{ vet }}
+                <Button variant="ghost" size="xs" class="inline ml-0.25 py-0.25" @click="selectTreatment(treatment)"
+                    :aria-label="t('health.cta.viewTreatment')">
+                    <Ellipsis :size="18" />
+                </Button>
+            </div>
+            <div class="flex gap-0.5 w-full justify-between my-0.5 text-xs">
+                <p class="flex items-center gap-[5px] italic text-text-secondary">
+                    <Calendar :size="18" />
+                    {{ tsToDate(treatment.startDate, "date") }}
+                </p>
+                <p class="text-brand flex items-center gap-[5px]">
+                    <Hospital :size="16" class="shrink-0" /> {{ vet }}
                 </p>
             </div>
         </div>
@@ -69,7 +67,7 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
                     :color="getTreatmentColor(index)" class="w-full my-0.25" />
                 <span v-else class="tag bg-separator text-text-secondary inline float-right">{{
                     t("health.treatment.ongoing")
-                    }}</span>
+                }}</span>
             </template>
         </div>
     </div>

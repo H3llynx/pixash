@@ -2,6 +2,8 @@ export default {
     common: {
         button: {
             cancel: "Cancelar",
+            close: "Cerrar",
+            hide: "Occultar",
             confirm: "Confirmar",
             save: "Guardar",
             edit: "Editar",
@@ -14,9 +16,6 @@ export default {
             backCal: "Volver al calendario",
             markDone: "Marcar como hecho",
             deleteRecord: "Eliminar registro"
-        },
-        panel: {
-            hide: "Cerrar formulario"
         },
         text: {
             noEventText: "No hay citas ni cuidados programados.",
@@ -138,7 +137,7 @@ export default {
                 generalInformation: "Información general",
                 nextVaccine: "Próxima vacuna",
                 insurance: "Seguro",
-                insured: "Asegurado",
+                insured: "Tiene seguro",
             },
             edit: {
                 weight: "Registrar el peso de {name}",
@@ -293,7 +292,7 @@ export default {
             editLog: "Editar registro",
             startTreatment: "Iniciar tratamiento",
             saveTreatment: "Guardar tratamiento",
-            editTreatment: "Modificar tratamiento",
+            viewTreatment: "Ver detalles del tratamiento",
             logDose: "Registrar medicación",
             editMedTime: "Actualizar hora de administración"
         },
@@ -418,6 +417,7 @@ export default {
         other: "Otros eventos",
         weightLog: "Registro de peso",
         treatments: "Tratamientos",
+        pastTreatments: "Tratamientos anteriores",
         eventTag: {
             vaccine: "Vacuna",
             visit: "Visita veterinaria",

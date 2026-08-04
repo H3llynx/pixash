@@ -9,6 +9,7 @@ import VetForm from '../features/care/components/forms/VetForm.vue';
 import TreatmentList from '../features/care/components/treatments/TreatmentList.vue';
 import VetSummary from '../features/care/components/vet/VetSummary.vue';
 import { useEvents } from '../features/care/composables/useEvents.ts';
+import { useHistory } from '../features/care/composables/useHistory.ts';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 
@@ -16,6 +17,7 @@ const { loading, selectedVet, vetLoading, isUpdatingVet } = usePets();
 const { t } = useI18n();
 const { isMd } = useMedia();
 const { activeTreatments } = useEvents();
+const { finishedTreatments } = useHistory();
 
 onBeforeRouteLeave(() => {
     isUpdatingVet.value = false;
@@ -32,6 +34,8 @@ onBeforeRouteLeave(() => {
             <PetSelector v-if="!isMd" />
             <TreatmentList v-if="activeTreatments" :treatments="activeTreatments"
                 :title="t('dashboard.title.activeTreatments')" class="default-padding lg:px-1.5" />
+            <TreatmentList v-if="finishedTreatments" :treatments="finishedTreatments" opaque
+                :title="t('events.pastTreatments')" history class="default-padding lg:px-1.5" />
             <AddButton vet />
         </section>
     </main>

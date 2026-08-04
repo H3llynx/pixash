@@ -19,7 +19,7 @@ const { t } = useI18n();
         <h2>{{ t("events.treatments") }}</h2>
         <div class="grid grid-cols-1 gap-1">
             <Button v-for="treatment in filteredMonthTreatments" variant="ghost" size="sm"
-                @click="selectTreatment(treatment)" :aria-label="t('health.cta.editTreatment')"
+                @click="selectTreatment(treatment)" :aria-label="t('health.cta.viewTreatment')"
                 :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'w-full h-full md:max-w-md border border-border': true }">
                 <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                     <Pill />
@@ -41,7 +41,7 @@ const { t } = useI18n();
                         :color="treatment.color" />
                     <span v-else class="inline ml-0.5 float-right tag bg-separator text-text-secondary">{{
                         t("health.treatment.ongoing")
-                        }}</span>
+                    }}</span>
                 </div>
             </Button>
         </div>
