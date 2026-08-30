@@ -63,10 +63,15 @@ const getAddChipStyle = () => {
         </Button>
         <Button :variant="nav ? 'ghost' : 'chip'" size="sm" v-for="pet in filteredPets" :class="getPetChipStyle(pet)"
             @click="handleClick(pet)">
-            <p aria-hidden class="h-1.5 aspect-square">
-                <PetIcon :pet="pet" />
-            </p>
-            {{ pet.name }}
+            <div v-if="pet.photo" class="btn-layer">
+                <img :src="pet.photo" :alt="pet.name" class="absolute inset-0 w-full h-full object-cover"
+                    aria-hidden="true" />
+                <span class="relative z-2">{{ pet.name }}</span>
+            </div>
+            <div v-else class="btn-icon">
+                <PetIcon :pet="pet" class="text-4xl m-auto" />
+                {{ pet.name }}
+            </div>
         </Button>
         <Button v-if="nav || route.path === ROUTES.dashboard" :variant="nav ? 'add' : 'chip'" size="sm"
             :class="getAddChipStyle()" @click="isAddingPet = true">
@@ -76,6 +81,41 @@ const getAddChipStyle = () => {
 </template>
 
 <style scoped>
+.btn-icon,
+.btn-layer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: end;
+    align-items: end;
+}
+
+.btn-icon {
+    flex-direction: column;
+    color: var(--color-text-secondary);
+}
+
+.btn-layer {
+    color: white;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(160deg, transparent 40%, rgba(0, 0, 0, 0.8));
+    }
+}
+
+button:not(.active) {
+    .btn-layer {
+        opacity: 0.6;
+    }
+
+    .btn-layer img {
+        filter: grayscale(0.9);
+    }
+}
+
 .active {
     background: var(--color-brand);
     color: var(--color-text-chip);

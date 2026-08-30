@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const button = tv({
-    base: "font-medium rounded-full filter-blur flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed",
+    base: "font-medium rounded-full filter-blur flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed overflow-hidden",
     variants: {
         variant: {
             primary: "btn-hover-fill bg-brand border border-brand text-bg",
@@ -14,7 +14,7 @@ const button = tv({
             tertiary: "btn-hover-fill text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba border border-border",
             ghost: "btn-hover-fill-ghost rounded-xl text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba",
             addon: "text-text-secondary addon-focus",
-            chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary capitalize",
+            chip: "btn-hover-fill w-9 h-8 rounded-xl border border-border bg-bg-2 capitalize text-xl font-title",
             summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light",
             vetOptions: "btn-hover-fill flex-1 rounded-xl border border-border-btn-vet bg-btn-vet",
             add: "flex-start rounded-xl border border-dashed border-text-secondary text-text-secondary hover:text-brand-light hover:border-brand-light"
