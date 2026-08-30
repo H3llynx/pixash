@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { getLabel, tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
+import { useTreatmentTracking } from '../../composables/useTreatmentTracking.ts';
 import { MED_FREQUENCY } from '../../config.ts';
 import type { TreatmentExtended } from '../../types.ts';
 import { getMedicationProgress, getTreatmentProgress } from '../../utils.ts';
@@ -12,6 +13,7 @@ import ProgressBar from './ProgressBar.vue';
 import TreatmentLogs from './TreatmentLogs.vue';
 
 const { selectTreatment, pets, treatmentLoading, selectedTreatment } = usePets();
+const { getMissedDoses } = useTreatmentTracking();
 const { t } = useI18n();
 const props = defineProps<{ treatment: TreatmentExtended; color: string }>();
 const progress = computed(() => getTreatmentProgress(props.treatment));
@@ -50,6 +52,7 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
                 <p class="font-medium">{{ medication.name }}</p>
                 <span class="tag bg-bg-3 border border-border text-xs ml-auto">{{
                     t(getLabel(medication.frequency, MED_FREQUENCY)) }}</span>
+                <span class="tag bg-error text-white ml-0.5" v-if="getMissedDoses(pet, treatment, medication)">!</span>
                 <ChevronDown class="chevron default-transition ml-1" />
             </summary>
             <div class="px-0.5 pb-0.75">

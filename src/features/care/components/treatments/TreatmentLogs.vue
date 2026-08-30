@@ -6,6 +6,7 @@ import Button from '../../../../components/Button.vue';
 import { useToast } from '../../../../composables/useToast.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../../pets/types.ts';
+import { useTreatmentTracking } from '../../composables/useTreatmentTracking.ts';
 import type { Log, LogExtended, MedicationLogExtended, MedicineDb, TreatmentExtended } from '../../types.ts';
 import { getDailyDose } from '../../utils.ts';
 import EditLogTime from './EditLogTime.vue';
@@ -18,28 +19,11 @@ const props = defineProps<{
 }>();
 
 const { addNewLog, deleteSelectedLog, careError, selectLog, selectedLog } = usePets();
+const { getLoggedList, getDosesToLog, getMissedDoses } = useTreatmentTracking();
 const { t, locale } = useI18n();
 const { show } = useToast();
 const loading = ref<boolean>(false);
 const isEditing = ref<boolean>(false);
-
-const getLoggedList = (medication: MedicineDb) => {
-    if (!medication) return [];
-    const today = new Date().toLocaleDateString();
-    return props.pet.logs.filter(log =>
-        log.type === "medication" &&
-        log.treatmentId === props.treatment.id &&
-        log.medicineId === medication.id &&
-        log.givenAt &&
-        log.givenAt.toDate().toLocaleDateString() === today
-    ) as MedicationLogExtended[];
-};
-
-const getDoseButtons = (medication: MedicineDb) => {
-    const loggedList = getLoggedList(medication) || [];
-    const dailyDose = getDailyDose(medication.frequency);
-    return dailyDose !== undefined ? dailyDose - loggedList.length : 1;
-};
 
 const getLogStyle = () => {
     return {
@@ -80,7 +64,7 @@ const editLogTime = async (log: MedicationLogExtended) => {
 
 <template>
     <div class="flex gap-0.5 mt-0.75 flex-wrap" :style="{ '--custom-color': color }">
-        <div v-for="log in getLoggedList(medication)" :key="log.id"
+        <div v-for="log in getLoggedList(props.pet, props.treatment, medication)" :key="log.id"
             class="log text-xs relative border border-separator py-0.5 text-center rounded-xl flex items-center justify-center"
             :style="{ color: color }">
             <p :class="getLogStyle()">{{ log.givenAt.toDate().toLocaleString(locale, {
@@ -95,17 +79,19 @@ const editLogTime = async (log: MedicationLogExtended) => {
                     @click="editLogTime(log)" v-model="isEditing" class="log-btn hover:bg-green-pale">
                     <Pen :size="13" />
                 </Button>
-                <Button :disabled="loading" variant="ghost" size="xxs" :aria-label="t('health.cta.cancelLog')"
+                <Button :disabled="loading" variant="ghost" size="xxs" :aria-label="t('common.button.delete')"
                     @click="deleteDose(log)" class="log-btn hover:bg-error">
                     <X :size="13" />
                 </Button>
             </div>
         </div>
-        <Button :disabled="loading" v-for="number in getDoseButtons(medication)" :key="number" variant="ghost" size="xs"
-            @click="logDose(medication)" class="dose border border-border">
+        <Button :disabled="loading" v-for="number in getDosesToLog(props.pet, props.treatment, medication)"
+            :key="number" variant="ghost" size="xs" @click="logDose(medication)"
+            :class="{ 'dose border border-border': true, 'missed': getMissedDoses(pet, treatment, medication) && number === 1 }">
             {{ t("health.cta.logDose") }} {{ getDailyDose(medication.frequency) !== undefined ? number +
-                getLoggedList(medication).length
-                : "" }}</Button>
+                getLoggedList(props.pet, props.treatment, medication).length
+                : "" }}
+        </Button>
     </div>
     <EditLogTime v-if="selectedLog.medication" v-model="isEditing" :medication="medication"
         :log="selectedLog.medication" :pet="pet" />
@@ -127,6 +113,11 @@ const editLogTime = async (log: MedicationLogExtended) => {
     border-radius: 8px;
     padding: 3px;
     border: 1px solid var(--color-separator);
+}
+
+button.missed {
+    background: var(--color-error);
+    color: white;
 }
 
 @media (width >=48rem) {
