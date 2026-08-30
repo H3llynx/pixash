@@ -9,6 +9,7 @@ export default {
             save: "Save",
             edit: "Edit",
             clear: "Clear",
+            delete: "Delete",
             back: "Back",
             next: "Next",
             add: "Add",
@@ -16,7 +17,6 @@ export default {
             backDash: "Back to dashboard",
             backCal: "Back to calendar",
             markDone: "Mark as done",
-            deleteRecord: "Delete record"
         },
         text: {
             noEventText: "No upcoming care scheduled.",

@@ -8,14 +8,14 @@ export default {
             save: "Guardar",
             edit: "Editar",
             clear: "Borrar",
+            delete: "Eliminar",
             back: "Atrás",
             next: "Siguiente",
             add: "Añadir",
             allChip: "Todos",
             backDash: "Volver al panel",
             backCal: "Volver al calendario",
-            markDone: "Marcar como hecho",
-            deleteRecord: "Eliminar registro"
+            markDone: "Marcar como hecho"
         },
         text: {
             noEventText: "No hay citas ni cuidados programados.",

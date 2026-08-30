@@ -68,6 +68,7 @@ const handleAdd = (action: string) => {
   else if (action === "antiparasitic") isAddingCare.antiparasitic = true;
   else if (action === "treatment") isAddingCare.treatment = true;
   else if (action === "log") isAddingCare.other = true;
+  else if (action === "weight") isAddingCare.weight = true;
   else return;
 }
 

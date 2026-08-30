@@ -192,7 +192,7 @@ watch(() => formData.pictures, (pictures) => {
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.other" variant="ghost" size="xs"
-                            :aria-label="t('common.button.deleteRecord')" @click="handleDelete">
+                            :aria-label="t('common.button.delete')" @click="handleDelete">
                             <Trash2 :size="22" color="var(--color-brand-light)" />
                         </Button>
                     </div>
@@ -220,7 +220,7 @@ watch(() => formData.pictures, (pictures) => {
                                 <img :src="picture" @load="loadedPictures.add(index)" class="rounded-lg relative"
                                     @click="showLightbox(index)" :class="{ 'hidden': !loadedPictures.has(index) }" />
                                 <Button v-if="mode === 'edit'" type="button" variant="ghost" size="xxs"
-                                    :aria-label="t('health.cta.cancelLog')" @click.stop="deletePicture(picture)"
+                                    :aria-label="t('common.button.delete')" @click.stop="deletePicture(picture)"
                                     class="delete-btn hover:bg-error">
                                     <X :size="20" />
                                 </Button>
