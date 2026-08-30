@@ -13,7 +13,7 @@ const { copyToClipboard, clipboardText } = useClipboard();
 <template>
     <section class="pet-section" v-if="selectedPet?.insurance">
         <h2>{{ t("pet.profile.labels.insurance") }}</h2>
-        <div class="card">
+        <div class="flex flex-col gap-0.5">
             <div class="flex flex-row gap-1 items-center">
                 <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                     <Shield />

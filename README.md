@@ -43,7 +43,7 @@ The name comes from my two pets: **Pixie** (a chubby affectionate tabby cat) and
 
 ## Design
 
-The design system uses a custom palette built around deep forest green and warm gold in light mode, charcoal and purple in dark mode.
+The design system uses a custom palette built around deep forest green and warm gold in light mode, charcoal and eucalyptus in dark mode.
 
 ---
 

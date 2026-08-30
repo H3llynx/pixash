@@ -84,17 +84,19 @@ const calendarOptions = computed(() => ({
 
 :deep(.fc-toolbar-title) {
     font-size: x-large;
-    color: var(--color-gold-dark);
     padding-inline: 1rem;
 }
 
 :deep(.fc-button) {
     background: transparent;
     text-transform: capitalize;
+    border-radius: 24px !important;
+    margin-inline: 0.25rem;
 
     &:disabled {
         background: transparent;
-        color: var(--color-text-secondary)
+        color: var(--color-text-secondary);
+        cursor: default;
     }
 }
 
@@ -104,6 +106,7 @@ const calendarOptions = computed(() => ({
 
 :deep(.fc-button-active) {
     background-color: var(--color-brand-light) !important;
+    color: var(--color-brand-dark) !important;
 }
 
 :deep(.fc-daygrid-day, .fc-day-today) {
@@ -181,6 +184,11 @@ const calendarOptions = computed(() => ({
 
     :deep(.fc-button) {
         color: var(--color-brand)
+    }
+
+    :deep(.fc-button-active) {
+        background-color: var(--color-brand) !important;
+        color: var(--color-bg) !important;
     }
 
     :deep(.treatment-event) {

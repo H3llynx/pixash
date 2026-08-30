@@ -13,7 +13,7 @@ const getTagStyle = () => {
         "flex items-center justify-center gap-[5px] rounded-full py-[5px] px-[10px] text-xs border font-medium": true,
         "border-border bg-bg": !props.color,
         "orange": props.pet.species === SPECIES[0].id && props.color,
-        "purple": props.pet.species === SPECIES[1].id && props.color,
+        "eucalyptus": props.pet.species === SPECIES[1].id && props.color,
         "yellow": props.pet.species === SPECIES[2].id && props.color,
         "grey": props.pet.species === SPECIES[3].id && props.color,
         "blue": props.pet.species === SPECIES[4].id && props.color,
@@ -37,7 +37,7 @@ const getTagStyle = () => {
     border-color: rgba(207, 136, 22, 0.15);
 }
 
-.purple {
+.eucalyptus {
     background: rgba(134, 71, 182, 0.2);
     color: rgb(172, 94, 255);
     border-color: rgba(134, 71, 182, 0.15);
