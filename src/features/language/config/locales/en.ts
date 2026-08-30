@@ -30,6 +30,9 @@ export default {
             addPicture: "Add a profile picture",
             copied: "Copied!",
             errorCopy: "Failed to copy",
+            askingNextDue: "Is there a next due date?",
+            yes: "Yes",
+            noNeed: "No need"
         },
         header: {
             greetings: "Welcome",

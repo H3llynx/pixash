@@ -29,6 +29,9 @@ export default {
             addPicture: "Añadir una foto de perfil",
             copied: "¡Copiado!",
             errorCopy: "Error al copiar",
+            askingNextDue: "¿Deseas indicar la fecha de la próxima dosis?",
+            yes: "Si",
+            noNeed: "No hace falta"
         },
         header: {
             greetings: "Hola",
