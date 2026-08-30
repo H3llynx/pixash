@@ -62,23 +62,26 @@ export const MED_FREQUENCY = [
     {
         id: "daily",
         label: "health.medicine.frequency.daily",
-        dailyDose: 1
+        dailyDose: 1,
+        intervalHours: 24,
     },
     {
         id: "twice_daily",
         label: "health.medicine.frequency.twiceDaily",
-        dailyDose: 2
+        dailyDose: 2,
+        intervalHours: 10,
 
     },
     {
         id: "three_times_daily",
         label: "health.medicine.frequency.threeDaily",
-        dailyDose: 3
+        dailyDose: 3,
+        intervalHours: 6,
     },
     {
         id: "every_48_hours",
         label: "health.medicine.frequency.every48",
-
+        intervalHours: 48,
     },
     {
         id: "custom",
