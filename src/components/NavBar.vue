@@ -2,21 +2,17 @@
 import { Calendar, History, LayoutGrid, MapPin } from '@lucide/vue';
 import { LottieAnimation } from 'lottie-web-vue';
 import { useI18n } from 'vue-i18n';
-import { RouterLink, useRoute } from 'vue-router';
+import { RouterLink } from 'vue-router';
 import happyDog from '../assets/animations/happy-dog.json';
 import kitty from '../assets/animations/kitty.json';
 import { useMedia } from '../composables/useMedia';
-import { useEvents } from '../features/care/composables/useEvents.ts';
-import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 import { ROUTES } from '../router/config';
 import Logo from './Logo.vue';
 
 const { isMd } = useMedia();
-const { loading, hasPets } = usePets();
-const { petId } = useEvents();
+const { hasPets } = usePets();
 const { t } = useI18n();
-const route = useRoute();
 </script>
 
 <template>
@@ -38,7 +34,6 @@ const route = useRoute();
             :class="{ 'animate-pulse pointer-events-none': !hasPets }" @click="!hasPets && $event.preventDefault()">
             <History />{{ t("common.navbar.history") }}
         </RouterLink>
-        <PetSelector v-if="isMd && !loading" :calendar="route.path === ROUTES.calendar" nav v-model:petId="petId" />
         <div v-if="isMd" class="relative mt-auto">
             <LottieAnimation :animationData="happyDog" :loop="true" :autoplay="true" :speed="1" class="dog" />
             <LottieAnimation :animationData="kitty" :loop="true" :autoplay="true" :speed="1" class="cat" />
@@ -71,7 +66,6 @@ nav a {
     flex-direction: column;
     gap: 5px;
     align-items: center;
-    color: var(--color-text-secondary);
     font-size: small;
 
     &:not(.router-link-exact-active) {

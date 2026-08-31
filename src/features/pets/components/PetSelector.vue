@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import Button from '../../../components/Button.vue';
 import Paw from '../../../components/icons/Paw.vue';
-import { ROUTES } from '../../../router/config';
+import { ROUTES } from '../../../router/config.ts';
 import { usePets } from '../composables/usePets';
 import type { PetExtended } from '../types';
 import PetIcon from './PetIcon.vue';
@@ -16,7 +16,6 @@ const route = useRoute();
 
 const props = withDefaults(defineProps<{
     form?: boolean
-    nav?: boolean
     calendar?: boolean
     petId?: string
 }>(), { form: false, calendar: false, nav: false });
@@ -33,70 +32,57 @@ const handleClick = (pet: PetExtended) => {
 };
 
 const getPetChipStyle = (pet: PetExtended) => {
-    if (props.nav) {
-        if (props.calendar) return props.petId === pet.id ? "nav-active" : "nav-base";
-        else return selectedPet.value?.id === pet.id ? "nav-active" : "nav-base";
-    }
-    else if (props.calendar) return props.petId === pet.id ? "calendar-active" : "calendar-base";
-    else if (selectedPet.value?.id === pet.id) return "active";
+    if (props.calendar) return props.petId === pet.id ? "calendar-active" : "calendar-base";
+    else if (selectedPet.value?.id === pet.id) return props.form ? "chip-active" : "active";
 };
 
 const getAllChipStyle = () => {
-    if (props.nav) return props.petId ? "nav-base" : "nav-active";
-    else if (props.calendar) return props.petId ? "calendar-base" : "calendar-active";
+    if (props.calendar) return props.petId ? "calendar-base" : "calendar-active";
     else if (!props.petId) return "active";
 };
 
 const getAddChipStyle = () => {
-    if (props.nav) return `justify-start ${isAddingPet.value && "nav-active"}`;
-    else if (isAddingPet.value) return "active";
+    if (isAddingPet.value) return "active";
 }
 
 </script>
 
 <template>
-    <div :class="nav ? 'pet-section md-nav-selector' : 'pet-selector'">
-        <h2 v-if="nav" class="text-brand-light text-xs">{{ t("common.navbar.myPets") }}</h2>
-        <Button v-if="calendar" :variant="nav ? 'ghost' : 'chip'" size="sm" :class="getAllChipStyle()"
+    <div class="pet-selector">
+        <Button v-if="calendar" variant="petCard" size="sm" :class="getAllChipStyle()"
             @click="emit('update:petId', undefined)">
             <Paw class="w-1 -rotate-20" /> {{ t("common.button.allChip") }}
         </Button>
-        <Button :variant="nav ? 'ghost' : 'chip'" size="sm" v-for="pet in filteredPets" :class="getPetChipStyle(pet)"
-            @click="handleClick(pet)">
-            <div v-if="pet.photo" class="btn-layer">
-                <img :src="pet.photo" :alt="pet.name" class="absolute inset-0 w-full h-full object-cover"
-                    aria-hidden="true" />
-                <span class="relative z-2">{{ pet.name }}</span>
+        <Button :variant="form ? 'petChip' : 'petCard'" :size="form ? 'xs' : 'sm'" v-for="pet in filteredPets"
+            :class="getPetChipStyle(pet)" @click="handleClick(pet)" :disabled="pet === selectedPet && !calendar">
+            <div v-if="pet.photo" :class="form ? 'chip-photo' : 'btn-layer'">
+                <img :src="pet.photo" :alt="pet.name" class="w-full h-full object-cover" aria-hidden />
             </div>
-            <div v-else class="btn-icon">
-                <PetIcon :pet="pet" class="text-4xl m-auto" />
-                {{ pet.name }}
-            </div>
+            <PetIcon v-else :pet="pet" :class="form ? 'chip-photo text-3xl' : 'chip-photo'" />
+            {{ pet.name }}
         </Button>
-        <Button v-if="nav || route.path === ROUTES.dashboard" :variant="nav ? 'add' : 'chip'" size="sm"
-            :class="getAddChipStyle()" @click="isAddingPet = true">
+        <Button v-if="route.path === ROUTES.dashboard" variant="petCard" size="sm" :class="getAddChipStyle()"
+            @click="isAddingPet = true">
             <Plus /> {{ t("common.button.add") }}
         </Button>
     </div>
 </template>
 
 <style scoped>
-.btn-icon,
-.btn-layer {
+.chip-photo {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    overflow: hidden;
     display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: end;
-    align-items: end;
-}
-
-.btn-icon {
-    flex-direction: column;
-    color: var(--color-text-secondary);
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-layer {
-    color: white;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
 
     &::after {
         content: "";
@@ -106,53 +92,52 @@ const getAddChipStyle = () => {
     }
 }
 
-button:not(.active) {
-    .btn-layer {
+button:not(.calendar-base):has(.btn-layer) {
+    color: var(--color-white);
+}
+
+button:not(.active, .chip-active, .calendar-active) {
+
+    .btn-layer,
+    .chip-photo {
         opacity: 0.6;
     }
 
-    .btn-layer img {
+    .btn-layer img,
+    .chip-photo img {
         filter: grayscale(0.9);
     }
 }
 
-.active {
+.active,
+.chip-active .chip-photo {
     background: var(--color-brand);
-    color: var(--color-text-chip);
-    border-color: var(--color-brand);
-    font-weight: 500;
 }
 
-.nav-base,
-.nav-active:disabled {
-    background: transparent;
-    color: var(--color-off-white);
-    justify-content: flex-start;
+.active {
+    color: var(--color-bg);
 }
 
-.nav-active {
-    background: var(--color-brand-rgba);
-    color: var(--color-off-white);
-    justify-content: flex-start;
-    border-color: transparent;
+.chip-active {
+    color: var(--color-brand);
 }
 
 .calendar-base {
-    background: var(--color-brand-dark);
-    border-color: var(--color-brand-rgba);
+    background: var(--color-brand-rgba);
+    border-color: transparent;
+    color: var(--color-text-secondary);
 }
 
 .calendar-active {
     background: var(--color-brand-light);
     border-color: var(--color-brand-light);
     color: var(--color-charcoal-lighter);
+    cursor: not-allowed;
 }
 
-.md-nav-selector {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    width: 100%;
-    padding-block: 1rem;
+@media (width >=48rem) {
+    .calendar-base:has(.btn-layer) {
+        color: var(--color-border);
+    }
 }
 </style>

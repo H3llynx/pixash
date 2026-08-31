@@ -404,7 +404,7 @@
   }
 
   .pet-selector {
-    @apply flex gap-0.5 py-0.5 default-padding overflow-x-scroll;
+    @apply flex gap-0.5 py-1 default-padding overflow-x-scroll;
     scroll-snap-type: x proximity;
     touch-action: pan-x;
 

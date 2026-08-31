@@ -48,10 +48,8 @@ onBeforeRouteLeave(() => {
     <Header />
     <main class="lg:gap-0 lg:grid lg:grid-cols-[55%_45%] xl:grid-cols-[1fr_35%] md:pb-1.5">
         <section class="p-0 bg-brand-dark md:bg-bg md:pb-1">
-            <template v-if="!isMd">
-                <PetChipsSkeleton v-if="loading" />
-                <PetSelector v-else calendar v-model:petId="petId" />
-            </template>
+            <PetChipsSkeleton v-if="loading" />
+            <PetSelector v-else calendar v-model:petId="petId" />
             <Calendar :events="filteredCalendarEvents" @update-month="currentMonth = $event"
                 @update-monthName="currentMonthName = $event" @date-click="handleDateClick" />
         </section>
