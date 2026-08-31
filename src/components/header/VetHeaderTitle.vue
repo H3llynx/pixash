@@ -6,6 +6,7 @@ const { t } = useI18n();
 <template>
     <div>
         <h2 class="text-2xl md:text-3xl">{{ t("common.header.vetH2") }}</h2>
-        <span class="tracking-wide font-extralight">{{ t("common.header.vetSpan") }}</span>
+        <span class="tracking-wide font-extralight text-sm md:text-base">{{
+            t("common.header.vetSpan") }}</span>
     </div>
 </template>
