@@ -231,9 +231,9 @@ describe("useCare", () => {
             mockRefresh([], [], [], []);
             vi.mocked(deleteLog).mockResolvedValue(undefined);
             const [result, unmount] = withSetup(() => useCare(pets));
-            result.selectLog(log, "antiparasitic");
+            result.selectLog(log);
             await result.deleteSelectedLog(log, "1");
-            expect(result.selectedLog.antiparasitic).toBeNull();
+            expect(result.selectedLog).toBeNull();
             unmount();
         })
     });

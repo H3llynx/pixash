@@ -79,13 +79,6 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         selectedLog.value = log;
     };
 
-    const selectCare = (care: LogExtended | VaccineExtended | VisitExtended | TreatmentExtended | null, type: "vaccine" | "visit" | "log") => {
-        if (type === "vaccine") selectVaccine(care as VaccineExtended | null);
-        else if (type === "visit") selectVisit(care as VisitExtended | null);
-        else if (type === "log") selectLog(care as LogExtended | null);
-        else if (type === "treatment") selectTreatment(care as TreatmentExtended | null)
-    };
-
     const handleHealthAction = async <T>(
         action: () => Promise<T>,
         onFinal?: () => void
