@@ -57,11 +57,7 @@ const calendarOptions = computed(() => ({
     eventClick(info: EventClickArg) {
         if (info.event.extendedProps.event.eventType === "vaccine") selectVaccine(info.event.extendedProps.event);
         else if (info.event.extendedProps.event.eventType === "visit") selectVisit(info.event.extendedProps.event);
-        else if (info.event.extendedProps.event.eventType === "log") {
-            if (info.event.extendedProps.event.type === "antiparasite")
-                selectLog(info.event.extendedProps.event, "antiparasitic");
-            else selectLog(info.event.extendedProps.event, "other");
-        };
+        else if (info.event.extendedProps.event.eventType === "log") selectLog(info.event.extendedProps.event)
     }
 }));
 </script>

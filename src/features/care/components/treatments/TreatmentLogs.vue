@@ -18,7 +18,7 @@ const props = defineProps<{
     color: string
 }>();
 
-const { addNewLog, deleteSelectedLog, careError, selectLog, selectedLog } = usePets();
+const { addNewLog, selectLog, deleteSelectedLog, careError, selectedMedicationLog } = usePets();
 const { getLoggedList, getDosesToLog, getMissedDoses } = useTreatmentTracking();
 const { t, locale } = useI18n();
 const { show } = useToast();
@@ -56,7 +56,7 @@ const deleteDose = async (log: LogExtended) => {
 }
 
 const editLogTime = async (log: MedicationLogExtended) => {
-    selectLog(log, "medication");
+    selectLog(log);
     await nextTick();
     isEditing.value = true;
 }
@@ -93,8 +93,8 @@ const editLogTime = async (log: MedicationLogExtended) => {
                 : "" }}
         </Button>
     </div>
-    <EditLogTime v-if="selectedLog.medication" v-model="isEditing" :medication="medication"
-        :log="selectedLog.medication" :pet="pet" />
+    <EditLogTime v-if="selectedMedicationLog" v-model="isEditing" :medication="medication" :log="selectedMedicationLog"
+        :pet="pet" />
 </template>
 
 <style scoped>
