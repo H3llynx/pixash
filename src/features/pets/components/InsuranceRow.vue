@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Eye, EyeClosed, Pencil } from '@lucide/vue';
+import { Eye, EyeClosed } from '@lucide/vue';
 import { reactive, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
@@ -86,11 +86,11 @@ watch(() => selectedPet.value?.insurance, (insurance) => {
         <div class="flex flex-row-reverse items-center gap-0.75">
             <Toggle class="w-max text-sm" v-model="isInsured" :label="t('pet.profile.labels.insured')" size="sm"
                 :disabled="loading" @change="toggleInsurance" />
-            <Button v-if="selectedPet?.insured" variant="tertiary" size="xxs" :aria-label="t('pet.insurance.update')"
-                @click="isUpdating = true" :disabled="loading">
+            <Button v-if="selectedPet?.insured" variant="tertiary" size="xxs" @click="isUpdating = !isUpdating"
+                :disabled="loading">
                 <Eye :size="14" v-if="!isUpdating" />
-                <Pencil :size="14" v-else />
-                {{ t('pet.insurance.update') }}
+                <EyeClosed :size="14" v-else />
+                {{ t(isUpdating ? 'common.button.hide' : 'pet.insurance.update') }}
             </Button>
         </div>
         <Transition name="toast">
@@ -100,15 +100,9 @@ watch(() => selectedPet.value?.insurance, (insurance) => {
                 <Input v-model="insuranceData.contact" type="tel" :label="t('pet.insurance.contact')"
                     :pattern="phonePattern" />
                 <Input v-model="insuranceData.web" type="url" :label="t('pet.insurance.web')" />
-                <div class="flex gap-0.5 ml-auto mt-0.5">
-                    <Button :disabled="loading" type="button" variant="secondary" size="sm" @click="isUpdating = false">
-                        <EyeClosed :size="14" />
-                        {{
-                            t('common.button.hide') }}
-                    </Button>
-                    <Button v-if="!shallowEqual(insuranceData, selectedPet?.insurance)" size="sm" :disabled="loading">{{
+                <Button v-if="!shallowEqual(insuranceData, selectedPet?.insurance)" size="sm"
+                    class="flex gap-0.5 ml-auto mt-0.5" :disabled="loading">{{
                         t('common.button.save') }}</Button>
-                </div>
             </form>
         </Transition>
     </div>
