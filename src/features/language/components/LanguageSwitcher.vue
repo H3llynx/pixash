@@ -12,7 +12,7 @@ const changeLanguage = (e: Event) => {
 
 <template>
     <Dropdown v-model="locale" @change="changeLanguage"
-        class="ml-0.5 w-max shrink-0 text-sm md:text-base border-0 bg-transparent text-brand-light">
+        class="w-max shrink-0 text-sm md:text-base border-0 bg-transparent font-medium">
         <option v-for="lang in SUPPORTED_LANGUAGES" :key="lang.id" :value="lang.id" aria-label="lang.label">
             {{ lang.id.toUpperCase() }}
         </option>

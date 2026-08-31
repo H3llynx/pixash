@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import { Calendar, History, LayoutGrid, MapPin } from '@lucide/vue';
-import { LottieAnimation } from 'lottie-web-vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
-import happyDog from '../assets/animations/happy-dog.json';
-import kitty from '../assets/animations/kitty.json';
 import { useMedia } from '../composables/useMedia';
 import { usePets } from '../features/pets/composables/usePets';
 import { ROUTES } from '../router/config';
-import Logo from './Logo.vue';
 
 const { isMd } = useMedia();
 const { hasPets } = usePets();
@@ -17,8 +13,7 @@ const { t } = useI18n();
 
 <template>
     <nav
-        class="bg-bg-2 w-screen p-1 fixed bottom-0 h-5 md:min-h-screen overflow-y-scroll md:w-18 md:bg-nav flex md:flex-col justify-between gap-2">
-        <Logo class="hidden md:flex mb-1" />
+        class="bg-bg-2 w-screen p-1 md:py-5 fixed bottom-0 h-5 md:min-h-screen overflow-y-scroll md:w-max flex md:flex-col justify-between md:justify-start gap-2">
         <RouterLink :to="ROUTES.dashboard" tabindex="0">
             <LayoutGrid />{{ t("common.navbar.home") }}
         </RouterLink>
@@ -34,10 +29,6 @@ const { t } = useI18n();
             :class="{ 'animate-pulse pointer-events-none': !hasPets }" @click="!hasPets && $event.preventDefault()">
             <History />{{ t("common.navbar.history") }}
         </RouterLink>
-        <div v-if="isMd" class="relative mt-auto">
-            <LottieAnimation :animationData="happyDog" :loop="true" :autoplay="true" :speed="1" class="dog" />
-            <LottieAnimation :animationData="kitty" :loop="true" :autoplay="true" :speed="1" class="cat" />
-        </div>
     </nav>
 </template>
 
@@ -92,13 +83,11 @@ nav a.router-link-exact-active {
     }
 
     nav a {
-        flex-direction: row;
-        padding-left: 1rem;
-        color: var(--color-text-nav);
+        color: var(--color-text-secondary);
     }
 
     nav a.router-link-exact-active {
-        color: var(--color-text-nav-active);
+        color: var(--color-text);
     }
 }
 </style>

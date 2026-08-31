@@ -39,9 +39,9 @@ const { t } = useI18n();
                     </p>
                     <ProgressBar v-if="treatment.endDate" :progress="getTreatmentProgress(treatment)!"
                         :color="treatment.color" />
-                    <span v-else class="inline ml-0.5 float-right tag bg-separator text-text-secondary">{{
+                    <span v-else class="inline ml-0.5 float-right tag bg-border-light text-text-secondary">{{
                         t("health.treatment.ongoing")
-                    }}</span>
+                        }}</span>
                 </div>
             </Button>
         </div>

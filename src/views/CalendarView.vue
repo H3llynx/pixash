@@ -3,7 +3,6 @@ import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { onBeforeRouteLeave } from 'vue-router';
 import Header from '../components/header/Header.vue';
-import PetChipsSkeleton from '../components/loading/PetChipsSkeleton.vue';
 import { useMedia } from '../composables/useMedia';
 import Calendar from '../features/care/components/events/Calendar.vue';
 import CalendarLegend from '../features/care/components/events/CalendarLegend.vue';
@@ -48,8 +47,7 @@ onBeforeRouteLeave(() => {
     <Header />
     <main class="lg:gap-0 lg:grid lg:grid-cols-[55%_45%] xl:grid-cols-[1fr_35%] md:pb-1.5">
         <section class="p-0 bg-brand-dark md:bg-bg md:pb-1">
-            <PetChipsSkeleton v-if="loading" />
-            <PetSelector v-else calendar v-model:petId="petId" />
+            <PetSelector calendar v-model:petId="petId" />
             <Calendar :events="filteredCalendarEvents" @update-month="currentMonth = $event"
                 @update-monthName="currentMonthName = $event" @date-click="handleDateClick" />
         </section>

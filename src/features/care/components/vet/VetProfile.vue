@@ -78,7 +78,7 @@ const handleVetUpdate = () => {
         <VetProfileRow data="hours" :vet="vet" />
         <div class="mt-auto flex flex-col gap-0.5">
             <VetNotes :vet="vet" />
-            <div class="flex gap-0.5 pt-1 border-t border-separator">
+            <div class="flex gap-0.5 pt-1 border-t border-border-light">
                 <Button variant="vetOptions" size="vetOptions" @click="handleMaps">
                     {{ t("vet.cta.maps") }}
                 </Button>

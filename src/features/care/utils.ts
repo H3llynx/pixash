@@ -129,7 +129,7 @@ export const getIntervalHours = (frequencyId: string): number | undefined => {
 
 export const getTreatmentColor = (index: number) => TREATMENTCOLORS[index] ? TREATMENTCOLORS[index % TREATMENTCOLORS.length].rgb : "var(--color-brand)";
 
-export const getTreatmentBackground = (index: number) => TREATMENTCOLORS[index] ? TREATMENTCOLORS[index % TREATMENTCOLORS.length].rgba : "var(--color-separator)";
+export const getTreatmentBackground = (index: number) => TREATMENTCOLORS[index] ? TREATMENTCOLORS[index % TREATMENTCOLORS.length].rgba : "var(--color-border-light)";
 
 export const checkOverlapsMonth = (startDate: Timestamp, endDate: Timestamp | undefined, month: Date
 ): boolean => {

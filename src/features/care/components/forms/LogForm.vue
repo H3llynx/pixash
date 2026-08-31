@@ -188,7 +188,7 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedLog.other!.subtype}`)
                     })
-                        }}
+                    }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
                         <Button v-if="selectedLog.other" variant="ghost" size="xs"
@@ -214,7 +214,7 @@ watch(() => formData.pictures, (pictures) => {
                             <div v-if="formData.pictures.length" v-for="(picture, index) in formData.pictures"
                                 class="relative rounded-lg mb-0.25 min-w-[140px] cursor-pointer">
                                 <div v-if="!loadedPictures.has(index)"
-                                    class="rounded-lg min-w-[160px] h-[120px] bg-separator flex items-center justify-center">
+                                    class="rounded-lg min-w-[160px] h-[120px] bg-border-light flex items-center justify-center">
                                     <ImageIcon :size="28" class="opacity-30 animate-pulse" />
                                 </div>
                                 <img :src="picture" @load="loadedPictures.add(index)" class="rounded-lg relative"

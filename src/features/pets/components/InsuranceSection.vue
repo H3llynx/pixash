@@ -33,7 +33,7 @@ const { copyToClipboard, clipboardText } = useClipboard();
             </div>
             <div class="flex flex-row gap-0.5 text-sm"
                 v-if="selectedPet.insurance.contact || selectedPet.insurance.web">
-                <div v-if="selectedPet.insurance.contact" class="rounded-xl bg-separator p-0.75 flex-1">
+                <div v-if="selectedPet.insurance.contact" class="rounded-xl bg-border-light p-0.75 flex-1">
                     <h4>
                         <Phone :size="12" /> {{ t("pet.insurance.contact") }}
                     </h4>
@@ -41,7 +41,7 @@ const { copyToClipboard, clipboardText } = useClipboard();
                         {{ selectedPet.insurance.contact }}
                     </a>
                 </div>
-                <div v-if="selectedPet.insurance.web" class="rounded-xl bg-separator p-0.75 flex-1 truncate">
+                <div v-if="selectedPet.insurance.web" class="rounded-xl bg-border-light p-0.75 flex-1 truncate">
                     <h4>
                         <Globe :size="12" />
                         {{ t("pet.insurance.web") }}

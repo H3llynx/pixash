@@ -6,19 +6,19 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const button = tv({
-    base: "font-medium rounded-full filter-blur flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed",
+    base: "font-medium filter-blur rounded-xl flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed",
     variants: {
         variant: {
-            primary: "btn-hover-fill bg-brand border border-brand text-bg",
-            secondary: "btn-hover-fill border border-brand text-brand bg-bg-rgba",
-            tertiary: "btn-hover-fill text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba border border-border",
-            ghost: "btn-hover-fill-ghost rounded-xl text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba",
-            addon: "text-text-secondary addon-focus",
-            petChip: "flex-col text-text-secondary capitalize justify-end disabled:opacity-100",
-            petCard: "btn-hover-fill w-9 h-8 rounded-xl border border-border bg-bg-2 capitalize text-xl font-title overflow-hidden justify-end items-end disabled:opacity-100",
-            summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light",
-            vetOptions: "btn-hover-fill flex-1 rounded-xl border border-border-btn-vet bg-btn-vet",
-            add: "flex-start rounded-xl border border-dashed border-text-secondary text-text-secondary hover:text-brand-light hover:border-brand-light"
+            primary: "btn-hover-fill bg-brand border border-brand text-bg rounded-full ",
+            secondary: "btn-hover-fill border border-brand text-brand bg-bg-rgba rounded-full ",
+            tertiary: "btn-hover-fill text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba border border-border rounded-full",
+            ghost: "btn-hover-fill-ghost text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba",
+            addon: "text-text-secondary addon-focus rounded-full",
+            stacked: "stacked text-text-secondary capitalize justify-end disabled:opacity-100",
+            tile: "btn-hover-fill tile capitalize justify-end items-end disabled:opacity-100",
+            summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light rounded-full",
+            vetOptions: "btn-hover-fill flex-1 border border-border-btn-vet bg-btn-vet",
+            add: "flex-start border border-dashed border-text-secondary text-text-secondary hover:text-brand-light hover:border-brand-light"
         },
         size: {
             xxs: "text-xs p-0.5",
@@ -55,23 +55,31 @@ withDefaults(defineProps<{
 </template>
 
 <style scoped>
-.btn-fill-card {
+.tile {
+    width: 9rem;
+    height: 8rem;
+    border: 1px solid var(--color-border);
     background: var(--color-bg-2);
-    position: relative;
+    text-transform: capitalize;
     overflow: hidden;
-    transition: 1s ease;
+    font-family: var(--font-title);
+    font-size: large;
 
-    &::before {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        inset: 0;
-        background-image: var(--background-image-card);
-        background-size: 150% 100%;
-        opacity: 0;
-        z-index: -1;
-        transition: 1s ease;
+    &:not(.active, :hover) {
+        opacity: 0.6;
+        filter: grayscale(0.9);
+    }
+
+    &.active {
+        background: var(--color-brand);
+    }
+}
+
+.stacked {
+    flex-direction: column;
+
+    &.active {
+        color: var(--color-brand);
     }
 }
 
@@ -87,6 +95,10 @@ withDefaults(defineProps<{
     padding: 1rem 2rem 1.5rem 0.5rem;
     height: 1.5rem;
     width: 100%;
+}
+
+.active {
+    color: var(--color-bg);
 }
 
 @media (width >=48rem) {

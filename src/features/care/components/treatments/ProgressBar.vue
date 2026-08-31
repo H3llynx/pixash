@@ -6,7 +6,7 @@ defineProps<{ progress: number, color: string }>();
 
 <template>
     <div class="flex gap-0.5 items-center">
-        <div class="w-full h-0.5 bg-separator rounded overflow-hidden">
+        <div class="w-full h-0.5 bg-border-light rounded overflow-hidden">
             <div class="w-full h-full" :style="{
                 width: `${progress}%`,
                 backgroundColor: color

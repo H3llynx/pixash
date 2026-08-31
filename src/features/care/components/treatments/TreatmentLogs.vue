@@ -65,7 +65,7 @@ const editLogTime = async (log: MedicationLogExtended) => {
 <template>
     <div class="flex gap-0.5 mt-0.75 flex-wrap" :style="{ '--custom-color': color }">
         <div v-for="log in getLoggedList(props.pet, props.treatment, medication)" :key="log.id"
-            class="log text-xs relative border border-separator py-0.5 text-center rounded-xl flex items-center justify-center"
+            class="log text-xs relative border border-border-light py-0.5 text-center rounded-xl flex items-center justify-center"
             :style="{ color: color }">
             <p :class="getLogStyle()">{{ log.givenAt.toDate().toLocaleString(locale, {
                 day: "numeric",
@@ -112,7 +112,7 @@ const editLogTime = async (log: MedicationLogExtended) => {
 .log-btn {
     border-radius: 8px;
     padding: 3px;
-    border: 1px solid var(--color-separator);
+    border: 1px solid var(--color-border-light);
 }
 
 button.missed {
@@ -128,7 +128,7 @@ button.missed {
     }
 
     .dose {
-        background: var(--color-separator);
+        background: var(--color-border-light);
         color: var(--color-text);
     }
 }

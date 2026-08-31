@@ -5,7 +5,7 @@ import PetChipsSkeleton from './PetChipsSkeleton.vue';
 
 <template>
     <div
-        class="animate-pulse overflow-hidden flex-1 flex flex-col gap-1.5 md:pl-18 pb-6.5 md:pb-1 lg:grid lg:grid-cols-[55%_45%] lg:gap-0">
+        class="animate-pulse overflow-hidden flex-1 flex flex-col gap-1.5 md:pl-5 pb-6.5 md:pb-1 lg:grid lg:grid-cols-[55%_45%] lg:gap-0">
         <PetChipsSkeleton />
         <div class="flex flex-col gap-1.5 default-padding">
             <!-- Stat row -->

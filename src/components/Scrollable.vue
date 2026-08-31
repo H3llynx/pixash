@@ -45,7 +45,7 @@ watch(
         <div v-if="list.length > 1" class="flex gap-0.5 w-full mb-0.5 default-padding" aria-hidden>
             <button tabindex="0" v-for="(_item, index) in list" :key="index" ref="scrollBtn"
                 class="h-0.25 default-transition rounded cursor-pointer"
-                :class="index === activeIndex ? 'bg-brand focus-visible:bg-brand' : 'bg-separator focus-visible:bg-brand-light'"
+                :class="index === activeIndex ? 'bg-brand focus-visible:bg-brand' : 'bg-border-light focus-visible:bg-brand-light'"
                 :style="{ width: `${barWidth}%` }" @click="scrollToCard(index)" />
         </div>
         <div class="pet-selector md:gap-1" ref="cardSelector" @scroll="handleScroll">

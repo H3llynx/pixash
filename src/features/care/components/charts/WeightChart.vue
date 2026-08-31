@@ -98,7 +98,7 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
             x: {
                 grid: { display: false },
                 ticks: { color: getChartColor("--color-text-secondary") },
-                border: { color: getChartColor("--color-separator") },
+                border: { color: getChartColor("--color-border-light") },
             },
             y: {
                 title: {
@@ -108,7 +108,7 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
                 },
                 grid: { display: false },
                 ticks: { color: getChartColor("--color-text-secondary") },
-                border: { color: getChartColor("--color-separator") },
+                border: { color: getChartColor("--color-border-light") },
             }
         }
     }
@@ -126,7 +126,7 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
                 <div class="ml-auto text-right">
                     <p class="text-2xl font-medium text-btn-ghost-text">{{ chartData.datasets[0].data.at(-1) }} {{
                         preferredUnit
-                        }}</p>
+                    }}</p>
                     <p v-if="displayed.length" class="text-text-secondary text-xs">{{ t("common.text.lastLogged") }} {{
                         displayed.at(-1)?.measuredAt.toDate().toLocaleDateString(locale, {
                             day: "numeric",

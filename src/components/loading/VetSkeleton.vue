@@ -1,6 +1,6 @@
 <template>
     <div
-        class="animate-pulse flex-1 flex flex-col gap-1.5 pb-6.5 md:pl-18 md:pb-0 mt-1 md:mt-0 lg:gap-0 lg:grid lg:grid-cols-[55%_45%] xl:grid-cols-[65%_1fr]">
+        class="animate-pulse flex-1 flex flex-col gap-1.5 pb-6.5 md:pl-5 md:pb-0 mt-1 md:mt-0 lg:gap-0 lg:grid lg:grid-cols-[55%_45%] xl:grid-cols-[65%_1fr]">
         <div class="p-0 md:py-1.5 default-padding flex flex-col gap-1.5">
             <div class="h-1 w-7 rounded bg-grey-light opacity-30"></div>
             <div class="flex gap-1 w-full">

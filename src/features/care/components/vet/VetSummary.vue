@@ -4,7 +4,6 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Scrollable from '../../../../components/Scrollable.vue';
-import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import VetProfile from './VetProfile.vue';
 
@@ -18,7 +17,6 @@ const filteredVets = computed(() => {
 
 <template>
     <section class="pet-section p-0">
-        <PetSelector />
         <h2 class="default-padding">{{ t("health.title.myVets") }}</h2>
         <Scrollable v-if="hasVets" :list="vets">
             <VetProfile v-if="hasVets" v-for="vet in filteredVets" :vet="vet" />

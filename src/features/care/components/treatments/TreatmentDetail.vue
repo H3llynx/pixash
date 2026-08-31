@@ -35,9 +35,9 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
                 <Calendar :size="18" />
                 <span>{{ tsToDate(treatment.startDate, "date") }}</span>
                 <span v-if="treatment.endDate"> - {{ tsToDate(treatment.endDate, "date") }}</span>
-                <span v-else class="ml-auto tag bg-separator text-text-secondary">{{
+                <span v-else class="ml-auto tag bg-border-light text-text-secondary">{{
                     t("health.treatment.ongoing")
-                    }}</span>
+                }}</span>
             </div>
             <ProgressBar v-if="progress" :progress="progress" :color="color" />
         </div>
@@ -70,7 +70,7 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
 
 <style scoped>
 details[open] summary {
-    border-bottom: 1px solid var(--color-separator);
+    border-bottom: 1px solid var(--color-border-light);
 
     .chevron {
         transform: rotate(180deg);

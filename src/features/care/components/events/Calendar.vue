@@ -23,7 +23,7 @@ const emit = defineEmits<{
 const eventColors: Record<string, string> = {
     visit: "var(--color-brand-light)",
     vaccine: "var(--color-gold)",
-    log: "var(--color-separator)",
+    log: "var(--color-border-light)",
 };
 
 const calendarOptions = computed(() => ({
@@ -192,7 +192,7 @@ const calendarOptions = computed(() => ({
     }
 
     :deep(.treatment-event) {
-        border: 1px solid var(--color-separator);
+        border: 1px solid var(--color-border-light);
     }
 }
 
