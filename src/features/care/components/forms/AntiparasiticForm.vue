@@ -14,12 +14,11 @@ import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { antiparasiteFields } from '../../config.ts';
-import type { LogExtended } from '../../types.ts';
 import LogSuccess from '../LogSuccess.vue';
 import ButtonArea from './ButtonArea.vue';
 import { useAntiparasiticForm } from './composables/useAntiparasiticForm.ts';
 
-const { isAddingCare, selectedLog, selectedPet } = usePets();
+const { isAddingCare, selectedAntiparasiticLog, selectedPet } = usePets();
 const { loading, formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error } = useAntiparasiticForm();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
@@ -31,31 +30,31 @@ watch(() => isAddingCare.antiparasitic, (adding) => {
     if (adding) mode.value = "edit";
 });
 
-watch(() => selectedLog.antiparasitic, (log) => {
+watch(() => selectedAntiparasiticLog.value, (log) => {
     mode.value = log ? "view" : "edit";
 });
 
 watch(() => mode.value, (mode) => {
-    if (mode === "view") fillLogData(selectedLog.antiparasitic!)
+    if (mode === "view") fillLogData(selectedAntiparasiticLog.value!)
 })
 </script>
 
 <template>
     <Transition name="panel">
-        <Panel v-if="isAddingCare.antiparasitic || selectedLog.antiparasitic" :onClose="handleClose">
+        <Panel v-if="isAddingCare.antiparasitic || selectedAntiparasiticLog" :onClose="handleClose">
             <LoadingPuppy v-if="loading" />
             <div class="md:max-w-max" v-else-if="!newLog">
                 <div class="flex gap-1 justify-between my-1 default-padding">
-                    <div v-if="selectedLog.antiparasitic && selectedPet"
+                    <div v-if="selectedAntiparasiticLog && selectedPet"
                         class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
                         <PetIcon :pet="selectedPet" />
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                        }}
+                    }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
-                        <Button v-if="selectedLog.antiparasitic" variant="ghost" size="xs"
+                        <Button v-if="selectedAntiparasiticLog" variant="ghost" size="xs"
                             :aria-label="t('health.cta.deleteVaccine')" @click="handleDelete">
                             <Trash2 :size="22" color="var(--color-brand-light)" />
                         </Button>
@@ -80,7 +79,7 @@ watch(() => mode.value, (mode) => {
                         </Input>
                         <Toggle v-if="mode === 'edit'" v-model="formData.notGiven"
                             :label="t(notGiven.label, { name: selectedPet!.name })" :id="notGiven.id" />
-                        <Input v-if="selectedLog.antiparasitic?.dueOn || mode === 'edit'" v-model="formData.dueOn"
+                        <Input v-if="selectedAntiparasiticLog?.dueOn || mode === 'edit'" v-model="formData.dueOn"
                             :id="dueDate.id" :label="t(dueDate.label)" :type="dueDate.type"
                             :min="formData.givenAt || todayAsInput()" :required="!formData.givenAt">
                             <template #addon>
@@ -89,11 +88,10 @@ watch(() => mode.value, (mode) => {
                                     t("common.button.clear") }}</Button>
                             </template>
                         </Input>
-                        <Input v-if="selectedLog.antiparasitic?.notes || mode === 'edit'" v-model="formData.notes"
+                        <Input v-if="selectedAntiparasiticLog?.notes || mode === 'edit'" v-model="formData.notes"
                             :id="notes.id" :label="t(notes.label)" :type="notes.type"
                             :placeholder="t(notes.placeholder)" />
-                        <ButtonArea v-model="mode" :loading="loading"
-                            :selectedCare="(selectedLog.antiparasitic as LogExtended)"
+                        <ButtonArea v-model="mode" :loading="loading" :selectedCare="(selectedAntiparasiticLog)"
                             :customCta="t('health.cta.logTreatment')" />
                     </div>
                 </form>

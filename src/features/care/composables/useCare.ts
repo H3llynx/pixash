@@ -1,10 +1,10 @@
 import { FirebaseError } from "firebase/app";
 import { computed, reactive, ref, type Ref } from "vue";
 import { addLog, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchPetLogs, fetchPetTreatments, fetchPetVaccines, fetchPetVisits, fetchVets, updateLog, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/care";
-import { resetLogs, resetState } from "../../../utils";
+import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { AntiparasiteLogExtended, Log, LogExtended, MedicationLogExtended, OtherLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { Log, LogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
 
 export const useCare = (pets: Ref<PetExtended[]>) => {
@@ -14,15 +14,19 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
     const selectedVisit = ref<VisitExtended | null>(null);
     const selectedVet = ref<VetExtended | null>(null);
     const selectedTreatment = ref<TreatmentExtended | null>(null)
-    const selectedLog = reactive<{
-        antiparasitic: AntiparasiteLogExtended | null;
-        medication: MedicationLogExtended | null
-        other: OtherLogExtended | null;
-    }>({
-        antiparasitic: null,
-        medication: null,
-        other: null
-    })
+
+    const selectedLog = ref<LogExtended | null>(null);
+
+    const selectedAntiparasiticLog = computed(() =>
+        selectedLog.value?.type === "antiparasite" ? selectedLog.value : null
+    );
+    const selectedMedicationLog = computed(() =>
+        selectedLog.value?.type === "medication" ? selectedLog.value : null
+    );
+    const selectedOtherLog = computed(() =>
+        selectedLog.value?.type === "other" ? selectedLog.value : null
+    );
+
     const loading = ref<boolean>(false);
     const vetLoading = ref<boolean>(false);
     const treatmentLoading = ref<boolean>(false);
@@ -45,7 +49,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
 
     const selectVaccine = (vaccine: VaccineExtended | null) => {
         resetState(isAddingCare);
-        resetLogs(selectedLog);
+        selectedLog.value = null;
         selectedVisit.value = null;
         selectedTreatment.value = null;
         selectedVaccine.value = vaccine;
@@ -53,7 +57,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
 
     const selectVisit = (visit: VisitExtended | null) => {
         resetState(isAddingCare);
-        resetLogs(selectedLog);
+        selectedLog.value = null;
         selectedVaccine.value = null;
         selectedTreatment.value = null;
         selectedVisit.value = visit;
@@ -61,18 +65,25 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
 
     const selectTreatment = (treatment: TreatmentExtended | null) => {
         resetState(isAddingCare);
-        resetLogs(selectedLog);
+        selectedLog.value = null;
         selectedVaccine.value = null;
         selectedVisit.value = null;
         selectedTreatment.value = treatment;
     };
 
-    const selectLog = <K extends keyof typeof selectedLog>(log: typeof selectedLog[K], logType: K) => {
+    const selectLog = (log: LogExtended | null) => {
         resetState(isAddingCare);
-        resetLogs(selectedLog);
         selectedVaccine.value = null;
         selectedVisit.value = null;
-        selectedLog[logType] = log;
+        selectedTreatment.value = null;
+        selectedLog.value = log;
+    };
+
+    const selectCare = (care: LogExtended | VaccineExtended | VisitExtended | TreatmentExtended | null, type: "vaccine" | "visit" | "log") => {
+        if (type === "vaccine") selectVaccine(care as VaccineExtended | null);
+        else if (type === "visit") selectVisit(care as VisitExtended | null);
+        else if (type === "log") selectLog(care as LogExtended | null);
+        else if (type === "treatment") selectTreatment(care as TreatmentExtended | null)
     };
 
     const handleHealthAction = async <T>(
@@ -239,9 +250,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
             await updateLog(log.id, petId, user.value!.uid, data);
             await refreshPetHealth(petId);
             const updatedLog = logs.value.find(l => l.id === log.id);
-            if (updatedLog?.type === "antiparasite") selectedLog.antiparasitic = updatedLog as AntiparasiteLogExtended;
-            else if (updatedLog?.type === "medication") selectLog(null, updatedLog?.type);
-            else if (updatedLog?.type === "other") selectedLog.other = updatedLog as OtherLogExtended;
+            if (updatedLog) selectedLog.value = updatedLog;
         }, () => {
             loading.value = false;
         });
@@ -251,7 +260,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         await handleHealthAction(async () => {
             await deleteLog(log.id, petId, user.value!.uid);
             await refreshPetHealth(petId);
-            resetLogs(selectedLog);
+            selectLog(null);
         });
     };
 
@@ -297,6 +306,9 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         selectVaccine,
         selectVisit,
         selectLog,
+        selectedAntiparasiticLog,
+        selectedMedicationLog,
+        selectedOtherLog,
         isAddingCare,
         addNewVaccine,
         updateSelectedVaccine,

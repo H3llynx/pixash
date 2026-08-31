@@ -25,7 +25,7 @@ import type { Log, LogExtended, OtherLogExtended } from '../../types.ts';
 import { resetForm } from '../../utils.ts';
 import ButtonArea from './ButtonArea.vue';
 
-const { selectedPet, deleteSelectedLog, careError, isAddingCare, selectedLog, addNewLog, updateSelectedLog } = usePets();
+const { selectedPet, deleteSelectedLog, careError, isAddingCare, selectLog, selectedOtherLog, addNewLog, updateSelectedLog } = usePets();
 const { selectedDate } = useEvents();
 const { t } = useI18n();
 const { show } = useToast();
@@ -64,7 +64,7 @@ const handleClose = () => {
     error.value = false;
     selectedDate.value = null;
     isAddingCare.other = false;
-    selectedLog.other = null;
+    selectLog(null);
     pictures.value = [];
     loadedPictures.clear();
     resetForm(formData, defaultForm);
@@ -105,14 +105,14 @@ const handleSubmit = async () => {
             isAddingCare.other = false;
             pictures.value = [];
         }
-        else if (selectedLog.other) {
+        else if (selectedOtherLog.value) {
             const originalData = {
-                ...selectedLog.other,
-                date: tsToDate(selectedLog.other.date, "input"),
-                notes: selectedLog.other.notes ?? "",
+                ...selectedOtherLog.value,
+                date: tsToDate(selectedOtherLog.value.date, "input"),
+                notes: selectedOtherLog.value.notes ?? "",
             };
             if (!shallowEqual(formData, originalData)) {
-                await updateSelectedLog(selectedLog.other, selectedPet.value.id, log);
+                await updateSelectedLog(selectedOtherLog.value, selectedPet.value.id, log);
                 pictures.value = [];
             };
         };
@@ -125,10 +125,10 @@ const handleSubmit = async () => {
 
 const handleDelete = () => {
     const pet = selectedPet.value;
-    const log = selectedLog.other;
+    const log = selectedOtherLog.value;
     if (!log || !pet) return;
     open({
-        title: t("dialog.deleteRecord.title", { title: t(`pet.logs.${selectedLog.other!.subtype}`) }),
+        title: t("dialog.deleteRecord.title", { title: t(`pet.logs.${selectedOtherLog.value!.subtype}`) }),
         message: t("dialog.deleteGenericMsg"),
         isDelete: true,
         onConfirm: async () => {
@@ -154,16 +154,16 @@ watch(() => isAddingCare.other, (adding) => {
     };
 });
 
-watch(() => selectedLog.other, (log) => {
+watch(() => selectedOtherLog.value, (log) => {
     mode.value = log ? "view" : "edit";
     loadedPictures.clear();
-    if (log) fillLogData(selectedLog.other!);
+    if (log) fillLogData(selectedOtherLog.value!);
     else resetForm(formData, defaultForm);
 }, { deep: true });
 
 watch(() => mode.value, () => {
-    if (mode.value === 'view' && selectedLog.other?.pictures?.length) {
-        Object.assign(formData, { pictures: [...selectedLog.other.pictures] });
+    if (mode.value === 'view' && selectedOtherLog.value?.pictures?.length) {
+        Object.assign(formData, { pictures: [...selectedOtherLog.value.pictures] });
         pictures.value = [];
     };
 });
@@ -175,23 +175,23 @@ watch(() => formData.pictures, (pictures) => {
 
 <template>
     <Transition name="panel">
-        <Panel v-if="isAddingCare.other || selectedLog.other" :onClose="handleClose">
+        <Panel v-if="isAddingCare.other || selectedOtherLog" :onClose="handleClose">
             <LoadingPuppy v-if="loading" />
             <div class="md:max-w-max" v-else>
                 <div class="flex gap-1 justify-between my-1 default-padding">
-                    <div v-if="selectedLog.other && selectedPet"
+                    <div v-if="selectedOtherLog && selectedPet"
                         class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
                         <PetIcon :pet="selectedPet" />
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("pet.title.log") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("pet.title.otherLog", {
                         subtype:
-                            t(`pet.logs.${selectedLog.other!.subtype}`)
+                            t(`pet.logs.${selectedOtherLog!.subtype}`)
                     })
                     }}
                     </h1>
                     <div class="ml-auto mb-auto flex gap-0.5">
-                        <Button v-if="selectedLog.other" variant="ghost" size="xs"
+                        <Button v-if="selectedOtherLog" variant="ghost" size="xs"
                             :aria-label="t('common.button.delete')" @click="handleDelete">
                             <Trash2 :size="22" color="var(--color-brand-light)" />
                         </Button>
@@ -229,13 +229,13 @@ watch(() => formData.pictures, (pictures) => {
                         </div>
                         <VueEasyLightbox :visible="visibleRef" :imgs="imgsRef" :index="indexRef" :loop="true"
                             @hide="onHide" />
-                        <label :for="notes.id" v-if="selectedLog.other?.notes || mode === 'edit'">
+                        <label :for="notes.id" v-if="selectedOtherLog?.notes || mode === 'edit'">
                             <p>{{ t(notes.label) }}</p>
                             <Textarea v-model="formData.notes" :id="notes.id"
-                                :readonly="!!selectedLog.other && mode === 'view'" :placeholder="t(notes.placeholder)"
+                                :readonly="!!selectedOtherLog && mode === 'view'" :placeholder="t(notes.placeholder)"
                                 :maxLength="500" />
                         </label>
-                        <ButtonArea v-model="mode" :loading="loading" :selectedCare="(selectedLog.other as LogExtended)"
+                        <ButtonArea v-model="mode" :loading="loading" :selectedCare="(selectedOtherLog as LogExtended)"
                             :customCta="t('pet.cta.saveLog', { subtype: t(`pet.logs.${formData.subtype}`).toLowerCase() })" />
                     </div>
                 </form>

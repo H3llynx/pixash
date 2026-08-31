@@ -37,13 +37,13 @@ const handleSubmit = async () => {
         givenAt: Timestamp.fromDate(date)
     };
     isEditing.value = false;
-    selectLog(null, "medication");
+    selectLog(null);
     await updateSelectedLog(props.log, props.pet.id, updatedLog);
 };
 
 const handleCancel = () => {
     isEditing.value = false;
-    selectLog(null, "medication");
+    selectLog(null);
     timeData.value = "";
 };
 
@@ -56,7 +56,8 @@ onMounted(() => {
 <template>
     <FreeModal v-model="isEditing">
         <form class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
-            <h3 class="font-title">{{ t("health.treatment.editMedTime", { medication: medication.name, name: pet.name }) }}
+            <h3 class="font-title">{{ t("health.treatment.editMedTime", { medication: medication.name, name: pet.name })
+                }}
             </h3>
             <div class="flex gap-0.5">
                 <Input v-model="timeData" type="time" id="medication-time-log" class="text-base" />
@@ -64,7 +65,7 @@ onMounted(() => {
             <Button>{{ t("common.button.confirm") }}</Button>
             <Button type="button" variant="ghost" @click="handleCancel">{{
                 t("common.button.cancel")
-                }}</Button>
+            }}</Button>
         </form>
     </FreeModal>
 </template>

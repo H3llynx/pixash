@@ -2,7 +2,7 @@ import { FirebaseError } from "firebase/app";
 import { computed, ref, watch } from "vue";
 import { fetchPetLogs, fetchPetTreatments, fetchPetVaccines, fetchPetVisits } from "../../../services/care";
 import { addPet, deletePet, deletePetField, fetchPets, updatePet } from "../../../services/pets";
-import { resetLogs, resetState } from "../../../utils";
+import { resetState } from "../../../utils";
 import { useCare } from "../../care/composables/useCare";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../../care/utils";
 import { useAuth } from "../../user/composables/useAuth";
@@ -30,6 +30,9 @@ const {
   selectVaccine,
   selectVisit,
   selectLog,
+  selectedAntiparasiticLog,
+  selectedMedicationLog,
+  selectedOtherLog,
   selectedVisit,
   addNewVaccine,
   updateSelectedVaccine,
@@ -78,7 +81,7 @@ const selectPet = (pet: PetExtended | null) => {
   if (selectedVaccine.value) selectVaccine(null);
   if (selectedVisit.value) selectVisit(null);
   if (selectedTreatment.value) selectTreatment(null);
-  resetLogs(selectedLog);
+  if (selectedLog.value) selectLog(null)
   selectedPet.value = pet;
 }
 
@@ -86,7 +89,7 @@ const resetPetActions = () => {
   isAddingPet.value = false;
   isUpdatingPet.value = false;
   resetState(isAddingCare);
-  resetLogs(selectedLog);
+  selectLog(null);
   selectVaccine(null);
   selectVisit(null);
 };
@@ -209,9 +212,9 @@ watch(user, async (newUser) => {
 }, { immediate: true });
 
 watch(
-  [selectedVaccine, selectedVisit, selectedTreatment, () => selectedLog.antiparasitic],
-  ([vaccine, visit, log]) => {
-    if (vaccine || visit || log) {
+  [selectedVaccine, selectedVisit, selectedTreatment, selectedLog],
+  ([vaccine, visit, treatment, log]) => {
+    if (vaccine || visit || treatment || log) {
       isAddingPet.value = false;
       isUpdatingPet.value = false;
     }
@@ -221,20 +224,20 @@ watch(
 watch(isAddingPet, (adding) => {
   if (adding) {
     resetState(isAddingCare);
-    resetLogs(selectedLog);
     isUpdatingPet.value = false;
     selectVaccine(null);
     selectVisit(null);
+    selectLog(null);
   }
 });
 
 watch(isUpdatingPet, (editing) => {
   if (editing) {
     resetState(isAddingCare);
-    resetLogs(selectedLog);
     isAddingPet.value = false;
     selectVaccine(null);
     selectVisit(null);
+    selectLog(null);
   }
 });
 
@@ -259,7 +262,7 @@ watch(logs, resyncSelectedPet);
 watch(selectedVaccine, (vaccine) => syncPetFromEvent(vaccine?.petId));
 watch(selectedVisit, (visit) => syncPetFromEvent(visit?.petId));
 watch(selectedTreatment, (treatment) => syncPetFromEvent(treatment?.petId));
-watch(selectedLog, (log) => syncPetFromEvent(log.antiparasitic?.petId));
+watch(selectedLog, (log) => syncPetFromEvent(log?.petId));
 
 export const usePets = () => {
   return {
@@ -284,7 +287,9 @@ export const usePets = () => {
     vetVisits,
     selectedVaccine,
     selectVaccine,
-    selectLog,
+    selectedAntiparasiticLog,
+    selectedMedicationLog,
+    selectedOtherLog,
     isAddingCare,
     addNewVaccine,
     updateSelectedVaccine,
@@ -302,6 +307,7 @@ export const usePets = () => {
     deleteSelectedVet,
     isUpdatingVet,
     selectedLog,
+    selectLog,
     logs,
     addNewLog,
     updateSelectedLog,

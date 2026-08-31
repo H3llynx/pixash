@@ -137,7 +137,7 @@ export const useVaccineForm = () => {
     };
 
     watch(() => [selectedPet.value, selectedVaccine.value, selectedDate.value] as const,
-        ([pet, vaccine]) => {
+        ([pet, vaccine, selectedDate]) => {
             if (!pet) {
                 resetForm(formData, defaultForm);
                 return;
@@ -149,15 +149,15 @@ export const useVaccineForm = () => {
                 fillVaccineData(vaccine);
             } else {
                 resetForm(formData, defaultForm);
-                const isPast = !!selectedDate.value && selectedDate.value <= todayAsInput();
-                const isFuture = !!selectedDate.value && selectedDate.value > todayAsInput();
+                const isPast = !!selectedDate && selectedDate <= todayAsInput();
+                const isFuture = !!selectedDate && selectedDate > todayAsInput();
                 Object.assign(formData, {
                     types: [vaccineTypes.value[0].id],
                     stage: getAge(pet)?.stage,
                     given: isPast,
-                    givenAt: isPast ? date.value : "",
+                    givenAt: isPast ? selectedDate : "",
                     nextDose: isFuture,
-                    dueOn: isFuture ? date.value : "",
+                    dueOn: isFuture ? selectedDate : "",
                     vet: givenBy.value
                 });
             }

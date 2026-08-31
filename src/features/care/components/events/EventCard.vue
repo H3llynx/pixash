@@ -41,7 +41,7 @@ const handleClick = (event: PetEvent) => {
         selectedEvent.value = visit;
     } else if (event.type === "antiparasite") {
         const log = logs.value.find(l => l.id === event.id) as AntiparasiteLogExtended;
-        selectLog(log, "antiparasitic");
+        selectLog(log);
         selectedEvent.value = log;
     } else {
         selectedEvent.value = null;
@@ -96,7 +96,7 @@ const markAsDone = async (event: PetEvent) => {
                     dueOn: nextDueDate.value
                 });
             }
-            selectLog(null, "antiparasitic");
+            selectLog(null);
         };
         show({ type: "success", title: t("toast.success.title.generic"), message: t("toast.success.message.markedDone") });
     } catch {
@@ -109,7 +109,7 @@ const markAsDone = async (event: PetEvent) => {
 
 const cancelMarkDone = () => {
     selectVaccine(null);
-    selectLog(null, "antiparasitic")
+    selectLog(null)
     nextDueModal.value = false;
 }
 
@@ -154,8 +154,8 @@ const cancelMarkDone = () => {
         <template v-else>
             <h3 class="font-title">{{ t("common.text.askingNextDue") }}</h3>
             <Button v-if="!nextDueInput" @click="nextDueInput = true">{{ t("common.text.yes") }}</Button>
-            <Button v-if="!nextDueDate" variant="secondary"
-                @click="markAsDone(event)">{{ t("common.text.noNeed") }}</Button>
+            <Button v-if="!nextDueDate" variant="secondary" @click="markAsDone(event)">{{ t("common.text.noNeed")
+                }}</Button>
             <template v-if="nextDueInput">
                 <Input v-model="nextDueDate" type="date" :min="todayAsInput()">
                     <template #addon>

@@ -6,11 +6,11 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Panel from '../../../../components/Panel.vue';
 import { useMedia } from '../../../../composables/useMedia.ts';
-import { resetLogs, resetState, todayAsInput } from '../../../../utils.ts';
+import { resetState, todayAsInput } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { useEvents } from '../../composables/useEvents.ts';
 
-const { isAddingCare, selectedLog, selectVaccine, selectVisit, handleAdd } = usePets();
+const { isAddingCare, selectLog, selectVaccine, selectVisit, handleAdd } = usePets();
 const { selectedDate } = useEvents();
 const { t, locale } = useI18n();
 const { isMd } = useMedia();
@@ -38,7 +38,7 @@ const handleClose = () => {
 watch(() => visible.value, (visible) => {
     if (visible) {
         resetState(isAddingCare);
-        resetLogs(selectedLog);
+        selectLog(null);
         selectVaccine(null);
         selectVisit(null);
     }
