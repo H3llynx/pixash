@@ -14,18 +14,11 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
     const selectedVisit = ref<VisitExtended | null>(null);
     const selectedVet = ref<VetExtended | null>(null);
     const selectedTreatment = ref<TreatmentExtended | null>(null)
-
     const selectedLog = ref<LogExtended | null>(null);
 
-    const selectedAntiparasiticLog = computed(() =>
-        selectedLog.value?.type === "antiparasite" ? selectedLog.value : null
-    );
-    const selectedMedicationLog = computed(() =>
-        selectedLog.value?.type === "medication" ? selectedLog.value : null
-    );
-    const selectedOtherLog = computed(() =>
-        selectedLog.value?.type === "other" ? selectedLog.value : null
-    );
+    const selectedAntiparasiticLog = computed(() => selectedLog.value?.type === "antiparasite" ? selectedLog.value : null);
+    const selectedMedicationLog = computed(() => selectedLog.value?.type === "medication" ? selectedLog.value : null);
+    const selectedOtherLog = computed(() => selectedLog.value?.type === "other" ? selectedLog.value : null);
 
     const loading = ref<boolean>(false);
     const vetLoading = ref<boolean>(false);
