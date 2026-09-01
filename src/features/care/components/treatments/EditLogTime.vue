@@ -5,12 +5,16 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FreeModal from '../../../../components/FreeModal.vue';
 import Input from '../../../../components/Input.vue';
+import { useToast } from '../../../../composables/useToast.ts';
 import { tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../../pets/types.ts';
+import { useTreatmentTracking } from '../../composables/useTreatmentTracking.ts';
 import type { Log, MedicationLogExtended, MedicineDb } from '../../types.ts';
 
-const { updateSelectedLog, selectLog } = usePets();
+const { updateSelectedLog, selectLog, careError } = usePets();
+const { loading } = useTreatmentTracking();
+const { show } = useToast();
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -22,7 +26,7 @@ const props = defineProps<{
 const isEditing = defineModel<boolean>();
 const timeData = ref<string>("");
 
-const resetLog = () => {
+const handleCancel = () => {
     isEditing.value = false;
     selectLog(null);
     timeData.value = "";
@@ -42,8 +46,17 @@ const handleSubmit = async () => {
         medicineId: props.medication.id,
         givenAt: Timestamp.fromDate(date)
     };
-    resetLog();
-    await updateSelectedLog(props.log, props.pet.id, updatedLog);
+    isEditing.value = false;
+    timeData.value = "";
+    loading.value = true;
+    try {
+        await updateSelectedLog(props.log, props.pet.id, updatedLog);
+    } catch (e) {
+        show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
+    } finally {
+        selectLog(null);
+        loading.value = false;
+    }
 };
 
 watch(() => isEditing.value, (editing) => {
@@ -64,7 +77,7 @@ watch(() => isEditing.value, (editing) => {
                 <Input v-model="timeData" type="time" id="medication-time-log" class="text-base" />
             </div>
             <Button>{{ t("common.button.confirm") }}</Button>
-            <Button type="button" variant="ghost" @click="resetLog">{{
+            <Button type="button" variant="ghost" @click="handleCancel">{{
                 t("common.button.cancel")
             }}</Button>
         </form>

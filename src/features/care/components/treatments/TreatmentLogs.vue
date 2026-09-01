@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { Pen, X } from '@lucide/vue';
-import { nextTick, ref } from 'vue';
+import { nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { useToast } from '../../../../composables/useToast.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../../pets/types.ts';
 import { useTreatmentTracking } from '../../composables/useTreatmentTracking.ts';
-import type { Log, LogExtended, MedicationLogExtended, MedicineDb, TreatmentExtended } from '../../types.ts';
+import type { Log, MedicationLogExtended, MedicineDb, TreatmentExtended } from '../../types.ts';
 import { getDailyDose } from '../../utils.ts';
 import EditLogTime from './EditLogTime.vue';
 
@@ -19,18 +19,9 @@ const props = defineProps<{
 }>();
 
 const { addNewLog, selectLog, deleteSelectedLog, careError, selectedMedicationLog } = usePets();
-const { getLoggedList, getDosesToLog, getMissedDoses } = useTreatmentTracking();
+const { getTodayLoggedList, getDosesToLog, getMissedDoses, loading, isEditing } = useTreatmentTracking();
 const { t, locale } = useI18n();
 const { show } = useToast();
-const loading = ref<boolean>(false);
-const isEditing = ref<boolean>(false);
-
-const getLogStyle = () => {
-    return {
-        "rounded-xl w-full px-1.5": true,
-        "opacity-60 animate-pulse": loading.value
-    }
-}
 
 const logDose = async (medication: MedicineDb) => {
     loading.value = true;
@@ -46,7 +37,7 @@ const logDose = async (medication: MedicineDb) => {
     } finally { loading.value = false; }
 };
 
-const deleteDose = async (log: LogExtended) => {
+const deleteDose = async (log: MedicationLogExtended) => {
     loading.value = true;
     try {
         await deleteSelectedLog(log, props.pet.id);
@@ -60,27 +51,32 @@ const editLogTime = async (log: MedicationLogExtended) => {
     await nextTick();
     isEditing.value = true;
 }
+
+const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, medication: MedicineDb) =>
+    [...getTodayLoggedList(pet, treatment, medication)].sort((a, b) => a.givenAt.toMillis() - b.givenAt.toMillis());
 </script>
 
 <template>
     <div class="flex gap-0.5 mt-0.75 flex-wrap" :style="{ '--custom-color': color }">
-        <div v-for="log in getLoggedList(props.pet, props.treatment, medication)" :key="log.id"
-            class="log text-xs relative border border-separator py-0.5 text-center rounded-xl flex items-center justify-center"
+        <div v-for="log in getSortedLoggedList(props.pet, props.treatment, medication)" :key="log.id"
+            :class="{ 'log text-xs relative border border-separator py-0.5 text-center rounded-xl flex items-center justify-center': true, 'opacity-40 animate-pulse': loading && selectedMedicationLog?.id === log.id }"
             :style="{ color: color }">
-            <p :class="getLogStyle()">{{ log.givenAt.toDate().toLocaleString(locale, {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-                hour: '2-digit',
-                minute: '2-digit'
-            }) }}</p>
+            <p class="rounded-xl w-full px-1.5">
+                {{ log.givenAt.toDate().toLocaleString(locale, {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) }}</p>
             <div class="absolute -top-[10px] -right-[5px] flex gap-0.25">
-                <Button :disabled="loading" variant="ghost" size="xxs" :aria-label="t('health.cta.editMedTime')"
-                    @click="editLogTime(log)" class="log-btn hover:bg-green-pale">
+                <Button :disabled="loading && selectedMedicationLog?.id === log.id" variant="ghost" size="xxs"
+                    :aria-label="t('health.cta.editMedTime')" @click="editLogTime(log)"
+                    class="log-btn hover:bg-green-pale">
                     <Pen :size="13" />
                 </Button>
-                <Button :disabled="loading" variant="ghost" size="xxs" :aria-label="t('common.button.delete')"
-                    @click="deleteDose(log)" class="log-btn hover:bg-error">
+                <Button :disabled="loading && selectedMedicationLog?.id === log.id" variant="ghost" size="xxs"
+                    :aria-label="t('common.button.delete')" @click="deleteDose(log)" class="log-btn hover:bg-error">
                     <X :size="13" />
                 </Button>
             </div>
@@ -89,7 +85,7 @@ const editLogTime = async (log: MedicationLogExtended) => {
             :key="number" variant="ghost" size="xs" @click="logDose(medication)"
             :class="{ 'dose border border-border': true, 'missed': getMissedDoses(pet, treatment, medication) && number === 1 }">
             {{ t("health.cta.logDose") }} {{ getDailyDose(medication.frequency) !== undefined ? number +
-                getLoggedList(props.pet, props.treatment, medication).length
+                getTodayLoggedList(props.pet, props.treatment, medication).length
                 : "" }}
         </Button>
     </div>
