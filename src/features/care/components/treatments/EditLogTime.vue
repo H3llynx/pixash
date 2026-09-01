@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Timestamp } from 'firebase/firestore';
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FreeModal from '../../../../components/FreeModal.vue';
@@ -22,6 +22,12 @@ const props = defineProps<{
 const isEditing = defineModel<boolean>();
 const timeData = ref<string>("");
 
+const resetLog = () => {
+    isEditing.value = false;
+    selectLog(null);
+    timeData.value = "";
+};
+
 const handleSubmit = async () => {
     if (!timeData.value) return;
     const [hourStr, minuteStr = "0", secondStr = "0"] = timeData.value.split(":");
@@ -36,20 +42,15 @@ const handleSubmit = async () => {
         medicineId: props.medication.id,
         givenAt: Timestamp.fromDate(date)
     };
-    isEditing.value = false;
-    selectLog(null);
+    resetLog();
     await updateSelectedLog(props.log, props.pet.id, updatedLog);
 };
 
-const handleCancel = () => {
-    isEditing.value = false;
-    selectLog(null);
-    timeData.value = "";
-};
-
-onMounted(() => {
-    const loggedTime = tsToDate(props.log.givenAt, "datetime") as string;
-    if (loggedTime) timeData.value = loggedTime.split("T")[1].slice(0, 5);
+watch(() => isEditing.value, (editing) => {
+    if (editing) {
+        const loggedTime = tsToDate(props.log.givenAt, "datetime") as string;
+        if (loggedTime) timeData.value = loggedTime.split("T")[1].slice(0, 5);
+    }
 });
 </script>
 
@@ -63,7 +64,7 @@ onMounted(() => {
                 <Input v-model="timeData" type="time" id="medication-time-log" class="text-base" />
             </div>
             <Button>{{ t("common.button.confirm") }}</Button>
-            <Button type="button" variant="ghost" @click="handleCancel">{{
+            <Button type="button" variant="ghost" @click="resetLog">{{
                 t("common.button.cancel")
             }}</Button>
         </form>
