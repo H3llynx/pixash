@@ -1,12 +1,15 @@
+import { ref } from "vue";
 import type { PetExtended } from "../../pets/types";
 import type { MedicationLogExtended, MedicineDb, TreatmentExtended } from "../types";
 import { getDailyDose, getIntervalHours } from "../utils";
 
-export const useTreatmentTracking = () => {
+const loading = ref<boolean>(false);
+const isEditing = ref<boolean>(false);
 
+export const useTreatmentTracking = () => {
     const DOSE_WINDOW = { startHour: 8, endHour: 21 };
 
-    const getLoggedList = (
+    const getTodayLoggedList = (
         pet: PetExtended,
         treatment: TreatmentExtended,
         medication: MedicineDb
@@ -21,16 +24,6 @@ export const useTreatmentTracking = () => {
         ) as MedicationLogExtended[];
     };
 
-    const getDosesToLog = (
-        pet: PetExtended,
-        treatment: TreatmentExtended,
-        medication: MedicineDb
-    ): number => {
-        const loggedList = getLoggedList(pet, treatment, medication) || [];
-        const dailyDose = getDailyDose(medication.frequency);
-        return dailyDose !== undefined ? dailyDose - loggedList.length : 1;
-    };
-
     const getLatestLog = (
         pet: PetExtended,
         treatment: TreatmentExtended,
@@ -43,6 +36,16 @@ export const useTreatmentTracking = () => {
             log.givenAt
         ) as MedicationLogExtended[];
         return logs.sort((a, b) => b.givenAt.toDate().getTime() - a.givenAt.toDate().getTime())[0];
+    };
+
+    const getDosesToLog = (
+        pet: PetExtended,
+        treatment: TreatmentExtended,
+        medication: MedicineDb
+    ): number => {
+        const loggedList = getTodayLoggedList(pet, treatment, medication) || [];
+        const dailyDose = getDailyDose(medication.frequency);
+        return dailyDose !== undefined ? dailyDose - loggedList.length : 1;
     };
 
     const getMissedDoses = (
@@ -66,7 +69,7 @@ export const useTreatmentTracking = () => {
             return Date.now() >= latestLog!.givenAt.toMillis() + intervalMs ? 1 : 0;
         };
 
-        const loggedToday = getLoggedList(pet, treatment, medication);
+        const loggedToday = getTodayLoggedList(pet, treatment, medication);
         if (loggedToday.length >= dailyDose) return 0;
         const referenceTimestamp = loggedToday.length === 0
             ? new Date().setHours(DOSE_WINDOW.startHour, 0, 0, 0)
@@ -75,7 +78,9 @@ export const useTreatmentTracking = () => {
     };
 
     return {
-        getLoggedList,
+        loading,
+        isEditing,
+        getTodayLoggedList,
         getDosesToLog,
         getMissedDoses
     };
