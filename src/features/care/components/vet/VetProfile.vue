@@ -78,14 +78,14 @@ const handleVetUpdate = () => {
         <VetProfileRow data="hours" :vet="vet" />
         <div class="mt-auto flex flex-col gap-0.5">
             <VetNotes :vet="vet" />
-            <div class="flex gap-0.5 pt-1 border-t border-border-light">
-                <Button variant="vetOptions" size="vetOptions" @click="handleMaps">
+            <div class="flex gap-0.5 pt-1 justify-end">
+                <Button variant="tertiary" size="contact" class="rounded-xl" @click="handleMaps">
                     {{ t("vet.cta.maps") }}
                 </Button>
-                <Button variant="vetOptions" size="vetOptions" @click="handleCall">
+                <Button v-if="vet.phone" variant="tertiary" size="contact" class="rounded-xl" @click="handleCall">
                     {{ t("vet.cta.call") }}
                 </Button>
-                <Button variant="vetOptions" size="vetOptions" @click="handleVisit">
+                <Button size="contact" class="rounded-xl" @click="handleVisit">
                     <Plus :size="18" />
                     {{ t("vet.cta.visit") }}
                 </Button>

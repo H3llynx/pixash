@@ -19,14 +19,14 @@ const route = useRoute();
 </script>
 
 <template>
-    <header>
+    <header :class="{ 'md:pl-5': route.path !== ROUTES.auth }" class="flex flex-col gap-1.5">
         <div class="flex gap-0.5 justify-between default-padding">
             <Logo class="flex mb-1" />
             <VetHeaderTitle v-if="route.path === ROUTES.vet" />
             <HistoryHeaderTitle v-if="route.path === ROUTES.history" />
             <h2 v-if="route.path === ROUTES.calendar && isMd" class="text-2xl md:text-3xl my-auto">{{
                 t("common.header.calendar")
-                }}</h2>
+            }}</h2>
             <div :class="[hasPets ? 'z-2' : 'z-3', 'flex gap-0.5 relative items-start']">
                 <ThemeSwitcher />
                 <UserPicture />

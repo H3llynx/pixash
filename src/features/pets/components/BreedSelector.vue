@@ -74,7 +74,7 @@ watch(locale, () => {
         <div class="relative" ref="dropdownRef" @focusout="handleFocusOut">
             <input v-model="search" role="combobox" :aria-expanded="open && filtered.length > 0"
                 aria-autocomplete="list" :aria-controls="`${id}-listbox`" :placeholder="placeholder"
-                @focus="open = true" @keydown.esc="open = false" class="font-medium px-1 py-0.5 h-3" required />
+                @focus="open = true" @keydown.esc="open = false" class="px-1 py-0.5 h-3" required />
             <ul v-if="open" role="listbox" :id="`${id}-listbox`"
                 class="filter-blur bg-bg-rgba absolute z-1 w-full border border-border rounded-lg max-h-12 overflow-y-scroll">
                 <li tabindex="0" role="option" :aria-selected="model === option.id" class="py-0.5 px-1"

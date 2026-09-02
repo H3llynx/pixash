@@ -37,7 +37,7 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
                 <span v-if="treatment.endDate"> - {{ tsToDate(treatment.endDate, "date") }}</span>
                 <span v-else class="ml-auto tag bg-border-light text-text-secondary">{{
                     t("health.treatment.ongoing")
-                }}</span>
+                    }}</span>
             </div>
             <ProgressBar v-if="progress" :progress="progress" :color="color" />
         </div>
@@ -50,7 +50,7 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
             <summary class="flex flex-wrap items-center justify-between cursor-pointer p-0.75 bg-bg-rgba"
                 :aria-label="t('health.treatment.summaryLabel')">
                 <p class="font-medium">{{ medication.name }}</p>
-                <span class="tag bg-bg-3 border border-border text-xs ml-auto">{{
+                <span class="tag bg-bg-2 border border-border text-xs ml-auto">{{
                     t(getLabel(medication.frequency, MED_FREQUENCY)) }}</span>
                 <span class="tag bg-error text-white ml-0.5" v-if="getMissedDoses(pet, treatment, medication)">!</span>
                 <ChevronDown class="chevron default-transition ml-1" />

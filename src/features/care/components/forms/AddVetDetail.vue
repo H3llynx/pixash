@@ -39,21 +39,20 @@ const handleSubmit = async () => {
 
 <template>
     <div class="flex h-2 gap-[3px]">
-        <Button v-if="!isUpdating" @click="startUpdating" variant="summaryCta" size="xxs"
-            :aria-label="t('vet.addProfileLabel.' + data)">
-            <Plus :size="18" />
+        <Button v-if="!isUpdating" @click="startUpdating" size="rounded" :aria-label="t('vet.addProfileLabel.' + data)">
+            <Plus :size="16" />
         </Button>
         <template v-else>
             <form @submit.prevent="handleSubmit" class="mini-form flex gap-0.5" ref="updateForm">
                 <input v-model=formData :id="`vet-${data}`"
                     :type="data === 'phone' ? 'tel' : data === 'email' ? 'email' : 'text'"
                     :pattern="data === 'phone' ? phonePattern : undefined" required />
-                <Button size="xs" variant="summaryCta" :aria-label="t('common.button.save')">
+                <Button size="rounded" :aria-label="t('common.button.save')">
                     <Save :size="18" />
                 </Button>
             </form>
-            <Button size="xs" variant="ghost" @click="isUpdating = false">
-                <X :size="18" color="var(--color-brand-light)" />
+            <Button variant="ghost" size="rounded" @click="isUpdating = false">
+                <X :size="18" />
             </Button>
         </template>
     </div>

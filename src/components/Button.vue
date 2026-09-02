@@ -6,27 +6,27 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const button = tv({
-    base: "font-medium filter-blur rounded-xl flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed",
+    base: "font-medium filter-blur rounded-xl border border-transparent flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed",
     variants: {
         variant: {
-            primary: "btn-hover-fill bg-brand border border-brand text-bg rounded-full ",
-            secondary: "btn-hover-fill border border-brand text-brand bg-bg-rgba rounded-full ",
-            tertiary: "btn-hover-fill text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba border border-border rounded-full",
-            ghost: "btn-hover-fill-ghost text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba",
+            primary: "bg-accent text-bg rounded-full hover:bg-green",
+            secondary: "bg-bg-2 text-text rounded-full hover:bg-green hover:text-white",
+            tertiary: "text-text-softer enabled:hover:text-green bg-bg-rgba border-border rounded-full",
+            ghost: "enabled:hover:text-accent bg-bg-rgba",
             addon: "text-text-secondary addon-focus rounded-full",
             stacked: "stacked text-text-secondary capitalize justify-end disabled:opacity-100",
-            tile: "btn-hover-fill tile capitalize justify-end items-end disabled:opacity-100",
-            summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light rounded-full",
-            vetOptions: "btn-hover-fill flex-1 border border-border-btn-vet bg-btn-vet",
-            add: "flex-start border border-dashed border-text-secondary text-text-secondary hover:text-brand-light hover:border-brand-light"
+            tile: "tile-btn capitalize justify-end items-end",
+            add: "font-light border-dashed border-text-secondary text-text-secondary hover:text-accent hover:border-accent hover:bg-bg-2"
         },
         size: {
-            xxs: "text-xs p-0.5",
-            xs: "px-0.5 text-sm py-0.5",
+            rounded: "w-2 h-2 aspect-square",
+            xxs: "p-0.5 text-xs",
+            xs: "p-0.5 text-sm ",
             sm: "px-1 py-0.5",
             md: "px-2 py-[10px]",
             lg: "px-2 py-1",
-            vetOptions: "px-0.5 py-1 text-sm"
+            tile: "w-9 h-8 px-1 py-0.5",
+            contact: "w-1/3 px-0.5 py-1 text-sm"
         }
     },
     defaultVariants: {
@@ -55,23 +55,46 @@ withDefaults(defineProps<{
 </template>
 
 <style scoped>
-.tile {
-    width: 9rem;
-    height: 8rem;
+.tile-btn {
+    position: relative;
     border: 1px solid var(--color-border);
     background: var(--color-bg-2);
     text-transform: capitalize;
     overflow: hidden;
     font-family: var(--font-title);
     font-size: large;
+    filter: grayscale(60%);
+    opacity: 0.6;
 
-    &:not(.active, :hover) {
-        opacity: 0.6;
-        filter: grayscale(0.9);
+    &:has(img),
+    &:hover,
+    &.active {
+        color: var(--color-off-white);
     }
 
-    &.active {
-        background: var(--color-brand);
+    &:hover,
+    &.active,
+    :disabled {
+        opacity: 1;
+        filter: none;
+    }
+
+    &:hover {
+        background: var(--color-accent-dark);
+    }
+
+    &.active,
+    &:disabled {
+        background: var(--color-accent);
+        border: 1px solid var(--color-accent);
+        box-shadow: 3px 3px 10px var(--color-accent-rgba);
+    }
+
+    &:not(:disabled, .active, :hover)::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(140deg, var(--color-bg-rgba) 20%, transparent 50%);
     }
 }
 
@@ -85,7 +108,7 @@ withDefaults(defineProps<{
 
 .addon-focus:focus-visible {
     outline: none;
-    color: var(--color-brand);
+    color: var(--color-accent);
 }
 
 .hide-btn {
@@ -97,24 +120,12 @@ withDefaults(defineProps<{
     width: 100%;
 }
 
-.active {
-    color: var(--color-bg);
-}
-
 @media (width >=48rem) {
     .hide-btn {
         align-items: center;
         padding: 0.5rem;
         margin: 1rem 1rem auto auto;
         width: auto;
-    }
-}
-
-@media (hover: hover) and (pointer: fine) {
-    button:not(:disabled, .calendar-active).btn-hover-fill:hover {
-        background: var(--color-btn-hover);
-        color: var(--color-bg);
-        border-color: var(--color-btn-hover)
     }
 }
 </style>

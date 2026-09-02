@@ -66,9 +66,9 @@ const handleDelete = async () => {
                         @click="updatePetInfo">
                         <Edit2 :size="15" />
                     </Button>
-                    <Button variant="ghost" size="xs" class="ml-auto"
+                    <Button variant="ghost" size="xs" class="ml-auto text-text-secondary"
                         :aria-label="t('pet.cta.delete', { name: pet.name })" @click="handleDelete">
-                        <Trash2 :size="22" color="var(--color-border)" />
+                        <Trash2 :size="22" />
                     </Button>
                 </div>
                 <div class="text-text-secondary text-sm mb-0.5">

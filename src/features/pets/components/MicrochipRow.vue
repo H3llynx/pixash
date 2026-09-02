@@ -71,8 +71,8 @@ watch(() => editing.value, async (editing) => {
                 <Button variant="ghost" size="xxs" :aria-label="t('pet.profile.edit.microchip')" @click="startUpdating">
                     <Edit2 v-if="pet.microchip" :size="15" />
                 </Button>
-                <Button size="xxs" :aria-label="t('pet.profile.edit.microchip')" @click="copyToClipboard(pet.microchip)"
-                    class="p-[6px]">
+                <Button size="rounded" :aria-label="t('pet.profile.edit.microchip')"
+                    @click="copyToClipboard(pet.microchip)">
                     <Copy v-if="pet.microchip && !clipboardText" :size="15" />
                     <span v-if="clipboardText">{{ clipboardText }}</span>
                 </Button>

@@ -46,7 +46,7 @@ const handleAuth = async () => {
 </script>
 
 <template>
-    <form class="flex flex-col gap-1 w-sm" @submit.prevent="handleAuth">
+    <form class="flex flex-col gap-1 max-w-xs" @submit.prevent="handleAuth">
         <Input v-if="!isLogin" v-model="name" id="name" :label="t('auth.nameLabel')"
             :placeholder="t('auth.namePlaceholder')" required />
         <Input v-model="email" :label="t('auth.emailLabel')" id="email" type="email" placeholder="ilovemypet@mail.com"

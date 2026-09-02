@@ -44,11 +44,11 @@ const getAllChipStyle = () => {
 
 <template>
     <div class="pet-selector">
-        <Button v-if="calendar" variant="tile" size="sm" :class="getAllChipStyle()"
+        <Button v-if="calendar" variant="tile" size="tile" :class="getAllChipStyle()"
             @click="emit('update:petId', undefined)">
             <Paw class="w-1 -rotate-20" /> {{ t("common.button.allChip") }}
         </Button>
-        <Button :variant="form ? 'stacked' : 'tile'" :size="form ? 'xs' : 'sm'" v-for="pet in filteredPets"
+        <Button :variant="form ? 'stacked' : 'tile'" :size="form ? 'xs' : 'tile'" v-for="pet in filteredPets"
             :class="getPetChipStyle(pet)" @click="handleClick(pet)" :disabled="pet === selectedPet && !calendar">
             <div v-if="pet.photo" :class="form ? 'chip-photo' : 'btn-layer'">
                 <img :src="pet.photo" :alt="pet.name" class="w-full h-full object-cover" aria-hidden />
@@ -56,7 +56,7 @@ const getAllChipStyle = () => {
             <PetIcon v-else :pet="pet" />
             {{ pet.name }}
         </Button>
-        <Button v-if="route.path === ROUTES.dashboard" variant="add" size="sm"
+        <Button v-if="route.path === ROUTES.dashboard" variant="add" size="tile"
             :class="{ 'tile': true, 'active': isAddingPet }" @click="isAddingPet = true">
             <Plus /> {{ t("common.button.add") }}
         </Button>

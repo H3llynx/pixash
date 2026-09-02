@@ -59,7 +59,7 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
 <template>
     <div class="flex gap-0.5 mt-0.75 flex-wrap" :style="{ '--custom-color': color }">
         <div v-for="log in getSortedLoggedList(props.pet, props.treatment, medication)" :key="log.id"
-            :class="{ 'log text-xs relative border border-separator py-0.5 text-center rounded-xl flex items-center justify-center': true, 'opacity-40 animate-pulse': loading && selectedMedicationLog?.id === log.id }"
+            :class="{ 'log text-xs relative border border-border-light py-0.5 text-center rounded-xl flex items-center justify-center': true, 'opacity-40 animate-pulse': loading && selectedMedicationLog?.id === log.id }"
             :style="{ color: color }">
             <p class="rounded-xl w-full px-1.5">
                 {{ log.givenAt.toDate().toLocaleString(locale, {

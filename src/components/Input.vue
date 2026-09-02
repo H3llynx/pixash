@@ -63,15 +63,15 @@ const handleChange = (event: Event) => {
         <div :class="{ 'input-container': true, 'hidden': readonly && (type === 'date' || type === 'datetime-local') }"
             :aria-hidden="readonly && (type === 'date' || type === 'datetime-local')">
             <input v-bind="$attrs" :id="id" :type="type" :placeholder="placeholder" :value="inputValue"
-                :checked="inputChecked" class="font-medium pl-1 pr-2.5 py-0.5" @change="handleChange"
-                @input="handleInput" @click="readonly && $event.preventDefault()" :readonly="readonly"
-                :aria-readonly="readonly" :tabindex="readonly ? -1 : 0" />
+                :checked="inputChecked" class="pl-1 pr-2.5 py-0.5" @change="handleChange" @input="handleInput"
+                @click="readonly && $event.preventDefault()" :readonly="readonly" :aria-readonly="readonly"
+                :tabindex="readonly ? -1 : 0" />
             <div class="absolute right-0.5 top-1/2 -translate-y-1/2 flex items-center">
                 <slot name="addon"></slot>
                 <AlertCircle class="error-icon" />
             </div>
         </div>
-        <span :id="id" class="flex font-medium bg-brand-rgba py-0.5 px-1 rounded-xl w-full border border-border"
+        <span class="flex bg-bg-2 py-0.5 px-1 rounded-xl w-full border border-border"
             v-if="readonly && (type === 'date' || type === 'datetime-local')">{{
                 inputValue ? type === 'date'
                     ? new Date(inputValue as string).toLocaleDateString(locale, {
