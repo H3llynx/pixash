@@ -23,8 +23,10 @@ label {
     align-items: center;
     padding: 0.5rem 2rem;
     border-radius: 0.75rem;
-    background: var(--background-image-card);
-    border: 1px solid var(--color-brand);
+    background: var(--background-image-accent-gradient);
+    border: 1px solid var(--color-accent);
+    background-size: 150% 100%;
+    animation: move-overlay 5s ease-out infinite;
 
     &:has(:focus-visible) {
         outline-width: 2px;
@@ -34,7 +36,7 @@ label {
     }
 
     &:hover {
-        background: var(--color-brand-light);
+        background: var(--color-accent-rgba);
     }
 }
 </style>

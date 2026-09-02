@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarCheck, ImageIcon, Trash2, X } from '@lucide/vue';
+import { CalendarCheck, ImageIcon, X } from '@lucide/vue';
 import { provide, reactive, ref, watch } from 'vue';
 import VueEasyLightbox, { useEasyLightbox } from 'vue-easy-lightbox';
 import { useI18n } from 'vue-i18n';
@@ -128,7 +128,7 @@ const handleDelete = () => {
     const log = selectedOtherLog.value;
     if (!log || !pet) return;
     open({
-        title: t("dialog.deleteRecord.title", { title: t(`pet.logs.${selectedOtherLog.value!.subtype}`) }),
+        title: t("dialog.deleteRecord.title", { name: pet.name, title: t(`pet.logs.${selectedOtherLog.value!.subtype}`).toLowerCase() }),
         message: t("dialog.deleteGenericMsg"),
         isDelete: true,
         onConfirm: async () => {
@@ -188,14 +188,10 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedOtherLog!.subtype}`)
                     })
-                    }}
+                        }}
                     </h1>
-                    <div class="ml-auto mb-auto flex gap-0.5">
-                        <Button v-if="selectedOtherLog" variant="ghost" size="xs"
-                            :aria-label="t('common.button.delete')" @click="handleDelete">
-                            <Trash2 :size="22" color="var(--color-brand-light)" />
-                        </Button>
-                    </div>
+                    <Button v-if="selectedOtherLog" action="delete" :aria-label="t('common.button.delete')"
+                        @click="handleDelete" />
                 </div>
                 <PetSelector v-if="isAddingCare.other" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">

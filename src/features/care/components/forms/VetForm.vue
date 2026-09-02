@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Trash2 } from '@lucide/vue';
 import { reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
@@ -135,10 +134,8 @@ watch(() => selectedVet.value,
                             : t("health.title.editVet", { name: selectedVet!.name })
                         }}
                     </h1>
-                    <Button v-if="selectedVet" class="ml-auto mb-auto" variant="ghost" size="xs"
-                        :aria-label="t('health.cta.deleteVet')" @click="handleDelete">
-                        <Trash2 :size="22" color="var(--color-brand-light)" />
-                    </Button>
+                    <Button v-if="selectedVet" action="delete" :aria-label="t('health.cta.deleteVet')"
+                        @click="handleDelete" />
                 </div>
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">

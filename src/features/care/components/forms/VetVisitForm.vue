@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarCheck, Trash2 } from '@lucide/vue';
+import { CalendarCheck } from '@lucide/vue';
 import { computed, provide, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
@@ -98,10 +98,8 @@ watch(() => mode.value, (mode) => {
                         name: selectedPet!.name
                     }) }}</h1>
                     <h1 v-else-if="selectedVisit && mode === 'view'">{{ selectedVisit.title }}</h1>
-                    <Button v-if="selectedVisit" class="ml-auto mb-auto" variant="ghost" size="xs"
-                        :aria-label="t('health.cta.deleteVisit')" @click="handleDelete">
-                        <Trash2 :size="22" color="var(--color-brand-light)" />
-                    </Button>
+                    <Button v-if="selectedVisit" action="delete" :aria-label="t('health.cta.deleteVisit')"
+                        @click="handleDelete" />
                 </div>
                 <PetSelector v-if="isAddingCare.visit" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">

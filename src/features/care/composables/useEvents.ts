@@ -8,7 +8,7 @@ import { checkOverlapsMonth, getLogIcon, getTreatmentBackground, getTreatmentCol
 
 const selectedDate = ref<string | null>(null);
 const currentMonth = ref<Date>(new Date());
-const currentMonthName = ref<string>("");
+const currentMonthName = ref<string | null>(null);
 const petId = ref<string>("");
 const selectedEvent = ref<PetEvent | null>(null);
 

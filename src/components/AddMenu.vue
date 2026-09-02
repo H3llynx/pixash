@@ -30,17 +30,18 @@ const handleClick = (action: string) => {
 
 <template>
     <Transition name="overlay">
-        <div v-if="visible" class="fixed inset-0 w-full h-dvh bg-black/60">
+        <div v-if="visible" class="fixed inset-0 w-full h-dvh bg-grey-dark-rgba filter-blur">
             <Transition name="toast" appear>
                 <div ref="menuRef" v-if="vet"
                     class="flex flex-col items-end gap-1 max-w-2xs absolute bottom-11 md:bottom-7 right-1.5"
                     role="menu">
                     <div class="row">
-                        <Button @click="handleClick('vet')">{{ t("addMenu.vet") }}</Button>
+                        <Button variant="tertiary" @click="handleClick('vet')">{{ t("addMenu.vet") }}</Button>
                         <BriefcaseMedical class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button @click="handleClick('treatment')">{{ t("addMenu.treatment") }}</Button>
+                        <Button variant="tertiary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
+                            }}</Button>
                         <Pill class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                 </div>
@@ -49,27 +50,30 @@ const handleClick = (action: string) => {
                     class="flex flex-col items-end gap-1 max-w-2xs absolute bottom-11 md:bottom-7 right-1.5"
                     role="menu">
                     <div class="row">
-                        <Button @click="handleClick('pet')">{{ t("addMenu.pet") }}</Button>
+                        <Button variant="tertiary" @click="handleClick('pet')">{{ t("addMenu.pet") }}</Button>
                         <PawPrint class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button @click="handleClick('antiparasitic')">{{ t("addMenu.antiparasitic") }}</Button>
+                        <Button variant="tertiary" @click="handleClick('antiparasitic')">{{ t("addMenu.antiparasitic")
+                        }}</Button>
                         <BugOff class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button @click="handleClick('vaccine')">{{ t("addMenu.vaccine") }}</Button>
+                        <Button variant="tertiary" @click="handleClick('vaccine')">{{ t("addMenu.vaccine") }}</Button>
                         <Syringe class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button @click="handleClick('visit')">{{ t("addMenu.vetVisit") }}</Button>
+                        <Button variant="tertiary" @click="handleClick('visit')">{{ t("addMenu.vetVisit") }}</Button>
                         <Stethoscope class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button @click="handleClick('weight')">{{ t("health.cta.logWeight") }}</Button>
+                        <Button variant="tertiary" @click="handleClick('weight')">{{ t("health.cta.logWeight")
+                        }}</Button>
                         <Scale class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button @click="handleClick('treatment')">{{ t("addMenu.treatment") }}</Button>
+                        <Button variant="tertiary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
+                        }}</Button>
                         <Pill class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                 </div>
@@ -85,15 +89,16 @@ const handleClick = (action: string) => {
     align-items: center;
 
     &:hover .btn-icon {
-        background: var(--color-btn-hover);
+        background: var(--color-green);
+        color: var(--color-bg);
     }
 }
 
 .btn-icon {
     padding: 8px;
     border-radius: 50%;
-    background: var(--color-brand-rgba);
-    color: var(--color-white);
-    border: 1px solid var(--color-brand);
+    background: var(--color-bg-rgba);
+    color: var(--color-text-tertiary);
+    border: 1px solid var(--color-border);
 }
 </style>

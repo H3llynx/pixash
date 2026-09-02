@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useMedia } from '../../composables/useMedia';
 import LanguageSwitcher from '../../features/language/components/LanguageSwitcher.vue';
+import NextDue from '../../features/pets/components/NextDue.vue';
 import PetSelector from '../../features/pets/components/PetSelector.vue';
 import { usePets } from '../../features/pets/composables/usePets';
 import ThemeSwitcher from '../../features/theme/components/ThemeSwitcher.vue';
@@ -33,6 +34,9 @@ const route = useRoute();
                 <LanguageSwitcher />
             </div>
         </div>
-        <PetSelector v-if="route.path !== ROUTES.calendar" />
+        <div v-if="hasPets && route.path !== ROUTES.auth" class="lg-grid">
+            <PetSelector v-if="route.path !== ROUTES.calendar" />
+            <NextDue v-if="isMd && route.path === ROUTES.dashboard" class="pl-1.5" />
+        </div>
     </header>
 </template>

@@ -40,16 +40,27 @@ const getAllChipStyle = () => {
     if (props.calendar) return !props.petId ? "active" : "";
     else if (!props.petId) return "active";
 };
+
+console.log(props.petId)
 </script>
 
 <template>
-    <div class="pet-selector">
+    <span class="sr-only" aria-live="polite">
+        {{calendar
+            ? (props.petId
+                ? t("common.a11y.petSelected", { name: filteredPets.find(p => p.id === props.petId)?.name })
+                : t("common.a11y.allPetsSelected"))
+            : (selectedPet ? t("common.a11y.petSelected", { name: selectedPet.name }) : "")
+        }}
+    </span>
+    <div class="pet-selector" role="group" aria-label="select another pet">
         <Button v-if="calendar" variant="tile" size="tile" :class="getAllChipStyle()"
-            @click="emit('update:petId', undefined)">
-            <Paw class="w-1 -rotate-20" /> {{ t("common.button.allChip") }}
+            @click="emit('update:petId', null)" :aria-pressed="props.petId === undefined">
+            <Paw class="w-1 -rotate-20" /> {{ t("common.button.all") }}
         </Button>
         <Button :variant="form ? 'stacked' : 'tile'" :size="form ? 'xs' : 'tile'" v-for="pet in filteredPets"
-            :class="getPetChipStyle(pet)" @click="handleClick(pet)" :disabled="pet === selectedPet && !calendar">
+            :class="getPetChipStyle(pet)" @click="handleClick(pet)"
+            :aria-pressed="calendar ? pet.id === props.petId : pet === selectedPet">
             <div v-if="pet.photo" :class="form ? 'chip-photo' : 'btn-layer'">
                 <img :src="pet.photo" :alt="pet.name" class="w-full h-full object-cover" aria-hidden />
             </div>

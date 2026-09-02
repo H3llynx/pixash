@@ -5,7 +5,7 @@ import EventCardSkeleton from './EventCardSkeleton.vue';
 
 <template>
     <div
-        class="animate-pulse flex flex-col gap-1.5 default-padding py-1 max-w-full overflow-hidden pb-6 md:pl-21 lg:grid lg:grid-cols-[55%_45%] lg:gap-0 md:pb-1">
+        class="animate-pulse flex flex-col gap-1.5 default-padding py-1 max-w-full overflow-hidden pb-6 md:pl-21 lg-grid lg:gap-0 md:pb-1">
         <div class="flex flex-col gap-1.5">
             <!-- Event type switcher chips -->
             <div class="flex gap-0.5">

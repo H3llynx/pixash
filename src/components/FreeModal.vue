@@ -16,7 +16,7 @@ watch(visible, (visible) => visible ? openDialog() : closeDialog());
 
 <template>
     <dialog ref="dialogRef" @click.self="closeDialog" @close="visible = false"
-        class="m-auto bg-transparent text-text w-[80%] max-w-sm backdrop:bg-black/40 backdrop:filter-blur overflow-hidden">
+        class="m-auto bg-transparent text-text w-[80%] max-w-sm backdrop:bg-grey-dark-rgba backdrop:filter-blur overflow-hidden">
         <transition name="toast">
             <div v-if="visible" class="dialog-box">
                 <slot />

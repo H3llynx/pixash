@@ -12,7 +12,7 @@ const { eventType } = useHistory();
 <template>
     <div class="pet-selector">
         <Button variant="ghost" size="sm" @click="eventType = null" :class="{ active: eventType === null }">
-            <Paw class="w-1 -rotate-20" /> {{ t("common.button.allChip") }}
+            <Paw class="w-1 -rotate-20" /> {{ t("common.button.all") }}
         </Button>
         <Button variant="ghost" size="sm" v-for="type in EVENT_TYPES" :class="{ active: type.id === eventType }"
             @click="eventType = type.id">

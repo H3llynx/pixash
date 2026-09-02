@@ -10,6 +10,6 @@ const props = defineProps<{ pet: Pet }>()
 
 <template>
     <img v-if="pet.photo && !loading" :src="pet.photo" :alt="pet.name"
-        class="shadow-lg w-full h-full object-cover relative rounded-full" />
-    <span v-else>{{ getPetIcon(pet) }}</span>
+        class="shadow-lg w-full h-full object-cover relative rounded-full" aria-hidden />
+    <span v-else aria-hidden>{{ getPetIcon(pet) }}</span>
 </template>

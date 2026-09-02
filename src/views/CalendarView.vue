@@ -45,7 +45,7 @@ onBeforeRouteLeave(() => {
 
 <template>
     <Header />
-    <main class="lg:gap-0 lg:grid lg:grid-cols-[55%_45%] xl:grid-cols-[1fr_35%] md:pb-1.5">
+    <main class="lg:gap-0 lg-grid xl:grid-cols-[1fr_35%] md:pb-1.5">
         <section class="p-0 bg-brand-dark md:bg-bg md:pb-1">
             <PetSelector calendar v-model:petId="petId" />
             <Calendar :events="filteredCalendarEvents" @update-month="currentMonth = $event"

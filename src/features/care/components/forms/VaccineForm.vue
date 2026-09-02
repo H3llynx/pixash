@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarCheck, CalendarClock, Trash2 } from '@lucide/vue';
+import { CalendarCheck, CalendarClock } from '@lucide/vue';
 import { provide, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
@@ -59,12 +59,8 @@ watch(() => isAddingCare.vaccine, (adding) => {
                         </div>
                         <h1>{{ selectedPet!.name }} · {{ showVaccines(formData.types, selectedPet!, t) }}</h1>
                     </div>
-                    <div class="ml-auto mb-auto flex gap-0.5">
-                        <Button v-if="selectedVaccine" variant="ghost" size="xs"
-                            :aria-label="t('health.cta.deleteVaccine')" @click="handleDelete">
-                            <Trash2 :size="22" color="var(--color-brand-light)" />
-                        </Button>
-                    </div>
+                    <Button v-if="selectedVaccine" action="delete" :aria-label="t('health.cta.deleteVaccine')"
+                        @click="handleDelete" />
                 </div>
                 <PetSelector v-if="isAddingCare.vaccine" form />
                 <form @submit.prevent="handleSubmit" class="mt-1">
@@ -124,7 +120,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                 </p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.sharedFields.dueDate")
-                                }}:
+                                    }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
@@ -135,7 +131,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                     {{ t("common.button.cancel") }}
                                 </Button>
                                 <Button size="sm" :disabled="loading">{{ t("health.cta.saveVaccine")
-                                }}</Button>
+                                    }}</Button>
                             </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"

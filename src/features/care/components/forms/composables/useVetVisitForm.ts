@@ -69,8 +69,8 @@ export const useVetVisitForm = () => {
         const visit = selectedVisit.value;
         if (!visit || !pet) return;
         open({
-            title: t("dialog.deleteRecord.title", { title: visit.title }),
-            message: t("dialog.deleteRecord.message", { name: pet.name, title: visit.title }),
+            title: t("dialog.deleteVisit.title"),
+            message: t("dialog.deleteGenericMsg"),
             isDelete: true,
             onConfirm: async () => {
                 loading.value = true;

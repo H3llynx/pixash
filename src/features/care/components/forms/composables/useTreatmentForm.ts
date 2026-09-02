@@ -90,8 +90,8 @@ export const useTreatmentForm = () => {
         const treatment = selectedTreatment.value;
         if (!treatment || !pet) return;
         open({
-            title: t("dialog.deleteRecord.title", { title: treatment.name }),
-            message: t("dialog.deleteRecord.message", { name: pet.name, title: treatment.name }),
+            title: t("dialog.deleteTreatment.title", { title: treatment.name }),
+            message: t("dialog.deleteTreatment.message", { name: pet.name, title: treatment.name }),
             isDelete: true,
             onConfirm: async () => {
                 loading.value = true;

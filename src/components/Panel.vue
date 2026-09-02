@@ -32,3 +32,9 @@ watch(readonly, () => {
         </div>
     </section>
 </template>
+
+<style scoped>
+section {
+    box-shadow: 0px 0px 6px var(--color-accent-rgba);
+}
+</style>

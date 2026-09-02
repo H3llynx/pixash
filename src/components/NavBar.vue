@@ -45,7 +45,7 @@ const { t } = useI18n();
 }
 
 nav {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 30px var(--color-border);
 
     &::-webkit-scrollbar {
         display: none;
@@ -60,7 +60,7 @@ nav a {
     font-size: small;
 
     &:not(.router-link-exact-active) {
-        opacity: 0.8
+        opacity: 0.5
     }
 
     &:focus-visible {
@@ -70,7 +70,7 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-    color: var(--color-brand);
+    color: var(--color-text);
 
     &:focus-visible {
         outline: none;
@@ -79,15 +79,7 @@ nav a.router-link-exact-active {
 
 @media (width >=48rem) {
     nav {
-        box-shadow: 0 20px rgba(0, 0, 0, 0.4);
-    }
-
-    nav a {
-        color: var(--color-text-secondary);
-    }
-
-    nav a.router-link-exact-active {
-        color: var(--color-text);
+        box-shadow: 0 0px 2px var(--color-border);
     }
 }
 </style>

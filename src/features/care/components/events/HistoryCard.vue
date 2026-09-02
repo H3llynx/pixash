@@ -40,8 +40,8 @@ const handleDelete = () => {
     const pet = selectedPet.value;
     if (!pet) return;
     open({
-        title: t("dialog.deleteRecord.title", { title: title.value }),
-        message: t("dialog.deleteRecord.message", { name: pet.name, title: title.value }),
+        title: t("dialog.deleteRecord.title", { name: pet.name, title: title.value?.toLowerCase() }),
+        message: t("dialog.deleteGenericMsg"),
         isDelete: true,
         onConfirm: async () => {
             loading.value = true;

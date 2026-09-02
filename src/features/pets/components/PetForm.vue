@@ -33,16 +33,13 @@ const defaultForm: Pet = {
     breed: "",
     birthDate: "",
     sex: sex.options[0].id,
-    sterilized: true,
+    sterilized: false,
     microchipped: false,
 };
 
 const formData = reactive<Pet>({ ...defaultForm });
 
-const selectedSpecies = computed(() =>
-    species.options.find(s => s.id === formData.species)
-);
-const hasBreed = computed(() => selectedSpecies.value?.hasBreed ?? false);
+const isDogOrCat = computed(() => ['dog', 'cat'].includes(formData.species));
 
 const fillPetData = (pet: Pet) => {
     Object.assign(formData, {
@@ -97,7 +94,7 @@ watch(existingPet, (pet) => {
 }, { immediate: true });
 
 watch(() => formData.species, () => {
-    if (!hasBreed.value) {
+    if (!isDogOrCat.value) {
         formData.breed = null;
     } else {
         formData.breed = selectedPet.value && selectedPet.value.species === formData.species
@@ -133,7 +130,7 @@ watch(() => formData.species, () => {
                     </fieldset>
                     <div class="default-padding flex flex-col gap-1">
                         <Input v-model="formData.name" :id="name.id" :label="t(name.label)" required />
-                        <BreedSelector v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="t(breed.label)"
+                        <BreedSelector v-if="isDogOrCat" v-model="formData.breed" :id="breed.id" :label="t(breed.label)"
                             :placeholder="t(breed.placeholder)" :breeds="getBreedOptions(formData.species)" />
                         <div class="flex justify-between gap-1">
                             <Input v-model="formData.birthDate" :id="birthDate.id" :type="birthDate.type"
@@ -145,8 +142,10 @@ watch(() => formData.species, () => {
                                 </option>
                             </Dropdown>
                         </div>
-                        <Toggle v-model="formData.sterilized" :label="t(sterilized.label)" :id="sterilized.id" />
-                        <Toggle v-model="formData.microchipped" :label="t(microchipped.label)" :id="microchipped.id" />
+                        <Toggle v-if="isDogOrCat" v-model="formData.sterilized" :label="t(sterilized.label)"
+                            :id="sterilized.id" />
+                        <Toggle v-if="isDogOrCat" v-model="formData.microchipped" :label="t(microchipped.label)"
+                            :id="microchipped.id" />
                         <Button :disabled="loading" class="md:ml-auto">{{ t("pet.cta.save", {
                             name: formData.name
                         }) }}

@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import HealthCard from '../../care/components/events/HealthCard.vue';
 import type { PetEvent } from '../../care/types.ts';
-import { usePets } from '../composables/usePets';
+import { usePets } from '../composables/usePets.ts';
 
 const { selectedPet, handleAdd } = usePets();
 const { t } = useI18n();
@@ -12,7 +12,7 @@ const { t } = useI18n();
 
 <template>
     <div v-if="selectedPet?.nextVaccine || selectedPet?.nextVetVisit || selectedPet?.nextAntiparasitic"
-        class="pet-selector lg:flex-wrap">
+        class="pet-selector px-0 lg:flex-wrap">
         <HealthCard v-if="selectedPet.nextVaccine" :pet="selectedPet" :data="selectedPet.nextVaccine"
             :title="t('dashboard.title.nextVaccine')" />
         <HealthCard v-if="selectedPet.nextVetVisit" :pet="selectedPet" :data="selectedPet.nextVetVisit"

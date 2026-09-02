@@ -71,8 +71,9 @@ watch(() => editing.value, async (editing) => {
                 <Button variant="ghost" size="xxs" :aria-label="t('pet.profile.edit.microchip')" @click="startUpdating">
                     <Edit2 v-if="pet.microchip" :size="15" />
                 </Button>
-                <Button size="rounded" :aria-label="t('pet.profile.edit.microchip')"
-                    @click="copyToClipboard(pet.microchip)">
+                <Button :variant="clipboardText ? 'ghost' : 'primary'" :size="clipboardText ? 'xxs' : 'rounded'"
+                    :aria-label="t('pet.profile.edit.microchip')" @click="copyToClipboard(pet.microchip)"
+                    :disabled="clipboardText">
                     <Copy v-if="pet.microchip && !clipboardText" :size="15" />
                     <span v-if="clipboardText">{{ clipboardText }}</span>
                 </Button>
@@ -87,12 +88,13 @@ watch(() => editing.value, async (editing) => {
                 :aria-label="t('common.button.save')">
                 <Forward :size="15" class="rotate-180" />
             </Button>
-            <Button v-else type="button" size="xxs" variant="ghost" @click="editing = false"
+            <Button v-else type="button" size="xs" variant="ghost" @click="editing = false"
                 :aria-label="t('common.button.cancel')">
-                <X :size="16" color="var(--color-brand-light)" />
+                <X :size="16" />
             </Button>
-            <Button v-if="editing" type="button" size="xxs" variant="ghost" @click="handleDelete">
-                <Trash2 :size="16" color="var(--color-brand-light)" />
+            <Button v-if="editing" type="button" size="xs" variant="ghost" @click="handleDelete"
+                :aria-label="t('pet.profile.deleteChip', { name: pet.name })">
+                <Trash2 :size="16" />
             </Button>
         </form>
     </div>

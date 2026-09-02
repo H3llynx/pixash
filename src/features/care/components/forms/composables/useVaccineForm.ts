@@ -116,8 +116,8 @@ export const useVaccineForm = () => {
         const vaccine = selectedVaccine.value;
         if (!vaccine || !pet) return;
         open({
-            title: t("dialog.deleteRecord.title", { title: showVaccines(vaccine.types, pet, t) }),
-            message: t("dialog.deleteRecord.message", { name: pet.name, title: showVaccines(vaccine.types, pet, t) }),
+            title: t("dialog.deleteRecord.title", { name: pet.name, title: showVaccines(vaccine.types, pet, t) }),
+            message: t("dialog.deleteGenericMsg"),
             isDelete: true,
             onConfirm: async () => {
                 loading.value = true;

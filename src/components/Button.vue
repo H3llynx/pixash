@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { X } from '@lucide/vue';
+import { Trash2, X } from '@lucide/vue';
 import { tv } from 'tailwind-variants';
 import { useI18n } from 'vue-i18n';
 
@@ -9,17 +9,17 @@ const button = tv({
     base: "font-medium filter-blur rounded-xl border border-transparent flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed",
     variants: {
         variant: {
-            primary: "bg-accent text-bg rounded-full hover:bg-green",
-            secondary: "bg-bg-2 text-text rounded-full hover:bg-green hover:text-white",
-            tertiary: "text-text-softer enabled:hover:text-green bg-bg-rgba border-border rounded-full",
-            ghost: "enabled:hover:text-accent bg-bg-rgba",
+            primary: "bg-accent text-bg rounded-full hover:bg-interactive",
+            secondary: "bg-bg-2 text-text rounded-full hover:bg-interactive hover:text-bg",
+            tertiary: "text-text-softer enabled:hover:text-interactive bg-bg-rgba border-border rounded-full",
+            ghost: "enabled:hover:text-accent bg-bg-rgba disabled:opacity-100 disabled:bg-transparent",
             addon: "text-text-secondary addon-focus rounded-full",
-            stacked: "stacked text-text-secondary capitalize justify-end disabled:opacity-100",
+            stacked: "stacked text-text-secondary capitalize justify-end",
             tile: "tile-btn capitalize justify-end items-end",
             add: "font-light border-dashed border-text-secondary text-text-secondary hover:text-accent hover:border-accent hover:bg-bg-2"
         },
         size: {
-            rounded: "w-2 h-2 aspect-square",
+            rounded: "w-2 h-2 aspect-square text-xs",
             xxs: "p-0.5 text-xs",
             xs: "p-0.5 text-sm ",
             sm: "px-1 py-0.5",
@@ -35,31 +35,38 @@ const button = tv({
     }
 });
 
-withDefaults(defineProps<{
-    action?: "normal" | "hide"
+defineProps<{
+    action?: "hide" | "delete"
     variant?: keyof typeof button.variants.variant
     size?: keyof typeof button.variants.size
-}>(), { action: "normal" })
+}>();
 </script>
 
 
 <template>
-    <button v-if="action === 'normal'" tabindex="0" :class="button({ variant, size })">
-        <slot />
+    <button v-if="action === 'delete'" variant="ghost" size="xs"
+        :class="[button({ variant: 'ghost', size: 'xs' }), 'ml-auto mb-auto text-text-secondary']">
+        <Trash2 :size="22" />
     </button>
 
-    <button v-else :aria-label="t('common.button.close')" tabindex="0" class="hide-btn">
+    <button v-else-if="action === 'hide'" :aria-label="t('common.button.close')" tabindex="0" class="hide-btn">
         <div class="h-[7px] w-4 rounded-full bg-border md:hidden"></div>
         <X class="hidden md:block focus-within:bg-gold" />
+    </button>
+
+    <button v-else tabindex="0" :class="button({ variant, size })">
+        <slot />
     </button>
 </template>
 
 <style scoped>
 .tile-btn {
     position: relative;
+    display: inline-flex;
     border: 1px solid var(--color-border);
     background: var(--color-bg-2);
     text-transform: capitalize;
+    text-align: right;
     overflow: hidden;
     font-family: var(--font-title);
     font-size: large;
@@ -73,8 +80,7 @@ withDefaults(defineProps<{
     }
 
     &:hover,
-    &.active,
-    :disabled {
+    &.active {
         opacity: 1;
         filter: none;
     }
@@ -83,14 +89,13 @@ withDefaults(defineProps<{
         background: var(--color-accent-dark);
     }
 
-    &.active,
-    &:disabled {
+    &.active {
         background: var(--color-accent);
         border: 1px solid var(--color-accent);
         box-shadow: 3px 3px 10px var(--color-accent-rgba);
     }
 
-    &:not(:disabled, .active, :hover)::after {
+    &:not(.active, :hover)::after {
         content: "";
         position: absolute;
         inset: 0;
