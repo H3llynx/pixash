@@ -61,13 +61,13 @@ console.log(props.petId)
         <Button :variant="form ? 'stacked' : 'tile'" :size="form ? 'xs' : 'tile'" v-for="pet in filteredPets"
             :class="getPetChipStyle(pet)" @click="handleClick(pet)"
             :aria-pressed="calendar ? pet.id === props.petId : pet === selectedPet">
-            <div v-if="pet.photo" :class="form ? 'chip-photo' : 'btn-layer'">
-                <img :src="pet.photo" :alt="pet.name" class="w-full h-full object-cover" aria-hidden />
+            <div :class="form ? 'chip-photo' : 'btn-layer'">
+                <img v-if="pet.photo" :src="pet.photo" :alt="pet.name" class="w-full h-full object-cover" aria-hidden />
+                <PetIcon v-else :pet="pet" class="m-0.5 text-3xl" />
             </div>
-            <PetIcon v-else :pet="pet" />
             {{ pet.name }}
         </Button>
-        <Button v-if="route.path === ROUTES.dashboard" variant="add" size="tile"
+        <Button v-if="!calendar && !form && route.path !== ROUTES.history" variant="add" size="tile"
             :class="{ 'tile': true, 'active': isAddingPet }" @click="isAddingPet = true">
             <Plus /> {{ t("common.button.add") }}
         </Button>
@@ -80,7 +80,7 @@ console.log(props.petId)
     inset: 0;
     z-index: -1;
 
-    &::after {
+    &:has(img)::after {
         content: "";
         position: absolute;
         inset: 0;
@@ -96,5 +96,13 @@ console.log(props.petId)
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+button:hover .chip-photo {
+    background: var(--color-accent-rgba);
+}
+
+button.active .chip-photo {
+    background: var(--color-accent);
 }
 </style>

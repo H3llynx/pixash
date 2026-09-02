@@ -2,18 +2,16 @@
 import { Calendar, History, LayoutGrid, MapPin } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
-import { useMedia } from '../composables/useMedia';
 import { usePets } from '../features/pets/composables/usePets';
 import { ROUTES } from '../router/config';
 
-const { isMd } = useMedia();
 const { hasPets } = usePets();
 const { t } = useI18n();
 </script>
 
 <template>
     <nav
-        class="bg-bg-2 w-screen p-1 md:py-5 fixed bottom-0 h-5 md:min-h-screen overflow-y-scroll md:w-max flex md:flex-col justify-between md:justify-start gap-2">
+        class="bg-bg-2 w-screen p-0.5 md:py-5 fixed bottom-0 h-5 md:min-h-screen overflow-y-scroll md:w-max flex md:flex-col justify-evenly md:justify-start gap-2 md:gap-1">
         <RouterLink :to="ROUTES.dashboard" tabindex="0">
             <LayoutGrid />{{ t("common.navbar.home") }}
         </RouterLink>
@@ -33,17 +31,6 @@ const { t } = useI18n();
 </template>
 
 <style scoped>
-.dog {
-    position: absolute;
-    bottom: 0;
-    width: 110%;
-    left: -5%;
-}
-
-.cat {
-    width: 90%;
-}
-
 nav {
     box-shadow: 0 4px 30px var(--color-border);
 
@@ -58,6 +45,8 @@ nav a {
     gap: 5px;
     align-items: center;
     font-size: small;
+    padding: 0.5rem;
+    aspect-ratio: 1/1;
 
     &:not(.router-link-exact-active) {
         opacity: 0.5
@@ -65,7 +54,7 @@ nav a {
 
     &:focus-visible {
         outline: none;
-        color: var(--color-gold);
+        background: var(--color-accent-rgba);
     }
 }
 

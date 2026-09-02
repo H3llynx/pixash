@@ -36,11 +36,11 @@ const handleClick = (action: string) => {
                     class="flex flex-col items-end gap-1 max-w-2xs absolute bottom-11 md:bottom-7 right-1.5"
                     role="menu">
                     <div class="row">
-                        <Button variant="tertiary" @click="handleClick('vet')">{{ t("addMenu.vet") }}</Button>
+                        <Button variant="secondary" @click="handleClick('vet')">{{ t("addMenu.vet") }}</Button>
                         <BriefcaseMedical class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button variant="tertiary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
+                        <Button variant="secondary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
                             }}</Button>
                         <Pill class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
@@ -50,29 +50,29 @@ const handleClick = (action: string) => {
                     class="flex flex-col items-end gap-1 max-w-2xs absolute bottom-11 md:bottom-7 right-1.5"
                     role="menu">
                     <div class="row">
-                        <Button variant="tertiary" @click="handleClick('pet')">{{ t("addMenu.pet") }}</Button>
+                        <Button variant="secondary" @click="handleClick('pet')">{{ t("addMenu.pet") }}</Button>
                         <PawPrint class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button variant="tertiary" @click="handleClick('antiparasitic')">{{ t("addMenu.antiparasitic")
+                        <Button variant="secondary" @click="handleClick('antiparasitic')">{{ t("addMenu.antiparasitic")
                         }}</Button>
                         <BugOff class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button variant="tertiary" @click="handleClick('vaccine')">{{ t("addMenu.vaccine") }}</Button>
+                        <Button variant="secondary" @click="handleClick('vaccine')">{{ t("addMenu.vaccine") }}</Button>
                         <Syringe class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button variant="tertiary" @click="handleClick('visit')">{{ t("addMenu.vetVisit") }}</Button>
+                        <Button variant="secondary" @click="handleClick('visit')">{{ t("addMenu.vetVisit") }}</Button>
                         <Stethoscope class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button variant="tertiary" @click="handleClick('weight')">{{ t("health.cta.logWeight")
+                        <Button variant="secondary" @click="handleClick('weight')">{{ t("health.cta.logWeight")
                         }}</Button>
                         <Scale class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
-                        <Button variant="tertiary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
+                        <Button variant="secondary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
                         }}</Button>
                         <Pill class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
@@ -89,7 +89,7 @@ const handleClick = (action: string) => {
     align-items: center;
 
     &:hover .btn-icon {
-        background: var(--color-green);
+        background: var(--color-interactive);
         color: var(--color-bg);
     }
 }
@@ -99,6 +99,6 @@ const handleClick = (action: string) => {
     border-radius: 50%;
     background: var(--color-bg-rgba);
     color: var(--color-text-tertiary);
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-off-white);
 }
 </style>

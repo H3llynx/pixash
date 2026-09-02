@@ -14,7 +14,7 @@ const button = tv({
             tertiary: "text-text-softer enabled:hover:text-interactive bg-bg-rgba border-border rounded-full",
             ghost: "enabled:hover:text-accent bg-bg-rgba disabled:opacity-100 disabled:bg-transparent",
             addon: "text-text-secondary addon-focus rounded-full",
-            stacked: "stacked text-text-secondary capitalize justify-end",
+            stacked: "stacked-btn text-text-secondary capitalize justify-end",
             tile: "tile-btn capitalize justify-end items-end",
             add: "font-light border-dashed border-text-secondary text-text-secondary hover:text-accent hover:border-accent hover:bg-bg-2"
         },
@@ -70,19 +70,11 @@ defineProps<{
     overflow: hidden;
     font-family: var(--font-title);
     font-size: large;
-    filter: grayscale(60%);
-    opacity: 0.6;
 
     &:has(img),
     &:hover,
     &.active {
         color: var(--color-off-white);
-    }
-
-    &:hover,
-    &.active {
-        opacity: 1;
-        filter: none;
     }
 
     &:hover {
@@ -103,12 +95,18 @@ defineProps<{
     }
 }
 
-.stacked {
+.stacked-btn {
     flex-direction: column;
 
-    &.active {
-        color: var(--color-brand);
+    &:not(.active) {
+        font-weight: 400;
     }
+}
+
+.tile-btn:not(.active, :hover),
+.stacked-btn:not(.active, :hover) {
+    filter: grayscale(60%);
+    opacity: 0.6;
 }
 
 .addon-focus:focus-visible {

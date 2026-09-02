@@ -34,28 +34,13 @@ watch(() => visible.value, (visible) => {
 
 <style scoped>
 button {
-    background: linear-gradient(145deg, #e9b96a 0%, var(--color-gold) 40%, #b07f2c 100%);
+    background: var(--background-image-eucalyptus-gradient);
     transition: 1s ease;
     overflow: hidden;
 
-    &::before {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        inset: 0;
-        background: var(--background-image-brand-gradient);
-        opacity: 0;
-        z-index: -1;
-        transition: 1s ease;
-    }
-
     &:hover {
         transform: scale(1.05);
-
-        &::before {
-            opacity: 1;
-        }
+        background: var(--background-image-gold-gradient);
     }
 }
 </style>
