@@ -14,7 +14,7 @@ const button = tv({
             tertiary: "text-text-softer enabled:hover:text-interactive bg-bg-rgba border-border rounded-full",
             ghost: "enabled:hover:text-accent bg-bg-rgba disabled:opacity-100 disabled:bg-transparent",
             addon: "text-text-secondary addon-focus rounded-full",
-            stacked: "stacked-btn text-text-secondary capitalize justify-end",
+            stacked: "stacked-btn text-text-secondary capitalize",
             tile: "tile-btn capitalize justify-end items-end",
             add: "font-light border-dashed border-text-secondary text-text-secondary hover:text-accent hover:border-accent hover:bg-bg-2"
         },
@@ -100,6 +100,10 @@ defineProps<{
 
     &:not(.active) {
         font-weight: 400;
+    }
+
+    &.active {
+        color: var(--color-accent);
     }
 }
 

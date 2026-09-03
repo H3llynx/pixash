@@ -26,12 +26,13 @@ const handleVisit = () => {
     if (pet) selectPet(pet);
     isUpdatingVet.value = false;
     isAddingCare.visit = true;
-}
+};
 
 const handleCall = () => {
     if (!props.vet.phone) return;
     window.location.href = `tel:${props.vet.phone}`;
-}
+};
+
 const handleMaps = () => {
     const address = [props.vet.name, props.vet.address1, props.vet.address2, props.vet.postCode, props.vet.city]
         .filter(Boolean)

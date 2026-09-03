@@ -103,7 +103,7 @@ watch(() => mode.value, (mode) => {
                     <Button v-if="selectedTreatment" action="delete" :aria-label="t('health.cta.deleteTreatment')"
                         @click="handleDelete" />
                 </div>
-                <PetSelector v-if="isAddingCare.treatment" form />
+                <PetSelector v-if="isAddingCare.treatment" stacked />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
                         <Input v-model="formData.name" :id="name.id" :label="t(name.label)" required />

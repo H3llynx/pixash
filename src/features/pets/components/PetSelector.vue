@@ -2,73 +2,68 @@
 import { Plus } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
 import Button from '../../../components/Button.vue';
 import Paw from '../../../components/icons/Paw.vue';
-import { ROUTES } from '../../../router/config.ts';
+import { useAllPetsView } from '../../care/composables/useAllPetsView.ts';
 import { usePets } from '../composables/usePets';
 import type { PetExtended } from '../types';
 import PetIcon from './PetIcon.vue';
 
 const { pets, selectPet, selectedPet, selectedVet, isAddingPet } = usePets();
+const { petViewed } = useAllPetsView();
 const { t } = useI18n();
-const route = useRoute();
 
 const props = withDefaults(defineProps<{
-    form?: boolean
-    calendar?: boolean
-    petId?: string
-}>(), { form: false, calendar: false, nav: false });
+    stacked?: boolean;
+    viewAll?: boolean
+}>(), { stacked: false, calendar: false, nav: false });
 
-const emit = defineEmits(["update:petId"]);
-
-const filteredPets = computed(() => props.form && selectedVet.value
+const filteredPets = computed(() => props.stacked && selectedVet.value
     ? pets.value.filter(pet => selectedVet.value?.assignedPets?.includes(pet.id))
     : pets.value);
 
 const handleClick = (pet: PetExtended) => {
     selectPet(pet)
-    if (props.calendar) emit("update:petId", pet.id);
+    if (props.viewAll) petViewed.value = pet.id;
 };
 
 const getPetChipStyle = (pet: PetExtended) => {
-    if (props.calendar) return props.petId === pet.id ? "active" : "";
+    if (props.viewAll) return petViewed.value === pet.id ? "active" : "";
     else if (selectedPet.value?.id === pet.id) return "active";
 };
 
 const getAllChipStyle = () => {
-    if (props.calendar) return !props.petId ? "active" : "";
-    else if (!props.petId) return "active";
+    if (props.viewAll) return !petViewed.value ? "active" : "";
 };
-
-console.log(props.petId)
 </script>
 
 <template>
     <span class="sr-only" aria-live="polite">
-        {{calendar
-            ? (props.petId
-                ? t("common.a11y.petSelected", { name: filteredPets.find(p => p.id === props.petId)?.name })
-                : t("common.a11y.allPetsSelected"))
-            : (selectedPet ? t("common.a11y.petSelected", { name: selectedPet.name }) : "")
+        {{viewAll
+            ? petViewed
+                ? t("common.a11y.petSelected", { name: filteredPets.find(p => p.id === petViewed)?.name })
+                : t("common.a11y.allPetsSelected")
+            : selectedPet ? t("common.a11y.petSelected", { name: selectedPet.name }) : ""
         }}
     </span>
     <div class="pet-selector" role="group" aria-label="select another pet">
-        <Button v-if="calendar" variant="tile" size="tile" :class="getAllChipStyle()"
-            @click="emit('update:petId', null)" :aria-pressed="props.petId === undefined">
-            <Paw class="w-1 -rotate-20" /> {{ t("common.button.all") }}
+        <Button v-if="viewAll" variant="tile" :size="stacked ? 'md' : 'tile'" :class="getAllChipStyle()"
+            @click="petViewed = ''" :aria-pressed="petViewed === ''">
+            <div class="inline-flex gap-0.5">
+                <Paw class="w-1 -rotate-20" /> {{ t("common.button.all") }}
+            </div>
         </Button>
-        <Button :variant="form ? 'stacked' : 'tile'" :size="form ? 'xs' : 'tile'" v-for="pet in filteredPets"
+        <Button :variant="stacked ? 'stacked' : 'tile'" :size="stacked ? 'xs' : 'tile'" v-for="pet in filteredPets"
             :class="getPetChipStyle(pet)" @click="handleClick(pet)"
-            :aria-pressed="calendar ? pet.id === props.petId : pet === selectedPet">
-            <div :class="form ? 'chip-photo' : 'btn-layer'">
+            :aria-pressed="viewAll ? pet.id === petViewed : pet === selectedPet">
+            <div :class="stacked ? 'chip-photo' : 'btn-layer'">
                 <img v-if="pet.photo" :src="pet.photo" :alt="pet.name" class="w-full h-full object-cover" aria-hidden />
                 <PetIcon v-else :pet="pet" class="m-0.5 text-3xl" />
             </div>
             {{ pet.name }}
         </Button>
-        <Button v-if="!calendar && !form && route.path !== ROUTES.history" variant="add" size="tile"
-            :class="{ 'tile': true, 'active': isAddingPet }" @click="isAddingPet = true">
+        <Button v-if="!viewAll && !stacked" variant="add" size="tile" :class="{ 'tile': true, 'active': isAddingPet }"
+            @click="isAddingPet = true">
             <Plus /> {{ t("common.button.add") }}
         </Button>
     </div>

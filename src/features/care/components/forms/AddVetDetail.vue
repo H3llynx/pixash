@@ -39,7 +39,8 @@ const handleSubmit = async () => {
 
 <template>
     <div class="flex h-2 gap-[3px]">
-        <Button v-if="!isUpdating" @click="startUpdating" size="rounded" :aria-label="t('vet.addProfileLabel.' + data)">
+        <Button v-if="!isUpdating" @click="startUpdating" variant="tertiary" size="rounded"
+            :aria-label="t('vet.addProfileLabel.' + data)">
             <Plus :size="16" />
         </Button>
         <template v-else>

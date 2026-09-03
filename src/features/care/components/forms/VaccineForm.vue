@@ -62,7 +62,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                     <Button v-if="selectedVaccine" action="delete" :aria-label="t('health.cta.deleteVaccine')"
                         @click="handleDelete" />
                 </div>
-                <PetSelector v-if="isAddingCare.vaccine" form />
+                <PetSelector v-if="isAddingCare.vaccine" stacked />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <Selector :legend="t(types.label)">
                         <Input v-model="formData.types"
@@ -120,7 +120,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                 </p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.sharedFields.dueDate")
-                                    }}:
+                                }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
@@ -131,7 +131,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                     {{ t("common.button.cancel") }}
                                 </Button>
                                 <Button size="sm" :disabled="loading">{{ t("health.cta.saveVaccine")
-                                    }}</Button>
+                                }}</Button>
                             </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"

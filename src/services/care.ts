@@ -63,7 +63,6 @@ export const fetchPetLogs = async (userId: string, petId: string): Promise<LogEx
             collection(db, DB.users, userId, DB.pets, petId, DB.logs)
         );
         if (snapshot.empty) {
-            console.log("No logs found");
             return [];
         }
         const logs: LogExtended[] = snapshot.docs.map((doc) => {

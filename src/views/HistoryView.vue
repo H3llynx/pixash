@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import Header from '../components/header/Header.vue';
+import Header from '../components/Header.vue';
 import HistorySkeleton from '../components/loading/HistorySkeleton.vue';
 import EventList from '../features/care/components/events/EventList.vue';
 import EventSelector from '../features/care/components/events/EventSelector.vue';

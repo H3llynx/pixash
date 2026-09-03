@@ -5,12 +5,12 @@ import Button from '../../../../components/Button.vue';
 import { tsToDate } from '../../../../utils.ts';
 import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
-import { useEvents } from '../../composables/useEvents.ts';
+import { useAllPetsView } from '../../composables/useAllPetsView.ts';
 import { getTreatmentProgress } from '../../utils.ts';
 import ProgressBar from './ProgressBar.vue';
 
 const { selectTreatment, treatmentLoading, selectedTreatment, pets } = usePets();
-const { filteredMonthTreatments } = useEvents();
+const { filteredMonthTreatments } = useAllPetsView();
 const { t } = useI18n();
 </script>
 
@@ -41,7 +41,7 @@ const { t } = useI18n();
                         :color="treatment.color" />
                     <span v-else class="inline ml-0.5 float-right tag bg-border-light text-text-secondary">{{
                         t("health.treatment.ongoing")
-                        }}</span>
+                    }}</span>
                 </div>
             </Button>
         </div>

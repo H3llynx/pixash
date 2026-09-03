@@ -188,12 +188,12 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedOtherLog!.subtype}`)
                     })
-                        }}
+                    }}
                     </h1>
                     <Button v-if="selectedOtherLog" action="delete" :aria-label="t('common.button.delete')"
                         @click="handleDelete" />
                 </div>
-                <PetSelector v-if="isAddingCare.other" form />
+                <PetSelector v-if="isAddingCare.other" stacked />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <Selector v-if="mode === 'edit'" :legend="t(subtype.label)" class="mb-0.5">
                         <Input v-model="formData.subtype" v-for="option in subtype.options" :id="option.id"

@@ -9,7 +9,6 @@ import { checkOverlapsMonth, getLogIcon, getTreatmentBackground, getTreatmentCol
 const selectedDate = ref<string | null>(null);
 const currentMonth = ref<Date>(new Date());
 const currentMonthName = ref<string | null>(null);
-const petId = ref<string>("");
 const selectedEvent = ref<PetEvent | null>(null);
 
 export const useEvents = () => {
@@ -90,16 +89,6 @@ export const useEvents = () => {
             })
     ]);
 
-    const filteredCalendarEvents = computed(() => petId.value
-        ? calendarEvents.value.filter(e => e.event.petId === petId.value)
-        : calendarEvents.value
-    );
-
-    const filteredMonthEvents = computed(() => petId.value
-        ? eventsThisMonth.value.filter(e => e.petId === petId.value)
-        : eventsThisMonth.value
-    );
-
     const eventsInTs = computed<PetEvent[]>(() => [
         ...vaccines.value.filter(v => v.dueOn).map(v => ({ ...v, ts: v.dueOn! })),
         ...vetVisits.value.filter(visit => visit.date).filter(visit => visit.date.toDate() >= new Date).map(visit => ({ ...visit, ts: visit.date! })),
@@ -145,11 +134,6 @@ export const useEvents = () => {
             .map((t, index) => ({ ...t, color: getTreatmentColor(index) }))
     });
 
-    const filteredMonthTreatments = computed(() => petId.value
-        ? treatmentsThisMonth.value.filter(e => e.petId === petId.value)
-        : treatmentsThisMonth.value
-    );
-
     const activeTreatments = computed(() => {
         const now = new Date();
         return treatments.value
@@ -163,13 +147,10 @@ export const useEvents = () => {
         currentMonthName,
         calendarEvents,
         eventsThisMonth,
-        filteredCalendarEvents,
-        filteredMonthEvents,
-        petId,
         petUpcomingEvents,
         useEventData,
         selectedEvent,
-        filteredMonthTreatments,
+        treatmentsThisMonth,
         activeTreatments
     }
 }

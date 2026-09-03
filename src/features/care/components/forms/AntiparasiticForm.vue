@@ -51,12 +51,12 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                        }}
+                    }}
                     </h1>
                     <Button v-if="selectedAntiparasiticLog" action="delete"
                         :aria-label="t('health.cta.deleteAntiparasitic')" @click="handleDelete" />
                 </div>
-                <PetSelector v-if="isAddingCare.antiparasitic" form />
+                <PetSelector v-if="isAddingCare.antiparasitic" stacked />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <Selector :legend="t(treated.label)" class="mb-0.5">
                         <Input v-model="formData.treated"

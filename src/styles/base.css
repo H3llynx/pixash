@@ -133,7 +133,7 @@
 }
 
 @utility lg-grid {
-  @apply lg:grid lg:grid-cols-[55%_45%];
+  @apply lg:grid lg:grid-cols-[55%_45%] lg:gap-0;
 }
 
 @layer base {
