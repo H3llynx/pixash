@@ -23,7 +23,7 @@ const { t } = useI18n();
             <h2 class="text-2xl md:text-3xl">{{ t("common.header.historyH2") }}</h2>
             <span class="tracking-wide font-extralight">{{ t("common.header.historySpan") }}</span>
         </div>
-        <div class="flex flex-col gap-1.5 lg:lg-grid pb-1">
+        <div class="flex flex-col gap-1.5 lg:lg-grid xl:xl-grid pb-1">
             <div>
                 <PetSelector stacked />
                 <EventSelector />

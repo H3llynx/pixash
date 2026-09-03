@@ -106,7 +106,8 @@ watch(() => mode.value, (mode) => {
                 <PetSelector v-if="isAddingCare.treatment" stacked />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-model="formData.name" :id="name.id" :label="t(name.label)" required />
+                        <Input v-if="mode === 'edit'" v-model="formData.name" :id="name.id" :label="t(name.label)"
+                            required />
                         <Input v-model="formData.startDate" :id="startDate.id" :label="t(startDate.label)"
                             :type="startDate.type" :class="mode === 'view'" required>
                             <template #addon>

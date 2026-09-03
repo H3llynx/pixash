@@ -21,15 +21,15 @@ const { t } = useI18n();
             :data="(selectedPet.nextAntiparasitic as PetEvent)" :title="t('dashboard.title.nextAntiparasitic')" />
     </div>
     <div v-else class="flex gap-0.5 pt-1 md:px-1.5">
-        <Button variant="add" class="hover-gradient w-1/2 md:w-14 flex-col h-6" @click="handleAdd('vaccine')">
+        <Button variant="add" class="w-1/2 md:w-14 flex-col h-6" @click="handleAdd('vaccine')">
             <span>{{ t("health.title.addVaccine") }}</span>
             <Plus color="var(--color-text-secondary)" />
         </Button>
-        <Button variant="add" class="hover-gradient w-1/2 md:w-14 flex-col h-6" @click="handleAdd('visit')">
+        <Button variant="add" class="w-1/2 md:w-14 flex-col h-6" @click="handleAdd('visit')">
             <span>{{ t("health.title.addVetVisit") }}</span>
             <Plus color="var(--color-text-secondary)" />
         </Button>
-        <Button variant="add" class="hover-gradient w-1/2 md:w-14 flex-col h-6" @click="handleAdd('antiparasitic')">
+        <Button variant="add" class="w-1/2 md:w-14 flex-col h-6" @click="handleAdd('antiparasitic')">
             <span>{{ t("health.title.logAntiparasitic") }}</span>
             <Plus color="var(--color-text-secondary)" />
         </Button>

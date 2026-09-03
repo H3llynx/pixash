@@ -47,7 +47,7 @@ onBeforeRouteLeave(() => {
 
 <template>
     <Header />
-    <main class="lg-grid xl:grid-cols-[1fr_35%] md:pb-1.5">
+    <main class="lg:lg-grid xl:xl-grid md:pb-1.5">
         <section class="p-0 md:pb-1">
             <PetSelector viewAll stacked />
             <Calendar :events="filteredCalendarEvents" @update-month="currentMonth = $event"

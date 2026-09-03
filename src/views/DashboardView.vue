@@ -22,8 +22,10 @@ onBeforeRouteLeave(() => {
   <Header />
   <DashboardSkeleton v-if="loading" />
   <main v-else-if="hasPets">
-    <div class="lg-grid">
-      <PetSelector />
+    <div class="lg:lg-grid">
+      <div :class="{ 'overlay': isMd }">
+        <PetSelector />
+      </div>
       <NextDue v-if="isMd" />
     </div>
     <div class="flex flex-col gap-2 lg:lg-grid">
@@ -33,3 +35,17 @@ onBeforeRouteLeave(() => {
     </div>
   </main>
 </template>
+
+<style scoped>
+.overlay {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 0% 50%, transparent 84%, var(--color-bg) 100%);
+    pointer-events: none;
+  }
+}
+</style>

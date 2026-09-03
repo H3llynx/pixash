@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BugOff, ChevronLeft, NotebookPen, Pill, Stethoscope, Syringe } from '@lucide/vue';
+import { BugOff, NotebookPen, Pill, Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -16,12 +16,10 @@ const { t, locale } = useI18n();
 const { isMd } = useMedia();
 
 const visible = defineModel<boolean>("visible")
-const submenu = ref<boolean>(false);
 const menuRef = ref<HTMLDivElement>();
 
 onClickOutside(menuRef, () => {
     if (visible.value) visible.value = false;
-    submenu.value = false;
 });
 
 const handleClick = (action: string) => {
@@ -31,7 +29,6 @@ const handleClick = (action: string) => {
 
 const handleClose = () => {
     visible.value = false;
-    submenu.value = false;
     selectedDate.value = null;
 }
 
@@ -48,7 +45,7 @@ watch(() => visible.value, (visible) => {
 <template>
     <Transition name="toast" v-if="isMd">
         <div v-if="visible" ref="menuRef" role="menu" class="absolute -translate-x-1/2 w-max ">
-            <div v-if="!submenu" class="flex gap-[3px] flex-col">
+            <div class="flex gap-[3px] flex-col">
                 <Button variant="ghost" size="xxs" @click="handleClick('vaccine')">
                     <span>{{ t("addMenu.vaccine") }}</span>
                     <Syringe :size="18" />
@@ -76,38 +73,32 @@ watch(() => visible.value, (visible) => {
 
     <Transition name="panel" v-else>
         <Panel :onClose="handleClose" v-if="visible" class="bg-bg-rgba filter-blur">
-            <div class="flex default-padding my-1 gap-1 items-center">
-                <Button variant="ghost" size="xs" class="no-border" @click="submenu = false" v-if="submenu"
-                    :aria-label="t('common.button.back')">
-                    <ChevronLeft />
-                </Button>
-                <h2 v-if="selectedDate">{{ new Date(selectedDate).toLocaleDateString(locale, {
-                    weekday: "long",
-                    day: "numeric",
-                    month: "long"
-                }) }}</h2>
-            </div>
-            <div v-if="!submenu" class="flex flex-col gap-1 p-1">
+            <h2 v-if="selectedDate" class="default-padding mb-1">{{ new Date(selectedDate).toLocaleDateString(locale, {
+                weekday: "long",
+                day: "numeric",
+                month: "long"
+            }) }}</h2>
+            <div class="flex flex-col gap-1 p-1">
                 <Button variant="secondary" size="sm" @click="handleClick('vaccine')">
-                    <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
+                    <div class="rounded-xl w-3 h-3 bg-border flex shrink-0 justify-center items-center">
                         <Syringe :size="20" />
                     </div>
                     <span>{{ t("addMenu.vaccine") }}</span>
                 </Button>
                 <Button variant="secondary" size="sm" @click="handleClick('visit')">
-                    <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
+                    <div class="rounded-xl w-3 h-3 bg-interactive flex shrink-0 justify-center items-center">
                         <Stethoscope :size="20" />
                     </div>
                     <span>{{ t("addMenu.vetVisit") }}</span>
                 </Button>
                 <Button variant="secondary" size="sm" @click="handleClick('antiparasitic')">
-                    <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
+                    <div class="rounded-xl w-3 h-3 bg-border-light flex shrink-0 justify-center items-center">
                         <BugOff :size="20" />
                     </div>
                     <span>{{ t("addMenu.antiparasitic") }}</span>
                 </Button>
                 <Button variant="secondary" size="sm" @click="handleClick('treatment')">
-                    <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
+                    <div class="rounded-xl w-3 h-3 bg-interactive-rgba flex shrink-0 justify-center items-center">
                         <Pill :size="20" />
                     </div>
                     <span>{{ t("addMenu.treatment") }}</span>
@@ -132,10 +123,6 @@ button {
     &:hover {
         background: var(--color-brand-rgba)
     }
-}
-
-.no-border {
-    border-color: transparent;
 }
 
 @media (width < 48rem) {

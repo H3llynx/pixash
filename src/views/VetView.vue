@@ -27,7 +27,7 @@ onBeforeRouteLeave(() => {
 <template>
     <Header />
     <VetSkeleton v-if="loading || vetLoading" />
-    <main v-else class="mt-1 md:mt-0 lg:gap-0 lg-grid xl:grid-cols-[65%_1fr]">
+    <main v-else class="mt-1 md:mt-0 lg:gap-0 lg:lg-grid xl:grid-cols-[65%_1fr]">
         <div>
             <div class="pb-1 md:flex lg:block xl:flex justify-between items-center">
                 <div class="default-padding w-sm">

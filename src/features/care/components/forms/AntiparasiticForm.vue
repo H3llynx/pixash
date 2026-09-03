@@ -46,7 +46,7 @@ watch(() => mode.value, (mode) => {
             <div class="md:max-w-max" v-else-if="!newLog">
                 <div class="flex gap-1 justify-between my-1 default-padding">
                     <div v-if="selectedAntiparasiticLog && selectedPet"
-                        class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                        class="rounded-full w-3 h-3 text-3xl flex shrink-0">
                         <PetIcon :pet="selectedPet" />
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
@@ -117,9 +117,9 @@ watch(() => mode.value, (mode) => {
 }
 
 :deep(label:has(input[type="checkbox"]:checked)) p {
-    background: var(--color-brand-rgba);
-    border-color: var(--color-brand-light);
-    color: var(--color-brand-light);
+    background: var(--color-accent-rgba);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
     font-weight: 500;
 }
 </style>

@@ -10,6 +10,6 @@ defineProps<{ pet: Pet }>();
         <div class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
             <PetIcon :pet="pet" />
         </div>
-        <p class="text-sm text-brand-light">{{ pet.name }}</p>
+        <p class="text-sm text-text-secondary">{{ pet.name }}</p>
     </div>
 </template>

@@ -8,7 +8,7 @@ const { t } = useI18n();
     <div class="pet-section flex gap-1 mb-1 items-center flex-wrap md:p-0" aria-hidden>
         <h2 class="hidden md:block p-0 w-full">{{ t("events.legend") }}</h2>
         <div class="row">
-            <div class="w-1 h-1 rounded-md border border-brand-light bg-brand-rgba"></div>
+            <div class="w-1 h-1 rounded-md border border-purple bg-purple-rgba"></div>
             <span>{{ t("events.visits") }}</span>
         </div>
         <div class="row">

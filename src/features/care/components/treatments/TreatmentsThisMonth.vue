@@ -21,7 +21,7 @@ const { t } = useI18n();
             <Button v-for="treatment in filteredMonthTreatments" variant="ghost" size="sm"
                 @click="selectTreatment(treatment)" :aria-label="t('health.cta.viewTreatment')"
                 :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'w-full h-full md:max-w-md border border-border': true }">
-                <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+                <div class="rounded-xl w-4 h-4 bg-border text-4xl flex shrink-0 justify-center items-center">
                     <Pill />
                 </div>
                 <div class="text-left w-full text-sm py-0.25">
@@ -41,7 +41,7 @@ const { t } = useI18n();
                         :color="treatment.color" />
                     <span v-else class="inline ml-0.5 float-right tag bg-border-light text-text-secondary">{{
                         t("health.treatment.ongoing")
-                    }}</span>
+                        }}</span>
                 </div>
             </Button>
         </div>
@@ -51,7 +51,17 @@ const { t } = useI18n();
 
 <style scoped>
 button {
-    background: var(--color-bg-2);
     gap: 1rem;
+    border: 1px solid transparent;
+    background-image:
+        linear-gradient(var(--color-bg-2), var(--color-bg-2)),
+        linear-gradient(155deg, var(--color-border) 0%, transparent 55%);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+
+    &:hover {
+        transform: scale(105%);
+        color: inherit;
+    }
 }
 </style>

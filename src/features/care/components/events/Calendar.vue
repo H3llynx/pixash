@@ -21,7 +21,7 @@ const emit = defineEmits<{
 }>();
 
 const eventColors: Record<string, string> = {
-    visit: "var(--color-eucalyptus)",
+    visit: "var(--color-purple)",
     vaccine: "var(--color-gold)",
     log: "var(--color-border-light)",
 };

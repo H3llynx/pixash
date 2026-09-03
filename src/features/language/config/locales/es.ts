@@ -13,7 +13,7 @@ export default {
             back: "Atrás",
             next: "Siguiente",
             add: "Añadir",
-            All: "Todos",
+            all: "Todos",
             backDash: "Volver al panel",
             backCal: "Volver al calendario",
             markDone: "Marcar como hecho"

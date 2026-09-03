@@ -57,13 +57,15 @@ export const getAntiparasites = (species: typeof SPECIES[number]["id"] | "defaul
     return [...specific, ...ANTIPARASITE_TYPES.default];
 };
 
-export const showAntiparasites = (treated: AntiparasiteTypes["id"][], locale: string, t: (key: string) => string) => {
+export const showAntiparasites = (treated: AntiparasiteTypes["id"][], locale: string, t: (key: string) => string, asList?: boolean) => {
     const labels: string[] = [];
     treated.forEach(parasite => {
         const item = Object.values(PARASITES).find(p => p.id === parasite);
         if (item) labels.push(item.label);
     })
-    return new Intl.ListFormat(locale).format(labels.map(l => t(l).toLowerCase()));
+    return asList
+        ? labels.map(l => t(l))
+        : new Intl.ListFormat(locale).format(labels.map(l => t(l).toLowerCase()));
 };
 
 export const getCurrentWeight = (logs: LogExtended[]) => {

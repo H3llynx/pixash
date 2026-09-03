@@ -15,8 +15,8 @@ const { t } = useI18n();
 
 const props = withDefaults(defineProps<{
     stacked?: boolean;
-    viewAll?: boolean
-}>(), { stacked: false, calendar: false, nav: false });
+    viewAll?: boolean;
+}>(), { stacked: false, viewAll: false });
 
 const filteredPets = computed(() => props.stacked && selectedVet.value
     ? pets.value.filter(pet => selectedVet.value?.assignedPets?.includes(pet.id))
