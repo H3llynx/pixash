@@ -68,6 +68,7 @@
   --color-accent-dark: var(--color-orange-dark);
   --color-accent-softer: var(--color-orange-softer);
   --color-interactive: var(--color-eucalyptus);
+  --color-interactive-rgba: var(--color-eucalyptus-rgba);
 
   --background-image-accent-gradient: radial-gradient(circle at 0% 0%, var(--color-accent-rgba), var(--color-bg-rgba) 65%);
   --background-image-gold-gradient: linear-gradient(145deg, #e9b96a 0%, var(--color-gold) 40%, var(--color-gold-dark) 100%);
@@ -95,6 +96,7 @@
   --color-green: #9BD2B6;
   --color-orange: #E67E22;
   --color-orange-dark: #B36017;
+  --color-gold: #CD8E29;
   --color-blue: rgb(140, 188, 236);
 
   --color-bg: var(--color-charcoal);
