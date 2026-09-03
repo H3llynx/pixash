@@ -9,14 +9,14 @@ const button = tv({
     base: "font-medium filter-blur rounded-xl border border-transparent flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed",
     variants: {
         variant: {
-            primary: "bg-accent text-bg rounded-full hover:bg-interactive",
-            secondary: "bg-bg-2 text-text rounded-full hover:bg-interactive hover:text-bg",
+            primary: "bg-accent text-bg rounded-full enabled:hover:bg-interactive",
+            secondary: "bg-bg-2 text-text rounded-full enabled:hover:bg-interactive enabled:hover:text-bg",
             tertiary: "text-text-softer enabled:hover:text-interactive bg-bg-rgba border-border rounded-full",
             ghost: "enabled:hover:text-accent bg-bg-rgba disabled:opacity-100 disabled:bg-transparent",
             addon: "text-text-secondary addon-focus rounded-full",
             stacked: "stacked-btn text-text-secondary capitalize",
             tile: "tile-btn capitalize justify-end items-end",
-            add: "font-light border-dashed border-text-secondary text-text-secondary hover:text-accent hover:border-accent hover:bg-bg-2"
+            add: "font-light border-dashed border-text-secondary text-text-secondary enabled:hover:text-accent enabled:hover:border-accent enabled:hover:bg-bg-2"
         },
         size: {
             rounded: "w-2 h-2 aspect-square text-xs",

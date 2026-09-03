@@ -51,7 +51,7 @@ watch(() => props.events, () => {
             <EventCardSkeleton v-for="i in 3" :key="i" />
         </div>
         <template v-else>
-            <div class="grid grid-cols-1 gap-1 auto-rows-fr">
+            <div :class="{ 'grid grid-cols-1 gap-1 auto-rows-fr': true, 'xl:grid-cols-2': history }">
                 <template v-if="history">
                     <HistoryCard v-if="events.length" v-for="event in paginatedEvents" :event="event" :key="event.id" />
                     <p v-else class="text-text-secondary text-sm">{{ t("common.text.noHistoryText") }}</p>
@@ -62,11 +62,11 @@ watch(() => props.events, () => {
                 </template>
             </div>
             <div v-if="totalPages > 1" class="flex gap-0.5 h-max justify-end mt-1">
-                <Button variant="ghost" size="xs" :disabled="currentPage === 1" @click="goPrev"
+                <Button variant="tertiary" size="xs" :disabled="currentPage === 1" @click="goPrev"
                     :aria-label="t('common.button.back')">
                     <ChevronLeft />
                 </Button>
-                <Button variant="ghost" size="xs" :disabled="currentPage === totalPages" @click="goNext"
+                <Button variant="tertiary" size="xs" :disabled="currentPage === totalPages" @click="goNext"
                     :aria-label="t('common.button.next')">
                     <ChevronRight />
                 </Button>

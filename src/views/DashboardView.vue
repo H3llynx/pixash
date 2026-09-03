@@ -24,9 +24,9 @@ onBeforeRouteLeave(() => {
   <main v-else-if="hasPets">
     <div class="lg-grid">
       <PetSelector />
-      <NextDue v-if="isMd" class="pl-1.5" />
+      <NextDue v-if="isMd" />
     </div>
-    <div class="lg-grid">
+    <div class="flex flex-col gap-2 lg:lg-grid">
       <PetProfile />
       <PetMonitoring />
       <AddButton />

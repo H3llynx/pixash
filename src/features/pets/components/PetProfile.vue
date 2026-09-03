@@ -12,7 +12,7 @@ const { isMd } = useMedia();
 </script>
 
 <template>
-    <div v-if="selectedPet" class="flex flex-col gap-1.5 md:mb-3">
+    <div v-if="selectedPet" class="flex flex-col gap-2 md:pb-3">
         <section class="pet-section">
             <h2>{{ t("dashboard.title.petProfile", { name: selectedPet.name }) }}</h2>
             <PetCard :pet="selectedPet" />

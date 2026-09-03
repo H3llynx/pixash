@@ -12,7 +12,7 @@ const { t } = useI18n();
 
 <template>
     <div v-if="selectedPet?.nextVaccine || selectedPet?.nextVetVisit || selectedPet?.nextAntiparasitic"
-        class="pet-selector px-0 lg:flex-wrap">
+        class="pet-selector pb-0 px-0 md:px-1.5 lg:flex-wrap">
         <HealthCard v-if="selectedPet.nextVaccine" :pet="selectedPet" :data="selectedPet.nextVaccine"
             :title="t('dashboard.title.nextVaccine')" />
         <HealthCard v-if="selectedPet.nextVetVisit" :pet="selectedPet" :data="selectedPet.nextVetVisit"
@@ -20,7 +20,7 @@ const { t } = useI18n();
         <HealthCard v-if="selectedPet.nextAntiparasitic" :pet="selectedPet"
             :data="(selectedPet.nextAntiparasitic as PetEvent)" :title="t('dashboard.title.nextAntiparasitic')" />
     </div>
-    <div v-else class="flex gap-0.5 py-0.5 default-padding">
+    <div v-else class="flex gap-0.5 pt-1 md:px-1.5">
         <Button variant="add" class="hover-gradient w-1/2 md:w-14 flex-col h-6" @click="handleAdd('vaccine')">
             <span>{{ t("health.title.addVaccine") }}</span>
             <Plus color="var(--color-text-secondary)" />

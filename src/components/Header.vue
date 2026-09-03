@@ -14,18 +14,12 @@ const route = useRoute();
 </script>
 
 <template>
-    <header :class="{ 'md:pl-5': route.path !== ROUTES.auth }" class="flex flex-col gap-1.5">
-        <div class="flex gap-0.5 justify-between default-padding">
-            <Logo class="flex mb-1" />
-            <div :class="[hasPets ? 'z-2' : 'z-3', 'flex gap-0.5 relative items-start']">
-                <ThemeSwitcher />
-                <UserPicture />
-                <LanguageSwitcher />
-            </div>
-        </div>
-        <div v-if="route.path === ROUTES.history" class="default-padding">
-            <h2 class="text-2xl md:text-3xl">{{ t("common.header.historyH2") }}</h2>
-            <span class="tracking-wide font-extralight">{{ t("common.header.historySpan") }}</span>
+    <header :class="{ 'md:pl-8': route.path !== ROUTES.auth, 'flex gap-0.5 justify-between default-padding': true }">
+        <Logo />
+        <div :class="[hasPets ? 'z-2' : 'z-3', 'flex gap-0.5 relative items-start']">
+            <ThemeSwitcher />
+            <UserPicture />
+            <LanguageSwitcher />
         </div>
     </header>
 </template>
