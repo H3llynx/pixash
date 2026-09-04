@@ -129,7 +129,7 @@ export const getIntervalHours = (frequencyId: string): number | undefined => {
     return MED_FREQUENCY.find(f => f.id === frequencyId)?.intervalHours;
 };
 
-export const getTreatmentColor = (index: number) => TREATMENTCOLORS[index] ? TREATMENTCOLORS[index % TREATMENTCOLORS.length].rgb : "var(--color-brand)";
+export const getTreatmentColor = (index: number) => TREATMENTCOLORS[index] ? TREATMENTCOLORS[index % TREATMENTCOLORS.length].rgb : "var(--color-accent)";
 
 export const getTreatmentBackground = (index: number) => TREATMENTCOLORS[index] ? TREATMENTCOLORS[index % TREATMENTCOLORS.length].rgba : "var(--color-border-light)";
 

@@ -54,7 +54,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                     <div v-else-if="selectedVaccine && mode === 'view'"
                         class="flex gap-0.5 items-center flex-1 font-medium">
                         <div v-if="selectedPet"
-                            class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                            class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
                             <PetIcon :pet="selectedPet" />
                         </div>
                         <h1>{{ selectedPet!.name }} · {{ showVaccines(formData.types, selectedPet!, t) }}</h1>
@@ -108,11 +108,11 @@ watch(() => isAddingCare.vaccine, (adding) => {
                         <div class="flex gap-1 mt-1 justify-between items-center flex-wrap"
                             v-if="!selectedVaccine || mode === 'edit'">
                             <div
-                                class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                                class="rounded-full w-3 h-3 bg-border text-3xl flex shrink-0 justify-center items-center">
                                 <PetIcon :pet="selectedPet!" />
                             </div>
-                            <div class="flex-1">
-                                <p v-if="selectedPet" class="font-medium">
+                            <div class="flex-1 min-w-0">
+                                <p v-if="selectedPet" class="font-medium break-words">
                                     {{
                                         selectedPet.name
                                     }} · {{

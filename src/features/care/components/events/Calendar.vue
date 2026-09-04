@@ -87,7 +87,7 @@ const calendarOptions = computed(() => ({
     text-transform: capitalize;
     border-radius: 24px !important;
     margin-inline: 0.25rem;
-    color: var(--color-text-tertiary);
+    color: var(--color-text-softer);
 
     &:disabled {
         background: transparent;

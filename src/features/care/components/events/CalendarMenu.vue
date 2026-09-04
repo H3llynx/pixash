@@ -105,7 +105,7 @@ watch(() => visible.value, (visible) => {
                 </Button>
                 <Button v-if="selectedDate && selectedDate <= todayAsInput()" variant="secondary" size="sm"
                     @click="handleClick('log')">
-                    <div class="rounded-xl w-3 h-3 bg-brand-light flex shrink-0 justify-center items-center">
+                    <div class="rounded-xl w-3 h-3 bg-bg-rgba flex shrink-0 justify-center items-center">
                         <NotebookPen :size="20" />
                     </div>
                     <span>{{ t("addMenu.log") }}</span>
@@ -119,10 +119,6 @@ watch(() => visible.value, (visible) => {
 button {
     justify-content: space-between;
     border: 1px solid var(--color-border);
-
-    &:hover {
-        background: var(--color-brand-rgba)
-    }
 }
 
 @media (width < 48rem) {

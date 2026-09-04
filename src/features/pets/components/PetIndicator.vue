@@ -7,7 +7,7 @@ defineProps<{ pet: Pet }>();
 
 <template>
     <div class="flex flex-col justify-center text-center gap-0.5">
-        <div class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+        <div class="rounded-full w-3 h-3 bg-border text-3xl flex shrink-0 justify-center items-center">
             <PetIcon :pet="pet" />
         </div>
         <p class="text-sm text-text-secondary">{{ pet.name }}</p>

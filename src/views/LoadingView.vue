@@ -3,13 +3,13 @@ import Paw from '../components/icons/Paw.vue';
 </script>
 
 <template>
-    <div class="fixed inset-0 flex flex-col items-center justify-center text-center gap-3 bg-brand-dark">
+    <div class="fixed inset-0 flex flex-col items-center justify-center text-center gap-3 bg-charcoal-darker">
         <div class="fadein-1">
             <Paw class="paw" />
         </div>
         <div class="fadein-2">
             <h1 class="text-gold text-4xl">Pixash</h1>
-            <p class="text-brand-light text-sm leading-3 tracking-wider">pet care, beautifully organised
+            <p class="text-text-softer text-sm leading-3 tracking-wider">pet care, beautifully organised
             </p>
         </div>
     </div>

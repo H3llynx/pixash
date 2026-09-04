@@ -41,7 +41,7 @@ const handleClick = (action: string) => {
                     </div>
                     <div class="row">
                         <Button variant="secondary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
-                            }}</Button>
+                        }}</Button>
                         <Pill class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                 </div>
@@ -55,7 +55,7 @@ const handleClick = (action: string) => {
                     </div>
                     <div class="row">
                         <Button variant="secondary" @click="handleClick('antiparasitic')">{{ t("addMenu.antiparasitic")
-                        }}</Button>
+                            }}</Button>
                         <BugOff class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
@@ -68,12 +68,12 @@ const handleClick = (action: string) => {
                     </div>
                     <div class="row">
                         <Button variant="secondary" @click="handleClick('weight')">{{ t("health.cta.logWeight")
-                        }}</Button>
+                            }}</Button>
                         <Scale class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
                         <Button variant="secondary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
-                        }}</Button>
+                            }}</Button>
                         <Pill class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                 </div>
@@ -88,6 +88,10 @@ const handleClick = (action: string) => {
     gap: 0.5rem;
     align-items: center;
 
+    button {
+        width: max-content;
+    }
+
     &:hover .btn-icon {
         background: var(--color-interactive);
         color: var(--color-bg);
@@ -98,7 +102,7 @@ const handleClick = (action: string) => {
     padding: 8px;
     border-radius: 50%;
     background: var(--color-bg-rgba);
-    color: var(--color-text-tertiary);
+    color: var(--color-text-softer);
     border: 1px solid var(--color-off-white);
 }
 </style>

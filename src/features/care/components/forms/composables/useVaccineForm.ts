@@ -91,7 +91,6 @@ export const useVaccineForm = () => {
                     given: selectedVaccine.value.givenAt ? true : false,
                     nextDose: selectedVaccine.value.dueOn ? true : false,
                 };
-
                 if (!shallowEqual(formData, originalData)) {
                     await updateSelectedVaccine(selectedVaccine.value, selectedPet.value.id, { ...formData });
                     show({

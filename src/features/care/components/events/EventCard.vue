@@ -141,7 +141,7 @@ const cancelMarkDone = () => {
                         <Check :size="16" />{{ t("common.button.markDone") }}
                     </Button>
                 </div>
-                <p v-if="event.vet" class="mt-auto pt-1 text-xs flex items-center gap-[5px]">
+                <p v-if="event.vet" class="mt-auto pt-1 text-xs text-text-softer flex items-center gap-[5px]">
                     <Loading v-if="!vets.length" />
                     <MapPinned v-else :size="16" /> {{ vet }}
                 </p>
@@ -155,7 +155,7 @@ const cancelMarkDone = () => {
             <h3 class="font-title">{{ t("common.text.askingNextDue") }}</h3>
             <Button v-if="!nextDueInput" @click="nextDueInput = true">{{ t("common.text.yes") }}</Button>
             <Button v-if="!nextDueDate" variant="secondary" @click="markAsDone(event)">{{ t("common.text.noNeed")
-            }}</Button>
+                }}</Button>
             <template v-if="nextDueInput">
                 <Input v-model="nextDueDate" type="date" :min="todayAsInput()">
                     <template #addon>

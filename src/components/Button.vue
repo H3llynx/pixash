@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const button = tv({
-    base: "font-medium filter-blur rounded-xl border border-transparent inline-flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed min-w-max",
+    base: "font-medium filter-blur rounded-xl border border-transparent inline-flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed",
     variants: {
         variant: {
             primary: "bg-accent text-bg rounded-full enabled:hover:bg-interactive",

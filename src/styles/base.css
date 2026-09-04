@@ -82,12 +82,8 @@
   --color-green-pale: #93B8A6;
   --color-eucalyptus-dark: #1E302A;
   --color-eucalyptus-light: #B8E2CB;
-  --color-brand: var(--color-green-dark);
-  --color-brand-light: var(--color-green-pale);
-  --color-brand-rgba: var(--color-green-rgba);
-  --color-brand-dark: var(--color-green-dark);
 
-  --color-loading-svg-1: var(--color-green-pale);
+  --color-loading-svg-1: var(--color-orange);
   --color-loading-svg-2: var(--color-off-white);
 }
 
@@ -108,11 +104,6 @@
 
   --color-border: var(--color-grey-dark);
   --color-border-light: var(--color-grey-dark-rgba);
-
-  --color-brand: var(--color-eucalyptus);
-  --color-brand-light: var(--color-eucalyptus-light);
-  --color-brand-rgba: var(--color-eucalyptus-rgba);
-  --color-brand-dark: var(--color-eucalyptus-dark);
 
   --color-loading-svg-1: var(--color-eucalyptus);
   --color-loading-svg-2: var(--color-eucalyptus-light);
@@ -195,10 +186,6 @@
     background: var(--color-bg-rgba);
     width: 100%;
     border-radius: 0.75rem;
-
-    &[type="date"]:empty {
-      color: var(--color-grey-mid);
-    }
 
     &[readonly] {
       background: var(--color-bg-bg-2);
@@ -494,7 +481,7 @@
     width: 10rem;
     aspect-ratio: 1/1;
     border-radius: 50%;
-    border: 1px solid var(--color-brand-rgba);
+    border: 1px solid var(--color-border);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     position: relative;

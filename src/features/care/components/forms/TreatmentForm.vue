@@ -92,7 +92,7 @@ watch(() => mode.value, (mode) => {
             <div v-else class="md:max-w-max">
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">
                     <div v-if="selectedTreatment && selectedPet"
-                        class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                        class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
                         <PetIcon :pet="selectedPet" />
                     </div>
                     <h1 v-if="isAddingCare.treatment">{{ t("health.title.addTreatment") }}</h1>

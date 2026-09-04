@@ -97,7 +97,7 @@ const handleDelete = () => {
                         </div>
                     </div>
                 </div>
-                <p v-if="event.vet" class="mt-auto pt-0.5 text-xs text-brand-light flex items-center gap-[5px]">
+                <p v-if="event.vet" class="mt-auto pt-0.5 text-xs text-text-softer flex items-center gap-[5px]">
                     <Loading v-if="!vets.length" class="my-0.5" />
                     <MapPinned v-else :size="16" /> {{ vet }}
                 </p>

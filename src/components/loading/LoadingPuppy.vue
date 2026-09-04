@@ -22,8 +22,8 @@ import puppy from '../../assets/animations/puppy-ball.json';
 .spinner-ring {
   width: 70%;
   border: 3px solid transparent;
-  border-top-color: var(--color-brand);
-  border-right-color: var(--color-brand-light);
+  border-top-color: var(--color-interactive);
+  border-right-color: var(--color-interactive-rgba);
   animation: spin 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 

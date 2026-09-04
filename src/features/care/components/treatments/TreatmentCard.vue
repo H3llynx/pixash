@@ -43,7 +43,7 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
                     <Calendar :size="18" />
                     {{ tsToDate(treatment.startDate, "date") }}
                 </p>
-                <p class="text-brand flex items-center gap-[5px]">
+                <p class="text-eucalyptus flex items-center gap-[5px]">
                     <Hospital :size="16" class="shrink-0" /> {{ vet }}
                 </p>
             </div>
@@ -52,7 +52,7 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
             <div class="flex gap-1 justify-between items-center">
                 <div>
                     <p>{{ medication.name }}</p>
-                    <span class="italic font-medium text-brand text-xs">{{ t(getLabel(medication.frequency,
+                    <span class="italic font-medium text-eucalyptus text-xs">{{ t(getLabel(medication.frequency,
                         MED_FREQUENCY))
                         }}</span>
                     <span v-if="medication.endDate" class="italic font-medium text-text-secondary text-xs ml-0.5">

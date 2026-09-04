@@ -51,7 +51,7 @@ const handleVetUpdate = () => {
 <template>
     <div class="card card-border w-full md:w-sm shrink-0 text-sm">
         <div class="flex items-start gap-0.5 py-1">
-            <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+            <div class="rounded-xl w-4 h-4 bg-border text-4xl flex shrink-0 justify-center items-center">
                 <BriefcaseMedical />
             </div>
             <div class="px-1 text-text-secondary w-full">

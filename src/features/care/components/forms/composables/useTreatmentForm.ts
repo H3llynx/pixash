@@ -73,9 +73,9 @@ export const useTreatmentForm = () => {
                         title: t("toast.success.title.generic"),
                         message: t("toast.success.message.treatmentUpdated", { name: selectedPet.value.name, title: nameSnapshot }),
                     });
+                    resetForm(formData, defaultForm);
                 }
             };
-            resetForm(formData, defaultForm);
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });

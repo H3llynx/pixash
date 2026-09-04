@@ -21,7 +21,7 @@ defineProps<{
 
 <template>
     <div class="default-padding flex flex-col items-center gap-1 text-center">
-        <div class="rounded-full w-5 h-5 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+        <div class="rounded-full w-5 h-5 bg-accent-rgba text-4xl flex shrink-0 justify-center items-center">
             <Check :size="30" />
         </div>
         <h1>{{ t("common.text.done") }}</h1>

@@ -44,14 +44,14 @@ watch(() => mode.value, (mode) => {
         <Panel v-if="isAddingCare.antiparasitic || selectedAntiparasiticLog" :onClose="handleClose">
             <LoadingPuppy v-if="loading" />
             <div class="md:max-w-max" v-else-if="!newLog">
-                <div class="flex gap-1 justify-between my-1 default-padding">
+                <div class="flex gap-1 justify-between my-1 default-padding items-center">
                     <div v-if="selectedAntiparasiticLog && selectedPet"
-                        class="rounded-full w-3 h-3 text-3xl flex shrink-0">
+                        class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
                         <PetIcon :pet="selectedPet" />
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                    }}
+                        }}
                     </h1>
                     <Button v-if="selectedAntiparasiticLog" action="delete"
                         :aria-label="t('health.cta.deleteAntiparasitic')" @click="handleDelete" />
@@ -70,7 +70,7 @@ watch(() => mode.value, (mode) => {
                         <Input v-if="!formData.notGiven" v-model="formData.givenAt" :id="givenDate.id"
                             :label="t(givenDate.label)" :type="givenDate.type" :max="todayAsInput()" required>
                             <template #addon>
-                                <CalendarCheck class="mr-0.5" color="var(--color-brand)" />
+                                <CalendarCheck class="mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
                         <Toggle v-if="mode === 'edit'" v-model="formData.notGiven"

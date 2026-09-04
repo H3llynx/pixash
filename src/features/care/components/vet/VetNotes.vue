@@ -40,19 +40,19 @@ const handleNoteEdit = async () => {
 
 <template>
     <div class="relative flex flex-col gap-0.75">
-        <Button :variant="isMd ? 'ghost' : 'vetOptions'" size="xs" @click="toggleNoteEdit"
+        <Button variant="ghost" size="xs" @click="toggleNoteEdit"
             :aria-label="isUpdatingNotes ? t('vet.cta.saveNotes') : t('vet.cta.notes')" ref="toggleRef"
-            :class="isMd && 'absolute bottom-0.25 right-0.5 rounded-xl bg-transparent'">
+            class="absolute bottom-0.25 right-0.5 rounded-xl bg-transparent">
             <template v-if="isUpdatingNotes">
-                <Save v-if="notesData !== props.vet.notes" :size="isMd ? 18 : 24" />
-                <XCircle v-else :size="isMd ? 18 : 24" />
+                <Save v-if="notesData !== props.vet.notes" :size="18" />
+                <XCircle v-else :size="18" />
             </template>
-            <PenLine v-else :size="isMd ? 15 : 24" />
+            <PenLine v-else :size="15" />
         </Button>
         <textarea v-model="notesData" :readonly="!isUpdatingNotes" ref="notesRef"
             :placeholder="t('vet.notesPlaceholder')"
             :class="{ 'italic py-0.5 px-1 border-0 bg-bg': true, 'text-text-secondary': !isUpdatingNotes, 'pr-1.5': isMd }"
             @change="handleNoteEdit" :maxlength="500" />
     </div>
-    <span v-if="isUpdatingNotes" class="ml-auto text-xs text-brand-light">{{ notesData.length }}/500</span>
+    <span v-if="isUpdatingNotes" class="ml-auto text-xs text-text-secondary">{{ notesData.length }}/500</span>
 </template>
