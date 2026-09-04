@@ -60,9 +60,9 @@ const chartData = computed<ChartData<"bar">>(() => {
             {
                 label: `${t("pet.profile.labels.weight")} ${preferredUnit.value})`,
                 data,
-                borderColor: getChartColor("--color-brand-light"),
+                borderColor: getChartColor("--color-accent"),
                 borderRadius: { topLeft: 12, topRight: 12 },
-                backgroundColor: getChartColor("--color-brand-rgba"),
+                backgroundColor: getChartColor("--color-accent-rgba"),
                 borderWidth: 1
             }
         ]
@@ -77,7 +77,7 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
         plugins: {
             legend: { display: false },
             tooltip: {
-                backgroundColor: getChartColor("--color-bg-3"),
+                backgroundColor: getChartColor("--color-bg-2"),
                 titleColor: getChartColor("--color-text"),
                 bodyColor: getChartColor("--color-text"),
                 borderColor: getChartColor("--color-border"),
@@ -98,7 +98,7 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
             x: {
                 grid: { display: false },
                 ticks: { color: getChartColor("--color-text-secondary") },
-                border: { color: getChartColor("--color-separator") },
+                border: { color: getChartColor("--color-border-light") },
             },
             y: {
                 title: {
@@ -108,7 +108,7 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
                 },
                 grid: { display: false },
                 ticks: { color: getChartColor("--color-text-secondary") },
-                border: { color: getChartColor("--color-separator") },
+                border: { color: getChartColor("--color-border-light") },
             }
         }
     }
@@ -124,9 +124,9 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
                     {{ t("health.cta.logWeight") }}
                 </Button>
                 <div class="ml-auto text-right">
-                    <p class="text-2xl font-medium text-btn-ghost-text">{{ chartData.datasets[0].data.at(-1) }} {{
+                    <p class="text-2xl font-medium">{{ chartData.datasets[0].data.at(-1) }} {{
                         preferredUnit
-                        }}</p>
+                    }}</p>
                     <p v-if="displayed.length" class="text-text-secondary text-xs">{{ t("common.text.lastLogged") }} {{
                         displayed.at(-1)?.measuredAt.toDate().toLocaleDateString(locale, {
                             day: "numeric",

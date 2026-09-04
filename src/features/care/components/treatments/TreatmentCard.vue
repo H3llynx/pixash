@@ -27,9 +27,9 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
 
 <template>
     <div
-        :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'card p-1 w-full md:max-w-md border border-border gap-1': true }">
+        :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'card w-full md:max-w-md border border-border gap-1': true }">
         <div>
-            <div class="flex gap-0.5 w-full justify-between items-start">
+            <div class="card flex-row w-full justify-between items-start">
                 <h4 class="font-medium inline">{{ treatment.name }}</h4>
                 <PetTag class="ml-auto" :pet="pets.find((pet: PetExtended) => pet.id === treatment.petId)!"
                     :color="false" />
@@ -43,7 +43,7 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
                     <Calendar :size="18" />
                     {{ tsToDate(treatment.startDate, "date") }}
                 </p>
-                <p class="text-brand flex items-center gap-[5px]">
+                <p class="text-eucalyptus flex items-center gap-[5px]">
                     <Hospital :size="16" class="shrink-0" /> {{ vet }}
                 </p>
             </div>
@@ -52,9 +52,9 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
             <div class="flex gap-1 justify-between items-center">
                 <div>
                     <p>{{ medication.name }}</p>
-                    <span class="italic font-medium text-brand text-xs">{{ t(getLabel(medication.frequency,
+                    <span class="italic font-medium text-eucalyptus text-xs">{{ t(getLabel(medication.frequency,
                         MED_FREQUENCY))
-                    }}</span>
+                        }}</span>
                     <span v-if="medication.endDate" class="italic font-medium text-text-secondary text-xs ml-0.5">
                         <span v-if="route.path === ROUTES.history">{{ t("health.treatment.ended") }}</span>
                         <span v-else>{{ t("health.treatment.until") }}</span>
@@ -65,9 +65,9 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
             <template v-if="route.path !== ROUTES.history">
                 <ProgressBar v-if="medication.endDate" :progress="getMedicationProgress(treatment, medication)!"
                     :color="getTreatmentColor(index)" class="w-full my-0.25" />
-                <span v-else class="tag bg-separator text-text-secondary inline float-right">{{
+                <span v-else class="tag bg-border-light text-text-secondary inline float-right">{{
                     t("health.treatment.ongoing")
-                }}</span>
+                    }}</span>
             </template>
         </div>
     </div>

@@ -4,17 +4,19 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Scrollable from '../../../../components/Scrollable.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
-import VetProfile from './VetProfile.vue';
+import { useAllPetsView } from '../../composables/useAllPetsView.ts';
+import VetCard from './VetCard.vue';
 
-const { vets, hasVets, isAddingCare } = usePets();
+const { hasVets, isAddingCare } = usePets();
+const { filteredVets } = useAllPetsView();
 const { t } = useI18n();
 </script>
 
 <template>
-    <section class="pet-section p-0 md:py-1.5">
+    <section class="pet-section p-0">
         <h2 class="default-padding">{{ t("health.title.myVets") }}</h2>
-        <Scrollable v-if="hasVets" :list="vets">
-            <VetProfile v-if="hasVets" v-for="vet in vets" :vet="vet" />
+        <Scrollable v-if="hasVets" :list="filteredVets">
+            <VetCard v-if="hasVets" v-for="vet in filteredVets" :vet="vet" />
         </Scrollable>
         <div v-else class="default-padding">
             <Button variant="secondary" @click="isAddingCare.vet = true;">

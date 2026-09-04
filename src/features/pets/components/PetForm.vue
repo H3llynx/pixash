@@ -5,7 +5,7 @@ import Button from '../../../components/Button.vue';
 import Dropdown from '../../../components/Dropdown.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
-import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../components/loading/LoadingPet.vue';
 import Panel from '../../../components/Panel.vue';
 import Toggle from '../../../components/Toggle.vue';
 import { useToast } from '../../../composables/useToast.ts';
@@ -33,16 +33,13 @@ const defaultForm: Pet = {
     breed: "",
     birthDate: "",
     sex: sex.options[0].id,
-    sterilized: true,
+    sterilized: false,
     microchipped: false,
 };
 
 const formData = reactive<Pet>({ ...defaultForm });
 
-const selectedSpecies = computed(() =>
-    species.options.find(s => s.id === formData.species)
-);
-const hasBreed = computed(() => selectedSpecies.value?.hasBreed ?? false);
+const isDogOrCat = computed(() => ['dog', 'cat'].includes(formData.species));
 
 const fillPetData = (pet: Pet) => {
     Object.assign(formData, {
@@ -97,7 +94,7 @@ watch(existingPet, (pet) => {
 }, { immediate: true });
 
 watch(() => formData.species, () => {
-    if (!hasBreed.value) {
+    if (!isDogOrCat.value) {
         formData.breed = null;
     } else {
         formData.breed = selectedPet.value && selectedPet.value.species === formData.species
@@ -110,7 +107,7 @@ watch(() => formData.species, () => {
 <template>
     <Transition name="panel">
         <Panel v-if="isAddingPet || isUpdatingPet" :canClose="hasPets" :onClose="handleClose">
-            <LoadingPuppy v-if="loading" />
+            <LoadingPet v-if="loading" />
             <div class="md:max-w-max" v-else>
                 <div v-if="!hasPets" class="px-2 py-1 text-center">
                     <h2>{{ t("pet.title.addFirstPet") }}</h2>
@@ -133,7 +130,7 @@ watch(() => formData.species, () => {
                     </fieldset>
                     <div class="default-padding flex flex-col gap-1">
                         <Input v-model="formData.name" :id="name.id" :label="t(name.label)" required />
-                        <BreedSelector v-if="hasBreed" v-model="formData.breed" :id="breed.id" :label="t(breed.label)"
+                        <BreedSelector v-if="isDogOrCat" v-model="formData.breed" :id="breed.id" :label="t(breed.label)"
                             :placeholder="t(breed.placeholder)" :breeds="getBreedOptions(formData.species)" />
                         <div class="flex justify-between gap-1">
                             <Input v-model="formData.birthDate" :id="birthDate.id" :type="birthDate.type"
@@ -141,12 +138,14 @@ watch(() => formData.species, () => {
                             <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
                                 <option v-for="option in sex.options" :value="option.id" :key="option.id">{{
                                     t(option.label)
-                                    }}
+                                }}
                                 </option>
                             </Dropdown>
                         </div>
-                        <Toggle v-model="formData.sterilized" :label="t(sterilized.label)" :id="sterilized.id" />
-                        <Toggle v-model="formData.microchipped" :label="t(microchipped.label)" :id="microchipped.id" />
+                        <Toggle v-if="isDogOrCat" v-model="formData.sterilized" :label="t(sterilized.label)"
+                            :id="sterilized.id" />
+                        <Toggle v-if="isDogOrCat" v-model="formData.microchipped" :label="t(microchipped.label)"
+                            :id="microchipped.id" />
                         <Button :disabled="loading" class="md:ml-auto">{{ t("pet.cta.save", {
                             name: formData.name
                         }) }}

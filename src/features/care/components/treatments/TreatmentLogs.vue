@@ -59,7 +59,7 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
 <template>
     <div class="flex gap-0.5 mt-0.75 flex-wrap" :style="{ '--custom-color': color }">
         <div v-for="log in getSortedLoggedList(props.pet, props.treatment, medication)" :key="log.id"
-            :class="{ 'log text-xs relative border border-separator py-0.5 text-center rounded-xl flex items-center justify-center': true, 'opacity-40 animate-pulse': loading && selectedMedicationLog?.id === log.id }"
+            :class="{ 'log text-xs relative border border-border-light py-0.5 text-center rounded-xl flex items-center justify-center': true, 'opacity-40 animate-pulse': loading && selectedMedicationLog?.id === log.id }"
             :style="{ color: color }">
             <p class="rounded-xl w-full px-1.5">
                 {{ log.givenAt.toDate().toLocaleString(locale, {
@@ -69,20 +69,19 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
                     hour: '2-digit',
                     minute: '2-digit'
                 }) }}</p>
-            <div class="absolute -top-[10px] -right-[5px] flex gap-0.25">
-                <Button :disabled="loading && selectedMedicationLog?.id === log.id" variant="ghost" size="xxs"
-                    :aria-label="t('health.cta.editMedTime')" @click="editLogTime(log)"
-                    class="log-btn hover:bg-green-pale">
+            <div class="absolute -top-[15px] -right-[5px] flex gap-0.25 bg-bg-rgba">
+                <Button :disabled="loading && selectedMedicationLog?.id === log.id" variant="tertiary" size="min"
+                    :aria-label="t('health.cta.editMedTime')" @click="editLogTime(log)">
                     <Pen :size="13" />
                 </Button>
-                <Button :disabled="loading && selectedMedicationLog?.id === log.id" variant="ghost" size="xxs"
-                    :aria-label="t('common.button.delete')" @click="deleteDose(log)" class="log-btn hover:bg-error">
+                <Button :disabled="loading && selectedMedicationLog?.id === log.id" variant="tertiary" size="min"
+                    :aria-label="t('common.button.delete')" @click="deleteDose(log)" class="hover:bg-error">
                     <X :size="13" />
                 </Button>
             </div>
         </div>
         <Button :disabled="loading" v-for="number in getDosesToLog(props.pet, props.treatment, medication)"
-            :key="number" variant="ghost" size="xs" @click="logDose(medication)"
+            :key="number" variant="card" size="xs" @click="logDose(medication)"
             :class="{ 'dose border border-border': true, 'missed': getMissedDoses(pet, treatment, medication) && number === 1 }">
             {{ t("health.cta.logDose") }} {{ getDailyDose(medication.frequency) !== undefined ? number +
                 getTodayLoggedList(props.pet, props.treatment, medication).length
@@ -105,12 +104,6 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
     border: 1px solid var(--custom-color);
 }
 
-.log-btn {
-    border-radius: 8px;
-    padding: 3px;
-    border: 1px solid var(--color-separator);
-}
-
 button.missed {
     background: var(--color-error);
     color: white;
@@ -124,7 +117,7 @@ button.missed {
     }
 
     .dose {
-        background: var(--color-separator);
+        background: var(--color-border-light);
         color: var(--color-text);
     }
 }

@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import FreeModal from '../../../components/FreeModal.vue';
-import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../components/loading/LoadingPet.vue';
 import PhotoInput from '../../../components/PhotoInput.vue';
 import { useDialog } from '../../../composables/useDialog';
 import { usePictureUpdate } from '../../../composables/usePictureUpdate';
@@ -74,7 +74,7 @@ const handleCancel = () => {
 
 <template>
     <FreeModal v-model="visible" v-if="selectedPet">
-        <LoadingPuppy v-if="loading" class="max-w-xs" />
+        <LoadingPet v-if="loading" class="max-w-xs" />
         <template v-else>
             <div class="mx-auto relative" v-if="selectedPet?.photo || previewUrl">
                 <Button variant="ghost" size="xxs" class="absolute right-0 z-1" @click="handleX">
@@ -92,7 +92,7 @@ const handleCancel = () => {
                 <Button v-if="previewUrl">{{ t("common.button.confirm") }}</Button>
                 <Button type="button" variant="ghost" @click="handleCancel">{{
                     t("common.button.cancel")
-                }}</Button>
+                    }}</Button>
             </form>
         </template>
     </FreeModal>

@@ -1,28 +1,17 @@
 <script setup lang="ts">
 import { Calendar, History, LayoutGrid, MapPin } from '@lucide/vue';
-import { LottieAnimation } from 'lottie-web-vue';
 import { useI18n } from 'vue-i18n';
-import { RouterLink, useRoute } from 'vue-router';
-import happyDog from '../assets/animations/happy-dog.json';
-import kitty from '../assets/animations/kitty.json';
-import { useMedia } from '../composables/useMedia';
-import { useEvents } from '../features/care/composables/useEvents.ts';
-import PetSelector from '../features/pets/components/PetSelector.vue';
+import { RouterLink } from 'vue-router';
 import { usePets } from '../features/pets/composables/usePets';
 import { ROUTES } from '../router/config';
-import Logo from './Logo.vue';
 
-const { isMd } = useMedia();
-const { loading, hasPets } = usePets();
-const { petId } = useEvents();
+const { hasPets } = usePets();
 const { t } = useI18n();
-const route = useRoute();
 </script>
 
 <template>
     <nav
-        class="bg-bg-2 w-screen p-1 fixed bottom-0 h-5 md:min-h-screen overflow-y-scroll md:w-18 md:bg-nav flex md:flex-col justify-between gap-2">
-        <Logo class="hidden md:flex mb-1" />
+        class="bg-bg-2 w-screen p-0.5 md:py-5 fixed bottom-0 h-5 md:min-h-screen overflow-y-scroll md:w-max flex md:flex-col justify-evenly md:justify-start gap-2 md:gap-1">
         <RouterLink :to="ROUTES.dashboard" tabindex="0">
             <LayoutGrid />{{ t("common.navbar.home") }}
         </RouterLink>
@@ -38,28 +27,12 @@ const route = useRoute();
             :class="{ 'animate-pulse pointer-events-none': !hasPets }" @click="!hasPets && $event.preventDefault()">
             <History />{{ t("common.navbar.history") }}
         </RouterLink>
-        <PetSelector v-if="isMd && !loading" :calendar="route.path === ROUTES.calendar" nav v-model:petId="petId" />
-        <div v-if="isMd" class="relative mt-auto">
-            <LottieAnimation :animationData="happyDog" :loop="true" :autoplay="true" :speed="1" class="dog" />
-            <LottieAnimation :animationData="kitty" :loop="true" :autoplay="true" :speed="1" class="cat" />
-        </div>
     </nav>
 </template>
 
 <style scoped>
-.dog {
-    position: absolute;
-    bottom: 0;
-    width: 110%;
-    left: -5%;
-}
-
-.cat {
-    width: 90%;
-}
-
 nav {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 30px var(--color-border);
 
     &::-webkit-scrollbar {
         display: none;
@@ -71,21 +44,22 @@ nav a {
     flex-direction: column;
     gap: 5px;
     align-items: center;
-    color: var(--color-text-secondary);
     font-size: small;
+    padding: 0.5rem;
+    aspect-ratio: 1/1;
 
     &:not(.router-link-exact-active) {
-        opacity: 0.8
+        opacity: 0.5
     }
 
     &:focus-visible {
         outline: none;
-        color: var(--color-gold);
+        background: var(--color-accent-rgba);
     }
 }
 
 nav a.router-link-exact-active {
-    color: var(--color-brand);
+    color: var(--color-text);
 
     &:focus-visible {
         outline: none;
@@ -94,17 +68,7 @@ nav a.router-link-exact-active {
 
 @media (width >=48rem) {
     nav {
-        box-shadow: 0 20px rgba(0, 0, 0, 0.4);
-    }
-
-    nav a {
-        flex-direction: row;
-        padding-left: 1rem;
-        color: var(--color-text-nav);
-    }
-
-    nav a.router-link-exact-active {
-        color: var(--color-text-nav-active);
+        box-shadow: 0 0px 2px var(--color-border);
     }
 }
 </style>

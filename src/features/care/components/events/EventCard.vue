@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { CalendarClock, Check, MapPinned, Stethoscope, Syringe } from '@lucide/vue';
+import { CalendarClock, Check, MapPinned } from '@lucide/vue';
 import { computed, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FreeModal from '../../../../components/FreeModal.vue';
 import Input from '../../../../components/Input.vue';
 import Loading from '../../../../components/loading/Loading.vue';
-import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../../components/loading/LoadingPet.vue';
 import { useToast } from '../../../../composables/useToast.ts';
 import { todayAsInput, tsToDate } from '../../../../utils.ts';
 import PetIndicator from '../../../pets/components/PetIndicator.vue';
@@ -15,6 +15,7 @@ import { useEvents } from '../../composables/useEvents.ts';
 import type { STAGE } from '../../config.ts';
 import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, PetEvent, VaccineExtended, VaccineRecord, VaccineTypes, VisitExtended } from '../../types.ts';
 import DateTag from './DateTag.vue';
+import EventIcon from './EventIcon.vue';
 
 const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, careError, careLoading } = usePets();
 const { locale, t } = useI18n();
@@ -117,11 +118,10 @@ const cancelMarkDone = () => {
 <template>
     <div tabindex="0" role="button" :class="{
         'animate-pulse': careLoading && selectedEvent?.id === event.id,
-        'card hover-gradient cursor-pointer flex-row p-1 w-full md:max-w-md border border-border gap-1.5 justify-between': true
+        'card border border-border bg-bg-rgba default-transition hover:scale-105 hover:bg-bg-2 cursor-pointer flex-row md:max-w-md gap-1.5 justify-between': true
     }" @click="handleClick(event)" @keydown.enter="handleClick(event)">
         <div class="flex gap-0.5 w-full min-w-0 h-full">
-            <Syringe v-if="event.eventType === 'vaccine'" class="card-icon" :size="20" />
-            <Stethoscope v-else class="card-icon" :size="20" />
+            <EventIcon :event="event" />
             <div class="flex-1 min-w-0 flex flex-col">
                 <div class="flex gap-0.5 items-start">
                     <h4>{{ title }}</h4>
@@ -141,7 +141,7 @@ const cancelMarkDone = () => {
                         <Check :size="16" />{{ t("common.button.markDone") }}
                     </Button>
                 </div>
-                <p v-if="event.vet" class="mt-auto pt-1 text-xs text-brand-light flex items-center gap-[5px]">
+                <p v-if="event.vet" class="mt-auto pt-1 text-xs text-text-softer flex items-center gap-[5px]">
                     <Loading v-if="!vets.length" />
                     <MapPinned v-else :size="16" /> {{ vet }}
                 </p>
@@ -150,7 +150,7 @@ const cancelMarkDone = () => {
         <PetIndicator :pet="pet!" />
     </div>
     <FreeModal v-model="nextDueModal" class="relative">
-        <LoadingPuppy v-if="loading" />
+        <LoadingPet v-if="loading" />
         <template v-else>
             <h3 class="font-title">{{ t("common.text.askingNextDue") }}</h3>
             <Button v-if="!nextDueInput" @click="nextDueInput = true">{{ t("common.text.yes") }}</Button>

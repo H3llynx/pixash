@@ -2,26 +2,27 @@
 import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { onBeforeRouteLeave } from 'vue-router';
-import Header from '../components/header/Header.vue';
-import PetChipsSkeleton from '../components/loading/PetChipsSkeleton.vue';
+import Header from '../components/Header.vue';
 import { useMedia } from '../composables/useMedia';
 import Calendar from '../features/care/components/events/Calendar.vue';
 import CalendarLegend from '../features/care/components/events/CalendarLegend.vue';
 import CalendarMenu from '../features/care/components/events/CalendarMenu.vue';
 import EventList from '../features/care/components/events/EventList.vue';
 import TreatmentsThisMonth from '../features/care/components/treatments/TreatmentsThisMonth.vue';
+import { useAllPetsView } from '../features/care/composables/useAllPetsView.js';
 import { useEvents } from '../features/care/composables/useEvents.ts';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 
-const { resetPetActions, loading } = usePets();
-const { selectedDate, currentMonth, currentMonthName, filteredCalendarEvents, filteredMonthEvents, petId } = useEvents();
+const { resetPetActions } = usePets();
+const { selectedDate, currentMonth, currentMonthName } = useEvents();
+const { filteredCalendarEvents, filteredMonthEvents } = useAllPetsView();
 const { t } = useI18n();
 const { isMd, is2xl } = useMedia();
 
 const getTitle = () => {
     const now = new Date().getMonth();
-    return now === currentMonth.value.getMonth() ? t("events.thisMonth") : currentMonthName.value
+    return now === currentMonth.value.getMonth() ? t("events.thisMonth") : currentMonthName.value as string;
 };
 
 const menu = reactive({ visible: false, x: 0, y: 0 });
@@ -46,18 +47,15 @@ onBeforeRouteLeave(() => {
 
 <template>
     <Header />
-    <main class="lg:gap-0 lg:grid lg:grid-cols-[55%_45%] xl:grid-cols-[1fr_35%] md:pb-1.5">
-        <section class="p-0 bg-brand-dark md:bg-bg md:pb-1">
-            <template v-if="!isMd">
-                <PetChipsSkeleton v-if="loading" />
-                <PetSelector v-else calendar v-model:petId="petId" />
-            </template>
+    <main class="lg:lg-grid xl:xl-grid">
+        <section class="p-0 flex flex-col">
+            <PetSelector viewAll stacked />
             <Calendar :events="filteredCalendarEvents" @update-month="currentMonth = $event"
                 @update-monthName="currentMonthName = $event" @date-click="handleDateClick" />
         </section>
         <section
-            class="flex flex-col-reverse gap-2.5 h-full lg:flex-col lg:px-1.5 lg:bg-bg-rgba md:pt-1.5 lg:border-l lg:border-border lg:h-full">
-            <div class="flex flex-col gap-2.5">
+            class="flex flex-col-reverse gap-3 h-full lg:flex-col lg:px-1.5 md:pt-1.5 lg:bg-bg-3 lg:border-l lg:border-border lg:border-dashed lg:h-full">
+            <div class="flex flex-col gap-2.5 pb-1.5">
                 <EventList :title="getTitle()" :events="filteredMonthEvents" :itemsPerPage="is2xl ? 6 : 4" />
                 <TreatmentsThisMonth />
             </div>

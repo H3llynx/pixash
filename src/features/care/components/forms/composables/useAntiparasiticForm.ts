@@ -52,7 +52,7 @@ export const useAntiparasiticForm = () => {
         const log = selectedAntiparasiticLog.value;
         if (!log || !pet) return;
         open({
-            title: t("dialog.deleteRecord.title", { title: t("events.antiparasitics") }),
+            title: t("dialog.deleteRecord.title", { name: pet.name, title: t("events.antiparasitics").toLowerCase() }),
             message: t("dialog.deleteGenericMsg"),
             isDelete: true,
             onConfirm: async () => {

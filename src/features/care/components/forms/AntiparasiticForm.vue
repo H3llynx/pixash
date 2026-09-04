@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { CalendarCheck, CalendarClock, Trash2 } from '@lucide/vue';
+import { CalendarCheck, CalendarClock } from '@lucide/vue';
 import { provide, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
-import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../../components/loading/LoadingPet.vue';
 import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import Toggle from '../../../../components/Toggle.vue';
@@ -42,25 +42,21 @@ watch(() => mode.value, (mode) => {
 <template>
     <Transition name="panel">
         <Panel v-if="isAddingCare.antiparasitic || selectedAntiparasiticLog" :onClose="handleClose">
-            <LoadingPuppy v-if="loading" />
+            <LoadingPet v-if="loading" />
             <div class="md:max-w-max" v-else-if="!newLog">
-                <div class="flex gap-1 justify-between my-1 default-padding">
+                <div class="flex gap-1 justify-between my-1 default-padding items-center">
                     <div v-if="selectedAntiparasiticLog && selectedPet"
-                        class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                        class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
                         <PetIcon :pet="selectedPet" />
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                    }}
+                        }}
                     </h1>
-                    <div class="ml-auto mb-auto flex gap-0.5">
-                        <Button v-if="selectedAntiparasiticLog" variant="ghost" size="xs"
-                            :aria-label="t('health.cta.deleteVaccine')" @click="handleDelete">
-                            <Trash2 :size="22" color="var(--color-brand-light)" />
-                        </Button>
-                    </div>
+                    <Button v-if="selectedAntiparasiticLog" action="delete"
+                        :aria-label="t('health.cta.deleteAntiparasitic')" @click="handleDelete" />
                 </div>
-                <PetSelector v-if="isAddingCare.antiparasitic" form />
+                <PetSelector v-if="isAddingCare.antiparasitic" stacked />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <Selector :legend="t(treated.label)" class="mb-0.5">
                         <Input v-model="formData.treated"
@@ -74,7 +70,7 @@ watch(() => mode.value, (mode) => {
                         <Input v-if="!formData.notGiven" v-model="formData.givenAt" :id="givenDate.id"
                             :label="t(givenDate.label)" :type="givenDate.type" :max="todayAsInput()" required>
                             <template #addon>
-                                <CalendarCheck class="mr-0.5" color="var(--color-brand)" />
+                                <CalendarCheck class="mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
                         <Toggle v-if="mode === 'edit'" v-model="formData.notGiven"
@@ -121,9 +117,9 @@ watch(() => mode.value, (mode) => {
 }
 
 :deep(label:has(input[type="checkbox"]:checked)) p {
-    background: var(--color-brand-rgba);
-    border-color: var(--color-brand-light);
-    color: var(--color-brand-light);
+    background: var(--color-accent-rgba);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
     font-weight: 500;
 }
 </style>

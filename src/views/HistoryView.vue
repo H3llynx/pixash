@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import Header from '../components/header/Header.vue';
+import Header from '../components/Header.vue';
 import HistorySkeleton from '../components/loading/HistorySkeleton.vue';
-import { useMedia } from '../composables/useMedia';
 import EventList from '../features/care/components/events/EventList.vue';
 import EventSelector from '../features/care/components/events/EventSelector.vue';
 import TreatmentList from '../features/care/components/treatments/TreatmentList.vue';
@@ -12,7 +11,6 @@ import { usePets } from '../features/pets/composables/usePets';
 
 const { loading, hasPets } = usePets();
 const { filteredPetHistory, finishedTreatments } = useHistory();
-const { isMd } = useMedia();
 const { t } = useI18n();
 
 </script>
@@ -20,11 +18,17 @@ const { t } = useI18n();
 <template>
     <Header />
     <HistorySkeleton v-if="loading" />
-    <main v-else-if="hasPets" class="w-full">
-        <PetSelector v-if="!isMd" class="w-full" />
-        <EventSelector />
-        <div class="flex flex-col gap-1.5 lg:grid lg:grid-cols-[55%_45%] lg:gap-0 md:pb-1">
+    <main v-else-if="hasPets" class="lg:lg-grid xl:xl-grid">
+        <section class="px-0 py-1">
+            <div class="default-padding">
+                <h2 class="text-2xl md:text-3xl">{{ t("common.header.historyH2") }}</h2>
+                <span class="tracking-wide font-extralight">{{ t("common.header.historySpan") }}</span>
+            </div>
+            <PetSelector stacked />
+            <EventSelector />
             <EventList :events="filteredPetHistory" history />
+        </section>
+        <div class="lg:bg-bg-3 lg:border-l lg:border-border lg:border-dashed lg:pt-1.5 pb-1.5">
             <TreatmentList v-if="finishedTreatments" :treatments="finishedTreatments" :title="t('events.treatments')"
                 history class="default-padding lg:px-1.5" />
         </div>

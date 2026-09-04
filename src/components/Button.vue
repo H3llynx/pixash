@@ -1,31 +1,34 @@
 <script setup lang="ts">
-import { X } from '@lucide/vue';
+import { Trash2, X } from '@lucide/vue';
 import { tv } from 'tailwind-variants';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
 const button = tv({
-    base: "font-medium rounded-full filter-blur flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed",
+    base: "font-medium filter-blur rounded-xl border border-transparent inline-flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed",
     variants: {
         variant: {
-            primary: "btn-hover-fill bg-brand border border-brand text-bg",
-            secondary: "btn-hover-fill border border-brand text-brand bg-bg-rgba",
-            tertiary: "btn-hover-fill text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba border border-border",
-            ghost: "btn-hover-fill-ghost rounded-xl text-btn-ghost-text enabled:hover:text-brand-light bg-bg-rgba",
-            addon: "text-text-secondary addon-focus",
-            chip: "btn-hover-fill border border-border bg-bg-2 text-text-secondary capitalize",
-            summaryCta: "btn-hover-fill bg-brand-rgba text-brand-light",
-            vetOptions: "btn-hover-fill flex-1 rounded-xl border border-border-btn-vet bg-btn-vet",
-            add: "flex-start rounded-xl border border-dashed border-text-secondary text-text-secondary hover:text-brand-light hover:border-brand-light"
+            primary: "bg-accent text-bg rounded-full enabled:hover:bg-interactive",
+            secondary: "bg-bg-2 text-text rounded-full enabled:hover:bg-interactive enabled:hover:text-bg",
+            tertiary: "text-text-softer enabled:hover:text-interactive bg-bg-rgba border-border rounded-full",
+            ghost: "enabled:hover:text-accent bg-bg-rgba disabled:opacity-100 disabled:bg-transparent",
+            addon: "text-text-secondary addon-focus rounded-full",
+            stacked: "stacked-btn text-text-secondary capitalize",
+            tile: "tile-btn capitalize justify-end items-end",
+            add: "font-light border-dashed border-text-secondary text-text-secondary enabled:hover:text-accent enabled:hover:border-accent enabled:hover:bg-bg-2",
+            card: "bg-bg-rgba border-border gap-1 md:max-w-md hover:scale-105 hover:bg-bg-2"
         },
         size: {
-            xxs: "text-xs p-0.5",
-            xs: "px-0.5 text-sm py-0.5",
+            rounded: "w-2 h-2 aspect-square text-xs",
+            min: "p-[5px]",
+            xxs: "p-0.5 text-xs",
+            xs: "p-0.5 text-sm ",
             sm: "px-1 py-0.5",
             md: "px-2 py-[10px]",
             lg: "px-2 py-1",
-            vetOptions: "px-0.5 py-1 text-sm"
+            tile: "w-9 h-8 px-1 py-0.5",
+            third: "w-1/3 px-0.5 py-1 text-sm"
         }
     },
     defaultVariants: {
@@ -34,49 +37,87 @@ const button = tv({
     }
 });
 
-withDefaults(defineProps<{
-    action?: "normal" | "hide"
+defineProps<{
+    action?: "hide" | "delete"
     variant?: keyof typeof button.variants.variant
     size?: keyof typeof button.variants.size
-}>(), { action: "normal" })
+}>();
 </script>
 
 
 <template>
-    <button v-if="action === 'normal'" tabindex="0" :class="button({ variant, size })">
-        <slot />
+    <button v-if="action === 'delete'" variant="ghost" size="xs"
+        :class="[button({ variant: 'ghost', size: 'xs' }), 'ml-auto mb-auto text-text-secondary']">
+        <Trash2 :size="22" />
     </button>
 
-    <button v-else :aria-label="t('common.button.close')" tabindex="0" class="hide-btn">
+    <button v-else-if="action === 'hide'" :aria-label="t('common.button.close')" tabindex="0" class="hide-btn">
         <div class="h-[7px] w-4 rounded-full bg-border md:hidden"></div>
         <X class="hidden md:block focus-within:bg-gold" />
+    </button>
+
+    <button v-else tabindex="0" :class="button({ variant, size })">
+        <slot />
     </button>
 </template>
 
 <style scoped>
-.btn-fill-card {
-    background: var(--color-bg-2);
+.tile-btn {
     position: relative;
+    display: inline-flex;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-2);
+    text-transform: capitalize;
+    text-align: right;
     overflow: hidden;
-    transition: 1s ease;
+    font-family: var(--font-title);
+    font-size: large;
 
-    &::before {
+    &:has(img),
+    &:hover,
+    &.active {
+        color: var(--color-off-white);
+    }
+
+    &:hover {
+        background: var(--color-accent-dark);
+    }
+
+    &.active {
+        background: var(--color-accent);
+        border: 1px solid var(--color-accent);
+        box-shadow: 3px 3px 10px var(--color-accent-rgba);
+    }
+
+    &:not(.active, :hover)::after {
         content: "";
         position: absolute;
-        width: 100%;
-        height: 100%;
         inset: 0;
-        background-image: var(--background-image-card);
-        background-size: 150% 100%;
-        opacity: 0;
-        z-index: -1;
-        transition: 1s ease;
+        background: linear-gradient(140deg, var(--color-bg-rgba) 20%, transparent 50%);
     }
+}
+
+.stacked-btn {
+    flex-direction: column;
+
+    &:not(.active) {
+        font-weight: 400;
+    }
+
+    &.active {
+        color: var(--color-accent);
+    }
+}
+
+.tile-btn:not(.active, :hover),
+.stacked-btn:not(.active, :hover) {
+    filter: grayscale(60%);
+    opacity: 0.6;
 }
 
 .addon-focus:focus-visible {
     outline: none;
-    color: var(--color-brand);
+    color: var(--color-accent);
 }
 
 .hide-btn {
@@ -94,14 +135,6 @@ withDefaults(defineProps<{
         padding: 0.5rem;
         margin: 1rem 1rem auto auto;
         width: auto;
-    }
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .btn-hover-fill:hover {
-        background: var(--color-btn-hover);
-        color: var(--color-bg);
-        border-color: var(--color-btn-hover)
     }
 }
 </style>

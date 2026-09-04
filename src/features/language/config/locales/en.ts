@@ -13,7 +13,7 @@ export default {
             back: "Back",
             next: "Next",
             add: "Add",
-            allChip: "All",
+            all: "All",
             backDash: "Back to dashboard",
             backCal: "Back to calendar",
             markDone: "Mark as done",
@@ -21,8 +21,8 @@ export default {
         text: {
             noEventText: "No upcoming care scheduled.",
             noHistoryText: "No records found for the selected category",
-            noPastTreatments: "{name} has no past medical treatment recorded.",
-            noActiveTreatment: "{name} has no active medical treatments.",
+            noPastTreatments: "There is no past medical treatment recorded.",
+            noActiveTreatment: "No active medical treatments.",
             noWeightLog: "No weight log registered.",
             lastLogged: "Last logged",
             done: "Done!",
@@ -49,7 +49,11 @@ export default {
             history: "History",
             myPets: "My pets"
         },
-        fileInputLabel: "Upload from your device."
+        fileInputLabel: "Upload from your device.",
+        a11y: {
+            petSelected: "{name} selected",
+            allPetsSelected: "All pets selected"
+        }
     },
     auth: {
         password: {
@@ -150,6 +154,7 @@ export default {
                 nextVaccine: "Edit next vaccine",
             },
             addChip: "Add {name}'s microchip",
+            deleteChip: "Delete {name}'s microchip"
         },
         form: {
             name: "Name",
@@ -286,17 +291,18 @@ export default {
         },
         cta: {
             saveVaccine: "Save vaccine",
-            deleteVaccine: "Delete vaccine",
             saveVisit: "Save vet visit",
-            deleteVisit: "Delete vet visit",
             saveVet: "Save {name}",
+            deleteVaccine: "Delete vaccine",
+            deleteVisit: "Delete vet visit",
             deleteVet: "Delete vet",
-            logTreatment: "Log treatment",
+            deleteAntiparasitic: "Delete antiparasitic log",
             logWeight: "Log weight",
-            editLog: "Edit log",
+            logTreatment: "Log treatment",
             startTreatment: "Start treatment",
             saveTreatment: "Save treatment",
             viewTreatment: "View treatment detail",
+            deleteTreatment: "Delete treatment",
             logDose: "Log medication",
             editMedTime: "Update medication given time"
         },
@@ -475,12 +481,18 @@ export default {
             message: "This will remove {name}'s profile and tracked information. This action cannot be undone. Are you sure you'd like to proceed?",
         },
         deleteRecord: {
-            title: "Delete {title} record?",
-            message: "This will permanently delete {name}'s {title} record. This action cannot be undone. Are you sure you'd like to proceed?",
+            title: "Delete {name}'s {title} record?",
+        },
+        deleteVisit: {
+            title: "Delete vet visit?"
         },
         deleteVet: {
             title: "Delete {name} ?",
             message: "This will remove {name}'s contact information. This action cannot be undone. Are you sure you'd like to proceed?",
+        },
+        deleteTreatment: {
+            title: "Delete {title}?",
+            message: "This will permanently delete {name}'s {title} treatment. This action cannot be undone. Are you sure you'd like to proceed?",
         },
         deletePicture: {
             title: "Delete picture ?",

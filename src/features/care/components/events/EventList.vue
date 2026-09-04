@@ -3,7 +3,6 @@ import { ChevronLeft, ChevronRight } from '@lucide/vue';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import EventCardSkeleton from '../../../../components/loading/EventCardSkeleton.vue';
 import { useMedia } from '../../../../composables/useMedia.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import type { PetEvent } from '../../types.ts';
@@ -47,11 +46,8 @@ watch(() => props.events, () => {
 <template>
     <article :class="['pet-section', history && 'default-padding']">
         <h2 v-if="title">{{ title }}</h2>
-        <div v-if="loading" class="flex flex-col gap-1">
-            <EventCardSkeleton v-for="i in 3" :key="i" />
-        </div>
         <template v-else>
-            <div class="grid grid-cols-1 gap-1 auto-rows-fr">
+            <div :class="{ 'grid grid-cols-1 gap-1 auto-rows-fr': true, 'xl:grid-cols-2': history }">
                 <template v-if="history">
                     <HistoryCard v-if="events.length" v-for="event in paginatedEvents" :event="event" :key="event.id" />
                     <p v-else class="text-text-secondary text-sm">{{ t("common.text.noHistoryText") }}</p>
@@ -62,11 +58,11 @@ watch(() => props.events, () => {
                 </template>
             </div>
             <div v-if="totalPages > 1" class="flex gap-0.5 h-max justify-end mt-1">
-                <Button variant="ghost" size="xs" :disabled="currentPage === 1" @click="goPrev"
+                <Button variant="tertiary" size="xs" :disabled="currentPage === 1" @click="goPrev"
                     :aria-label="t('common.button.back')">
                     <ChevronLeft />
                 </Button>
-                <Button variant="ghost" size="xs" :disabled="currentPage === totalPages" @click="goNext"
+                <Button variant="tertiary" size="xs" :disabled="currentPage === totalPages" @click="goNext"
                     :aria-label="t('common.button.next')">
                     <ChevronRight />
                 </Button>

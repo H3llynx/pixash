@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { CalendarCheck, ImageIcon, Trash2, X } from '@lucide/vue';
+import { CalendarCheck, ImageIcon, X } from '@lucide/vue';
 import { provide, reactive, ref, watch } from 'vue';
 import VueEasyLightbox, { useEasyLightbox } from 'vue-easy-lightbox';
 import { useI18n } from 'vue-i18n';
 import AddPictures from '../../../../components/AddPictures.vue';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
-import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../../components/loading/LoadingPet.vue';
 import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import Textarea from '../../../../components/Textarea.vue';
@@ -128,7 +128,7 @@ const handleDelete = () => {
     const log = selectedOtherLog.value;
     if (!log || !pet) return;
     open({
-        title: t("dialog.deleteRecord.title", { title: t(`pet.logs.${selectedOtherLog.value!.subtype}`) }),
+        title: t("dialog.deleteRecord.title", { name: pet.name, title: t(`pet.logs.${selectedOtherLog.value!.subtype}`).toLowerCase() }),
         message: t("dialog.deleteGenericMsg"),
         isDelete: true,
         onConfirm: async () => {
@@ -176,11 +176,11 @@ watch(() => formData.pictures, (pictures) => {
 <template>
     <Transition name="panel">
         <Panel v-if="isAddingCare.other || selectedOtherLog" :onClose="handleClose">
-            <LoadingPuppy v-if="loading" />
+            <LoadingPet v-if="loading" />
             <div class="md:max-w-max" v-else>
                 <div class="flex gap-1 justify-between my-1 default-padding">
                     <div v-if="selectedOtherLog && selectedPet"
-                        class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                        class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
                         <PetIcon :pet="selectedPet" />
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("pet.title.log") }}</h1>
@@ -188,16 +188,12 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedOtherLog!.subtype}`)
                     })
-                        }}
+                    }}
                     </h1>
-                    <div class="ml-auto mb-auto flex gap-0.5">
-                        <Button v-if="selectedOtherLog" variant="ghost" size="xs"
-                            :aria-label="t('common.button.delete')" @click="handleDelete">
-                            <Trash2 :size="22" color="var(--color-brand-light)" />
-                        </Button>
-                    </div>
+                    <Button v-if="selectedOtherLog" action="delete" :aria-label="t('common.button.delete')"
+                        @click="handleDelete" />
                 </div>
-                <PetSelector v-if="isAddingCare.other" form />
+                <PetSelector v-if="isAddingCare.other" stacked />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <Selector v-if="mode === 'edit'" :legend="t(subtype.label)" class="mb-0.5">
                         <Input v-model="formData.subtype" v-for="option in subtype.options" :id="option.id"
@@ -214,7 +210,7 @@ watch(() => formData.pictures, (pictures) => {
                             <div v-if="formData.pictures.length" v-for="(picture, index) in formData.pictures"
                                 class="relative rounded-lg mb-0.25 min-w-[140px] cursor-pointer">
                                 <div v-if="!loadedPictures.has(index)"
-                                    class="rounded-lg min-w-[160px] h-[120px] bg-separator flex items-center justify-center">
+                                    class="rounded-lg min-w-[160px] h-[120px] bg-border-light flex items-center justify-center">
                                     <ImageIcon :size="28" class="opacity-30 animate-pulse" />
                                 </div>
                                 <img :src="picture" @load="loadedPictures.add(index)" class="rounded-lg relative"

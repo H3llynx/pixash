@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import FreeModal from '../../../components/FreeModal.vue';
 import Input from '../../../components/Input.vue';
-import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../components/loading/LoadingPet.vue';
 import { usePetDetails } from '../../pets/composables/usePetDetails.ts';
 import { usePets } from '../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../pets/types.ts';
@@ -32,7 +32,7 @@ const handleSubmit = async () => {
 
 <template>
     <FreeModal v-model="isAddingCare.weight">
-        <LoadingPuppy v-if="loading" class="max-w-xs" />
+        <LoadingPet v-if="loading" class="max-w-xs" />
         <form v-else class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
             <h2>{{ t('pet.profile.edit.weight', { name: pet.name }) }}</h2>
             <div class="flex gap-0.5">
@@ -48,7 +48,7 @@ const handleSubmit = async () => {
             <Button>{{ t("common.button.confirm") }}</Button>
             <Button type="button" variant="ghost" @click="isAddingCare.weight = false">{{
                 t("common.button.cancel")
-                }}</Button>
+            }}</Button>
         </form>
     </FreeModal>
 </template>

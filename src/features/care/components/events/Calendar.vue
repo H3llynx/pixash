@@ -21,9 +21,9 @@ const emit = defineEmits<{
 }>();
 
 const eventColors: Record<string, string> = {
-    visit: "var(--color-brand-light)",
+    visit: "var(--color-purple)",
     vaccine: "var(--color-gold)",
-    log: "var(--color-separator)",
+    log: "var(--color-border-light)",
 };
 
 const calendarOptions = computed(() => ({
@@ -71,9 +71,8 @@ const calendarOptions = computed(() => ({
 <style scoped>
 .fc {
     max-width: 100%;
-    background: var(--color-brand-dark);
-    color: var(--color-brand-light);
     padding-top: 1rem;
+    padding-inline: 0.5rem;
     position: relative;
     z-index: 0;
 }
@@ -88,6 +87,7 @@ const calendarOptions = computed(() => ({
     text-transform: capitalize;
     border-radius: 24px !important;
     margin-inline: 0.25rem;
+    color: var(--color-text-softer);
 
     &:disabled {
         background: transparent;
@@ -97,26 +97,25 @@ const calendarOptions = computed(() => ({
 }
 
 :deep(.fc-button:not(:disabled):hover) {
-    background-color: var(--color-brand-rgba);
+    background-color: var(--color-interactive);
 }
 
 :deep(.fc-button-active) {
-    background-color: var(--color-brand-light) !important;
-    color: var(--color-brand-dark) !important;
+    background-color: var(--color-accent) !important;
 }
 
 :deep(.fc-daygrid-day, .fc-day-today) {
     border-radius: 10px;
     cursor: pointer;
-    padding-inline: 3px;
 
     &:hover {
-        background-color: var(--color-brand-rgba);
+        background-color: var(--color-interactive-rgba);
     }
 }
 
 :deep(.fc-daygrid-day.fc-day-today) {
-    background: var(--color-bg-rgba);
+    background: var(--color-border);
+    color: var(--color-accent-softer);
 }
 
 :deep(.fc-event) {
@@ -125,10 +124,18 @@ const calendarOptions = computed(() => ({
     padding: 2px 4px;
     cursor: pointer;
     font-size: smaller;
+
+    &:hover {
+        background: var(--color-bg-rgba) !important;
+    }
 }
 
 :deep(.fc-event-title) {
     color: var(--color-text);
+
+    &:hover {
+        color: var(--color-white);
+    }
 }
 
 :deep(.fc-scrollgrid-section-header th) {
@@ -163,32 +170,17 @@ const calendarOptions = computed(() => ({
     display: flex;
     align-items: flex-end;
     pointer-events: none;
+    border: 1px solid var(--color-border);
 }
 
 :deep(.fc-dayGridWeek-view .fc-daygrid-day-frame) {
     min-height: 30vh;
+    border-inline: 1px solid var(--color-border-light);
 }
 
 @media (width >=48rem) {
     .fc {
-        background: transparent;
-        color: var(--color-text-text);
         margin-inline: 2rem;
-        position: sticky;
-        top: 0;
-    }
-
-    :deep(.fc-button) {
-        color: var(--color-brand)
-    }
-
-    :deep(.fc-button-active) {
-        background-color: var(--color-brand) !important;
-        color: var(--color-bg) !important;
-    }
-
-    :deep(.treatment-event) {
-        border: 1px solid var(--color-separator);
     }
 }
 
@@ -199,10 +191,6 @@ const calendarOptions = computed(() => ({
 }
 
 @media (width < 48rem) {
-    .fc {
-        padding-bottom: 1rem
-    }
-
     :deep(.fc-header-toolbar) {
         flex-wrap: wrap;
         gap: 0.5rem;

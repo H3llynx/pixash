@@ -1,13 +1,13 @@
 import { LOG_SUBTYPES } from "../care/config";
 
 export const SPECIES = [
-    { id: "dog", name: "pet.species.dog", hasBreed: true, icon: "🐶", prefersKg: true },
-    { id: "cat", name: "pet.species.cat", hasBreed: true, icon: "🐱", prefersKg: true },
-    { id: "smallMammal", name: "pet.species.smallMammal", hasBreed: false, icon: "🐹", prefersKg: false },
-    { id: "bird", name: "pet.species.bird", hasBreed: false, icon: "🐦", prefersKg: false },
-    { id: "fish", name: "pet.species.fish", hasBreed: false, icon: "🐠", prefersKg: false },
-    { id: "reptile", name: "pet.species.reptile", hasBreed: false, icon: "🦎", prefersKg: false },
-    { id: "amphibian", name: "pet.species.amphibian", hasBreed: false, icon: "🐸", prefersKg: false },
+    { id: "dog", name: "pet.species.dog", icon: "🐶", prefersKg: true },
+    { id: "cat", name: "pet.species.cat", icon: "🐱", prefersKg: true },
+    { id: "smallMammal", name: "pet.species.smallMammal", icon: "🐹", prefersKg: false },
+    { id: "bird", name: "pet.species.bird", icon: "🐦", prefersKg: false },
+    { id: "fish", name: "pet.species.fish", icon: "🐠", prefersKg: false },
+    { id: "reptile", name: "pet.species.reptile", icon: "🦎", prefersKg: false },
+    { id: "amphibian", name: "pet.species.amphibian", icon: "🐸", prefersKg: false },
 ] as const;
 
 export const dogBreeds = [

@@ -91,7 +91,6 @@ export const useVaccineForm = () => {
                     given: selectedVaccine.value.givenAt ? true : false,
                     nextDose: selectedVaccine.value.dueOn ? true : false,
                 };
-
                 if (!shallowEqual(formData, originalData)) {
                     await updateSelectedVaccine(selectedVaccine.value, selectedPet.value.id, { ...formData });
                     show({
@@ -116,8 +115,8 @@ export const useVaccineForm = () => {
         const vaccine = selectedVaccine.value;
         if (!vaccine || !pet) return;
         open({
-            title: t("dialog.deleteRecord.title", { title: showVaccines(vaccine.types, pet, t) }),
-            message: t("dialog.deleteRecord.message", { name: pet.name, title: showVaccines(vaccine.types, pet, t) }),
+            title: t("dialog.deleteRecord.title", { name: pet.name, title: showVaccines(vaccine.types, pet, t) }),
+            message: t("dialog.deleteGenericMsg"),
             isDelete: true,
             onConfirm: async () => {
                 loading.value = true;

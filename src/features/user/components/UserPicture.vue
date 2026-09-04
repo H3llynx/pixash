@@ -13,7 +13,7 @@ const menuBtnRef = ref<HTMLButtonElement | null>(null);
 <template>
     <div class="relative">
         <button tabindex="0" @click="visible = !visible" v-if="user" ref="menuBtnRef"
-            class="rounded-full w-3.5 h-3.5 shrink-0 overflow-hidden bg-brand flex items-center justify-center">
+            class="rounded-full w-2.5 h-2.5 shrink-0 overflow-hidden bg-text-softer flex items-center justify-center">
             <Avatar :user="user" />
         </button>
         <UserMenu v-model:visible="visible" :toggleRef="menuBtnRef" />

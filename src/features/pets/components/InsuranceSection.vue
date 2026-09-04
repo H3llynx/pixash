@@ -15,25 +15,27 @@ const { copyToClipboard, clipboardText } = useClipboard();
         <h2>{{ t("pet.profile.labels.insurance") }}</h2>
         <div class="flex flex-col gap-0.5">
             <div class="flex flex-row gap-1 items-center">
-                <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+                <div class="rounded-xl w-4 h-4 bg-accent-rgba text-4xl flex shrink-0 justify-center items-center">
                     <Shield />
                 </div>
                 <div>
                     <h3 v-if="selectedPet.insurance.company">{{ selectedPet.insurance.company }}</h3>
-                    <span v-if="selectedPet.insurance.policy"
-                        class="text-brand-light text-xs flex items-center gap-0.25 mt-0.25">
-                        <ClipboardList :size="18" /> {{ selectedPet.insurance.policy }}
+                    <div v-if="selectedPet.insurance.policy" class="flex items-center gap-0.25 mt-0.25">
+                        <span class="text-accent-softer text-xs inline-flex items-center gap-0.25">
+                            <ClipboardList :size="18" />
+                            {{ selectedPet.insurance.policy }}
+                        </span>
                         <Button size="xxs" variant="ghost" :aria-label="t('pet.profile.edit.microchip')"
-                            @click="copyToClipboard(selectedPet.insurance.policy)" class="p-[6px]">
+                            :disabled="clipboardText" @click="copyToClipboard(selectedPet.insurance.policy)">
                             <Copy v-if="!clipboardText" :size="15" />
                             <span v-if="clipboardText">{{ clipboardText }}</span>
                         </Button>
-                    </span>
+                    </div>
                 </div>
             </div>
             <div class="flex flex-row gap-0.5 text-sm"
                 v-if="selectedPet.insurance.contact || selectedPet.insurance.web">
-                <div v-if="selectedPet.insurance.contact" class="rounded-xl bg-separator p-0.75 flex-1">
+                <div v-if="selectedPet.insurance.contact" class="rounded-xl bg-border-light p-0.75 flex-1">
                     <h4>
                         <Phone :size="12" /> {{ t("pet.insurance.contact") }}
                     </h4>
@@ -41,7 +43,7 @@ const { copyToClipboard, clipboardText } = useClipboard();
                         {{ selectedPet.insurance.contact }}
                     </a>
                 </div>
-                <div v-if="selectedPet.insurance.web" class="rounded-xl bg-separator p-0.75 flex-1 truncate">
+                <div v-if="selectedPet.insurance.web" class="rounded-xl bg-border-light p-0.75 flex-1 truncate">
                     <h4>
                         <Globe :size="12" />
                         {{ t("pet.insurance.web") }}

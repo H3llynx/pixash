@@ -42,7 +42,7 @@ watch(() => medData.value?.noEnd, (noEnd) => {
         </Selector>
         <div class="flex flex-col">
             <Toggle v-if="!readonly" v-model="medData.noEnd" :label="t(noEnd.label)" :id="`${noEnd.id}-${medData.id}`"
-                class="text-sm ml-auto gap-1 italic font-medium text-brand" />
+                class="text-sm ml-auto gap-1 italic font-medium text-accent-softer" />
             <Input v-if="!medData.noEnd" v-model="medData.endDate" :id="`med-end-date-${medData.id}`"
                 :type="endDate.type" :label="t(endDate.label)" :min="formData.startDate" required />
         </div>
@@ -65,8 +65,6 @@ watch(() => medData.value?.noEnd, (noEnd) => {
 }
 
 :deep(label:has(input[type="radio"]:checked)) p {
-    background: var(--color-brand);
-    color: var(--color-text-chip);
     font-weight: 500;
 }
 </style>

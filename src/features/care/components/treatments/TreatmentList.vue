@@ -44,12 +44,10 @@ watch(() => props.treatments, () => {
             <TreatmentCard v-if="treatments.length" v-for="treatment in paginatedTreatments" :key="treatment.id"
                 :treatment="treatment" :class="{ 'opacity-60': opaque }" />
             <p v-else-if="!loading && !history" class="text-text-secondary text-sm">{{
-                t("common.text.noActiveTreatment",
-                    { name: selectedPet?.name }) }}
+                t("common.text.noActiveTreatment") }}
             </p>
             <p v-else-if="!loading && history" class="text-text-secondary text-sm">{{
-                t("common.text.noPastTreatments",
-                    { name: selectedPet ? selectedPet.name : "Your pet" }) }}
+                t("common.text.noPastTreatments") }}
             </p>
             <div v-if="totalPages > 1" class="flex gap-0.5 h-max justify-end mt-1">
                 <Button variant="ghost" size="xs" :disabled="currentPage === 1" @click="goPrev"

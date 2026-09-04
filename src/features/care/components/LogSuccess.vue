@@ -7,7 +7,7 @@ import { ROUTES } from '../../../router/config.ts';
 import type { PetExtended } from '../../pets/types.ts';
 import type { PetEvent } from '../types.ts';
 import { showAntiparasites } from '../utils.ts';
-import HealthCard from './events/HealthCard.vue';
+import DueCard from './events/DueCard.vue';
 
 const { t, locale } = useI18n();
 const route = useRoute();
@@ -21,7 +21,7 @@ defineProps<{
 
 <template>
     <div class="default-padding flex flex-col items-center gap-1 text-center">
-        <div class="rounded-full w-5 h-5 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+        <div class="rounded-full w-5 h-5 bg-accent-rgba text-4xl flex shrink-0 justify-center items-center">
             <Check :size="30" />
         </div>
         <h1>{{ t("common.text.done") }}</h1>
@@ -31,7 +31,7 @@ defineProps<{
                 name: pet.name
             }) }}
         </p>
-        <HealthCard v-if="log.dueOn" :title="t('events.nextAntiparasitic')" :pet="pet" :data="log"
+        <DueCard v-if="log.dueOn" :title="t('events.nextAntiparasitic')" :pet="pet" :data="log"
             class="w-full md:max-w-2/3" />
         <Button @click="onClose">{{ route.path === ROUTES.calendar ? t("common.button.backCal")
             :

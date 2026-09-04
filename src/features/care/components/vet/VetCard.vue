@@ -26,12 +26,13 @@ const handleVisit = () => {
     if (pet) selectPet(pet);
     isUpdatingVet.value = false;
     isAddingCare.visit = true;
-}
+};
 
 const handleCall = () => {
     if (!props.vet.phone) return;
     window.location.href = `tel:${props.vet.phone}`;
-}
+};
+
 const handleMaps = () => {
     const address = [props.vet.name, props.vet.address1, props.vet.address2, props.vet.postCode, props.vet.city]
         .filter(Boolean)
@@ -48,9 +49,9 @@ const handleVetUpdate = () => {
 </script>
 
 <template>
-    <div class="card w-full md:w-sm shrink-0 text-sm">
+    <div class="card card-border w-full md:w-sm shrink-0 text-sm">
         <div class="flex items-start gap-0.5 py-1">
-            <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+            <div class="rounded-xl w-4 h-4 bg-border text-4xl flex shrink-0 justify-center items-center">
                 <BriefcaseMedical />
             </div>
             <div class="px-1 text-text-secondary w-full">
@@ -78,14 +79,14 @@ const handleVetUpdate = () => {
         <VetProfileRow data="hours" :vet="vet" />
         <div class="mt-auto flex flex-col gap-0.5">
             <VetNotes :vet="vet" />
-            <div class="flex gap-0.5 pt-1 border-t border-separator">
-                <Button variant="vetOptions" size="vetOptions" @click="handleMaps">
+            <div class="flex gap-0.5 pt-1 justify-end">
+                <Button variant="tertiary" size="third" class="rounded-xl" @click="handleMaps">
                     {{ t("vet.cta.maps") }}
                 </Button>
-                <Button variant="vetOptions" size="vetOptions" @click="handleCall">
+                <Button v-if="vet.phone" variant="tertiary" size="third" class="rounded-xl" @click="handleCall">
                     {{ t("vet.cta.call") }}
                 </Button>
-                <Button variant="vetOptions" size="vetOptions" @click="handleVisit">
+                <Button size="third" class="rounded-xl" @click="handleVisit">
                     <Plus :size="18" />
                     {{ t("vet.cta.visit") }}
                 </Button>

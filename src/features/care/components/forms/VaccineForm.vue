@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { CalendarCheck, CalendarClock, Trash2 } from '@lucide/vue';
+import { CalendarCheck, CalendarClock } from '@lucide/vue';
 import { provide, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
-import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../../components/loading/LoadingPet.vue';
 import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import Textarea from '../../../../components/Textarea.vue';
@@ -46,7 +46,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
 <template>
     <Transition name="panel">
         <Panel v-if="isAddingCare.vaccine || selectedVaccine" :onClose="handleClose">
-            <LoadingPuppy v-if="loading || vetLoading" />
+            <LoadingPet v-if="loading || vetLoading" />
             <div class="md:max-w-max" v-else>
                 <div class="flex gap-1 justify-between my-1 default-padding">
                     <h1 v-if="isAddingCare.vaccine">{{ t("health.title.addVaccine") }}</h1>
@@ -54,19 +54,15 @@ watch(() => isAddingCare.vaccine, (adding) => {
                     <div v-else-if="selectedVaccine && mode === 'view'"
                         class="flex gap-0.5 items-center flex-1 font-medium">
                         <div v-if="selectedPet"
-                            class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                            class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
                             <PetIcon :pet="selectedPet" />
                         </div>
                         <h1>{{ selectedPet!.name }} · {{ showVaccines(formData.types, selectedPet!, t) }}</h1>
                     </div>
-                    <div class="ml-auto mb-auto flex gap-0.5">
-                        <Button v-if="selectedVaccine" variant="ghost" size="xs"
-                            :aria-label="t('health.cta.deleteVaccine')" @click="handleDelete">
-                            <Trash2 :size="22" color="var(--color-brand-light)" />
-                        </Button>
-                    </div>
+                    <Button v-if="selectedVaccine" action="delete" :aria-label="t('health.cta.deleteVaccine')"
+                        @click="handleDelete" />
                 </div>
-                <PetSelector v-if="isAddingCare.vaccine" form />
+                <PetSelector v-if="isAddingCare.vaccine" stacked />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <Selector :legend="t(types.label)">
                         <Input v-model="formData.types"
@@ -112,11 +108,11 @@ watch(() => isAddingCare.vaccine, (adding) => {
                         <div class="flex gap-1 mt-1 justify-between items-center flex-wrap"
                             v-if="!selectedVaccine || mode === 'edit'">
                             <div
-                                class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                                class="rounded-full w-3 h-3 bg-border text-3xl flex shrink-0 justify-center items-center">
                                 <PetIcon :pet="selectedPet!" />
                             </div>
-                            <div class="flex-1">
-                                <p v-if="selectedPet" class="font-medium">
+                            <div class="flex-1 min-w-0">
+                                <p v-if="selectedPet" class="font-medium break-words">
                                     {{
                                         selectedPet.name
                                     }} · {{
@@ -124,7 +120,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                 </p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
                                     t("health.sharedFields.dueDate")
-                                }}:
+                                    }}:
                                     {{
                                         dateFromInput(formData.dueOn) }}
                                 </p>
@@ -135,7 +131,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                     {{ t("common.button.cancel") }}
                                 </Button>
                                 <Button size="sm" :disabled="loading">{{ t("health.cta.saveVaccine")
-                                }}</Button>
+                                    }}</Button>
                             </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"

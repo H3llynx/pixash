@@ -1,3 +1,4 @@
+
 export default {
     common: {
         button: {
@@ -12,7 +13,7 @@ export default {
             back: "Atrás",
             next: "Siguiente",
             add: "Añadir",
-            allChip: "Todos",
+            all: "Todos",
             backDash: "Volver al panel",
             backCal: "Volver al calendario",
             markDone: "Marcar como hecho"
@@ -20,8 +21,8 @@ export default {
         text: {
             noEventText: "No hay citas ni cuidados programados.",
             noHistoryText: "No se encontraron registros para la categoría seleccionada",
-            noPastTreatments: "{name} no tiene tratamientos médicos pasados registrados.",
-            noActiveTreatment: "{name} no tiene tratamientos médicos activos.",
+            noPastTreatments: "No hay tratamientos médicos pasados registrados.",
+            noActiveTreatment: "No hay tratamientos médicos activos.",
             noWeightLog: "No hay registros de peso.",
             lastLogged: "Último registro",
             done: "¡Hecho!",
@@ -48,7 +49,11 @@ export default {
             history: "Historial",
             myPets: "Mis mascotas"
         },
-        fileInputLabel: "Subir desde tu dispositivo."
+        fileInputLabel: "Subir desde tu dispositivo.",
+        a11y: {
+            petSelected: "Mascota seleccionada: {name}",
+            allPetsSelected: "Todas las mascotas seleccionadas"
+        }
     },
     auth: {
         password: {
@@ -149,6 +154,7 @@ export default {
                 nextVaccine: "Editar próxima vacuna",
             },
             addChip: "Añadir el microchip de {name}",
+            deleteChip: "Eliminar el microchip de {name}"
         },
         form: {
             name: "Nombre",
@@ -285,17 +291,18 @@ export default {
         },
         cta: {
             saveVaccine: "Guardar vacuna",
-            deleteVaccine: "Eliminar vacuna",
             saveVisit: "Guardar visita veterinaria",
-            deleteVisit: "Eliminar visita veterinaria",
             saveVet: "Guardar {name}",
+            deleteVaccine: "Eliminar vacuna",
+            deleteVisit: "Eliminar visita veterinaria",
             deleteVet: "Eliminar veterinario",
-            logTreatment: "Registrar tratamiento",
+            deleteAntiparasitic: "Eliminar registro de antiparasitario",
             logWeight: "Registrar peso",
-            editLog: "Editar registro",
+            logTreatment: "Registrar tratamiento",
             startTreatment: "Iniciar tratamiento",
             saveTreatment: "Guardar tratamiento",
             viewTreatment: "Ver detalles del tratamiento",
+            deleteTreatment: "Eliminar tratamiento",
             logDose: "Registrar medicación",
             editMedTime: "Actualizar hora de administración"
         },
@@ -474,12 +481,18 @@ export default {
             message: "Esto eliminará el perfil de {name} y la información registrada. Esta acción no se puede deshacer. ¿Seguro que deseas continuar?",
         },
         deleteRecord: {
-            title: "¿Eliminar el registro de {title}?",
-            message: "Esto eliminará permanentemente el registro de {title} de {name}. Esta acción no se puede deshacer. ¿Seguro que deseas continuar?",
+            title: "¿Eliminar el registro de {title} de {name}?",
+        },
+        deleteVisit: {
+            title: "¿Eliminar visita veterinaria?"
         },
         deleteVet: {
             title: "¿Eliminar a {name}?",
             message: "Esto eliminará la información de contacto de {name}. Esta acción no se puede deshacer. ¿Seguro que deseas continuar?",
+        },
+        deleteTreatment: {
+            title: "¿Eliminar {title}?",
+            message: "Esto eliminará permanentemente el tratamento {title} de {name}. Esta acción no se puede deshacer. ¿Seguro que deseas continuar?",
         },
         deletePicture: {
             title: "¿Eliminar foto?",

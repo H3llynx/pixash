@@ -73,9 +73,9 @@ export const useTreatmentForm = () => {
                         title: t("toast.success.title.generic"),
                         message: t("toast.success.message.treatmentUpdated", { name: selectedPet.value.name, title: nameSnapshot }),
                     });
+                    resetForm(formData, defaultForm);
                 }
             };
-            resetForm(formData, defaultForm);
         }
         catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
@@ -90,8 +90,8 @@ export const useTreatmentForm = () => {
         const treatment = selectedTreatment.value;
         if (!treatment || !pet) return;
         open({
-            title: t("dialog.deleteRecord.title", { title: treatment.name }),
-            message: t("dialog.deleteRecord.message", { name: pet.name, title: treatment.name }),
+            title: t("dialog.deleteTreatment.title", { title: treatment.name }),
+            message: t("dialog.deleteTreatment.message", { name: pet.name, title: treatment.name }),
             isDelete: true,
             onConfirm: async () => {
                 loading.value = true;

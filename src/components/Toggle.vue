@@ -51,7 +51,7 @@ defineEmits(["update:modelValue"]);
 }
 
 .toggle-track.active {
-    background: var(--color-brand);
+    background: var(--color-accent);
 }
 
 .toggle-knob {

@@ -5,12 +5,12 @@ import Button from '../../../../components/Button.vue';
 import { tsToDate } from '../../../../utils.ts';
 import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
-import { useEvents } from '../../composables/useEvents.ts';
+import { useAllPetsView } from '../../composables/useAllPetsView.ts';
 import { getTreatmentProgress } from '../../utils.ts';
 import ProgressBar from './ProgressBar.vue';
 
 const { selectTreatment, treatmentLoading, selectedTreatment, pets } = usePets();
-const { filteredMonthTreatments } = useEvents();
+const { filteredMonthTreatments } = useAllPetsView();
 const { t } = useI18n();
 </script>
 
@@ -18,10 +18,10 @@ const { t } = useI18n();
     <article class="pet-section" v-if="filteredMonthTreatments.length">
         <h2>{{ t("events.treatments") }}</h2>
         <div class="grid grid-cols-1 gap-1">
-            <Button v-for="treatment in filteredMonthTreatments" variant="ghost" size="sm"
+            <Button v-for="treatment in filteredMonthTreatments" variant="card" size="sm"
                 @click="selectTreatment(treatment)" :aria-label="t('health.cta.viewTreatment')"
-                :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'w-full h-full md:max-w-md border border-border': true }">
-                <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
+                :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id }">
+                <div class="rounded-xl w-4 h-4 bg-border text-4xl flex shrink-0 justify-center items-center">
                     <Pill />
                 </div>
                 <div class="text-left w-full text-sm py-0.25">
@@ -39,7 +39,7 @@ const { t } = useI18n();
                     </p>
                     <ProgressBar v-if="treatment.endDate" :progress="getTreatmentProgress(treatment)!"
                         :color="treatment.color" />
-                    <span v-else class="inline ml-0.5 float-right tag bg-separator text-text-secondary">{{
+                    <span v-else class="inline ml-0.5 float-right tag bg-border-light text-text-secondary">{{
                         t("health.treatment.ongoing")
                     }}</span>
                 </div>
@@ -47,11 +47,3 @@ const { t } = useI18n();
         </div>
     </article>
 </template>
-
-
-<style scoped>
-button {
-    background: var(--color-bg-2);
-    gap: 1rem;
-}
-</style>

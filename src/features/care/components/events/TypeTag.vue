@@ -14,7 +14,7 @@ const getTagStyle = () => {
         "visit": props.event.eventType === "visit",
         "antiparasite": props.event.type === "antiparasite",
         "weight": props.event.type === "weight",
-        "bg-separator border border-border": props.event.type === "other"
+        "bg-border-light border border-border": props.event.type === "other"
     };
 };
 </script>

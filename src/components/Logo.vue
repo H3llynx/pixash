@@ -3,10 +3,10 @@ import Paw from './icons/Paw.vue';
 </script>
 
 <template>
-    <div class="flex items-center gap-0.75">
-        <div class="bg-logo-bg text-logo-text rounded-full w-3 h-3 flex items-center justify-center">
-            <Paw class="w-1.5" />
+    <div class="flex items-center gap-1">
+        <div class="bg-text text-bg rounded-full w-3 h-3 flex items-center justify-center">
+            <Paw class="w-1.5 rotate-15" />
         </div>
-        <span class="font-title text-2xl text-gold">Pixash</span>
+        <span v class="font-title text-3xl font-bold text-text">Pixash</span>
     </div>
 </template>

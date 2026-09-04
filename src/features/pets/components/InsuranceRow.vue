@@ -122,7 +122,7 @@ watch(() => selectedPet.value?.insurance, (insurance) => {
         p {
             font-size: small;
             font-weight: 500;
-            color: var(--color-brand);
+            color: var(--color-accent-softer);
         }
     }
 }

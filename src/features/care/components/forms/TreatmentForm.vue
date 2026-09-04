@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { CalendarCheck, Trash2 } from '@lucide/vue';
+import { CalendarCheck } from '@lucide/vue';
 import { computed, provide, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
-import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../../components/loading/LoadingPet.vue';
 import Panel from '../../../../components/Panel.vue';
 import { useFormMode } from '../../../../composables/useFormMode.ts';
 import { todayAsInput, tsToDate } from '../../../../utils.ts';
@@ -88,11 +88,11 @@ watch(() => mode.value, (mode) => {
 <template>
     <Transition name="panel" appear>
         <Panel v-if="isAddingCare.treatment || selectedTreatment" :onClose="handleClose">
-            <LoadingPuppy v-if="loading || vetLoading" />
+            <LoadingPet v-if="loading || vetLoading" />
             <div v-else class="md:max-w-max">
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">
                     <div v-if="selectedTreatment && selectedPet"
-                        class="rounded-full w-3 h-3 bg-brand-rgba text-3xl flex shrink-0 justify-center items-center">
+                        class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
                         <PetIcon :pet="selectedPet" />
                     </div>
                     <h1 v-if="isAddingCare.treatment">{{ t("health.title.addTreatment") }}</h1>
@@ -100,15 +100,14 @@ watch(() => mode.value, (mode) => {
                         name: selectedPet!.name
                     }) }}</h1>
                     <h1 v-else-if="selectedTreatment && mode === 'view'">{{ selectedTreatment.name }}</h1>
-                    <Button v-if="selectedTreatment" class="ml-auto mb-auto" variant="ghost" size="xs"
-                        :aria-label="t('health.cta.deleteVisit')" @click="handleDelete">
-                        <Trash2 :size="22" color="var(--color-brand-light)" />
-                    </Button>
+                    <Button v-if="selectedTreatment" action="delete" :aria-label="t('health.cta.deleteTreatment')"
+                        @click="handleDelete" />
                 </div>
-                <PetSelector v-if="isAddingCare.treatment" form />
+                <PetSelector v-if="isAddingCare.treatment" stacked />
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-model="formData.name" :id="name.id" :label="t(name.label)" required />
+                        <Input v-if="mode === 'edit'" v-model="formData.name" :id="name.id" :label="t(name.label)"
+                            required />
                         <Input v-model="formData.startDate" :id="startDate.id" :label="t(startDate.label)"
                             :type="startDate.type" :class="mode === 'view'" required>
                             <template #addon>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BugOff, MapPinned, Stethoscope, Syringe, Weight, X } from '@lucide/vue';
+import { Check, MapPinned, Weight, X } from '@lucide/vue';
 import { computed, ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
@@ -11,6 +11,7 @@ import { prefersKg } from '../../../pets/utils.ts';
 import { useEvents } from '../../composables/useEvents.ts';
 import type { LogExtended, PetEvent, VaccineExtended, VisitExtended } from '../../types.ts';
 import { showAntiparasites } from '../../utils.ts';
+import EventIcon from './EventIcon.vue';
 import TypeTag from './TypeTag.vue';
 
 const { careLoading, vets, pets, selectedPet, deleteSelectedVaccine, deleteSelectedVisit, deleteSelectedLog, careError } = usePets();
@@ -40,8 +41,8 @@ const handleDelete = () => {
     const pet = selectedPet.value;
     if (!pet) return;
     open({
-        title: t("dialog.deleteRecord.title", { title: title.value }),
-        message: t("dialog.deleteRecord.message", { name: pet.name, title: title.value }),
+        title: t("dialog.deleteRecord.title", { name: pet.name, title: title.value?.toLowerCase() }),
+        message: t("dialog.deleteGenericMsg"),
         isDelete: true,
         onConfirm: async () => {
             loading.value = true;
@@ -66,28 +67,26 @@ const handleDelete = () => {
 <template>
     <div :class="{
         'animate-pulse': careLoading && selectedEvent?.id === event.id,
-        'rounded-xl border border-border gap-0.5 flex justify-between items-start text-left p-0.25 w-full md:max-w-md bg-bg-3': true
+        'rounded-xl border border-border gap-0.5 flex justify-between items-start text-left p-0.25 w-full bg-bg-2': true
     }">
         <div class="flex gap-0.5 w-full min-w-0 h-full px-0.5 py-1">
-            <Syringe v-if="event.eventType === 'vaccine'" class="card-icon" :size="20" />
-            <Stethoscope v-if="event.eventType === 'visit'" class="card-icon" :size="20" />
-            <template v-else-if="event.eventType === 'log'">
-                <BugOff v-if="event.type === 'antiparasite'" class="card-icon" :size="20" />
-                <Weight v-if="event.type === 'weight'" class="card-icon" :size="20" />
-            </template>
+            <EventIcon :event="event" />
             <div class="flex flex-col justify-content w-full">
                 <div class="flex gap-0.5 flex-1">
-                    <div class="w-1/2">
+                    <div class="w-1/2 flex flex-col">
                         <p class="text-text-secondary text-xs">
                             {{ date.toDate().toLocaleDateString(locale, {
                                 day: "numeric",
                                 month: "long",
                                 year: "numeric"
                             }) }}</p>
-                        <h4 class="font-medium text-sm">{{ title }}</h4>
-                        <p class="text-text-secondary text-xs" v-if="event.treated">{{ showAntiparasites(event.treated,
-                            locale,
-                            t) }}</p>
+                        <h4 class="font-medium text-sm mt-0.25">{{ title }}</h4>
+                        <ul class="text-text-secondary text-xs mt-0.5 flex flex-wrap gap-x-0.5" v-if="event.treated">
+                            <li v-for="treated in showAntiparasites(event.treated, locale, t, true)"
+                                class="inline-flex shrink-0 gap-0.25">
+                                <Check :size="14" />{{ treated }}
+                            </li>
+                        </ul>
                     </div>
                     <div class="flex flex-col justify-content gap-1 flex-1 items-end">
                         <TypeTag :event="event" class="ml-auto" />
@@ -98,15 +97,14 @@ const handleDelete = () => {
                         </div>
                     </div>
                 </div>
-                <p v-if="event.vet" class="mt-auto pt-0.5 text-xs text-brand-light flex items-center gap-[5px]">
+                <p v-if="event.vet" class="mt-auto pt-0.5 text-xs text-text-softer flex items-center gap-[5px]">
                     <Loading v-if="!vets.length" class="my-0.5" />
                     <MapPinned v-else :size="16" /> {{ vet }}
                 </p>
             </div>
         </div>
-        <Button variant="ghost" size="xxs" class="mb-auto" :aria-label="t('common.button.deleteRecord')"
-            @click="handleDelete">
-            <X :size="20" />
+        <Button variant="ghost" size="min" :aria-label="t('common.button.delete')" @click="handleDelete">
+            <X :size="16" />
         </Button>
     </div>
 </template>

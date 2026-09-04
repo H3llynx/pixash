@@ -7,5 +7,5 @@ defineProps<{ user: CustomUser }>();
 <template>
     <img v-if="user.photo" :src="user.photo" :alt="user.firstName ?? 'user avatar'"
         class="w-full h-full object-cover relative" />
-    <p v-else class="text-text-chip capitalize text-3xl">{{ user.firstName.slice(0, 1) }}</p>
+    <p v-else class="text-bg-2 capitalize text-xl">{{ user.firstName.slice(0, 1) }}</p>
 </template>
