@@ -8,6 +8,12 @@ import AuthForm from '../features/user/components/AuthForm.vue';
     <Header />
     <section class="m-auto max-w-full flex justify-center pb-6">
         <AuthForm />
-        <img :src="SashaPixie" alt="" class="fixed -bottom-3 left-0 -z-1 h-[60%] object-cover" />
+        <img :src="SashaPixie" alt="" class="fixed -bottom-5 xl:-bottom-3 my-auto w-full -z-1 h-[60%] object-cover" />
     </section>
 </template>
+
+<style scoped>
+img {
+    filter: drop-shadow(0px 16px 60px var(--color-green));
+}
+</style>

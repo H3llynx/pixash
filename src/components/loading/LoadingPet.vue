@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { LottieAnimation } from 'lottie-web-vue';
-import puppy from '../../assets/animations/puppy-ball.json';
+import pixie from '../../assets/pixie-plants.png';
+import sasha from '../../assets/sasha-pirate.png';
+import { usePets } from '../../features/pets/composables/usePets';
+
+const { selectedPet } = usePets();
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center relative max-w-lg m-auto">
+  <div class="flex flex-col items-center justify-center relative max-w-lg m-auto aspect-square">
+    <div class="spinner-ring" :style="{
+      borderTopColor: selectedPet?.species === 'dog' ? 'var(--color-orange)' : 'var(--color-green)',
+      borderRightColor: selectedPet?.species === 'dog' ? 'var(--color-orange-rgba)' : 'var(--color-green-rgba)'
+    }"></div>
     <div class="spinner-ring-outer"></div>
-    <div class="spinner-ring"></div>
-    <LottieAnimation :animationData="puppy" :loop="true" :autoplay="true" :speed="1" />
+    <img :src="selectedPet?.species === 'dog' ? sasha : pixie" class="max-w-[65%] rounded-full mt-[10%]" />
   </div>
 </template>
 
@@ -22,13 +28,11 @@ import puppy from '../../assets/animations/puppy-ball.json';
 .spinner-ring {
   width: 70%;
   border: 3px solid transparent;
-  border-top-color: var(--color-interactive);
-  border-right-color: var(--color-interactive-rgba);
   animation: spin 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 .spinner-ring-outer {
-  width: 60%;
+  width: 65%;
   border: 2px solid transparent;
   border-bottom-color: var(--color-border);
   border-left-color: var(--color-border);

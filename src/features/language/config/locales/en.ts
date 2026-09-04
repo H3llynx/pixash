@@ -21,8 +21,8 @@ export default {
         text: {
             noEventText: "No upcoming care scheduled.",
             noHistoryText: "No records found for the selected category",
-            noPastTreatments: "{name} has no past medical treatment recorded.",
-            noActiveTreatment: "{name} has no active medical treatments.",
+            noPastTreatments: "There is no past medical treatment recorded.",
+            noActiveTreatment: "No active medical treatments.",
             noWeightLog: "No weight log registered.",
             lastLogged: "Last logged",
             done: "Done!",

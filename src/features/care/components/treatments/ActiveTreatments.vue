@@ -16,9 +16,7 @@ const { activeTreatments } = useEvents();
         <div class="grid grid-cols-1 gap-1">
             <TreatmentWithLog v-if="activeTreatments.length" v-for="(treatment, index) in activeTreatments"
                 :key="treatment.id" :treatment="treatment" :color="getTreatmentColor(index)" />
-            <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noActiveTreatment", {
-                name: selectedPet?.name
-            }) }}</p>
+            <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noActiveTreatment") }}</p>
         </div>
     </article>
 </template>

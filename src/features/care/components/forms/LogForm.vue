@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import AddPictures from '../../../../components/AddPictures.vue';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
-import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../../components/loading/LoadingPet.vue';
 import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import Textarea from '../../../../components/Textarea.vue';
@@ -176,7 +176,7 @@ watch(() => formData.pictures, (pictures) => {
 <template>
     <Transition name="panel">
         <Panel v-if="isAddingCare.other || selectedOtherLog" :onClose="handleClose">
-            <LoadingPuppy v-if="loading" />
+            <LoadingPet v-if="loading" />
             <div class="md:max-w-max" v-else>
                 <div class="flex gap-1 justify-between my-1 default-padding">
                     <div v-if="selectedOtherLog && selectedPet"
@@ -188,7 +188,7 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedOtherLog!.subtype}`)
                     })
-                        }}
+                    }}
                     </h1>
                     <Button v-if="selectedOtherLog" action="delete" :aria-label="t('common.button.delete')"
                         @click="handleDelete" />

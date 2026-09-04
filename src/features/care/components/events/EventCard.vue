@@ -6,7 +6,7 @@ import Button from '../../../../components/Button.vue';
 import FreeModal from '../../../../components/FreeModal.vue';
 import Input from '../../../../components/Input.vue';
 import Loading from '../../../../components/loading/Loading.vue';
-import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../../components/loading/LoadingPet.vue';
 import { useToast } from '../../../../composables/useToast.ts';
 import { todayAsInput, tsToDate } from '../../../../utils.ts';
 import PetIndicator from '../../../pets/components/PetIndicator.vue';
@@ -150,12 +150,12 @@ const cancelMarkDone = () => {
         <PetIndicator :pet="pet!" />
     </div>
     <FreeModal v-model="nextDueModal" class="relative">
-        <LoadingPuppy v-if="loading" />
+        <LoadingPet v-if="loading" />
         <template v-else>
             <h3 class="font-title">{{ t("common.text.askingNextDue") }}</h3>
             <Button v-if="!nextDueInput" @click="nextDueInput = true">{{ t("common.text.yes") }}</Button>
             <Button v-if="!nextDueDate" variant="secondary" @click="markAsDone(event)">{{ t("common.text.noNeed")
-                }}</Button>
+            }}</Button>
             <template v-if="nextDueInput">
                 <Input v-model="nextDueDate" type="date" :min="todayAsInput()">
                     <template #addon>

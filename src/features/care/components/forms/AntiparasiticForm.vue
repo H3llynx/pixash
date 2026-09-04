@@ -4,7 +4,7 @@ import { provide, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
-import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../../components/loading/LoadingPet.vue';
 import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import Toggle from '../../../../components/Toggle.vue';
@@ -42,7 +42,7 @@ watch(() => mode.value, (mode) => {
 <template>
     <Transition name="panel">
         <Panel v-if="isAddingCare.antiparasitic || selectedAntiparasiticLog" :onClose="handleClose">
-            <LoadingPuppy v-if="loading" />
+            <LoadingPet v-if="loading" />
             <div class="md:max-w-max" v-else-if="!newLog">
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">
                     <div v-if="selectedAntiparasiticLog && selectedPet"
@@ -51,7 +51,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                        }}
+                    }}
                     </h1>
                     <Button v-if="selectedAntiparasiticLog" action="delete"
                         :aria-label="t('health.cta.deleteAntiparasitic')" @click="handleDelete" />

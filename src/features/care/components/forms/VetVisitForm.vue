@@ -4,7 +4,7 @@ import { computed, provide, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
-import LoadingPuppy from '../../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../../components/loading/LoadingPet.vue';
 import Panel from '../../../../components/Panel.vue';
 import Textarea from '../../../../components/Textarea.vue';
 import { useFormMode } from '../../../../composables/useFormMode.ts';
@@ -86,7 +86,7 @@ watch(() => mode.value, (mode) => {
 <template>
     <Transition name="panel" appear>
         <Panel v-if="isAddingCare.visit || selectedVisit" :onClose="handleClose">
-            <LoadingPuppy v-if="loading || vetLoading" />
+            <LoadingPet v-if="loading || vetLoading" />
             <div v-else class="md:max-w-max">
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">
                     <div v-if="selectedVisit && selectedPet"

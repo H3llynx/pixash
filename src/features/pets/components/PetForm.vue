@@ -5,7 +5,7 @@ import Button from '../../../components/Button.vue';
 import Dropdown from '../../../components/Dropdown.vue';
 import Paw from '../../../components/icons/Paw.vue';
 import Input from '../../../components/Input.vue';
-import LoadingPuppy from '../../../components/loading/LoadingPuppy.vue';
+import LoadingPet from '../../../components/loading/LoadingPet.vue';
 import Panel from '../../../components/Panel.vue';
 import Toggle from '../../../components/Toggle.vue';
 import { useToast } from '../../../composables/useToast.ts';
@@ -107,7 +107,7 @@ watch(() => formData.species, () => {
 <template>
     <Transition name="panel">
         <Panel v-if="isAddingPet || isUpdatingPet" :canClose="hasPets" :onClose="handleClose">
-            <LoadingPuppy v-if="loading" />
+            <LoadingPet v-if="loading" />
             <div class="md:max-w-max" v-else>
                 <div v-if="!hasPets" class="px-2 py-1 text-center">
                     <h2>{{ t("pet.title.addFirstPet") }}</h2>
@@ -138,7 +138,7 @@ watch(() => formData.species, () => {
                             <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
                                 <option v-for="option in sex.options" :value="option.id" :key="option.id">{{
                                     t(option.label)
-                                    }}
+                                }}
                                 </option>
                             </Dropdown>
                         </div>

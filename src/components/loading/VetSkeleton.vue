@@ -1,7 +1,10 @@
 <template>
-    <div
-        class="animate-pulse flex-1 flex flex-col gap-1.5 pb-6.5 md:pl-5 md:pb-0 mt-1 md:mt-0 lg:lg-grid xl:grid-cols-[65%_1fr]">
-        <div class="p-0 md:py-1.5 default-padding flex flex-col gap-1.5">
+    <div class="animate-pulse flex-1 flex flex-col gap-2 pb-7.5 md:pl-5 md:pb-0 mt-1 md:mt-0 lg:lg-grid xl:xl-grid">
+        <div class="md:py-1.5 default-padding flex flex-col gap-2">
+            <div class="flex gap-1">
+                <div v-for="i in 2" :key="i" class="bg-grey-light opacity-20 rounded-xl w-9 h-8">
+                </div>
+            </div>
             <div class="h-1 w-7 rounded bg-grey-light opacity-30"></div>
             <div class="flex gap-1 w-full">
                 <div
@@ -37,7 +40,7 @@
             </div>
         </div>
         <div
-            class="flex flex-col gap-1.5 pb-1 default-padding lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
+            class="flex flex-col gap-2 pb-1 default-padding lg:px-1.5 lg:bg-bg-rgba lg:pt-1.5 lg:border-l lg:border-border lg:h-full">
             <div class="flex flex-col gap-1 w-full">
                 <div class="h-1 w-7 rounded bg-grey-light opacity-30"></div>
                 <div class="flex flex-col gap-0.5 p-1 rounded-xl border border-border bg-bg-2 w-full">

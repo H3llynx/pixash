@@ -21,8 +21,8 @@ export default {
         text: {
             noEventText: "No hay citas ni cuidados programados.",
             noHistoryText: "No se encontraron registros para la categoría seleccionada",
-            noPastTreatments: "{name} no tiene tratamientos médicos pasados registrados.",
-            noActiveTreatment: "{name} no tiene tratamientos médicos activos.",
+            noPastTreatments: "No hay tratamientos médicos pasados registrados.",
+            noActiveTreatment: "No hay tratamientos médicos activos.",
             noWeightLog: "No hay registros de peso.",
             lastLogged: "Último registro",
             done: "¡Hecho!",
