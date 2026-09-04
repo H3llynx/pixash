@@ -118,7 +118,7 @@ const cancelMarkDone = () => {
 <template>
     <div tabindex="0" role="button" :class="{
         'animate-pulse': careLoading && selectedEvent?.id === event.id,
-        'card default-transition hover:scale-105 cursor-pointer flex-row w-full md:max-w-md gap-1.5 justify-between': true
+        'card border border-border bg-bg-rgba default-transition hover:scale-105 hover:bg-bg-2 cursor-pointer flex-row md:max-w-md gap-1.5 justify-between': true
     }" @click="handleClick(event)" @keydown.enter="handleClick(event)">
         <div class="flex gap-0.5 w-full min-w-0 h-full">
             <EventIcon :event="event" />
@@ -155,7 +155,7 @@ const cancelMarkDone = () => {
             <h3 class="font-title">{{ t("common.text.askingNextDue") }}</h3>
             <Button v-if="!nextDueInput" @click="nextDueInput = true">{{ t("common.text.yes") }}</Button>
             <Button v-if="!nextDueDate" variant="secondary" @click="markAsDone(event)">{{ t("common.text.noNeed")
-                }}</Button>
+            }}</Button>
             <template v-if="nextDueInput">
                 <Input v-model="nextDueDate" type="date" :min="todayAsInput()">
                     <template #addon>

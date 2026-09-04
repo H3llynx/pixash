@@ -18,9 +18,9 @@ const { t } = useI18n();
     <article class="pet-section" v-if="filteredMonthTreatments.length">
         <h2>{{ t("events.treatments") }}</h2>
         <div class="grid grid-cols-1 gap-1">
-            <Button v-for="treatment in filteredMonthTreatments" variant="ghost" size="sm"
+            <Button v-for="treatment in filteredMonthTreatments" variant="card" size="sm"
                 @click="selectTreatment(treatment)" :aria-label="t('health.cta.viewTreatment')"
-                :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'w-full h-full md:max-w-md border border-border': true }">
+                :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id }">
                 <div class="rounded-xl w-4 h-4 bg-border text-4xl flex shrink-0 justify-center items-center">
                     <Pill />
                 </div>
@@ -41,27 +41,9 @@ const { t } = useI18n();
                         :color="treatment.color" />
                     <span v-else class="inline ml-0.5 float-right tag bg-border-light text-text-secondary">{{
                         t("health.treatment.ongoing")
-                        }}</span>
+                    }}</span>
                 </div>
             </Button>
         </div>
     </article>
 </template>
-
-
-<style scoped>
-button {
-    gap: 1rem;
-    border: 1px solid transparent;
-    background-image:
-        linear-gradient(var(--color-bg-2), var(--color-bg-2)),
-        linear-gradient(155deg, var(--color-border) 0%, transparent 55%);
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
-
-    &:hover {
-        transform: scale(105%);
-        color: inherit;
-    }
-}
-</style>

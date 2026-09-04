@@ -163,7 +163,7 @@
 
   *::-webkit-scrollbar-thumb {
     border-radius: 0.75rem;
-    background: var(--color-brand-light);
+    background: var(--color-interactive);
   }
 
   dialog:focus-visible {
@@ -442,6 +442,9 @@
 
   .card {
     @apply flex flex-col gap-0.5 p-1 rounded-xl;
+  }
+
+  .card-border {
     border: 1px solid transparent;
     background-image:
       linear-gradient(var(--color-bg-2), var(--color-bg-2)),
@@ -539,7 +542,6 @@
     border: 1px solid var(--color-border-light);
   }
 }
-
 
 @keyframes move-overlay {
   0% {

@@ -49,7 +49,7 @@ const handleVetUpdate = () => {
 </script>
 
 <template>
-    <div class="card w-full md:w-sm shrink-0 text-sm">
+    <div class="card card-border w-full md:w-sm shrink-0 text-sm">
         <div class="flex items-start gap-0.5 py-1">
             <div class="rounded-xl w-4 h-4 bg-brand-rgba text-4xl flex shrink-0 justify-center items-center">
                 <BriefcaseMedical />
@@ -80,13 +80,13 @@ const handleVetUpdate = () => {
         <div class="mt-auto flex flex-col gap-0.5">
             <VetNotes :vet="vet" />
             <div class="flex gap-0.5 pt-1 justify-end">
-                <Button variant="tertiary" size="contact" class="rounded-xl" @click="handleMaps">
+                <Button variant="tertiary" size="third" class="rounded-xl" @click="handleMaps">
                     {{ t("vet.cta.maps") }}
                 </Button>
-                <Button v-if="vet.phone" variant="tertiary" size="contact" class="rounded-xl" @click="handleCall">
+                <Button v-if="vet.phone" variant="tertiary" size="third" class="rounded-xl" @click="handleCall">
                     {{ t("vet.cta.call") }}
                 </Button>
-                <Button size="contact" class="rounded-xl" @click="handleVisit">
+                <Button size="third" class="rounded-xl" @click="handleVisit">
                     <Plus :size="18" />
                     {{ t("vet.cta.visit") }}
                 </Button>

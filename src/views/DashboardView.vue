@@ -11,7 +11,7 @@ import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 
 const { resetPetActions, loading, hasPets } = usePets();
-const { isMd } = useMedia();
+const { isLg } = useMedia();
 
 onBeforeRouteLeave(() => {
   resetPetActions();
@@ -23,10 +23,10 @@ onBeforeRouteLeave(() => {
   <DashboardSkeleton v-if="loading" />
   <main v-else-if="hasPets">
     <div class="lg:lg-grid">
-      <div :class="{ 'overlay': isMd }">
+      <div :class="{ 'overlay': isLg }">
         <PetSelector />
       </div>
-      <NextDue v-if="isMd" />
+      <NextDue v-if="isLg" />
     </div>
     <div class="flex flex-col gap-2 lg:lg-grid">
       <PetProfile />

@@ -27,9 +27,9 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
 
 <template>
     <div
-        :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'card p-1 w-full md:max-w-md border border-border gap-1': true }">
+        :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'card w-full md:max-w-md border border-border gap-1': true }">
         <div>
-            <div class="flex gap-0.5 w-full justify-between items-start">
+            <div class="card flex-row w-full justify-between items-start">
                 <h4 class="font-medium inline">{{ treatment.name }}</h4>
                 <PetTag class="ml-auto" :pet="pets.find((pet: PetExtended) => pet.id === treatment.petId)!"
                     :color="false" />

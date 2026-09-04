@@ -21,7 +21,7 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
 </script>
 
 <template>
-    <div :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'card': true }"
+    <div :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'card card-border': true }"
         v-if="pet">
         <div class="flex gap-1 justify-between">
             <h3 class="text-base">{{ treatment.name }}</h3>
@@ -37,7 +37,7 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
                 <span v-if="treatment.endDate"> - {{ tsToDate(treatment.endDate, "date") }}</span>
                 <span v-else class="ml-auto tag bg-border-light text-text-secondary">{{
                     t("health.treatment.ongoing")
-                    }}</span>
+                }}</span>
             </div>
             <ProgressBar v-if="progress" :progress="progress" :color="color" />
         </div>
