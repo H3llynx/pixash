@@ -35,6 +35,6 @@ watch(readonly, () => {
 
 <style scoped>
 section {
-    box-shadow: 0px 0px 6px var(--color-accent-rgba);
+    box-shadow: 0px 0px 10px var(--color-bg-2);
 }
 </style>

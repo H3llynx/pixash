@@ -24,6 +24,7 @@ const { eventType } = useHistory();
 <style scoped>
 button {
     background: transparent;
+    font-weight: 400;
 
     &:not(.active) {
         background: transparent;

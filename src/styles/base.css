@@ -14,7 +14,7 @@
   --color-white-rgba: rgba(230, 230, 223, 0.45);
 
   --color-charcoal: #161717;
-  --color-charcoal-mid: #1B1C1C;
+  --color-charcoal-darker: #141414;
   --color-charcoal-lighter: #202121;
   --color-charcoal-rgba: rgba(24, 26, 25, 0.54);
 
@@ -56,6 +56,7 @@
 
   --color-bg: var(--color-white);
   --color-bg-2: var(--color-off-white);
+  --color-bg-3: var(--color-off-white);
   --color-bg-rgba: var(--color-white-rgba);
 
   --color-text: var(--color-charcoal);
@@ -81,7 +82,6 @@
   --color-green-pale: #93B8A6;
   --color-eucalyptus-dark: #1E302A;
   --color-eucalyptus-light: #B8E2CB;
-  --color-text-chip: var(--color-gold);
   --color-brand: var(--color-green-dark);
   --color-brand-light: var(--color-green-pale);
   --color-brand-rgba: var(--color-green-rgba);
@@ -100,6 +100,7 @@
 
   --color-bg: var(--color-charcoal);
   --color-bg-2: var(--color-charcoal-lighter);
+  --color-bg-3: var(--color-charcoal-darker);
   --color-bg-rgba: var(--color-charcoal-rgba);
 
   --color-text: var(--color-off-white);
@@ -108,7 +109,6 @@
   --color-border: var(--color-grey-dark);
   --color-border-light: var(--color-grey-dark-rgba);
 
-  --color-text-chip: var(--color-grey-dark);
   --color-brand: var(--color-eucalyptus);
   --color-brand-light: var(--color-eucalyptus-light);
   --color-brand-rgba: var(--color-eucalyptus-rgba);
@@ -196,6 +196,10 @@
     width: 100%;
     border-radius: 0.75rem;
 
+    &[type="date"]:empty {
+      color: var(--color-grey-mid);
+    }
+
     &[readonly] {
       background: var(--color-bg-bg-2);
 
@@ -212,6 +216,7 @@
 
   input::placeholder {
     font-size: 14px;
+
   }
 
   select {

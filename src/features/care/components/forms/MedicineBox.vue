@@ -65,8 +65,6 @@ watch(() => medData.value?.noEnd, (noEnd) => {
 }
 
 :deep(label:has(input[type="radio"]:checked)) p {
-    background: var(--color-brand);
-    color: var(--color-text-chip);
     font-weight: 500;
 }
 </style>

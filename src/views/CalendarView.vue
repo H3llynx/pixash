@@ -47,15 +47,15 @@ onBeforeRouteLeave(() => {
 
 <template>
     <Header />
-    <main class="lg:lg-grid xl:xl-grid md:pb-1.5">
-        <section class="p-0 md:pb-1">
+    <main class="lg:lg-grid xl:xl-grid">
+        <section class="p-0 flex flex-col">
             <PetSelector viewAll stacked />
             <Calendar :events="filteredCalendarEvents" @update-month="currentMonth = $event"
                 @update-monthName="currentMonthName = $event" @date-click="handleDateClick" />
         </section>
         <section
-            class="flex flex-col-reverse gap-2.5 h-full lg:flex-col lg:px-1.5 lg:bg-bg-rgba md:pt-1.5 lg:border-l lg:border-border lg:h-full">
-            <div class="flex flex-col gap-2.5">
+            class="flex flex-col-reverse gap-3 h-full lg:flex-col lg:px-1.5 md:pt-1.5 lg:bg-bg-3 lg:border-l lg:border-border lg:border-dashed lg:h-full">
+            <div class="flex flex-col gap-2.5 pb-1.5">
                 <EventList :title="getTitle()" :events="filteredMonthEvents" :itemsPerPage="is2xl ? 6 : 4" />
                 <TreatmentsThisMonth />
             </div>

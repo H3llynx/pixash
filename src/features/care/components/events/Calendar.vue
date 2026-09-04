@@ -72,7 +72,7 @@ const calendarOptions = computed(() => ({
 .fc {
     max-width: 100%;
     padding-top: 1rem;
-    margin-inline: 0.5rem;
+    padding-inline: 0.5rem;
     position: relative;
     z-index: 0;
 }

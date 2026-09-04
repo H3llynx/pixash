@@ -18,17 +18,17 @@ const { t } = useI18n();
 <template>
     <Header />
     <HistorySkeleton v-if="loading" />
-    <main v-else-if="hasPets" class="w-full">
-        <div class="default-padding">
-            <h2 class="text-2xl md:text-3xl">{{ t("common.header.historyH2") }}</h2>
-            <span class="tracking-wide font-extralight">{{ t("common.header.historySpan") }}</span>
-        </div>
-        <div class="flex flex-col gap-1.5 lg:lg-grid xl:xl-grid pb-1">
-            <div>
-                <PetSelector stacked />
-                <EventSelector />
-                <EventList :events="filteredPetHistory" history />
+    <main v-else-if="hasPets" class="lg:lg-grid xl:xl-grid">
+        <section class="px-0 py-1">
+            <div class="default-padding">
+                <h2 class="text-2xl md:text-3xl">{{ t("common.header.historyH2") }}</h2>
+                <span class="tracking-wide font-extralight">{{ t("common.header.historySpan") }}</span>
             </div>
+            <PetSelector stacked />
+            <EventSelector />
+            <EventList :events="filteredPetHistory" history />
+        </section>
+        <div class="lg:bg-bg-3 lg:border-l lg:border-border lg:border-dashed lg:pt-1.5 pb-1.5">
             <TreatmentList v-if="finishedTreatments" :treatments="finishedTreatments" :title="t('events.treatments')"
                 history class="default-padding lg:px-1.5" />
         </div>
