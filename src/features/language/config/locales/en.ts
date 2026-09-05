@@ -35,8 +35,6 @@ export default {
             noNeed: "No need"
         },
         header: {
-            greetings: "Welcome",
-            calendar: "Calendar",
             vetH2: "Vet care",
             vetSpan: "Clinics & treatments",
             historyH2: "History",
@@ -47,7 +45,6 @@ export default {
             calendar: "Calendar",
             vet: "Vet",
             history: "History",
-            myPets: "My pets"
         },
         fileInputLabel: "Upload from your device.",
         a11y: {

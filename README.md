@@ -33,17 +33,11 @@ The name comes from my two pets: **Pixie** (a chubby affectionate tabby cat) and
 - Google OAuth and email/password authentication
 - Protected routes
 - Pet and vet profiles
-- Vaccine and vet visit tracking
+- Vaccine, antiparasitics, medical treatment, weight and vet visit tracking
 - Calendar
 - Light / dark mode with system preference detection and manual toggle
 - Fully responsive — mobile first, desktop adapted
 - Accessible UI
-
----
-
-## Design
-
-The design system uses a custom palette built around deep forest green and warm gold in light mode, charcoal and eucalyptus in dark mode.
 
 ---
 
@@ -53,14 +47,15 @@ The design system uses a custom palette built around deep forest green and warm 
 src/
   components/         # Shared UI components
   composables/        # Global shared composable (useToast, useTheme)
-  config/             
-    locales/          # Texts by language
+  config/             # Firebase and db related configs
   features/
-    health/           # Vet visits, vaccines and health event management (composables, components)
+    care/             # Vet visits, vaccines, treatments and overall health event management (composables,components)
+    languages/        # Texts by language
     pets/             # Pet profiles and management (composables, components)
     theme/            # Theme management (composable, components)
     user/             # Authentication (composable and user-related components)
   router/             # Vue Router config with auth guards
+  services/
   styles/             # Global CSS and design tokens
   views/              # Page-level components (DashboardView, AuthView...)
 ```
@@ -103,9 +98,8 @@ Current progress:
 - [x] Custom user and pet profile pictures
 - [x] History view per pet and care event
 - [x] Other logs (feeding, activity, grooming, etc...)
-- [IN PROGRESS] Missed medicine tracking
+- [IN PROGRESS] Missed medicine tracking and medication compliance
 - [ ] Lump tracking
-- [ ] Photo timeline
 
 ---
 
@@ -115,4 +109,4 @@ Built by a junior frontend developer transitioning from a React specialization, 
 
 No tutorials were followed. Every feature was designed and developed from scratch with a strong focus on accessibility, clean architecture, and production-quality code.
 
-And while Vitest handled the unit testing, my cat occasionally stepped in as an unofficial code reviewer. 😸
+And while Vitest handled the unit testing, Pixie occasionally stepped in as an unofficial code reviewer. 😸

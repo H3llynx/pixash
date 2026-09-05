@@ -35,8 +35,6 @@ export default {
             noNeed: "No hace falta"
         },
         header: {
-            greetings: "Hola",
-            calendar: "Calendario",
             vetH2: "Cuidado veterinario",
             vetSpan: "Clínicas y tratamientos",
             historyH2: "Historial",
@@ -47,7 +45,6 @@ export default {
             calendar: "Calendario",
             vet: "Veterinario",
             history: "Historial",
-            myPets: "Mis mascotas"
         },
         fileInputLabel: "Subir desde tu dispositivo.",
         a11y: {
