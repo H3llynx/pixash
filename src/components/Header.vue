@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import LanguageSwitcher from '../features/language/components/LanguageSwitcher.vue';
 import { usePets } from '../features/pets/composables/usePets.ts';
@@ -8,7 +7,6 @@ import UserPicture from '../features/user/components/UserPicture.vue';
 import { ROUTES } from '../router/config.ts';
 import Logo from './Logo.vue';
 
-const { t } = useI18n();
 const { hasPets } = usePets();
 const route = useRoute();
 </script>

@@ -10,7 +10,7 @@ import TreatmentCard from './TreatmentCard.vue';
 
 const { isMd } = useMedia();
 const { t } = useI18n();
-const { loading, selectedPet } = usePets();
+const { loading } = usePets();
 
 const props = withDefaults(defineProps<{
     title?: string

@@ -6,7 +6,7 @@ import { getTreatmentColor } from '../../utils.ts';
 import TreatmentWithLog from './TreatmentWithLog.vue';
 
 const { t } = useI18n();
-const { loading, selectedPet } = usePets();
+const { loading } = usePets();
 const { activeTreatments } = useEvents();
 </script>
 
