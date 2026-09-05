@@ -32,7 +32,7 @@ const { t } = useI18n();
 
 <style scoped>
 nav {
-    box-shadow: 0 4px 30px var(--color-border);
+    box-shadow: 0 18px 30px var(--color-charcoal-rgba);
 
     &::-webkit-scrollbar {
         display: none;
