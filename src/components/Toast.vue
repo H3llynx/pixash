@@ -24,7 +24,7 @@ const toastBox = tv({
             <div class="shrink-0">
                 <CheckCircle2 v-if="toast.type === 'success'" fill="var(--color-success)"
                     color="var(--color-success-bg)" />
-                <AlertCircle v-else fill="var(--color-error)" color="var(--color-error-bg)" />
+                <AlertCircle v-else fill="var(--color-error-text)" color="var(--color-error-bg)" />
             </div>
             <div class="w-full">
                 <h3>{{ toast.title }}</h3>

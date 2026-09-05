@@ -50,7 +50,7 @@
   --color-error-text: #A32D2D;
 
   --color-success: #639922;
-  --color-success-bg: rgba(234, 243, 222, 0.6);
+  --color-success-bg: #EAF3DE;
   --color-success-border: #97C459;
   --color-success-text: #27500A;
 
@@ -77,9 +77,9 @@
   --background-image-gold-gradient: linear-gradient(145deg, #e9b96a 0%, var(--color-gold) 40%, var(--color-gold-dark) 100%);
   --background-image-eucalyptus-gradient: linear-gradient(145deg, var(--color-eucalyptus-light) 0%, var(--color-eucalyptus) 40%);
 
-  --color-bg-loading: var(--color-grey-light);
-  --color-text-loading-1: var(--color-text-softer);
-  --color-text-loading-2: var(--color-orange-softer);
+  --color-bg-loading: var(--color-eucalyptus);
+  --color-text-loading-1: var(--color-orange-softer);
+  --color-text-loading-2: var(--color-grey-light);
 }
 
 [data-theme="dark"] {
@@ -94,6 +94,14 @@
   --color-bg-3: var(--color-charcoal-darker);
   --color-bg-rgba: var(--color-charcoal-rgba);
 
+  --color-success-bg: #27500A;
+  --color-success-border: #97C459;
+  --color-success-text: var(--color-success-border);
+
+  --color-error-bg: #ba2525;
+  --color-error-border: #F09595;
+  --color-error-text: #FCEBEB;
+
   --color-text: var(--color-off-white);
   --color-text-softer: var(--color-grey-light);
 
@@ -102,7 +110,7 @@
 
   --color-bg-loading: var(--color-charcoal-darker);
   --color-text-loading-1: var(--color-orange);
-  --color-text-loading-2: var(--color-eucalyptus);
+  --color-text-loading-2: var(--color-eucalyptus-light);
 }
 
 @utility default-transition {
@@ -456,7 +464,7 @@
     border-radius: 10px;
     font-weight: 500;
     flex-shrink: 0;
-    @apply text-xs;
+    @apply text-xs h-max;
   }
 
   .profile-row {

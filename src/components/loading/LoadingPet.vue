@@ -13,7 +13,7 @@ const { selectedPet } = usePets();
       borderRightColor: selectedPet?.species === 'dog' ? 'var(--color-orange-rgba)' : 'var(--color-green-rgba)'
     }"></div>
     <div class="spinner-ring-outer"></div>
-    <img :src="selectedPet?.species === 'dog' ? sasha : pixie" class="max-w-[65%] rounded-full mt-[10%]" />
+    <img :src="selectedPet?.species === 'dog' ? sasha : pixie" class="max-w-[80%] rounded-full" />
   </div>
 </template>
 
@@ -26,13 +26,13 @@ const { selectedPet } = usePets();
 }
 
 .spinner-ring {
-  width: 70%;
+  width: 80%;
   border: 3px solid transparent;
   animation: spin 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 .spinner-ring-outer {
-  width: 65%;
+  width: 75%;
   border: 2px solid transparent;
   border-bottom-color: var(--color-border);
   border-left-color: var(--color-border);

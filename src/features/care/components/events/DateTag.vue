@@ -53,6 +53,6 @@ const getTagStyle = () => {
 .is-missed {
     background: var(--color-error);
     border: 1px solid var(--color-error-border);
-    color: var(--color-error-bg);
+    color: var(--color-off-white);
 }
 </style>

@@ -29,7 +29,7 @@ select {
         outline-width: 2px;
         outline-style: solid;
         outline-offset: 1px;
-        outline-color: var(--color-error-border);
+        outline-color: var(--color-error);
         border-radius: 5px;
     }
 }
