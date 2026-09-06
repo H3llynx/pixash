@@ -8,7 +8,15 @@
 
 Pixash is a full-stack pet care tracker built with Vue 3 and Firebase, designed to help pet owners stay on top of vaccinations, vet visits, medications, treatments, and upcoming health events.
 
-The name comes from my two pets: **Pixie** (a chubby affectionate tabby cat) and **Sasha** (an energetic and extremely friendly mini pitbull). I built it because I actually needed it — no more digging through passport documents to keep track og the vaccines dates.
+The name comes from my two pets: **Pixie**, a tabby cat who has fully committed to the "unit" body type and treats every surface as a place to be liquid on, and **Sasha**, an energetic and extremely friendly mini pitbull who runs on 100% vibes and 0% self-preservation.
+
+I built this because I actually needed it, not because the world was short on pet-tracker apps. It isn't...
+
+But I didn't learn to code to be sold premium subscription just to remember when Sasha's rabies shot is due, nor to use a spreadsheet.
+
+The real push, though, was Sasha. She's 10 now, and earlier this year she had her first genuinely scary health scare: a tumor. It turned out to be benign, and we got lucky. But it was a real wake-up call: I can't keep being the chill, "eh, she seems fine" pet owner anymore. I also can't afford to haul her to the vet every six months just for peace of mind (vet bills don't care about your feelings).
+
+Therefore, I decided to build the exact tool I want, the way I want it, and completely for free.
 
 ---
 
@@ -84,7 +92,7 @@ npm run dev
 
 ## Status
 
-Work in progress — Currently in active development as both a portfolio project and a real-world application, created to strengthen my Vue 3 skills after specializing in React.
+Work in progress — currently in active development as both a portfolio project and a real, actually-used-daily application, built to level up my Vue 3 skills after years of being a React loyalist. Consider this my "learning arc" montage, except instead of training in the mountains, I'm arguing with reactive() vs ref() at midnight.
 
 Current progress:
 - [x] Authentication (Google + email/password)
@@ -105,8 +113,6 @@ Current progress:
 
 ## About
 
-Built by a junior frontend developer transitioning from a React specialization, Pixash was created as a real-world project to gain in-depth experience with Vue 3 — including its reactivity system, composables, directives, lifecycle hooks, and broader ecosystem.
+Every feature here was designed and built from scratch, React instincts slowly being rewired into Vue ones along the way. The goal wasn't just "make something that works," but something that's accessible, cleanly architected, and doesn't fall over the moment a real user (or a very determined cat) gets near it.
 
-No tutorials were followed. Every feature was designed and developed from scratch with a strong focus on accessibility, clean architecture, and production-quality code.
-
-And while Vitest handled the unit testing, Pixie occasionally stepped in as an unofficial code reviewer. 😸
+At the end of the day, this is a tool built for two very real animals by someone who got tired of waiting for the "perfect" free app to exist and decided to just make it instead — bugs, late nights, and all.
