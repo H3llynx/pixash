@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Camera, Edit2, LogOut } from '@lucide/vue';
+import { Camera, Edit2, LogOut, Trash2 } from '@lucide/vue';
 import { onClickOutside, onKeyStroke } from '@vueuse/core';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
 import { onMounted, onUnmounted, ref, toRef } from 'vue';
@@ -9,6 +9,7 @@ import { usePictureUpdate } from '../../../composables/usePictureUpdate';
 import { ROUTES } from '../../../router/config';
 import router from '../../../router/router';
 import { useAuth } from '../composables/useAuth';
+import DeleteAccount from './DeleteAccount.vue';
 import NameUpdate from './NameUpdate.vue';
 import PictureUpdate from './PictureUpdate.vue';
 
@@ -23,6 +24,7 @@ const props = defineProps<{
 const visible = defineModel<boolean>("visible");
 const menuRef = ref<HTMLUListElement | null>(null);
 const isEditingName = ref<boolean>(false);
+const isDeletingAccount = ref<boolean>(false);
 
 const { activate, deactivate } = useFocusTrap(menuRef, {
     immediate: true,
@@ -63,11 +65,6 @@ onUnmounted(() => {
         <ul v-if="visible" ref="menuRef" role="menu"
             class="absolute top-4 right-0 w-max filter-blur rounded-xl overflow-hidden border border-border bg-bg-rgba">
             <li role="none">
-                <Button role="menuitem" variant="ghost" size="xs" @click="handleLogout">
-                    <LogOut :size="20" /> {{ t("userMenu.logout") }}
-                </Button>
-            </li>
-            <li role="none">
                 <Button role="menuitem" variant="ghost" size="xs" @click="handleEditPicture">
                     <Camera :size="20" /> {{ t("userMenu.updatePicture") }}
                 </Button>
@@ -77,10 +74,22 @@ onUnmounted(() => {
                     <Edit2 :size="18" /> {{ t("userMenu.updateName") }}
                 </Button>
             </li>
+            <li role="none">
+                <Button role="menuitem" variant="ghost" size="xs" @click="handleLogout">
+                    <LogOut :size="20" /> {{ t("userMenu.logout") }}
+                </Button>
+            </li>
+            <li role="none">
+                <Button role="menuitem" variant="ghost" size="xs" class="text-text-secondary"
+                    @click="isDeletingAccount = true">
+                    <Trash2 :size="18" />{{ t("userMenu.deleteAccount") }}
+                </Button>
+            </li>
         </ul>
     </Transition>
     <NameUpdate v-model:nameVisible="isEditingName" />
     <PictureUpdate v-model:picVisible="isEditingPicture" />
+    <DeleteAccount v-model:deleteVisible="isDeletingAccount" />
 </template>
 
 <style scoped>

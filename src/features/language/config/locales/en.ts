@@ -19,6 +19,7 @@ export default {
             markDone: "Mark as done",
         },
         text: {
+            genericError: "Something went wrong. Please try again.",
             noEventText: "No upcoming care scheduled.",
             noHistoryText: "No records found for the selected category",
             noPastTreatments: "There is no past medical treatment recorded.",
@@ -66,6 +67,15 @@ export default {
         namePlaceholder: "Sasha's owner",
         emailLabel: "Email address",
         passwordLabel: "Password",
+        deleteAccount: {
+            title: "Delete account",
+            warning: "This will permanently delete your account, including all your pets, vets, and health records. This action cannot be undone.",
+            passwordLabel: "Confirm your password",
+            cta: "Yes, delete my account",
+            deleting: "Deleting...",
+            wrongPassword: "Incorrect password. Please try again.",
+            popupClosed: "Google sign-in was closed before completing. Please try again.",
+        }
     },
     addMenu: {
         pet: "Add pet",
@@ -80,6 +90,7 @@ export default {
         logout: "Log out",
         updatePicture: "Update profile picture",
         updateName: "Edit name",
+        deleteAccount: "Delete account"
     },
     dashboard: {
         title: {
@@ -465,7 +476,6 @@ export default {
         },
         error: {
             genericTitle: "Error",
-            generic: "An unexpected error occurred",
             errorPicture: "Your picture could not be uploaded. Please try again",
             errorFile: "Your document could not be uploaded. Please try again",
             errorDeletionPicture: "Your picture could not be deleted. Please try again"

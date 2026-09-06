@@ -19,6 +19,7 @@ export default {
             markDone: "Marcar como hecho"
         },
         text: {
+            genericError: "Se produjo un error inesperado",
             noEventText: "No hay citas ni cuidados programados.",
             noHistoryText: "No se encontraron registros para la categoría seleccionada",
             noPastTreatments: "No hay tratamientos médicos pasados registrados.",
@@ -66,6 +67,15 @@ export default {
         namePlaceholder: "El dueño de Sasha",
         emailLabel: "Correo electrónico",
         passwordLabel: "Contraseña",
+        deleteAccount: {
+            title: "Eliminar cuenta",
+            warning: "Esto eliminará permanentemente tu cuenta, incluyendo todas tus mascotas, veterinarios e historial médico. Esta acción no se puede deshacer.",
+            passwordLabel: "Confirma tu contraseña",
+            cta: "Sí, eliminar mi cuenta",
+            deleting: "Eliminando...",
+            wrongPassword: "Contraseña incorrecta. Inténtalo de nuevo.",
+            popupClosed: "Se cerró el inicio de sesión con Google antes de completarse. Inténtalo de nuevo."
+        }
     },
     addMenu: {
         pet: "Añadir mascota",
@@ -80,6 +90,7 @@ export default {
         logout: "Cerrar sesión",
         updatePicture: "Actualizar foto de perfil",
         updateName: "Editar nombre",
+        deleteAccount: "Delete account"
     },
     dashboard: {
         title: {
@@ -465,7 +476,6 @@ export default {
         },
         error: {
             genericTitle: "Error",
-            generic: "Se produjo un error inesperado",
             errorPicture: "No se pudo subir tu foto. Por favor, inténtalo de nuevo",
             errorFile: "No se pudo subir tu documento. Por favor, inténtalo de nuevo",
             errorDeletionPicture: "No se pudo eliminar tu foto. Por favor, inténtalo de nuevo"

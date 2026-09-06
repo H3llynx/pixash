@@ -35,7 +35,7 @@ const inputChecked = computed(() => {
 });
 
 const handleInput = (event: Event) => {
-    if (props.type === "text") {
+    if (props.type === "text" || props.type === "password") {
         handleChange(event);
     }
 };

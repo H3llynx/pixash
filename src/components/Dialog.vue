@@ -44,7 +44,7 @@ watch(dialog, (newVal) => {
                         dialog.cancelText ?
                             dialog.cancelText : t("common.button.cancel")
                     }}</Button>
-                    <Button @click="handleConfirm" size="md" class="relative">{{ dialog.confirmText ?
+                    <Button @click="handleConfirm" class="relative">{{ dialog.confirmText ?
                         dialog.confirmText : t("common.button.confirm") }}
                         <PawPrint class="absolute -top-0.75 -right-0.5" fill="var(--color-bg-rgba)"
                             color="var(--color-accent-dark)" :size="28" stroke-width="1.5" />

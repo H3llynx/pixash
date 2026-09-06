@@ -1,7 +1,8 @@
-import { addDoc, collection, deleteDoc, deleteField, doc, DocumentReference, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, deleteField, doc, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { DB } from '../config/config';
 import { db } from "../config/firebase";
 import type { Pet, PetExtended } from '../features/pets/types';
+import { deleteSubcollection } from './helpers';
 
 const getCollection = (userId: string) => collection(db, DB.users, userId, DB.pets)
 const getDoc = (userId: string, petId: string) => doc(db, DB.users, userId, DB.pets, petId);
@@ -90,17 +91,4 @@ export const deletePet = async (petId: string, userId: string) => {
     console.error("Error deleting pet: ", error);
     throw error;
   }
-};
-
-const deleteSubcollection = async (
-  parentRef: DocumentReference,
-  subcollectionName: string
-) => {
-  const subcollectionRef = collection(parentRef, subcollectionName);
-  const snapshot = await getDocs(subcollectionRef);
-
-  if (snapshot.empty) return;
-
-  const deletePromises = snapshot.docs.map((doc) => deleteDoc(doc.ref));
-  await Promise.all(deletePromises);
 };
