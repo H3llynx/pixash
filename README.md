@@ -92,7 +92,7 @@ npm run dev
 
 ## Status
 
-Work in progress — currently in active development as both a portfolio project and a real, actually-used-daily application, built to level up my Vue 3 skills after years of being a React loyalist. Consider this my "learning arc" montage, except instead of training in the mountains, I'm arguing with reactive() vs ref() at midnight.
+Work in progress — currently in active development as both a portfolio project and a real, actually-used-daily application, built to level up my Vue 3 skills.
 
 Current progress:
 - [x] Authentication (Google + email/password)

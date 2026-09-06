@@ -104,7 +104,6 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                     :maxlength="500" />
                             </label>
                         </div>
-
                         <div class="flex gap-1 mt-1 justify-between items-center flex-wrap"
                             v-if="!selectedVaccine || mode === 'edit'">
                             <div

@@ -68,7 +68,7 @@ const handleCancel = () => {
         <p v-if="error" class="text-sm w-full text-error pb-0.5">
             {{ error }}
         </p>
-        <div class="flex justify-center gap-0.5 mt-1">
+        <div class="flex flex-col-reverse gap-0.5 mt-0.5 shrink-0 w-full md:flex-row md:ml-auto md:w-max">
             <Button variant="secondary" size="sm" @click="handleCancel" :disabled="isDeleting">
                 {{ t("common.button.cancel") }}
             </Button>

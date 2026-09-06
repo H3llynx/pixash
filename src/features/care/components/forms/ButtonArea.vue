@@ -15,8 +15,9 @@ const mode = defineModel();
 </script>
 
 <template>
-    <div class="flex gap-0.5 mt-1 items-center md:ml-auto" v-if="!selectedCare || mode === 'edit'">
-        <Button type="button" class="w-full md:w-auto" v-if="selectedCare && mode === 'edit'" variant="secondary"
+    <div class="flex gap-0.5 flex-col-reverse md:flex-row shrink-0 w-full md:w-max md:ml-auto" v-if="!selectedCare ||
+        mode === 'edit'">
+        <Button type=" button" class="w-full md:w-auto" v-if="selectedCare && mode === 'edit'" variant="secondary"
             size="sm" :disabled="loading" @click="mode = 'view'">
             {{ t("common.button.cancel") }}
         </Button>
