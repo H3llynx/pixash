@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BriefcaseMedical, Edit2, Plus } from '@lucide/vue';
+import { BriefcaseMedical, Edit2, NotebookPen } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
@@ -87,7 +87,7 @@ const handleVetUpdate = () => {
                     {{ t("vet.cta.call") }}
                 </Button>
                 <Button size="third" class="rounded-xl" @click="handleVisit">
-                    <Plus :size="18" />
+                    <NotebookPen :size="18" class="shrink-0" />
                     {{ t("vet.cta.visit") }}
                 </Button>
             </div>

@@ -40,8 +40,12 @@ const handleClick = (action: string) => {
                         <BriefcaseMedical class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
+                        <Button variant="secondary" @click="handleClick('visit')">{{ t("addMenu.vetVisit") }}</Button>
+                        <Stethoscope class="btn-icon default-transition filter-blur" :size="40" />
+                    </div>
+                    <div class="row">
                         <Button variant="secondary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
-                        }}</Button>
+                            }}</Button>
                         <Pill class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                 </div>
@@ -55,7 +59,7 @@ const handleClick = (action: string) => {
                     </div>
                     <div class="row">
                         <Button variant="secondary" @click="handleClick('antiparasitic')">{{ t("addMenu.antiparasitic")
-                            }}</Button>
+                        }}</Button>
                         <BugOff class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
@@ -68,12 +72,12 @@ const handleClick = (action: string) => {
                     </div>
                     <div class="row">
                         <Button variant="secondary" @click="handleClick('weight')">{{ t("health.cta.logWeight")
-                            }}</Button>
+                        }}</Button>
                         <Scale class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
                         <Button variant="secondary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
-                            }}</Button>
+                        }}</Button>
                         <Pill class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                 </div>
