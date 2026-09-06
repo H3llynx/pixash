@@ -54,7 +54,7 @@ onBeforeRouteLeave(() => {
                 @update-monthName="currentMonthName = $event" @date-click="handleDateClick" />
         </section>
         <section
-            class="flex flex-col-reverse gap-3 h-full lg:flex-col lg:px-1.5 md:pt-1.5 lg:bg-bg-3 lg:border-l lg:border-border lg:border-dashed lg:h-full">
+            class="flex flex-col-reverse gap-2 h-full lg:flex-col lg:px-1.5 md:pt-1.5 lg:bg-bg-3 lg:border-l lg:border-border lg:border-dashed lg:h-full">
             <div class="flex flex-col gap-2.5 pb-1.5">
                 <EventList :title="getTitle()" :events="filteredMonthEvents" :itemsPerPage="is2xl ? 6 : 4" />
                 <TreatmentsThisMonth />

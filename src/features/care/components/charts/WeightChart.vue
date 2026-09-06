@@ -2,16 +2,17 @@
 import { Plus } from '@lucide/vue';
 import type { ChartData, ChartOptions } from 'chart.js';
 import {
-    BarElement,
     CategoryScale,
     Chart as ChartJS,
     Legend,
     LinearScale,
+    LineElement,
+    PointElement,
     Title,
     Tooltip,
 } from 'chart.js';
 import { computed } from 'vue';
-import { Bar } from 'vue-chartjs';
+import { Line } from 'vue-chartjs';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { getChartColor } from '../../../../utils.ts';
@@ -35,7 +36,8 @@ const { unitFactor, preferredUnit } = usePetDetails(props.pet);
 ChartJS.register(
     CategoryScale,
     LinearScale,
-    BarElement,
+    LineElement,
+    PointElement,
     Title,
     Tooltip,
     Legend,
@@ -46,7 +48,7 @@ const sorted = computed(() => {
     return [...props.logs].sort((a, b) => a.measuredAt.seconds - b.measuredAt.seconds);
 });
 const displayed = computed(() => sorted.value.slice(-6));
-const chartData = computed<ChartData<"bar">>(() => {
+const chartData = computed<ChartData<"line">>(() => {
     const labels = displayed.value.map(log => log.measuredAt.toDate().toLocaleDateString(undefined, {
         day: "numeric",
         month: "short",
@@ -61,15 +63,17 @@ const chartData = computed<ChartData<"bar">>(() => {
                 label: `${t("pet.profile.labels.weight")} ${preferredUnit.value})`,
                 data,
                 borderColor: getChartColor("--color-accent"),
-                borderRadius: { topLeft: 12, topRight: 12 },
-                backgroundColor: getChartColor("--color-accent-rgba"),
-                borderWidth: 1
+                borderWidth: 2,
+                tension: 0.3,
+                pointBackgroundColor: getChartColor("--color-bg"),
+                pointRadius: 4,
+                pointHoverRadius: 5
             }
         ]
     }
 });
 
-const chartOptions = computed<ChartOptions<"bar">>(() => {
+const chartOptions = computed<ChartOptions<"line">>(() => {
     theme.value;
     return {
         responsive: true,
@@ -77,12 +81,21 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
         plugins: {
             legend: { display: false },
             tooltip: {
+                usePointStyle: true,
+                boxPadding: 4,
+                boxWidth: 8,
                 backgroundColor: getChartColor("--color-bg-2"),
                 titleColor: getChartColor("--color-text"),
                 bodyColor: getChartColor("--color-text"),
                 borderColor: getChartColor("--color-border"),
                 borderWidth: 0.5,
                 padding: 10,
+                callbacks: {
+                    labelColor: () => ({
+                        borderColor: getChartColor("--color-accent"),
+                        backgroundColor: getChartColor("--color-accent"),
+                    }),
+                },
                 titleFont: {
                     family: '"Plus Jakarta Sans", sans-serif',
                     size: 13,
@@ -136,7 +149,7 @@ const chartOptions = computed<ChartOptions<"bar">>(() => {
                 </div>
             </div>
             <div class="h-8">
-                <Bar :data="chartData" :options="chartOptions" />
+                <Line :data="chartData" :options="chartOptions" />
             </div>
         </div>
         <div v-else class="flex flex-col gap-1">
