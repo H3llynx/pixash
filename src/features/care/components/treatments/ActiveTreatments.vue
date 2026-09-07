@@ -2,7 +2,6 @@
 import { useI18n } from 'vue-i18n';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { useTreatments } from '../../composables/useTreatments.ts';
-import { getTreatmentColor } from '../../utils.ts';
 import TreatmentWithLog from './TreatmentWithLog.vue';
 
 const { t } = useI18n();
@@ -15,7 +14,7 @@ const { activeTreatments } = useTreatments();
         <h2>{{ t("dashboard.title.activeTreatments") }}</h2>
         <div class="grid grid-cols-1 gap-1">
             <TreatmentWithLog v-if="activeTreatments.length" v-for="(treatment, index) in activeTreatments"
-                :key="treatment.id" :treatment="treatment" :color="getTreatmentColor(index)" />
+                :key="treatment.id" :treatment="treatment" :colorIndex="index" />
             <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noActiveTreatment") }}</p>
         </div>
     </article>

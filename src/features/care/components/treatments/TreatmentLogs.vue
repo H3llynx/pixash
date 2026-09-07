@@ -8,18 +8,18 @@ import { usePets } from '../../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../../pets/types.ts';
 import { useTreatments } from '../../composables/useTreatments.ts';
 import type { Log, MedicationLogExtended, MedicineDb, TreatmentExtended } from '../../types.ts';
-import { getDailyDose } from '../../utils.ts';
+import { getDailyDose, getTreatmentBackground, getTreatmentColor } from '../../utils.ts';
 import EditLogTime from './EditLogTime.vue';
 
 const props = defineProps<{
     pet: PetExtended
     medication: MedicineDb
     treatment: TreatmentExtended
-    color: string
+    colorIndex: number
 }>();
 
 const { addNewLog, selectLog, deleteSelectedLog, careError, selectedMedicationLog } = usePets();
-const { getTodayLoggedList, getDosesToLog, getMissedDoses, loading, isEditing } = useTreatments();
+const { getTodayLoggedList, getDailyDosesToLog, getDailyMissedDoses, loading, isEditing } = useTreatments();
 const { t, locale } = useI18n();
 const { show } = useToast();
 
@@ -57,11 +57,13 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
 </script>
 
 <template>
-    <div class="flex gap-0.5 mt-0.75 flex-wrap" :style="{ '--custom-color': color }">
+    <div class="flex gap-0.5 mt-0.75 flex-wrap" :style="{ '--custom-color': getTreatmentColor(colorIndex), }">
         <div v-for="log in getSortedLoggedList(props.pet, props.treatment, medication)" :key="log.id"
-            :class="{ 'log text-xs relative border border-border-light py-0.5 text-center rounded-xl flex items-center justify-center': true, 'opacity-40 animate-pulse': loading && selectedMedicationLog?.id === log.id }"
-            :style="{ color: color }">
-            <p class="rounded-xl w-full px-1.5">
+            :class="{ 'log p-0.5 rounded-xl flex gap-0.5 items-center': true, 'opacity-40 animate-pulse': loading && selectedMedicationLog?.id === log.id }"
+            :style="{
+                color: getTreatmentColor(colorIndex), backgroundColor: getTreatmentBackground(colorIndex)
+            }">
+            <p>
                 {{ log.givenAt.toDate().toLocaleString(locale, {
                     day: "numeric",
                     month: "long",
@@ -69,20 +71,20 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
                     hour: '2-digit',
                     minute: '2-digit'
                 }) }}</p>
-            <div class="absolute -top-[15px] -right-[5px] flex gap-0.25 bg-bg-rgba">
-                <Button :disabled="loading && selectedMedicationLog?.id === log.id" variant="tertiary" size="min"
+            <div class="flex gap-[3px]">
+                <Button :disabled="loading && selectedMedicationLog?.id === log.id" variant="ghost" size="min"
                     :aria-label="t('health.cta.editMedTime')" @click="editLogTime(log)">
                     <Pen :size="13" />
                 </Button>
-                <Button :disabled="loading && selectedMedicationLog?.id === log.id" variant="tertiary" size="min"
+                <Button :disabled="loading && selectedMedicationLog?.id === log.id" variant="ghost" size="min"
                     :aria-label="t('common.button.delete')" @click="deleteDose(log)" class="hover:bg-error">
                     <X :size="13" />
                 </Button>
             </div>
         </div>
-        <Button :disabled="loading" v-for="number in getDosesToLog(props.pet, props.treatment, medication)"
+        <Button :disabled="loading" v-for="number in getDailyDosesToLog(props.pet, props.treatment, medication)"
             :key="number" variant="card" size="xs" @click="logDose(medication)"
-            :class="{ 'dose border border-border': true, 'missed': getMissedDoses(pet, treatment, medication) && number === 1 }">
+            :class="{ 'dose': true, 'missed': getDailyMissedDoses(pet, treatment, medication) && number === 1 }">
             {{ t("health.cta.logDose") }} {{ getDailyDose(medication.frequency) !== undefined ? number +
                 getTodayLoggedList(props.pet, props.treatment, medication).length
                 : "" }}
@@ -98,13 +100,14 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
     flex: 1;
     min-width: 48%;
     min-height: 3rem;
+    font-size: small;
 }
 
 .log {
     border: 1px solid var(--custom-color);
 }
 
-button.missed {
+button.missed:not(:disabled) {
     background: var(--color-error);
     color: white;
 }
@@ -115,20 +118,11 @@ button.missed {
     .log {
         min-width: 32%;
     }
-
-    .dose {
-        background: var(--color-border-light);
-        color: var(--color-text);
-    }
 }
 
 @media (hover: hover) and (pointer: fine) {
     .dose:not(:disabled):hover {
         background-color: var(--custom-color);
-        color: var(--color-white);
-    }
-
-    .log-btn:hover {
         color: var(--color-white);
     }
 }

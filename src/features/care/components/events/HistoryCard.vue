@@ -82,7 +82,7 @@ const handleDelete = () => {
                             }) }}</p>
                         <h4 class="font-medium text-sm mt-0.25">{{ title }}</h4>
                         <ul class="text-text-secondary text-xs mt-0.5 flex flex-wrap gap-x-0.5" v-if="event.treated">
-                            <li v-for="treated in showAntiparasites(event.treated, locale, t, true)"
+                            <li v-for="treated in showAntiparasites(event.treated, locale, t, true)" :key="treated"
                                 class="inline-flex shrink-0 gap-0.25">
                                 <Check :size="14" />{{ treated }}
                             </li>

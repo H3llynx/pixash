@@ -311,7 +311,7 @@ export default {
             saveTreatment: "Save treatment",
             viewTreatment: "View treatment detail",
             deleteTreatment: "Delete treatment",
-            logDose: "Log medication",
+            logDose: "Log dose",
             editMedTime: "Update medication given time"
         },
         sharedFields: {
@@ -369,6 +369,7 @@ export default {
             ended: "ended: ",
             summaryLabel: "view log actions",
             editMedTime: "When did you give {medication} to {name}?",
+            missedDoses: "Missed doses"
         },
         medicine: {
             title: "Medicine {index}",

@@ -1,12 +1,15 @@
 import { computed, ref } from "vue";
 import { usePets } from "../../pets/composables/usePets";
 import type { PetExtended } from "../../pets/types";
-import type { MedicationLogExtended, MedicineDb, TreatmentExtended } from "../types";
+import type { MedicationLogExtended, MedicineDb, MissedDoseRecord, TreatmentExtended } from "../types";
 import { checkOverlapsMonth, getDailyDose, getIntervalHours, getTreatmentColor } from "../utils";
 import { useEvents } from "./useEvents";
 
 const loading = ref<boolean>(false);
 const isEditing = ref<boolean>(false);
+const isAdding = ref<boolean>(false);
+const selectedMedication = ref<MedicineDb | null>(null);
+const medicationDate = ref<string>("");
 
 export const useTreatments = () => {
     const { treatments, selectedPet } = usePets();
@@ -17,8 +20,11 @@ export const useTreatments = () => {
     const byStartThenEndDesc = (a: TreatmentExtended, b: TreatmentExtended) => {
         const startDiff = b.startDate!.seconds - a.startDate!.seconds;
         if (startDiff !== 0) return startDiff;
-        return b.endDate!.seconds - a.endDate!.seconds;
-    }
+        const NO_END = Number.MAX_SAFE_INTEGER;
+        const aEnd = a.endDate?.seconds ?? NO_END;
+        const bEnd = b.endDate?.seconds ?? NO_END;
+        return bEnd - aEnd;
+    };
 
     const treatmentsThisMonth = computed(() => {
         const now = new Date();
@@ -73,7 +79,7 @@ export const useTreatments = () => {
         return logs.sort((a, b) => b.givenAt.toDate().getTime() - a.givenAt.toDate().getTime())[0];
     };
 
-    const getDosesToLog = (
+    const getDailyDosesToLog = (
         pet: PetExtended,
         treatment: TreatmentExtended,
         medication: MedicineDb
@@ -83,7 +89,7 @@ export const useTreatments = () => {
         return dailyDose !== undefined ? dailyDose - loggedList.length : 1;
     };
 
-    const getMissedDoses = (
+    const getDailyMissedDoses = (
         pet: PetExtended,
         treatment: TreatmentExtended,
         medication: MedicineDb
@@ -107,20 +113,71 @@ export const useTreatments = () => {
         const loggedToday = getTodayLoggedList(pet, treatment, medication);
         if (loggedToday.length >= dailyDose) return 0;
         const referenceTimestamp = loggedToday.length === 0
-            ? new Date().setHours(DOSE_WINDOW.startHour, 0, 0, 0)
+            ? Math.max(new Date().setHours(DOSE_WINDOW.startHour, 0, 0, 0) + intervalMs, treatment.startDate.toMillis())
             : latestLog!.givenAt.toMillis() + intervalMs;
         return Date.now() >= referenceTimestamp ? 1 : 0;
     };
 
+    const getLoggedListForDate = (
+        pet: PetExtended,
+        treatment: TreatmentExtended,
+        medication: MedicineDb,
+        date: Date
+    ): MedicationLogExtended[] => {
+        const dateString = date.toLocaleDateString();
+        return pet.logs.filter(log =>
+            log.type === "medication" &&
+            log.treatmentId === treatment.id &&
+            log.medicineId === medication.id &&
+            log.givenAt &&
+            log.givenAt.toDate().toLocaleDateString() === dateString
+        ) as MedicationLogExtended[];
+    };
+
+
+    const getMissedDosesHistory = (
+        pet: PetExtended,
+        treatment: TreatmentExtended,
+        medication: MedicineDb
+    ): MissedDoseRecord[] => {
+        const dailyDose = getDailyDose(medication.frequency);
+        if (dailyDose === undefined) return [];
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const treatmentStart = treatment.startDate.toDate();
+        treatmentStart.setHours(0, 0, 0, 0);
+
+        const scanStart = treatment.startDate.toDate();
+
+        const missedDoses: MissedDoseRecord[] = [];
+        const cursor = new Date(scanStart);
+
+        while (cursor < today) {
+            const given = getLoggedListForDate(pet, treatment, medication, cursor).length;
+            const count = dailyDose - given;
+            if (count > 0) {
+                missedDoses.push({ date: new Date(cursor), count });
+            }
+            cursor.setDate(cursor.getDate() + 1);
+        }
+        return missedDoses;
+    };
+
     return {
         loading,
+        isAdding,
         isEditing,
         byStartThenEndDesc,
         treatmentsThisMonth,
         activeTreatments,
         getTodayLoggedList,
-        getDosesToLog,
-        getMissedDoses
+        getDailyDosesToLog,
+        getDailyMissedDoses,
+        getMissedDosesHistory,
+        selectedMedication,
+        medicationDate
     };
 
 }

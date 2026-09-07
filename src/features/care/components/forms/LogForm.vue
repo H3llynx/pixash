@@ -37,7 +37,7 @@ provide('readonly', isReadonly);
 const { subtype, date, notes } = logFields;
 const loading = ref<boolean>(false);
 const error = ref<boolean>(false);
-const loadedPictures = reactive(new Set<number>());
+const loadedPictures = reactive(new Set<string>());
 const defaultForm = {
     subtype: subtype.options[0].id,
     date: "",
@@ -188,7 +188,7 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedOtherLog!.subtype}`)
                     })
-                    }}
+                        }}
                     </h1>
                     <Button v-if="selectedOtherLog" action="delete" :aria-label="t('common.button.delete')"
                         @click="handleDelete" />
@@ -207,14 +207,14 @@ watch(() => formData.pictures, (pictures) => {
                             </template>
                         </Input>
                         <div class="preview-container">
-                            <div v-if="formData.pictures.length" v-for="(picture, index) in formData.pictures"
+                            <div v-for="(picture, index) in formData.pictures" :key="picture"
                                 class="relative rounded-lg mb-0.25 min-w-[140px] cursor-pointer">
-                                <div v-if="!loadedPictures.has(index)"
+                                <div v-if="!loadedPictures.has(picture)"
                                     class="rounded-lg min-w-[160px] h-[120px] bg-border-light flex items-center justify-center">
                                     <ImageIcon :size="28" class="opacity-30 animate-pulse" />
                                 </div>
-                                <img :src="picture" @load="loadedPictures.add(index)" class="rounded-lg relative"
-                                    @click="showLightbox(index)" :class="{ 'hidden': !loadedPictures.has(index) }" />
+                                <img :src="picture" @load="loadedPictures.add(picture)" class="rounded-lg relative"
+                                    @click="showLightbox(index)" :class="{ 'hidden': !loadedPictures.has(picture) }" />
                                 <Button v-if="mode === 'edit'" type="button" variant="ghost" size="xxs"
                                     :aria-label="t('common.button.delete')" @click.stop="deletePicture(picture)"
                                     class="delete-btn hover:bg-error">

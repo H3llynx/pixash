@@ -48,6 +48,7 @@
   --color-error-bg: #FCEBEB;
   --color-error-border: #F09595;
   --color-error-text: #A32D2D;
+  --color-error-rgba: rgba(226, 75, 74, 0.23);
 
   --color-success: #639922;
   --color-success-bg: #EAF3DE;
@@ -460,11 +461,9 @@
     display: flex;
     align-items: center;
     width: max-content;
-    padding: 2px 0.5rem;
-    border-radius: 10px;
-    font-weight: 500;
+    padding: 0.25rem 1rem;
     flex-shrink: 0;
-    @apply text-xs h-max;
+    @apply text-xs rounded-full h-max;
   }
 
   .profile-row {

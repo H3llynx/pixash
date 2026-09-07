@@ -135,6 +135,12 @@ export type MedicationRecord = {
     givenAt?: Timestamp
 };
 
+
+export type MissedDoseRecord = {
+    date: Date;
+    count: number;
+};
+
 export type AntiparasiteLogExtended = {
     id: string;
     petId: string;

@@ -54,7 +54,7 @@ const getAllChipStyle = () => {
             </div>
         </Button>
         <Button :variant="stacked ? 'stacked' : 'tile'" :size="stacked ? 'xs' : 'tile'" v-for="pet in filteredPets"
-            :class="getPetChipStyle(pet)" @click="handleClick(pet)"
+            :key="pet.id" :class="getPetChipStyle(pet)" @click="handleClick(pet)"
             :aria-pressed="viewAll ? pet.id === petViewed : pet === selectedPet">
             <div :class="stacked ? 'chip-photo' : 'btn-layer'">
                 <img v-if="pet.photo" :src="pet.photo" :alt="pet.name" class="w-full h-full object-cover" aria-hidden />

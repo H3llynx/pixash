@@ -328,7 +328,7 @@ export const addLog = async (log: Log, petId: string, userId: string) => {
             treatmentId: log.treatmentId,
             medicineId: log.medicineId,
             type: log.type,
-            givenAt: serverTimestamp()
+            givenAt: log.givenAt ?? serverTimestamp()
         };
     else if (log.type === "other")
         newLog = {

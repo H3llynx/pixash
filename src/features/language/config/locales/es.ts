@@ -311,7 +311,7 @@ export default {
             saveTreatment: "Guardar tratamiento",
             viewTreatment: "Ver detalles del tratamiento",
             deleteTreatment: "Eliminar tratamiento",
-            logDose: "Registrar medicación",
+            logDose: "Registrar dosis",
             editMedTime: "Actualizar hora de administración"
         },
         sharedFields: {
@@ -349,6 +349,7 @@ export default {
             startDate: "Fecha de inicio",
             vet: "Prescrito por",
             notes: "Notas",
+            missedDoses: "Omitidas"
         },
         vetForm: {
             name: "Nombre",

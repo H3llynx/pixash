@@ -16,7 +16,7 @@ const { t } = useI18n();
     <section class="pet-section p-0">
         <h2 class="default-padding">{{ t("health.title.myVets") }}</h2>
         <Scrollable v-if="hasVets" :list="filteredVets">
-            <VetCard v-if="hasVets" v-for="vet in filteredVets" :vet="vet" />
+            <VetCard v-if="hasVets" v-for="vet in filteredVets" :vet="vet" :key="vet.id" />
         </Scrollable>
         <div v-else class="default-padding">
             <Button variant="secondary" @click="isAddingCare.vet = true;">

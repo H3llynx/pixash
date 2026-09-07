@@ -91,10 +91,10 @@ export const MED_FREQUENCY = [
 
 export const TREATMENTCOLORS = [
     { rgb: "rgb(49, 163, 153)", rgba: "rgba(49, 163, 153, 0.1)" },
-    { rgb: "rgb(207, 136, 22)", rgba: "rgba(207, 136, 22, 0.15)" },
+    { rgb: "rgb(207, 136, 22)", rgba: "rgba(207, 136, 22, 0.1)" },
     { rgb: "rgb(163, 45, 45)", rgba: "rgba(163, 45, 45, 0.1)" },
-    { rgb: "rgb(93, 144, 175)", rgba: "rgba(93, 144, 175, 0.15)" },
-    { rgb: "rgb(92, 164, 110)", rgba: "rgba(92, 164, 110, 0.15)" }
+    { rgb: "rgb(93, 144, 175)", rgba: "rgba(93, 144, 175, 0.1)" },
+    { rgb: "rgb(92, 164, 110)", rgba: "rgba(92, 164, 110, 0.1)" }
 ];
 
 const vetFields = {

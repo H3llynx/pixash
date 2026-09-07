@@ -18,7 +18,7 @@ const { t } = useI18n();
     <article class="pet-section" v-if="filteredMonthTreatments.length">
         <h2>{{ t("events.treatments") }}</h2>
         <div class="grid grid-cols-1 gap-1">
-            <Button v-for="treatment in filteredMonthTreatments" variant="card" size="sm"
+            <Button v-for="treatment in filteredMonthTreatments" variant="card" size="sm" :key="treatment.id"
                 @click="selectTreatment(treatment)" :aria-label="t('health.cta.viewTreatment')"
                 :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id }">
                 <div class="rounded-xl w-4 h-4 bg-border text-4xl flex shrink-0 justify-center items-center">
@@ -39,9 +39,10 @@ const { t } = useI18n();
                     </p>
                     <ProgressBar v-if="treatment.endDate" :progress="getTreatmentProgress(treatment)!"
                         :color="treatment.color" />
-                    <span v-else class="inline ml-0.5 float-right tag bg-border-light text-text-secondary">{{
-                        t("health.treatment.ongoing")
-                    }}</span>
+                    <span v-else
+                        class="inline ml-0.5 float-right tag border border-border bg-bg-rgba text-text-softer">{{
+                            t("health.treatment.ongoing")
+                        }}</span>
                 </div>
             </Button>
         </div>

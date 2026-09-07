@@ -71,8 +71,8 @@ const handleVetUpdate = () => {
             </div>
         </div>
         <div class="flex gap-0.5 items-center">
-            <PetTag v-for="pet in assignedPets" :pet="pet" />
-            <VetTypeTag v-for="type in vet.types" :type="type" />
+            <PetTag v-for="pet in assignedPets" :pet="pet" :key="pet.id" />
+            <VetTypeTag v-for="type in vet.types" :type="type" :key="type" />
         </div>
         <VetProfileRow data="email" :vet="vet" />
         <VetProfileRow data="phone" :vet="vet" />
