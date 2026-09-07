@@ -56,6 +56,7 @@ export const useTreatmentForm = () => {
                     title: t("toast.success.title.generic"),
                     message: t("toast.success.message.treatmentAdded", { name: selectedPet.value.name, title: nameSnapshot }),
                 });
+                resetForm(formData, defaultForm);
             }
             else if (selectedTreatment.value) {
                 const originalData = {

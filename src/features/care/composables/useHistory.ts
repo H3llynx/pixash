@@ -29,9 +29,15 @@ export const useHistory = () => {
     ].sort((a, b) => b.ts!.seconds - a.ts!.seconds));
 
     const petHistory = computed(() => history.value.filter(h => h.petId === selectedPet.value?.id) as PetEvent[]);
+
     const finishedTreatments = computed(() => treatments.value
         .filter(t => t.endDate && t.endDate.toDate() < new Date())
         .filter(t => t.petId === selectedPet.value?.id)
+        .sort((a, b) => {
+            const startDiff = b.startDate!.seconds - a.startDate!.seconds;
+            if (startDiff !== 0) return startDiff;
+            return b.endDate!.seconds - a.endDate!.seconds;
+        })
     );
 
     const filteredPetHistory = computed(() => eventType.value
