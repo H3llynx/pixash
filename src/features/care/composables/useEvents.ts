@@ -4,7 +4,7 @@ import { tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import { getPetIcon } from "../../pets/utils";
 import { type PetEvent } from "../types";
-import { checkOverlapsMonth, getLogIcon, getTreatmentBackground, getTreatmentColor, showVaccines } from "../utils";
+import { getLogIcon, getTreatmentBackground, showVaccines } from "../utils";
 
 const selectedDate = ref<string | null>(null);
 const currentMonth = ref<Date>(new Date());
@@ -119,28 +119,6 @@ export const useEvents = () => {
         return { pet, vet, title };
     };
 
-    const treatmentsThisMonth = computed(() => {
-        const now = new Date();
-        return treatments.value
-            .filter(t => {
-                const overlapsMonth = checkOverlapsMonth(
-                    t.startDate,
-                    t.endDate!,
-                    currentMonth.value
-                );
-                const isNotExpired = !t.endDate || t.endDate.toDate() >= now;
-                return overlapsMonth && isNotExpired;
-            })
-            .map((t, index) => ({ ...t, color: getTreatmentColor(index) }))
-    });
-
-    const activeTreatments = computed(() => {
-        const now = new Date();
-        return treatments.value
-            .filter(t => t.startDate.toDate() <= now && (!t.endDate || t.endDate.toDate() >= now))
-            .filter(t => t.petId === selectedPet.value?.id)
-    });
-
     return {
         selectedDate,
         currentMonth,
@@ -149,8 +127,6 @@ export const useEvents = () => {
         eventsThisMonth,
         petUpcomingEvents,
         useEventData,
-        selectedEvent,
-        treatmentsThisMonth,
-        activeTreatments
+        selectedEvent
     }
 }

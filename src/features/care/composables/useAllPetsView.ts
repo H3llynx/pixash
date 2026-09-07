@@ -1,11 +1,13 @@
 import { computed, ref } from "vue";
 import { usePets } from "../../pets/composables/usePets";
 import { useEvents } from "./useEvents";
+import { useTreatments } from "./useTreatments";
 
 const petViewed = ref<string>("");
 
 export const useAllPetsView = () => {
-    const { calendarEvents, eventsThisMonth, treatmentsThisMonth } = useEvents();
+    const { calendarEvents, eventsThisMonth } = useEvents();
+    const { treatmentsThisMonth } = useTreatments();
     const { vets } = usePets();
 
     const filteredCalendarEvents = computed(() => petViewed.value

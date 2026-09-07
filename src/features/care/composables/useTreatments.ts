@@ -1,13 +1,48 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { usePets } from "../../pets/composables/usePets";
 import type { PetExtended } from "../../pets/types";
 import type { MedicationLogExtended, MedicineDb, TreatmentExtended } from "../types";
-import { getDailyDose, getIntervalHours } from "../utils";
+import { checkOverlapsMonth, getDailyDose, getIntervalHours, getTreatmentColor } from "../utils";
+import { useEvents } from "./useEvents";
 
 const loading = ref<boolean>(false);
 const isEditing = ref<boolean>(false);
 
-export const useTreatmentTracking = () => {
+export const useTreatments = () => {
+    const { treatments, selectedPet } = usePets();
+    const { currentMonth } = useEvents()
+
     const DOSE_WINDOW = { startHour: 8, endHour: 21 };
+
+    const byStartThenEndDesc = (a: TreatmentExtended, b: TreatmentExtended) => {
+        const startDiff = b.startDate!.seconds - a.startDate!.seconds;
+        if (startDiff !== 0) return startDiff;
+        return b.endDate!.seconds - a.endDate!.seconds;
+    }
+
+    const treatmentsThisMonth = computed(() => {
+        const now = new Date();
+        return treatments.value
+            .filter(t => {
+                const overlapsMonth = checkOverlapsMonth(
+                    t.startDate,
+                    t.endDate!,
+                    currentMonth.value
+                );
+                const isNotExpired = !t.endDate || t.endDate.toDate() >= now;
+                return overlapsMonth && isNotExpired;
+            })
+            .sort(byStartThenEndDesc)
+            .map((t, index) => ({ ...t, color: getTreatmentColor(index) }))
+    });
+
+    const activeTreatments = computed(() => {
+        const now = new Date();
+        return treatments.value
+            .filter(t => t.startDate.toDate() <= now && (!t.endDate || t.endDate.toDate() >= now))
+            .filter(t => t.petId === selectedPet.value?.id)
+            .sort(byStartThenEndDesc)
+    });
 
     const getTodayLoggedList = (
         pet: PetExtended,
@@ -80,6 +115,9 @@ export const useTreatmentTracking = () => {
     return {
         loading,
         isEditing,
+        byStartThenEndDesc,
+        treatmentsThisMonth,
+        activeTreatments,
         getTodayLoggedList,
         getDosesToLog,
         getMissedDoses

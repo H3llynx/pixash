@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { getLabel, tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
-import { useTreatmentTracking } from '../../composables/useTreatmentTracking.ts';
+import { useTreatments } from '../../composables/useTreatments.ts';
 import { MED_FREQUENCY } from '../../config.ts';
 import type { TreatmentExtended } from '../../types.ts';
 import { getMedicationProgress, getTreatmentProgress } from '../../utils.ts';
@@ -13,7 +13,7 @@ import ProgressBar from './ProgressBar.vue';
 import TreatmentLogs from './TreatmentLogs.vue';
 
 const { selectTreatment, pets, treatmentLoading, selectedTreatment } = usePets();
-const { getMissedDoses } = useTreatmentTracking();
+const { getMissedDoses } = useTreatments();
 const { t } = useI18n();
 const props = defineProps<{ treatment: TreatmentExtended; color: string }>();
 const progress = computed(() => getTreatmentProgress(props.treatment));

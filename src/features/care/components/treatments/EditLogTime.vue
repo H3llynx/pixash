@@ -9,11 +9,11 @@ import { useToast } from '../../../../composables/useToast.ts';
 import { tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../../pets/types.ts';
-import { useTreatmentTracking } from '../../composables/useTreatmentTracking.ts';
+import { useTreatments } from '../../composables/useTreatments.ts';
 import type { Log, MedicationLogExtended, MedicineDb } from '../../types.ts';
 
 const { updateSelectedLog, selectLog, careError } = usePets();
-const { loading } = useTreatmentTracking();
+const { loading } = useTreatments();
 const { show } = useToast();
 const { t } = useI18n();
 

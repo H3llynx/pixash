@@ -6,7 +6,7 @@ import Button from '../../../../components/Button.vue';
 import { useToast } from '../../../../composables/useToast.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../../pets/types.ts';
-import { useTreatmentTracking } from '../../composables/useTreatmentTracking.ts';
+import { useTreatments } from '../../composables/useTreatments.ts';
 import type { Log, MedicationLogExtended, MedicineDb, TreatmentExtended } from '../../types.ts';
 import { getDailyDose } from '../../utils.ts';
 import EditLogTime from './EditLogTime.vue';
@@ -19,7 +19,7 @@ const props = defineProps<{
 }>();
 
 const { addNewLog, selectLog, deleteSelectedLog, careError, selectedMedicationLog } = usePets();
-const { getTodayLoggedList, getDosesToLog, getMissedDoses, loading, isEditing } = useTreatmentTracking();
+const { getTodayLoggedList, getDosesToLog, getMissedDoses, loading, isEditing } = useTreatments();
 const { t, locale } = useI18n();
 const { show } = useToast();
 

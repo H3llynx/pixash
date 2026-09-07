@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { usePets } from '../../../pets/composables/usePets.ts';
-import { useEvents } from '../../composables/useEvents.ts';
+import { useTreatments } from '../../composables/useTreatments.ts';
 import { getTreatmentColor } from '../../utils.ts';
 import TreatmentWithLog from './TreatmentWithLog.vue';
 
 const { t } = useI18n();
 const { loading } = usePets();
-const { activeTreatments } = useEvents();
+const { activeTreatments } = useTreatments();
 </script>
 
 <template>

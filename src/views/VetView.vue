@@ -8,14 +8,14 @@ import VetForm from '../features/care/components/forms/VetForm.vue';
 import ActiveTreatments from '../features/care/components/treatments/ActiveTreatments.vue';
 import TreatmentList from '../features/care/components/treatments/TreatmentList.vue';
 import VetSection from '../features/care/components/vet/VetSection.vue';
-import { useEvents } from '../features/care/composables/useEvents.ts';
 import { useHistory } from '../features/care/composables/useHistory.ts';
+import { useTreatments } from '../features/care/composables/useTreatments.ts';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 
 const { loading, selectedVet, vetLoading, isUpdatingVet } = usePets();
 const { t } = useI18n();
-const { activeTreatments } = useEvents();
+const { activeTreatments } = useTreatments();
 const { finishedTreatments } = useHistory();
 
 onBeforeRouteLeave(() => {
