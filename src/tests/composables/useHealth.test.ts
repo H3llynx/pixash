@@ -233,7 +233,7 @@ describe("useCare", () => {
             const [result, unmount] = withSetup(() => useCare(pets));
             result.selectLog(log);
             await result.deleteSelectedLog(log, "1");
-            expect(result.selectedLog).toBeNull();
+            expect(result.selectedLog.value).toBeNull();
             unmount();
         })
     });
