@@ -28,7 +28,6 @@ const timeData = ref<string>("");
 
 const handleCancel = () => {
     isEditing.value = false;
-    selectLog(null);
     timeData.value = "";
 };
 
@@ -43,7 +42,7 @@ const handleSubmit = async () => {
     const updatedLog: Log = {
         type: props.log.type,
         treatmentId: props.log.treatmentId,
-        medicineId: props.medication.id,
+        medicineId: props.log.medicineId,
         givenAt: Timestamp.fromDate(date)
     };
     isEditing.value = false;
@@ -71,13 +70,13 @@ watch(() => isEditing.value, (editing) => {
     <FreeModal v-model="isEditing">
         <form class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
             <h3 class="font-title">{{ t("health.treatment.editMedTime", { medication: medication.name, name: pet.name })
-            }}
+                }}
             </h3>
             <Input v-model="timeData" type="time" id="medication-time-log" />
             <Button :disabled="loading">{{ t("common.button.confirm") }}</Button>
             <Button :disabled="loading" type="button" variant="ghost" @click="handleCancel">{{
                 t("common.button.cancel")
-                }}</Button>
+            }}</Button>
         </form>
     </FreeModal>
 </template>

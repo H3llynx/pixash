@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Pen, X } from '@lucide/vue';
-import { nextTick } from 'vue';
+import { nextTick, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { useToast } from '../../../../composables/useToast.ts';
@@ -18,10 +18,13 @@ const props = defineProps<{
     colorIndex: number
 }>();
 
-const { addNewLog, selectLog, deleteSelectedLog, careError, selectedMedicationLog } = usePets();
-const { getTodayLoggedList, getDailyDosesToLog, getDailyMissedDoses, loading, isEditing } = useTreatments();
+const { addNewLog, deleteSelectedLog, careError, selectedMedicationLog } = usePets();
+const { getTodayLoggedList, getDailyDosesToLog, getDailyMissedDoses, loading } = useTreatments();
 const { t, locale } = useI18n();
 const { show } = useToast();
+
+const isEditing = ref<boolean>(false);
+const editedLog = ref<MedicationLogExtended | null>(null);
 
 const logDose = async (medication: MedicineDb) => {
     loading.value = true;
@@ -47,7 +50,7 @@ const deleteDose = async (log: MedicationLogExtended) => {
 }
 
 const editLogTime = async (log: MedicationLogExtended) => {
-    selectLog(log);
+    editedLog.value = log;
     await nextTick();
     isEditing.value = true;
 }
@@ -72,11 +75,11 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
                     minute: '2-digit'
                 }) }}</p>
             <div class="flex gap-[3px]">
-                <Button :disabled="loading && selectedMedicationLog?.id === log.id" variant="ghost" size="min"
+                <Button :disabled="loading && editedLog?.id === log.id" variant="ghost" size="min"
                     :aria-label="t('health.cta.editMedTime')" @click="editLogTime(log)">
                     <Pen :size="13" />
                 </Button>
-                <Button :disabled="loading && selectedMedicationLog?.id === log.id" variant="ghost" size="min"
+                <Button :disabled="loading && editedLog?.id === log.id" variant="ghost" size="min"
                     :aria-label="t('common.button.delete')" @click="deleteDose(log)" class="hover:bg-error">
                     <X :size="13" />
                 </Button>
@@ -90,8 +93,7 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
                 : "" }}
         </Button>
     </div>
-    <EditLogTime v-if="selectedMedicationLog" v-model="isEditing" :medication="medication" :log="selectedMedicationLog"
-        :pet="pet" />
+    <EditLogTime v-if="editedLog" v-model="isEditing" :medication="medication" :log="editedLog" :pet="pet" />
 </template>
 
 <style scoped>

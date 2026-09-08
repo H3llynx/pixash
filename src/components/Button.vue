@@ -17,7 +17,7 @@ const button = tv({
             stacked: "stacked-btn text-text-secondary capitalize",
             tile: "tile-btn capitalize justify-end items-end",
             add: "font-light border-dashed border-text-secondary text-text-secondary enabled:hover:text-accent enabled:hover:border-accent enabled:hover:bg-bg-2",
-            card: "bg-bg-rgba border-border gap-1 md:max-w-md hover:scale-105 hover:bg-bg-2"
+            card: "bg-bg-rgba border-border gap-1 hover:scale-105 hover:bg-bg-2"
         },
         size: {
             rounded: "w-2 h-2 aspect-square text-xs",
@@ -28,7 +28,8 @@ const button = tv({
             md: "px-2 py-[10px]",
             lg: "px-2 py-1",
             tile: "w-9 h-8 px-1 py-0.5",
-            third: "w-1/3 px-0.5 py-1 text-sm"
+            third: "w-1/3 px-0.5 py-1 text-sm",
+            card: "p-1 md:max-w-md"
         }
     },
     defaultVariants: {

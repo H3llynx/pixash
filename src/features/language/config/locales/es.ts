@@ -349,7 +349,6 @@ export default {
             startDate: "Fecha de inicio",
             vet: "Prescrito por",
             notes: "Notas",
-            missedDoses: "Omitidas"
         },
         vetForm: {
             name: "Nombre",
@@ -370,6 +369,8 @@ export default {
             ended: "finalizado: ",
             summaryLabel: "ver acciones del registro",
             editMedTime: "¿Cuándo le diste {medication} a {name}?",
+            missedDoses: "Omitidas",
+            missedDoseToday: "Has olvidado una dosis hoy"
         },
         medicine: {
             title: "Medicamento {index}",

@@ -1,4 +1,5 @@
 import { computed, ref } from "vue";
+import { isSameOrAfterDay, tsToDay } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import type { PetExtended } from "../../pets/types";
 import type { MedicationLogExtended, MedicineDb, MissedDoseRecord, TreatmentExtended } from "../types";
@@ -6,10 +7,6 @@ import { checkOverlapsMonth, getDailyDose, getIntervalHours, getTreatmentColor }
 import { useEvents } from "./useEvents";
 
 const loading = ref<boolean>(false);
-const isEditing = ref<boolean>(false);
-const isAdding = ref<boolean>(false);
-const selectedMedication = ref<MedicineDb | null>(null);
-const medicationDate = ref<string>("");
 
 export const useTreatments = () => {
     const { treatments, selectedPet } = usePets();
@@ -26,6 +23,9 @@ export const useTreatments = () => {
         return bEnd - aEnd;
     };
 
+    const isMedicationEnded = (medication: MedicineDb): boolean =>
+        medication.endDate && !isSameOrAfterDay(medication.endDate.toDate(), new Date());
+
     const treatmentsThisMonth = computed(() => {
         const now = new Date();
         return treatments.value
@@ -35,7 +35,7 @@ export const useTreatments = () => {
                     t.endDate!,
                     currentMonth.value
                 );
-                const isNotExpired = !t.endDate || t.endDate.toDate() >= now;
+                const isNotExpired = !t.endDate || isSameOrAfterDay(t.endDate.toDate(), now);
                 return overlapsMonth && isNotExpired;
             })
             .sort(byStartThenEndDesc)
@@ -45,7 +45,7 @@ export const useTreatments = () => {
     const activeTreatments = computed(() => {
         const now = new Date();
         return treatments.value
-            .filter(t => t.startDate.toDate() <= now && (!t.endDate || t.endDate.toDate() >= now))
+            .filter(t => t.startDate.toDate() <= now && (!t.endDate || isSameOrAfterDay(t.endDate.toDate(), now)))
             .filter(t => t.petId === selectedPet.value?.id)
             .sort(byStartThenEndDesc)
     });
@@ -76,7 +76,7 @@ export const useTreatments = () => {
             log.medicineId === medication.id &&
             log.givenAt
         ) as MedicationLogExtended[];
-        return logs.sort((a, b) => b.givenAt.toDate().getTime() - a.givenAt.toDate().getTime())[0];
+        return logs.sort((a, b) => tsToDay(b.givenAt) - tsToDay(a.givenAt))[0];
     };
 
     const getDailyDosesToLog = (
@@ -84,6 +84,7 @@ export const useTreatments = () => {
         treatment: TreatmentExtended,
         medication: MedicineDb
     ): number => {
+        if (isMedicationEnded(medication)) return 0;
         const loggedList = getTodayLoggedList(pet, treatment, medication) || [];
         const dailyDose = getDailyDose(medication.frequency);
         return dailyDose !== undefined ? dailyDose - loggedList.length : 1;
@@ -94,6 +95,7 @@ export const useTreatments = () => {
         treatment: TreatmentExtended,
         medication: MedicineDb
     ): number => {
+        if (isMedicationEnded(medication)) return 0;
         const latestLog = getLatestLog(pet, treatment, medication);
         const intervalHours = getIntervalHours(medication.frequency);
         const dailyDose = getDailyDose(medication.frequency);
@@ -134,7 +136,6 @@ export const useTreatments = () => {
         ) as MedicationLogExtended[];
     };
 
-
     const getMissedDosesHistory = (
         pet: PetExtended,
         treatment: TreatmentExtended,
@@ -146,15 +147,23 @@ export const useTreatments = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        const treatmentStart = treatment.startDate.toDate();
-        treatmentStart.setHours(0, 0, 0, 0);
-
         const scanStart = treatment.startDate.toDate();
+        scanStart.setHours(0, 0, 0, 0);
+
+        let scanEnd = today;
+
+        if (medication.endDate) {
+            const medEnd = medication.endDate.toDate();
+            medEnd.setHours(0, 0, 0, 0);
+            const dayAfterMedEnd = new Date(medEnd);
+            dayAfterMedEnd.setDate(dayAfterMedEnd.getDate() + 1);
+            if (dayAfterMedEnd < scanEnd) scanEnd = dayAfterMedEnd;
+        };
 
         const missedDoses: MissedDoseRecord[] = [];
         const cursor = new Date(scanStart);
 
-        while (cursor < today) {
+        while (cursor < scanEnd) {
             const given = getLoggedListForDate(pet, treatment, medication, cursor).length;
             const count = dailyDose - given;
             if (count > 0) {
@@ -167,8 +176,6 @@ export const useTreatments = () => {
 
     return {
         loading,
-        isAdding,
-        isEditing,
         byStartThenEndDesc,
         treatmentsThisMonth,
         activeTreatments,
@@ -176,8 +183,6 @@ export const useTreatments = () => {
         getDailyDosesToLog,
         getDailyMissedDoses,
         getMissedDosesHistory,
-        selectedMedication,
-        medicationDate
     };
 
 }

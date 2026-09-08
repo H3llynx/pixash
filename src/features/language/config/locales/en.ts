@@ -370,6 +370,7 @@ export default {
             summaryLabel: "view log actions",
             editMedTime: "When did you give {medication} to {name}?",
             missedDoses: "Missed doses",
+            missedDoseToday: "You've missed a dose today"
         },
         medicine: {
             title: "Medicine {index}",

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChevronDown, Ellipsis, MessageCircleWarning, NotepadText, TriangleAlert } from '@lucide/vue';
-import { computed, nextTick } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { getLabel, tsToDate } from '../../../../utils.ts';
@@ -14,10 +14,15 @@ import ProgressBar from './ProgressBar.vue';
 import TreatmentLogs from './TreatmentLogs.vue';
 
 const { selectTreatment, pets, treatmentLoading, selectedTreatment } = usePets();
-const { getDailyMissedDoses, getMissedDosesHistory, isAdding, selectedMedication, medicationDate } = useTreatments();
+const { getDailyMissedDoses, getMissedDosesHistory } = useTreatments();
 const { t } = useI18n();
 
 const props = defineProps<{ treatment: TreatmentExtended; colorIndex: number }>();
+
+const isAdding = ref<boolean>(false);
+const selectedMedication = ref<MedicineDb | null>(null);
+const missedLogDate = ref<Date | null>(null);
+
 const progress = computed(() => getTreatmentProgress(props.treatment));
 const color = computed(() => getTreatmentColor(props.colorIndex));
 
@@ -25,14 +30,9 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
 
 const addMissedLog = async (medication: MedicineDb, date: Date) => {
     selectedMedication.value = medication;
-    const now = new Date();
-    const h = String(now.getHours()).padStart(2, "0");
-    const min = String(now.getMinutes()).padStart(2, "0");
-    const clickedDate = date.toISOString().split("T")[0];
-    medicationDate.value = `${clickedDate}T${h}:${min}`;
+    missedLogDate.value = date;
     await nextTick();
     isAdding.value = true;
-    console.log(medicationDate.value)
 };
 </script>
 
@@ -71,6 +71,11 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
                     t(getLabel(medication.frequency, MED_FREQUENCY)) }}</span>
                 <span class="flex w-1.5 h-1.5 rounded-full bg-error text-white items-center justify-center ml-0.5"
                     v-if="getDailyMissedDoses(pet, treatment, medication)" aria-hidden>!</span>
+
+                <span v-if="getDailyMissedDoses(pet, treatment, medication)"
+                    class="flex w-1.5 h-1.5 rounded-full bg-error text-white items-center justify-center ml-0.5"
+                    role="img" :aria-label="t('health.medication.missedDoseToday')"> ! </span>
+
                 <ChevronDown class="chevron default-transition ml-1" />
             </summary>
             <div class="px-0.5 pb-0.75">
@@ -78,7 +83,8 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
                     class="font-light italic flex gap-0.25 items-center my-0.5 p-0.5 rounded-xl">
                     <MessageCircleWarning :size="20" />{{ medication.instructions }}
                 </p>
-                <ProgressBar v-if="!treatment.endDate && medication.endDate"
+                <ProgressBar
+                    v-if="medication.endDate && (!treatment.endDate || medication.endDate.toDate() < new Date())"
                     :progress="getMedicationProgress(treatment, medication)!" :color="color" />
                 <TreatmentLogs :pet="pet" :colorIndex="colorIndex" :treatment="treatment" :medication="medication" />
             </div>
@@ -99,8 +105,8 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
                 </div>
             </div>
         </details>
-        <AddMissedLog v-if="selectedMedication && medicationDate" v-model="isAdding" :treatment="treatment"
-            :medication="selectedMedication" :pet="pet" :date="medicationDate" />
+        <AddMissedLog v-if="selectedMedication && missedLogDate" v-model="isAdding" :treatment="treatment"
+            :medication="selectedMedication" :pet="pet" :date="missedLogDate" />
     </div>
 </template>
 

@@ -123,6 +123,12 @@ export const todayAsInput = () => {
     ].join("-");
 };
 
+export const isSameOrAfterDay = (a: Date, b: Date): boolean => {
+    const aDay = new Date(a); aDay.setHours(0, 0, 0, 0);
+    const bDay = new Date(b); bDay.setHours(0, 0, 0, 0);
+    return aDay >= bDay;
+};
+
 export const getLabel = (item: string, array: { id: string, label: string }[]) => {
     return array.find(t => t.id === item)?.label ?? "";
 };
