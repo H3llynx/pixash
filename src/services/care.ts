@@ -418,7 +418,7 @@ export const deleteLog = async (logId: string, petId: string, userId: string) =>
 const getTreatmentDoc = (userId: string, petId: string, treatmentId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.treatments, treatmentId);
 
 export const updateTreatment = async (
-    treatmentId: string,
+    treatment: TreatmentExtended,
     petId: string,
     userId: string,
     data: TreatmentRecord
@@ -435,9 +435,30 @@ export const updateTreatment = async (
             endDate: med.endDate && !med.noEnd ? tsFromInput(med.endDate) : null
         }))
     };
+    const initialMedicationIds = new Set(treatment.medication.map(med => med.id))
+    const updatedMedicationIds = new Set(updated.medication.map(med => med.id))
+    const removedMedicationIds: string[] = [];
+    for (const id of initialMedicationIds) {
+        if (!updatedMedicationIds.has(id)) removedMedicationIds.push(id);
+    }
     try {
-        const docRef = getTreatmentDoc(userId, petId, treatmentId);
+        const docRef = getTreatmentDoc(userId, petId, treatment.id);
         await updateDoc(docRef, updated);
+
+        if (removedMedicationIds.length) {
+            const batch = writeBatch(db);
+            for (const medId of removedMedicationIds) {
+                const q = query(
+                    collection(db, DB.users, userId, DB.pets, petId, DB.logs),
+                    where("type", "==", "medication"),
+                    where("medicineId", "==", medId),
+                    where("treatmentId", "==", treatment.id)
+                );
+                const snap = await getDocs(q);
+                snap.docs.forEach(d => batch.delete(d.ref));
+            }
+            await batch.commit();
+        }
     } catch (error) {
         console.error("Error updating treatment: ", error);
         throw error;

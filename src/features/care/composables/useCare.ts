@@ -261,7 +261,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
     const updateSelectedTreatment = async (treatment: TreatmentExtended, petId: string, data: TreatmentRecord) => {
         await handleHealthAction(async () => {
             treatmentLoading.value = true;
-            await updateTreatment(treatment.id, petId, user.value!.uid, data);
+            await updateTreatment(treatment, petId, user.value!.uid, data);
             await refreshPetHealth(petId);
             selectTreatment(null);
         }, () => {
