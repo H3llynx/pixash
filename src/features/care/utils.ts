@@ -5,16 +5,6 @@ import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, LOG_SUBTYPES, MED_FREQUENCY, PARASITES, TREATMENTCOLORS, VACCINE_TYPES } from "./config";
 import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, MedicineDb, OtherLogExtended, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
 
-export const resetForm = <T extends object>(
-    formData: T,
-    defaultForm: T
-) => {
-    const entries = Object.entries(defaultForm) as [keyof T, T[keyof T]][];
-    for (const [key, value] of entries) {
-        formData[key] = structuredClone(value);
-    }
-};
-
 export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default") => {
     if (!species) return;
     const specific = VACCINE_TYPES[species as keyof typeof VACCINE_TYPES] ?? [];

@@ -2,13 +2,13 @@ import { computed, reactive, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDialog } from "../../../../../composables/useDialog";
 import { useToast } from "../../../../../composables/useToast";
-import { getOneYearLaterInput, shallowEqual, todayAsInput, tsToDate } from "../../../../../utils";
+import { getOneYearLaterInput, resetForm, shallowEqual, todayAsInput, tsToDate } from "../../../../../utils";
 import { usePets } from "../../../../pets/composables/usePets";
 import { getAge } from "../../../../pets/utils";
 import { useEvents } from "../../../composables/useEvents";
 import { STAGE, VACCINE_TYPES } from "../../../config";
 import type { VaccineExtended, VaccineTypes } from "../../../types";
-import { getVaccineTypes, resetForm, showVaccines } from "../../../utils";
+import { getVaccineTypes, showVaccines } from "../../../utils";
 
 export const useVaccineForm = () => {
     const { selectedPet, isAddingCare, vets, selectedVet, selectedVaccine, selectVaccine, addNewVaccine, careError, updateSelectedVaccine, deleteSelectedVaccine } = usePets();

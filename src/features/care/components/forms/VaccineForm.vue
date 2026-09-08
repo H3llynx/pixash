@@ -10,7 +10,7 @@ import Selector from '../../../../components/Selector.vue';
 import Textarea from '../../../../components/Textarea.vue';
 import Toggle from '../../../../components/Toggle.vue';
 import { useFormMode } from '../../../../composables/useFormMode.ts';
-import { dateFromInput, todayAsInput } from '../../../../utils.ts';
+import { todayAsInput } from '../../../../utils.ts';
 import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
@@ -117,11 +117,9 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                     }} · {{
                                         showVaccines(formData.types, selectedPet, t) }}
                                 </p>
-                                <p v-if="formData.dueOn" class="text-text-secondary w-full">{{
-                                    t("health.sharedFields.dueDate")
-                                    }}:
-                                    {{
-                                        dateFromInput(formData.dueOn) }}
+                                <p v-if="formData.dueOn" class="text-text-secondary w-full">
+                                    {{ t("health.sharedFields.dueDate") }}{{ new Date(formData.dueOn).toLocaleDateString()
+                                    }}
                                 </p>
                             </div>
                             <div class="flex gap-0.5 flex-col-reverse md:flex-row shrink-0 w-full sm:w-max">

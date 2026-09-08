@@ -13,6 +13,16 @@ export const shallowEqual = (formData: any, source: any) => {
     );
 };
 
+export const resetForm = <T extends object>(
+    formData: T,
+    defaultForm: T
+) => {
+    const entries = Object.entries(defaultForm) as [keyof T, T[keyof T]][];
+    for (const [key, value] of entries) {
+        formData[key] = structuredClone(value);
+    }
+};
+
 type DateFormatMode = "date" | "timeUntil" | "input" | "datetime" | "upcoming" | "thatMonth" | "isThisWeek" | "isPast";
 type TFunction = (key: string, params?: Record<string, unknown>) => string;
 
@@ -93,11 +103,6 @@ export const tsFromInput = (value: string) => {
     const date = new Date(value);
     return Timestamp.fromDate(date);
 };
-
-export const dateFromInput = (value: string) => {
-    if (!value) return;
-    return new Date(value).toLocaleDateString();
-}
 
 export const getOneYearLaterInput = (firstDate: string) => {
     if (!firstDate) return;

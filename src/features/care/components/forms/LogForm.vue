@@ -15,14 +15,13 @@ import { useDialog } from '../../../../composables/useDialog.ts';
 import { useFormMode } from '../../../../composables/useFormMode.ts';
 import { useToast } from '../../../../composables/useToast.ts';
 import { hostImg } from '../../../../services/img-hosting.ts';
-import { shallowEqual, tsToDate } from '../../../../utils.ts';
+import { resetForm, shallowEqual, tsToDate } from '../../../../utils.ts';
 import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { logFields } from '../../../pets/config.ts';
 import { useEvents } from '../../composables/useEvents.ts';
 import type { Log, LogExtended, OtherLogExtended } from '../../types.ts';
-import { resetForm } from '../../utils.ts';
 import ButtonArea from './ButtonArea.vue';
 
 const { selectedPet, deleteSelectedLog, careError, isAddingCare, selectLog, selectedOtherLog, addNewLog, updateSelectedLog } = usePets();
@@ -188,7 +187,7 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedOtherLog!.subtype}`)
                     })
-                        }}
+                    }}
                     </h1>
                     <Button v-if="selectedOtherLog" action="delete" :aria-label="t('common.button.delete')"
                         @click="handleDelete" />

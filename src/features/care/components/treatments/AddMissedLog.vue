@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import FreeModal from '../../../../components/FreeModal.vue';
 import Input from '../../../../components/Input.vue';
 import { useToast } from '../../../../composables/useToast.ts';
-import { tsFromInput } from '../../../../utils.ts';
+import { tsFromInput, tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../../pets/types.ts';
 import { useTreatments } from '../../composables/useTreatments.ts';
@@ -21,6 +22,26 @@ const props = defineProps<{
 }>();
 
 const isAdding = defineModel<boolean>();
+
+const formatDateTimeLocal = (date: Date) => {
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+const minMedicationDate = computed(() => {
+    return formatDateTimeLocal(props.treatment.startDate.toDate());
+});
+
+const maxMedicationDate = computed(() => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(23, 59, 59, 999);
+    const endDate = selectedMedication.value?.endDate;
+    if (endDate && endDate.toMillis() < Date.now()) {
+        return tsToDate(endDate, "datetime");
+    }
+    return formatDateTimeLocal(yesterday);
+});
 
 const handleCancel = () => {
     isAdding.value = false;
@@ -56,13 +77,14 @@ const logDose = async () => {
                 medication: selectedMedication!.name, name:
                     pet.name
             })
-            }}
+                }}
             </h3>
-            <Input v-model="medicationDate" type="datetime-local" id="medication-log" />
+            <Input v-model="medicationDate" type="datetime-local" id="medication-log" :min="minMedicationDate"
+                :max="maxMedicationDate" />
             <Button :disabled="loading">{{ t("common.button.confirm") }}</Button>
             <Button :disabled="loading" type="button" variant="ghost" @click="handleCancel">{{
                 t("common.button.cancel")
-            }}</Button>
+                }}</Button>
         </form>
     </FreeModal>
 </template>

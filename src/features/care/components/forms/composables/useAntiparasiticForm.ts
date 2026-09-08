@@ -2,12 +2,12 @@ import { computed, reactive, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDialog } from "../../../../../composables/useDialog";
 import { useToast } from "../../../../../composables/useToast";
-import { shallowEqual, todayAsInput, tsToDate } from "../../../../../utils";
+import { resetForm, shallowEqual, todayAsInput, tsToDate } from "../../../../../utils";
 import { usePets } from "../../../../pets/composables/usePets";
 import { useEvents } from "../../../composables/useEvents";
 import { ANTIPARASITE_TYPES } from "../../../config";
 import type { AntiparasiteLogExtended, AntiparasiteTypes, Log, PetEvent } from "../../../types";
-import { getAntiparasites, resetForm } from "../../../utils";
+import { getAntiparasites } from "../../../utils";
 
 export const useAntiparasiticForm = () => {
     const { logs, isAddingCare, careError, selectLog, selectedAntiparasiticLog, selectedPet, addNewLog, updateSelectedLog, deleteSelectedLog } = usePets();

@@ -33,9 +33,7 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
     await nextTick();
     isAdding.value = true;
     console.log(medicationDate.value)
-}
-
-
+};
 </script>
 
 <template>
@@ -71,8 +69,8 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
                 <p class="font-medium">{{ medication.name }}</p>
                 <span class="tag bg-bg-rgba border border-border text-text-softer ml-auto">{{
                     t(getLabel(medication.frequency, MED_FREQUENCY)) }}</span>
-                <span class="tag bg-error text-white ml-0.5"
-                    v-if="getDailyMissedDoses(pet, treatment, medication)">!</span>
+                <span class="flex w-1.5 h-1.5 rounded-full bg-error text-white items-center justify-center ml-0.5"
+                    v-if="getDailyMissedDoses(pet, treatment, medication)" aria-hidden>!</span>
                 <ChevronDown class="chevron default-transition ml-1" />
             </summary>
             <div class="px-0.5 pb-0.75">

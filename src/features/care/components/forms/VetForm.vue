@@ -11,12 +11,11 @@ import Textarea from '../../../../components/Textarea.vue';
 import { useDialog } from '../../../../composables/useDialog.ts';
 import { useToast } from '../../../../composables/useToast.ts';
 import { phonePattern } from '../../../../config/config.ts';
-import { shallowEqual } from '../../../../utils.ts';
+import { resetForm, shallowEqual } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { getPetIcon } from '../../../pets/utils.ts';
 import { vetFormFields } from '../../config.ts';
 import type { Vet } from '../../types.ts';
-import { resetForm } from '../../utils.ts';
 
 const { pets, isAddingCare, selectedVet, isUpdatingVet, vetLoading, careError, addNewVet, updateSelectedVet, deleteSelectedVet } = usePets();
 const { t } = useI18n();

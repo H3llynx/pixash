@@ -369,7 +369,7 @@ export default {
             ended: "ended: ",
             summaryLabel: "view log actions",
             editMedTime: "When did you give {medication} to {name}?",
-            missedDoses: "Missed doses"
+            missedDoses: "Missed doses",
         },
         medicine: {
             title: "Medicine {index}",

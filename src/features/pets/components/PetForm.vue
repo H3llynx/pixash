@@ -9,8 +9,7 @@ import LoadingPet from '../../../components/loading/LoadingPet.vue';
 import Panel from '../../../components/Panel.vue';
 import Toggle from '../../../components/Toggle.vue';
 import { useToast } from '../../../composables/useToast.ts';
-import { shallowEqual } from '../../../utils.ts';
-import { resetForm } from '../../care/utils.ts';
+import { resetForm, shallowEqual } from '../../../utils.ts';
 import { usePets } from '../composables/usePets.ts';
 import { petFields } from '../config.ts';
 import type { Pet } from '../types.ts';
@@ -138,7 +137,7 @@ watch(() => formData.species, () => {
                             <Dropdown v-model="formData.sex" :id="sex.id" :label="t(sex.label)" required>
                                 <option v-for="option in sex.options" :value="option.id" :key="option.id">{{
                                     t(option.label)
-                                }}
+                                    }}
                                 </option>
                             </Dropdown>
                         </div>

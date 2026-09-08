@@ -2,10 +2,9 @@ import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDialog } from "../../../../../composables/useDialog";
 import { useToast } from "../../../../../composables/useToast";
-import { shallowEqual, tsToDate } from "../../../../../utils";
+import { resetForm, shallowEqual, tsToDate } from "../../../../../utils";
 import { usePets } from "../../../../pets/composables/usePets";
 import { useEvents } from "../../../composables/useEvents";
-import { resetForm } from "../../../utils";
 
 export const useVetVisitForm = () => {
     const { selectedPet, selectedVisit, selectVisit, isAddingCare, addNewVetVisit, updateSelectedVisit, deleteSelectedVisit, careError } = usePets();
