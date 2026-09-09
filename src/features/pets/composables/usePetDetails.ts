@@ -2,9 +2,17 @@ import { computed, reactive, ref, watch } from "vue";
 import type { PetExtended } from "../types";
 import { kgToGrams, prefersKg } from "../utils";
 
+const isUpdatingInsurance = ref<boolean>(false);
+
 export const usePetDetails = (pet: PetExtended) => {
-    const loading = ref<boolean>(false);
     const chipData = ref<string>("");
+    const isInsured = ref<boolean>(false);
+    const insuranceData = reactive({
+        company: "",
+        policy: "",
+        contact: "",
+        web: "",
+    });
     const preferredUnit = computed(() => prefersKg(pet) ? "kg" : "g");
     const weightForm = reactive<{
         data: string;
@@ -26,5 +34,5 @@ export const usePetDetails = (pet: PetExtended) => {
         weightForm.unit = unit;
     });
 
-    return { chipData, loading, weightForm, getWeightInGrams, unitFactor, preferredUnit }
+    return { chipData, isInsured, isUpdatingInsurance, insuranceData, weightForm, getWeightInGrams, unitFactor, preferredUnit }
 }

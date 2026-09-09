@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import FreeModal from '../../../components/FreeModal.vue';
@@ -9,11 +10,13 @@ import { usePets } from '../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../pets/types.ts';
 import type { Log } from '../types.ts';
 
+const props = defineProps<{ pet: PetExtended }>();
+
 const { isAddingCare, addNewLog } = usePets();
 const { t } = useI18n();
+const { getWeightInGrams, weightForm } = usePetDetails(props.pet);
 
-const props = defineProps<{ pet: PetExtended }>();
-const { loading, getWeightInGrams, weightForm } = usePetDetails(props.pet);
+const loading = ref<boolean>(false);
 
 const handleSubmit = async () => {
     if (!weightForm.data) return;
@@ -48,7 +51,7 @@ const handleSubmit = async () => {
             <Button>{{ t("common.button.confirm") }}</Button>
             <Button type="button" variant="ghost" @click="isAddingCare.weight = false">{{
                 t("common.button.cancel")
-            }}</Button>
+                }}</Button>
         </form>
     </FreeModal>
 </template>

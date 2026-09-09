@@ -472,7 +472,7 @@ export default {
                 logAdded: "{name}'s {subtype} log successfully added",
                 eventDeleted: "{name}'s {title} has been successfully deleted",
                 logDeleted: "Log deleted",
-                insuranceDeleted: "Isurance information deleted",
+                insuranceDeleted: "Insurance information deleted",
                 markedDone: "All set, this care task has been completed.",
                 insuranceUpdated: "{name}'s insurance information successfully updated",
             },

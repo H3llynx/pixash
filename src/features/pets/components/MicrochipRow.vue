@@ -18,7 +18,8 @@ const { isMd } = useMedia();
 const props = defineProps<{ pet: PetExtended }>();
 const editing = ref<boolean>(false);
 const updateRef = ref<HTMLFormElement>();
-const { chipData, loading } = usePetDetails(props.pet);
+const loading = ref<boolean>(false);
+const { chipData } = usePetDetails(props.pet);
 const { copyToClipboard, clipboardText } = useClipboard();
 
 onClickOutside(updateRef, () => {

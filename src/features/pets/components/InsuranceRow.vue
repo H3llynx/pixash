@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Eye, EyeClosed } from '@lucide/vue';
-import { reactive, ref, Transition, watch } from 'vue';
+import { ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Input from '../../../components/Input.vue';
@@ -9,36 +9,34 @@ import { useDialog } from '../../../composables/useDialog.ts';
 import { useToast } from '../../../composables/useToast.ts';
 import { phonePattern } from '../../../config/config.ts';
 import { shallowEqual } from '../../../utils.ts';
+import { usePetDetails } from '../composables/usePetDetails.ts';
 import { usePets } from '../composables/usePets.ts';
+import type { PetExtended } from '../types.ts';
 
-const { updateSelectedPet, error, selectedPet } = usePets();
+const props = defineProps<{ pet: PetExtended }>();
+
+const { updateSelectedPet, error } = usePets();
+const { insuranceData, isInsured, isUpdatingInsurance } = usePetDetails(props.pet);
 const { show } = useToast();
 const { t } = useI18n();
 const { open } = useDialog();
 
-const isInsured = ref<boolean>(false);
 const loading = ref<boolean>(false);
-const isUpdating = ref<boolean>(false);
-
-const insuranceData = reactive({
-    company: "",
-    policy: "",
-    contact: "",
-    web: "",
-});
 
 const toggleInsurance = async () => {
-    if (!selectedPet.value) return;
     loading.value = true;
     try {
-        if (isInsured.value && !selectedPet.value?.insured) await updateSelectedPet(selectedPet.value, { insured: true });
-        else if (!isInsured.value && selectedPet.value?.insured) {
+        if (isInsured.value && !props.pet.insured) {
+            await updateSelectedPet(props.pet, { insured: true });
+            isUpdatingInsurance.value = true;
+        }
+        else if (!isInsured.value && props.pet.insured) {
             open({
                 title: t("dialog.deleteInsurance.title"),
                 message: t("dialog.deleteGenericMsg"),
                 isDelete: true,
                 onConfirm: async () => {
-                    await updateSelectedPet(selectedPet.value!, { insured: false, insurance: null })
+                    await updateSelectedPet(props.pet, { insured: false, insurance: null })
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
@@ -57,26 +55,25 @@ const toggleInsurance = async () => {
 };
 
 const handleSubmit = async () => {
-    if (!selectedPet.value) return
-    if (selectedPet.value.insurance && shallowEqual(insuranceData, selectedPet.value.insurance)) return;
+    if (props.pet.insurance && shallowEqual(insuranceData, props.pet.insurance)) return;
     try {
         loading.value = true;
-        if (Object.values(insuranceData).every(value => value === "")) await updateSelectedPet(selectedPet.value, { insurance: null });
-        else await updateSelectedPet(selectedPet.value, { insurance: { ...insuranceData } });
-        show({ type: "success", title: t("toast.success.title.generic"), message: t("toast.success.message.insuranceUpdated", { name: selectedPet.value.name }) });
+        if (Object.values(insuranceData).every(value => value === "")) await updateSelectedPet(props.pet, { insurance: null });
+        else await updateSelectedPet(props.pet, { insurance: { ...insuranceData } });
+        show({ type: "success", title: t("toast.success.title.generic"), message: t("toast.success.message.insuranceUpdated", { name: props.pet.name }) });
     } catch (e) {
         show({ type: "error", title: t("toast.error.genericTitle"), message: error.value || "" });
     } finally {
         loading.value = false;
-        isUpdating.value = false;
+        isUpdatingInsurance.value = false;
     }
 };
 
-watch(() => selectedPet.value?.insured, (insured) => {
+watch(() => props.pet.insured, (insured) => {
     isInsured.value = insured ? true : false;
 }, { immediate: true });
 
-watch(() => selectedPet.value?.insurance, (insurance) => {
+watch(() => props.pet.insurance, (insurance) => {
     if (insurance) Object.assign(insuranceData, insurance);
 }, { immediate: true });
 </script>
@@ -86,21 +83,27 @@ watch(() => selectedPet.value?.insurance, (insurance) => {
         <div class="flex flex-row-reverse items-center gap-0.75">
             <Toggle class="w-max text-sm" v-model="isInsured" :label="t('pet.profile.labels.insured')" size="sm"
                 :disabled="loading" @change="toggleInsurance" />
-            <Button v-if="selectedPet?.insured" variant="tertiary" size="xxs" @click="isUpdating = !isUpdating"
+            <Button v-if="pet.insured" variant="tertiary" size="xxs" @click="isUpdatingInsurance = !isUpdatingInsurance"
                 :disabled="loading">
-                <Eye :size="14" v-if="!isUpdating" />
+                <Eye :size="14" v-if="!isUpdatingInsurance" />
                 <EyeClosed :size="14" v-else />
-                {{ t(isUpdating ? 'common.button.hide' : 'pet.insurance.update') }}
+                {{ t(isUpdatingInsurance ? 'common.button.hide' : 'pet.insurance.update') }}
             </Button>
         </div>
+        <div>
+            insured: {{ pet.insured }}
+            <br />
+            updating: {{ isUpdatingInsurance }}
+        </div>
         <Transition name="toast">
-            <form v-if="isUpdating" class="flex gap-0.5 flex-wrap w-full text-sm" @submit.prevent="handleSubmit">
+            <form v-if="isUpdatingInsurance" class="flex gap-0.5 flex-wrap w-full text-sm"
+                @submit.prevent="handleSubmit">
                 <Input v-model="insuranceData.company" :label="t('pet.insurance.company')" />
                 <Input v-model="insuranceData.policy" :label="t('pet.insurance.policy')" />
                 <Input v-model="insuranceData.contact" type="tel" :label="t('pet.insurance.contact')"
                     :pattern="phonePattern" />
                 <Input v-model="insuranceData.web" type="url" :label="t('pet.insurance.web')" />
-                <Button v-if="!shallowEqual(insuranceData, selectedPet?.insurance)" size="sm"
+                <Button v-if="!pet.insurance || !shallowEqual(insuranceData, pet.insurance)" size="sm"
                     class="flex gap-0.5 ml-auto mt-0.5" :disabled="loading">{{
                         t('common.button.save') }}</Button>
             </form>

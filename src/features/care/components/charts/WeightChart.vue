@@ -22,15 +22,14 @@ import type { PetExtended } from '../../../pets/types.ts';
 import { useTheme } from '../../../theme/composables/useTheme.ts';
 import type { WeightLogExtended } from '../../types.ts';
 
-const { t, locale } = useI18n();
-const { theme } = useTheme();
-const { isAddingCare } = usePets();
-
 const props = defineProps<{
     pet: PetExtended
     logs: WeightLogExtended[];
 }>();
 
+const { t, locale } = useI18n();
+const { theme } = useTheme();
+const { isAddingCare } = usePets();
 const { unitFactor, preferredUnit } = usePetDetails(props.pet);
 
 ChartJS.register(
@@ -139,7 +138,7 @@ const chartOptions = computed<ChartOptions<"line">>(() => {
                 <div class="ml-auto text-right">
                     <p class="text-2xl font-medium">{{ chartData.datasets[0].data.at(-1) }} {{
                         preferredUnit
-                    }}</p>
+                        }}</p>
                     <p v-if="displayed.length" class="text-text-secondary text-xs">{{ t("common.text.lastLogged") }} {{
                         displayed.at(-1)?.measuredAt.toDate().toLocaleDateString(locale, {
                             day: "numeric",
