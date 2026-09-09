@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Eye, EyeClosed } from '@lucide/vue';
-import { ref, Transition, watch } from 'vue';
+import { reactive, ref, Transition, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import Input from '../../../components/Input.vue';
@@ -16,12 +16,19 @@ import type { PetExtended } from '../types.ts';
 const props = defineProps<{ pet: PetExtended }>();
 
 const { updateSelectedPet, error } = usePets();
-const { insuranceData, isInsured, isUpdatingInsurance } = usePetDetails(props.pet);
+const { isInsured, isUpdatingInsurance } = usePetDetails(props.pet);
 const { show } = useToast();
 const { t } = useI18n();
 const { open } = useDialog();
 
 const loading = ref<boolean>(false);
+
+const insuranceData = reactive({
+    company: "",
+    policy: "",
+    contact: "",
+    web: "",
+});
 
 const toggleInsurance = async () => {
     loading.value = true;
@@ -74,7 +81,12 @@ watch(() => props.pet.insured, (insured) => {
 }, { immediate: true });
 
 watch(() => props.pet.insurance, (insurance) => {
-    if (insurance) Object.assign(insuranceData, insurance);
+    Object.assign(insuranceData, {
+        company: insurance?.company ?? "",
+        policy: insurance?.policy ?? "",
+        contact: insurance?.contact ?? "",
+        web: insurance?.web ?? "",
+    });
 }, { immediate: true });
 </script>
 
