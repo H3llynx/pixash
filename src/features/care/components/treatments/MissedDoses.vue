@@ -37,7 +37,7 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
             <span>{{ missed.date.toLocaleDateString() }}</span>
             <span class="flex w-1.5 h-1.5 rounded-full bg-error text-white items-center justify-center">{{
                 missed.count
-            }}</span>
+                }}</span>
             <button @click="addMissedLog(missed.medication, missed.date)"
                 class="rounded-full border border-error-text text-error-text px-1 py-[3px] ml-auto hover:bg-error hover:text-white hover:border-error-border">Log</button>
         </div>

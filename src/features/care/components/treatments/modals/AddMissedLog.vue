@@ -45,10 +45,6 @@ const maxMedicationDate = computed(() => {
     return formatDateTimeLocal(max);
 });
 
-const handleCancel = () => {
-    isAdding.value = false;
-};
-
 const logDose = async () => {
     loading.value = true;
     const log: Log = {
@@ -81,17 +77,15 @@ watch(() => isAdding.value, (adding) => {
     <FreeModal v-model="isAdding">
         <form class="flex flex-col gap-1 mini-form" @submit.prevent="logDose">
             <h3 class="font-title">{{ t("health.treatment.editMedTime", {
-                medication: medication.name, name:
-                    pet.name
-            })
-                }}
+                medication: medication.name, name: pet.name
+            }) }}
             </h3>
             <Input v-model="dateTimeData" type="datetime-local" id="medication-log" :min="minMedicationDate"
                 :max="maxMedicationDate" />
             <Button :disabled="loading">{{ t("common.button.confirm") }}</Button>
-            <Button :disabled="loading" type="button" variant="ghost" @click="handleCancel">{{
+            <Button :disabled="loading" type="button" variant="ghost" @click="isAdding = false;">{{
                 t("common.button.cancel")
-                }}</Button>
+            }}</Button>
         </form>
     </FreeModal>
 </template>

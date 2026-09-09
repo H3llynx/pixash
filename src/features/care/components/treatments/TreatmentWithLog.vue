@@ -52,7 +52,7 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
                 <span v-if="treatment.endDate"> - {{ tsToDate(treatment.endDate, "date") }}</span>
                 <span v-else class="ml-auto tag border border-border bg-border-light text-text-softer">{{
                     t("health.treatment.ongoing")
-                    }}</span>
+                }}</span>
             </div>
             <ProgressBar v-if="progress" :progress="progress" :color="color" />
         </div>
@@ -85,7 +85,7 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
             </div>
             <MissedDoses v-if="getMissedDosesHistory(pet, treatment, medication).length" :pet="pet"
                 :missedDoses="getMissedDosesHistory(pet, treatment, medication)" :treatment="treatment" />
-            <LogHistory />
+            <LogHistory :medication="medication" />
         </details>
     </div>
 </template>
