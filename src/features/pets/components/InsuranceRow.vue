@@ -102,11 +102,6 @@ watch(() => props.pet.insurance, (insurance) => {
                 {{ t(isUpdatingInsurance ? 'common.button.hide' : 'pet.insurance.update') }}
             </Button>
         </div>
-        <div>
-            insured: {{ pet.insured }}
-            <br />
-            updating: {{ isUpdatingInsurance }}
-        </div>
         <Transition name="toast">
             <form v-if="isUpdatingInsurance" class="flex gap-0.5 flex-wrap w-full text-sm"
                 @submit.prevent="handleSubmit">
