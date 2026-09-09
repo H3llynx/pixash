@@ -21,7 +21,7 @@ const { t } = useI18n();
         <h2>{{ t("health.treatment.treatments") }}</h2>
         <div class="grid grid-cols-1 gap-1">
             <TreatmentWithLog v-for="(treatment, index) in filteredMonthTreatments.filter(t => t.isActive)"
-                :key="treatment.id" :treatment="treatment" :colorIndex="index" />
+                :key="treatment.id" :treatment="treatment" :colorIndex="index" tag />
             <Button v-for="treatment in filteredMonthTreatments.filter(t => !t.isActive)" variant="card" size="card"
                 :key="treatment.id" @click="selectTreatment(treatment)" :aria-label="t('health.cta.viewTreatment')"
                 :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'opacity-60': treatment.isPast }">

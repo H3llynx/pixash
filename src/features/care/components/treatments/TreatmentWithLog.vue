@@ -21,7 +21,11 @@ const { getDailyMissedDoses, getMissedDosesHistory } = useTreatments();
 const { petViewed } = useAllPetsView();
 const { t } = useI18n();
 
-const props = defineProps<{ treatment: TreatmentExtended; colorIndex: number }>();
+const props = withDefaults(defineProps<{
+    treatment: TreatmentExtended;
+    colorIndex: number;
+    tag?: boolean
+}>(), { tag: false });
 
 const isAdding = ref<boolean>(false);
 const selectedMedication = ref<MedicineDb | null>(null);
@@ -45,7 +49,7 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
         v-if="pet">
         <div class="flex gap-1 justify-between">
             <h3 class="text-base">{{ treatment.name }}</h3>
-            <PetTag v-if="!petViewed" class="ml-auto"
+            <PetTag v-if="tag && !petViewed" class="ml-auto"
                 :pet="pets.find((pet: PetExtended) => pet.id === treatment.petId)!" :color="false" />
             <Button variant="ghost" size="xs" @click="selectTreatment(treatment)"
                 :aria-label="t('health.cta.viewTreatment')">
