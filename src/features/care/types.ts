@@ -139,6 +139,7 @@ export type MedicationRecord = {
 export type MissedDoseRecord = {
     date: Date;
     count: number;
+    medication: MedicineDb;
 };
 
 export type AntiparasiteLogExtended = {

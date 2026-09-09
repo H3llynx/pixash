@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ChevronDown, Ellipsis, MessageCircleWarning, NotepadText, TriangleAlert } from '@lucide/vue';
-import { computed, nextTick, ref } from 'vue';
+import { ChevronDown, Ellipsis, MessageCircleWarning, NotepadText } from '@lucide/vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
+import ProgressBar from '../../../../components/ProgressBar.vue';
 import { getLabel, tsToDate } from '../../../../utils.ts';
 import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
@@ -10,10 +11,10 @@ import type { PetExtended } from '../../../pets/types.ts';
 import { useAllPetsView } from '../../composables/useAllPetsView.ts';
 import { useTreatments } from '../../composables/useTreatments.ts';
 import { MED_FREQUENCY } from '../../config.ts';
-import type { MedicineDb, TreatmentExtended } from '../../types.ts';
+import type { TreatmentExtended } from '../../types.ts';
 import { getMedicationProgress, getTreatmentBackground, getTreatmentColor, getTreatmentProgress } from '../../utils.ts';
-import AddMissedLog from './AddMissedLog.vue';
-import ProgressBar from './ProgressBar.vue';
+import LogHistory from './LogHistory.vue';
+import MissedDoses from './MissedDoses.vue';
 import TreatmentLogs from './TreatmentLogs.vue';
 
 const { selectTreatment, pets, treatmentLoading, selectedTreatment } = usePets();
@@ -27,21 +28,9 @@ const props = withDefaults(defineProps<{
     tag?: boolean
 }>(), { tag: false });
 
-const isAdding = ref<boolean>(false);
-const selectedMedication = ref<MedicineDb | null>(null);
-const missedLogDate = ref<Date | null>(null);
-
 const progress = computed(() => getTreatmentProgress(props.treatment));
 const color = computed(() => getTreatmentColor(props.colorIndex));
-
 const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.petId));
-
-const addMissedLog = async (medication: MedicineDb, date: Date) => {
-    selectedMedication.value = medication;
-    missedLogDate.value = date;
-    await nextTick();
-    isAdding.value = true;
-};
 </script>
 
 <template>
@@ -72,7 +61,7 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
             {{ treatment.notes }}
         </p>
         <details v-for="medication in treatment.medication" :key="medication.id"
-            class="rounded-xl text-sm flex flex-col mt-0.5 p-0.25 md:p-0.5 overflow-hidden"
+            class="rounded-xl text-sm flex flex-col mt-0.5 p-0.25 overflow-hidden"
             :style="{ backgroundColor: getTreatmentBackground(colorIndex) }">
             <summary class="flex flex-wrap items-center justify-between cursor-pointer p-0.5 md:p-0.75"
                 :aria-label="t('health.treatment.summaryLabel')">
@@ -94,25 +83,10 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
                     :progress="getMedicationProgress(treatment, medication)!" :color="color" />
                 <TreatmentLogs :pet="pet" :colorIndex="colorIndex" :treatment="treatment" :medication="medication" />
             </div>
-            <div v-if="getMissedDosesHistory(pet, treatment, medication).length" class="p-1 flex flex-col gap-0.5">
-                <div class="inline-flex gap-0.5 mb-0.5 font-medium uppercase text-text-secondary">
-                    <TriangleAlert :size="20" />
-                    <h4>{{ t('health.treatment.missedDoses') }}</h4>
-                </div>
-                <div v-for="missed in getMissedDosesHistory(pet, treatment, medication)"
-                    :key="`${treatment.id}-${medication.id}-${missed.date}`"
-                    class="inline-flex items-center gap-1 w-full p-0.75 rounded-xl bg-error-rgba border-l-3 border-error">
-                    <span>{{ missed.date.toLocaleDateString() }}</span>
-                    <span class="flex w-1.5 h-1.5 rounded-full bg-error text-white items-center justify-center">{{
-                        missed.count
-                    }}</span>
-                    <button @click="addMissedLog(medication, missed.date)"
-                        class="rounded-full border border-error-text text-error-text px-1 py-[3px] ml-auto hover:bg-error hover:text-white hover:border-error-border">Log</button>
-                </div>
-            </div>
+            <MissedDoses v-if="getMissedDosesHistory(pet, treatment, medication).length" :pet="pet"
+                :missedDoses="getMissedDosesHistory(pet, treatment, medication)" :treatment="treatment" />
+            <LogHistory />
         </details>
-        <AddMissedLog v-if="selectedMedication && missedLogDate" v-model="isAdding" :treatment="treatment"
-            :medication="selectedMedication" :pet="pet" :date="missedLogDate" />
     </div>
 </template>
 

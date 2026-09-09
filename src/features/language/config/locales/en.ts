@@ -373,7 +373,8 @@ export default {
             missedDoseToday: "You've missed a dose today",
             treatments: "Treatments",
             pastTreatments: "Past treatments",
-            scheduledTreatments: "Scheduled treatments"
+            scheduledTreatments: "Scheduled treatments",
+            viewMedLog: "View Log history"
         },
         medicine: {
             title: "Medicine {index}",

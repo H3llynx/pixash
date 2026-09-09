@@ -4,6 +4,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import Button from '../../../../components/Button.vue';
+import ProgressBar from '../../../../components/ProgressBar.vue';
 import { ROUTES } from '../../../../router/config.ts';
 import { getLabel, tsToDate } from '../../../../utils.ts';
 import PetTag from '../../../pets/components/PetTag.vue';
@@ -14,7 +15,6 @@ import { MED_FREQUENCY } from '../../config.ts';
 import type { TreatmentExtended } from '../../types.ts';
 import { getMedicationProgress, getTreatmentColor } from '../../utils.ts';
 import DateTag from '../events/DateTag.vue';
-import ProgressBar from './ProgressBar.vue';
 
 const { pets, vets, selectTreatment, treatmentLoading, selectedTreatment } = usePets();
 const { petViewed } = useAllPetsView();

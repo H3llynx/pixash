@@ -2,13 +2,13 @@
 import { Calendar, Pill } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
+import ProgressBar from '../../../../components/ProgressBar.vue';
 import { tsToDate } from '../../../../utils.ts';
 import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { useAllPetsView } from '../../composables/useAllPetsView.ts';
 import { getTreatmentProgress } from '../../utils.ts';
 import DateTag from '../events/DateTag.vue';
-import ProgressBar from './ProgressBar.vue';
 import TreatmentWithLog from './TreatmentWithLog.vue';
 
 const { selectTreatment, treatmentLoading, selectedTreatment, pets } = usePets();

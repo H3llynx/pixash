@@ -9,7 +9,7 @@ import type { PetExtended } from '../../../pets/types.ts';
 import { useTreatments } from '../../composables/useTreatments.ts';
 import type { Log, MedicationLogExtended, MedicineDb, TreatmentExtended } from '../../types.ts';
 import { getDailyDose, getTreatmentBackground, getTreatmentColor } from '../../utils.ts';
-import EditLogTime from './EditLogTime.vue';
+import EditLogTime from './modals/EditLogTime.vue';
 
 const props = defineProps<{
     pet: PetExtended
@@ -60,9 +60,9 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
 </script>
 
 <template>
-    <div class="flex gap-0.5 mt-0.75 flex-wrap" :style="{ '--custom-color': getTreatmentColor(colorIndex), }">
+    <div class="flex gap-0.5 mt-0.5 flex-wrap" :style="{ '--custom-color': getTreatmentColor(colorIndex), }">
         <div v-for="log in getSortedLoggedList(props.pet, props.treatment, medication)" :key="log.id"
-            :class="{ 'log p-0.5 rounded-xl flex gap-0.5 items-center': true, 'opacity-40 animate-pulse': loading && selectedMedicationLog?.id === log.id }"
+            :class="{ 'log p-0.5 rounded-xl flex gap-1 items-center': true, 'opacity-40 animate-pulse': loading && selectedMedicationLog?.id === log.id }"
             :style="{
                 color: getTreatmentColor(colorIndex), backgroundColor: getTreatmentBackground(colorIndex)
             }">
@@ -74,13 +74,13 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
                     hour: '2-digit',
                     minute: '2-digit'
                 }) }}</p>
-            <div class="flex gap-[3px] flex-wrap">
+            <div class="flex gap-[3px] flex-col">
                 <Button :disabled="loading && editedLog?.id === log.id" variant="ghost" size="min"
                     :aria-label="t('health.cta.editMedTime')" @click="editLogTime(log)">
                     <Pen :size="13" />
                 </Button>
                 <Button :disabled="loading && editedLog?.id === log.id" variant="ghost" size="min"
-                    :aria-label="t('common.button.delete')" @click="deleteDose(log)" class="hover:bg-error">
+                    :aria-label="t('common.button.delete')" @click="deleteDose(log)">
                     <X :size="13" />
                 </Button>
             </div>

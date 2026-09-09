@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../../../../components/Button.vue';
-import FreeModal from '../../../../components/FreeModal.vue';
-import Input from '../../../../components/Input.vue';
-import { useToast } from '../../../../composables/useToast.ts';
-import { tsFromInput } from '../../../../utils.ts';
-import { usePets } from '../../../pets/composables/usePets.ts';
-import type { PetExtended } from '../../../pets/types.ts';
-import { useTreatments } from '../../composables/useTreatments.ts';
-import type { Log, MedicineDb, TreatmentExtended } from '../../types.ts';
+import Button from '../../../../../components/Button.vue';
+import FreeModal from '../../../../../components/FreeModal.vue';
+import Input from '../../../../../components/Input.vue';
+import { useToast } from '../../../../../composables/useToast.ts';
+import { tsFromInput } from '../../../../../utils.ts';
+import { usePets } from '../../../../pets/composables/usePets.ts';
+import type { PetExtended } from '../../../../pets/types.ts';
+import { useTreatments } from '../../../composables/useTreatments.ts';
+import type { Log, MedicineDb, TreatmentExtended } from '../../../types.ts';
 
 const { careError, addNewLog } = usePets();
 const { loading } = useTreatments();

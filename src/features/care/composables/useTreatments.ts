@@ -10,7 +10,7 @@ const loading = ref<boolean>(false);
 
 export const useTreatments = () => {
     const { treatments } = usePets();
-    const { currentMonth } = useEvents()
+    const { currentMonth } = useEvents();
 
     const DOSE_WINDOW = { startHour: 8, endHour: 21 };
 
@@ -175,7 +175,7 @@ export const useTreatments = () => {
             const given = getLoggedListForDate(pet, treatment, medication, cursor).length;
             const count = dailyDose - given;
             if (count > 0) {
-                missedDoses.push({ date: new Date(cursor), count });
+                missedDoses.push({ date: new Date(cursor), count, medication: medication });
             }
             cursor.setDate(cursor.getDate() + 1);
         }

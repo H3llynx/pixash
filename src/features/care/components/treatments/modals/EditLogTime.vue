@@ -2,15 +2,15 @@
 import { Timestamp } from 'firebase/firestore';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../../../../components/Button.vue';
-import FreeModal from '../../../../components/FreeModal.vue';
-import Input from '../../../../components/Input.vue';
-import { useToast } from '../../../../composables/useToast.ts';
-import { tsToDate } from '../../../../utils.ts';
-import { usePets } from '../../../pets/composables/usePets.ts';
-import type { PetExtended } from '../../../pets/types.ts';
-import { useTreatments } from '../../composables/useTreatments.ts';
-import type { Log, MedicationLogExtended, MedicineDb } from '../../types.ts';
+import Button from '../../../../../components/Button.vue';
+import FreeModal from '../../../../../components/FreeModal.vue';
+import Input from '../../../../../components/Input.vue';
+import { useToast } from '../../../../../composables/useToast.ts';
+import { tsToDate } from '../../../../../utils.ts';
+import { usePets } from '../../../../pets/composables/usePets.ts';
+import type { PetExtended } from '../../../../pets/types.ts';
+import { useTreatments } from '../../../composables/useTreatments.ts';
+import type { Log, MedicationLogExtended, MedicineDb } from '../../../types.ts';
 
 const { updateSelectedLog, selectLog, careError } = usePets();
 const { loading } = useTreatments();
