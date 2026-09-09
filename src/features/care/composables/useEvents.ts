@@ -96,6 +96,7 @@ export const useEvents = () => {
     ].sort((a, b) => a.ts!.seconds - b.ts!.seconds));
 
     const eventsThisMonth = computed(() => eventsInTs.value.filter(event => tsToDate(event.ts, "thatMonth", undefined, currentMonth.value)));
+
     const petUpcomingEvents = computed(() => {
         if (!selectedPet.value) return [];
         return eventsInTs.value.filter(event => tsToDate(event.ts, "upcoming"))

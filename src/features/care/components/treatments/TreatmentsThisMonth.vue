@@ -12,7 +12,7 @@ import ProgressBar from './ProgressBar.vue';
 import TreatmentWithLog from './TreatmentWithLog.vue';
 
 const { selectTreatment, treatmentLoading, selectedTreatment, pets } = usePets();
-const { filteredMonthTreatments } = useAllPetsView();
+const { filteredMonthTreatments, petViewed } = useAllPetsView();
 const { t } = useI18n();
 </script>
 
@@ -31,7 +31,7 @@ const { t } = useI18n();
                 <div class="text-left w-full text-sm py-0.25">
                     <div class="flex gap-1 justify-between mb-0.25 items-end">
                         <h4>{{ treatment.name }}</h4>
-                        <PetTag :pet="pets.find(pet => pet.id === treatment.petId)!" :color="false" />
+                        <PetTag v-if="!petViewed" :pet="pets.find(pet => pet.id === treatment.petId)!" :color="false" />
                     </div>
                     <p class="flex items-center gap-[5px] mt-0.5 text-text-secondary italic text-xs">
                         <Calendar :size="18" />
