@@ -9,7 +9,7 @@ import { useEvents } from "./useEvents";
 const loading = ref<boolean>(false);
 
 export const useTreatments = () => {
-    const { treatments, selectedPet } = usePets();
+    const { treatments } = usePets();
     const { currentMonth } = useEvents()
 
     const DOSE_WINDOW = { startHour: 8, endHour: 21 };
@@ -35,18 +35,26 @@ export const useTreatments = () => {
                     t.endDate!,
                     currentMonth.value
                 );
-                const isNotExpired = !t.endDate || isSameOrAfterDay(t.endDate.toDate(), now);
-                return overlapsMonth && isNotExpired;
+                return overlapsMonth;
             })
             .sort(byStartThenEndDesc)
-            .map((t, index) => ({ ...t, color: getTreatmentColor(index) }))
+            .map((t, index) => ({
+                ...t,
+                color: getTreatmentColor(index),
+                isActive: t.startDate.toDate() <= now && (!t.endDate || isSameOrAfterDay(t.endDate.toDate(), now)),
+                isPast: t.endDate && t.endDate.toDate() < now
+            }))
     });
+
+    const scheduledTreatments = computed(() => treatments.value
+        .filter(t => t.startDate.toDate() > new Date())
+        .sort(byStartThenEndDesc)
+    );
 
     const activeTreatments = computed(() => {
         const now = new Date();
         return treatments.value
             .filter(t => t.startDate.toDate() <= now && (!t.endDate || isSameOrAfterDay(t.endDate.toDate(), now)))
-            .filter(t => t.petId === selectedPet.value?.id)
             .sort(byStartThenEndDesc)
     });
 
@@ -179,6 +187,7 @@ export const useTreatments = () => {
         byStartThenEndDesc,
         treatmentsThisMonth,
         activeTreatments,
+        scheduledTreatments,
         getTodayLoggedList,
         getDailyDosesToLog,
         getDailyMissedDoses,

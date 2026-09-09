@@ -17,8 +17,7 @@ const props = withDefaults(defineProps<{
     treatments: TreatmentExtended[]
     history?: boolean
     itemsPerPage?: number
-    opaque?: boolean
-}>(), { history: false, opaque: false });
+}>(), { history: false });
 
 const currentPage = ref<number>(1);
 const itemsPerPage = computed(() => props.itemsPerPage ?? (isMd.value ? 2 : 3))
@@ -42,7 +41,7 @@ watch(() => props.treatments, () => {
         <h2 v-if="title">{{ title }}</h2>
         <div class="grid grid-cols-1 gap-1">
             <TreatmentCard v-if="treatments.length" v-for="treatment in paginatedTreatments" :key="treatment.id"
-                :treatment="treatment" :class="{ 'opacity-60': opaque }" />
+                :treatment="treatment" />
             <p v-else-if="!loading && !history" class="text-text-secondary text-sm">{{
                 t("common.text.noActiveTreatment") }}
             </p>

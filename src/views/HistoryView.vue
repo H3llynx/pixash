@@ -29,8 +29,8 @@ const { t } = useI18n();
             <EventList :events="filteredPetHistory" history />
         </section>
         <div class="lg:bg-bg-3 lg:border-l lg:border-border lg:border-dashed lg:pt-1.5 pb-1.5">
-            <TreatmentList v-if="finishedTreatments" :treatments="finishedTreatments" :title="t('events.treatments')"
-                history class="default-padding lg:px-1.5" />
+            <TreatmentList v-if="finishedTreatments" :treatments="finishedTreatments"
+                :title="t('health.treatment.treatments')" history class="default-padding lg:px-1.5" />
         </div>
     </main>
 </template>

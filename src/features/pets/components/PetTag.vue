@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<{
 
 const getTagStyle = () => {
     return {
-        "flex items-center justify-center gap-[5px] rounded-full py-[5px] px-[10px] text-xs border font-medium": true,
+        "flex items-center justify-center gap-[5px] rounded-full py-[5px] px-[10px] text-xs border font-medium h-max": true,
         "border-border bg-bg": !props.color,
         "orange": props.pet.species === SPECIES[0].id && props.color,
         "purple": props.pet.species === SPECIES[1].id && props.color,

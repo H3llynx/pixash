@@ -9,6 +9,7 @@ import { getLabel, tsToDate } from '../../../../utils.ts';
 import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../../pets/types.ts';
+import { useAllPetsView } from '../../composables/useAllPetsView.ts';
 import { MED_FREQUENCY } from '../../config.ts';
 import type { TreatmentExtended } from '../../types.ts';
 import { getMedicationProgress, getTreatmentColor } from '../../utils.ts';
@@ -16,6 +17,7 @@ import DateTag from '../events/DateTag.vue';
 import ProgressBar from './ProgressBar.vue';
 
 const { pets, vets, selectTreatment, treatmentLoading, selectedTreatment } = usePets();
+const { petViewed } = useAllPetsView();
 const { t } = useI18n();
 const route = useRoute();
 
@@ -31,8 +33,8 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
         <div>
             <div class="card flex-row w-full justify-between items-start">
                 <h4 class="font-medium inline">{{ treatment.name }}</h4>
-                <PetTag class="ml-auto" :pet="pets.find((pet: PetExtended) => pet.id === treatment.petId)!"
-                    :color="false" />
+                <PetTag v-if="!petViewed" class="ml-auto"
+                    :pet="pets.find((pet: PetExtended) => pet.id === treatment.petId)!" :color="false" />
                 <Button variant="ghost" size="xs" class="inline ml-0.25 py-0.25" @click="selectTreatment(treatment)"
                     :aria-label="t('health.cta.viewTreatment')">
                     <Ellipsis :size="18" />
@@ -54,7 +56,7 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
                     <p>{{ medication.name }}</p>
                     <span class="italic font-medium text-eucalyptus text-xs">{{ t(getLabel(medication.frequency,
                         MED_FREQUENCY))
-                    }}</span>
+                        }}</span>
                     <span v-if="medication.endDate" class="italic font-medium text-text-secondary text-xs ml-0.5">
                         <span v-if="route.path === ROUTES.history">{{ t("health.treatment.ended") }}</span>
                         <span v-else>{{ t("health.treatment.until") }}</span>
@@ -67,7 +69,7 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
                     :color="getTreatmentColor(index)" class="w-full my-0.25" />
                 <span v-else class="tag bg-border-light text-text-secondary inline float-right">{{
                     t("health.treatment.ongoing")
-                }}</span>
+                    }}</span>
             </template>
         </div>
     </div>

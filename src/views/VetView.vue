@@ -8,15 +8,13 @@ import VetForm from '../features/care/components/forms/VetForm.vue';
 import ActiveTreatments from '../features/care/components/treatments/ActiveTreatments.vue';
 import TreatmentList from '../features/care/components/treatments/TreatmentList.vue';
 import VetSection from '../features/care/components/vet/VetSection.vue';
-import { useHistory } from '../features/care/composables/useHistory.ts';
-import { useTreatments } from '../features/care/composables/useTreatments.ts';
+import { useAllPetsView } from '../features/care/composables/useAllPetsView.ts';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 
 const { loading, selectedVet, vetLoading, isUpdatingVet } = usePets();
 const { t } = useI18n();
-const { activeTreatments } = useTreatments();
-const { finishedTreatments } = useHistory();
+const { filteredScheduledTreatments } = useAllPetsView();
 
 onBeforeRouteLeave(() => {
     isUpdatingVet.value = false;
@@ -40,9 +38,9 @@ onBeforeRouteLeave(() => {
         </div>
         <section
             class="px-0 flex flex-col gap-3 pb-1 lg:pt-1.5 lg:bg-bg-3 lg:border-l lg:border-border lg:border-dashed lg:h-full">
-            <ActiveTreatments v-if="activeTreatments" class="default-padding lg:px-1.5" />
-            <TreatmentList v-if="finishedTreatments" :treatments="finishedTreatments" opaque
-                :title="t('events.pastTreatments')" history class="default-padding lg:px-1.5" />
+            <ActiveTreatments class="default-padding lg:px-1.5" viewAll />
+            <TreatmentList v-if="filteredScheduledTreatments" :treatments="filteredScheduledTreatments"
+                :title="t('health.treatment.scheduledTreatments')" class="default-padding lg:px-1.5" />
             <AddButton vet />
         </section>
     </main>

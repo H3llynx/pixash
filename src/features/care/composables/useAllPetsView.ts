@@ -7,7 +7,7 @@ const petViewed = ref<string>("");
 
 export const useAllPetsView = () => {
     const { calendarEvents, eventsThisMonth } = useEvents();
-    const { treatmentsThisMonth } = useTreatments();
+    const { treatmentsThisMonth, activeTreatments, scheduledTreatments } = useTreatments();
     const { vets } = usePets();
 
     const filteredCalendarEvents = computed(() => petViewed.value
@@ -21,7 +21,7 @@ export const useAllPetsView = () => {
     );
 
     const filteredMonthTreatments = computed(() => petViewed.value
-        ? treatmentsThisMonth.value.filter(e => e.petId === petViewed.value)
+        ? treatmentsThisMonth.value.filter(t => t.petId === petViewed.value)
         : treatmentsThisMonth.value
     );
 
@@ -30,5 +30,15 @@ export const useAllPetsView = () => {
         : vets.value
     );
 
-    return { petViewed, filteredCalendarEvents, filteredMonthEvents, filteredMonthTreatments, filteredVets };
+    const filteredScheduledTreatments = computed(() => petViewed.value
+        ? scheduledTreatments.value.filter(t => t.petId === petViewed.value)
+        : scheduledTreatments.value
+    );
+
+    const filteredActiveTreatments = computed(() => petViewed.value
+        ? activeTreatments.value.filter(t => t.petId === petViewed.value)
+        : activeTreatments.value
+    );
+
+    return { petViewed, filteredCalendarEvents, filteredMonthEvents, filteredMonthTreatments, filteredVets, filteredScheduledTreatments, filteredActiveTreatments };
 };

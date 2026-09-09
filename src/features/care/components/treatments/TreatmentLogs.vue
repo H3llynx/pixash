@@ -74,7 +74,7 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
                     hour: '2-digit',
                     minute: '2-digit'
                 }) }}</p>
-            <div class="flex gap-[3px]">
+            <div class="flex gap-[3px] flex-wrap">
                 <Button :disabled="loading && editedLog?.id === log.id" variant="ghost" size="min"
                     :aria-label="t('health.cta.editMedTime')" @click="editLogTime(log)">
                     <Pen :size="13" />

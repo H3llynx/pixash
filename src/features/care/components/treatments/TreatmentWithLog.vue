@@ -4,7 +4,10 @@ import { computed, nextTick, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { getLabel, tsToDate } from '../../../../utils.ts';
+import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
+import type { PetExtended } from '../../../pets/types.ts';
+import { useAllPetsView } from '../../composables/useAllPetsView.ts';
 import { useTreatments } from '../../composables/useTreatments.ts';
 import { MED_FREQUENCY } from '../../config.ts';
 import type { MedicineDb, TreatmentExtended } from '../../types.ts';
@@ -15,6 +18,7 @@ import TreatmentLogs from './TreatmentLogs.vue';
 
 const { selectTreatment, pets, treatmentLoading, selectedTreatment } = usePets();
 const { getDailyMissedDoses, getMissedDosesHistory } = useTreatments();
+const { petViewed } = useAllPetsView();
 const { t } = useI18n();
 
 const props = defineProps<{ treatment: TreatmentExtended; colorIndex: number }>();
@@ -41,6 +45,8 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
         v-if="pet">
         <div class="flex gap-1 justify-between">
             <h3 class="text-base">{{ treatment.name }}</h3>
+            <PetTag v-if="!petViewed" class="ml-auto"
+                :pet="pets.find((pet: PetExtended) => pet.id === treatment.petId)!" :color="false" />
             <Button variant="ghost" size="xs" @click="selectTreatment(treatment)"
                 :aria-label="t('health.cta.viewTreatment')">
                 <Ellipsis :size="18" />
@@ -62,9 +68,9 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
             {{ treatment.notes }}
         </p>
         <details v-for="medication in treatment.medication" :key="medication.id"
-            class="rounded-xl text-sm flex flex-col mt-0.5 p-0.5 overflow-hidden"
+            class="rounded-xl text-sm flex flex-col mt-0.5 p-0.25 md:p-0.5 overflow-hidden"
             :style="{ backgroundColor: getTreatmentBackground(colorIndex) }">
-            <summary class="flex flex-wrap items-center justify-between cursor-pointer p-0.75"
+            <summary class="flex flex-wrap items-center justify-between cursor-pointer p-0.5 md:p-0.75"
                 :aria-label="t('health.treatment.summaryLabel')">
                 <p class="font-medium">{{ medication.name }}</p>
                 <span class="tag bg-bg-rgba border border-border text-text-softer ml-auto">{{

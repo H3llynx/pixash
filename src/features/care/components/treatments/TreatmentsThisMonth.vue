@@ -7,7 +7,9 @@ import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { useAllPetsView } from '../../composables/useAllPetsView.ts';
 import { getTreatmentProgress } from '../../utils.ts';
+import DateTag from '../events/DateTag.vue';
 import ProgressBar from './ProgressBar.vue';
+import TreatmentWithLog from './TreatmentWithLog.vue';
 
 const { selectTreatment, treatmentLoading, selectedTreatment, pets } = usePets();
 const { filteredMonthTreatments } = useAllPetsView();
@@ -16,11 +18,13 @@ const { t } = useI18n();
 
 <template>
     <article class="pet-section" v-if="filteredMonthTreatments.length">
-        <h2>{{ t("events.treatments") }}</h2>
+        <h2>{{ t("health.treatment.treatments") }}</h2>
         <div class="grid grid-cols-1 gap-1">
-            <Button v-for="treatment in filteredMonthTreatments" variant="card" size="card" :key="treatment.id"
-                @click="selectTreatment(treatment)" :aria-label="t('health.cta.viewTreatment')"
-                :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id }">
+            <TreatmentWithLog v-for="(treatment, index) in filteredMonthTreatments.filter(t => t.isActive)"
+                :key="treatment.id" :treatment="treatment" :colorIndex="index" />
+            <Button v-for="treatment in filteredMonthTreatments.filter(t => !t.isActive)" variant="card" size="card"
+                :key="treatment.id" @click="selectTreatment(treatment)" :aria-label="t('health.cta.viewTreatment')"
+                :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'opacity-60': treatment.isPast }">
                 <div class="rounded-xl w-4 h-4 bg-border text-4xl flex shrink-0 justify-center items-center">
                     <Pill />
                 </div>
@@ -37,12 +41,9 @@ const { t } = useI18n();
                         <span v-if="treatment.endDate"> - {{
                             tsToDate(treatment.endDate, "date") }}</span>
                     </p>
-                    <ProgressBar v-if="treatment.endDate" :progress="getTreatmentProgress(treatment)!"
-                        :color="treatment.color" />
-                    <span v-else
-                        class="inline ml-0.5 float-right tag border border-border bg-bg-rgba text-text-softer">{{
-                            t("health.treatment.ongoing")
-                        }}</span>
+                    <DateTag v-if="!treatment.isPast" :date="treatment.startDate" class="inline float-right ml-0.5" />
+                    <ProgressBar v-else :progress="getTreatmentProgress(treatment)!"
+                        color="var(--color-text-secondary)" />
                 </div>
             </Button>
         </div>

@@ -370,7 +370,10 @@ export default {
             summaryLabel: "view log actions",
             editMedTime: "When did you give {medication} to {name}?",
             missedDoses: "Missed doses",
-            missedDoseToday: "You've missed a dose today"
+            missedDoseToday: "You've missed a dose today",
+            treatments: "Treatments",
+            pastTreatments: "Past treatments",
+            scheduledTreatments: "Scheduled treatments"
         },
         medicine: {
             title: "Medicine {index}",
@@ -436,8 +439,6 @@ export default {
         antiparasitics: "Antiparasitics",
         other: "Other events",
         weightLog: "Weight log",
-        treatments: "Treatments",
-        pastTreatments: "Past treatments",
         eventTag: {
             vaccine: "Vaccine",
             visit: "Vet visit",
