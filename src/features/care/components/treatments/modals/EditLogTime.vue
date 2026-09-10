@@ -12,7 +12,7 @@ import type { PetExtended } from '../../../../pets/types.ts';
 import { useTreatments } from '../../../composables/useTreatments.ts';
 import type { Log, MedicationLogExtended, MedicineDb } from '../../../types.ts';
 
-const { updateSelectedLog, selectLog, careError } = usePets();
+const { updateSelectedLog, careError } = usePets();
 const { loading } = useTreatments();
 const { show } = useToast();
 const { t } = useI18n();
@@ -53,7 +53,6 @@ const handleSubmit = async () => {
     } catch (e) {
         show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
     } finally {
-        selectLog(null);
         loading.value = false;
     }
 };
@@ -70,13 +69,13 @@ watch(() => isEditing.value, (editing) => {
     <FreeModal v-model="isEditing">
         <form class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
             <h3 class="font-title">{{ t("health.treatment.editMedTime", { medication: medication.name, name: pet.name })
-                }}
+            }}
             </h3>
             <Input v-model="timeData" type="time" id="medication-time-log" />
             <Button :disabled="loading">{{ t("common.button.confirm") }}</Button>
             <Button :disabled="loading" type="button" variant="ghost" @click="handleCancel">{{
                 t("common.button.cancel")
-            }}</Button>
+                }}</Button>
         </form>
     </FreeModal>
 </template>

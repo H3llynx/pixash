@@ -1,5 +1,7 @@
 import { computed, ref } from "vue";
-import { tsToDate, tsToDay } from "../../../utils";
+import { useI18n } from "vue-i18n";
+import { useToast } from "../../../composables/useToast";
+import { tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import type { PetExtended } from "../../pets/types";
 import type { MedicationLogExtended, MedicineDb, MissedDoseRecord, TreatmentExtended } from "../types";
@@ -7,10 +9,13 @@ import { checkOverlapsMonth, getDailyDose, getIntervalHours, getTreatmentColor }
 import { useEvents } from "./useEvents";
 
 const loading = ref<boolean>(false);
+const doseToDelete = ref<MedicationLogExtended | null>(null);
 
 export const useTreatments = () => {
-    const { treatments } = usePets();
+    const { treatments, deleteSelectedLog, careError } = usePets();
     const { currentMonth } = useEvents();
+    const { show } = useToast();
+    const { t } = useI18n();
 
     const DOSE_WINDOW = { startHour: 8, endHour: 21 };
 
@@ -73,19 +78,24 @@ export const useTreatments = () => {
         ) as MedicationLogExtended[];
     };
 
+    const getTotalLogs = (
+        pet: PetExtended,
+        treatment: TreatmentExtended,
+        medication: MedicineDb
+    ): MedicationLogExtended[] => {
+        const logs = pet.logs.filter(log =>
+            log.type === "medication" &&
+            log.treatmentId === treatment.id &&
+            log.medicineId === medication.id
+        ) as MedicationLogExtended[];
+        return logs.sort((a, b) => b.givenAt.toDate().getTime() - a.givenAt.toDate().getTime());
+    };
+
     const getLatestLog = (
         pet: PetExtended,
         treatment: TreatmentExtended,
         medication: MedicineDb
-    ): MedicationLogExtended | undefined => {
-        const logs = pet.logs.filter(log =>
-            log.type === "medication" &&
-            log.treatmentId === treatment.id &&
-            log.medicineId === medication.id &&
-            log.givenAt
-        ) as MedicationLogExtended[];
-        return logs.sort((a, b) => tsToDay(b.givenAt) - tsToDay(a.givenAt))[0];
-    };
+    ): MedicationLogExtended | undefined => getTotalLogs(pet, treatment, medication)[0];
 
     const getDailyDosesToLog = (
         pet: PetExtended,
@@ -182,6 +192,19 @@ export const useTreatments = () => {
         return missedDoses;
     };
 
+    const deleteDose = async (log: MedicationLogExtended, petId: string) => {
+        doseToDelete.value = log;
+        loading.value = true;
+        try {
+            await deleteSelectedLog(log, petId);
+        } catch (e) {
+            show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
+        } finally {
+            doseToDelete.value = null;
+            loading.value = false;
+        }
+    }
+
     return {
         loading,
         byStartThenEndDesc,
@@ -190,9 +213,12 @@ export const useTreatments = () => {
         activeTreatments,
         scheduledTreatments,
         getTodayLoggedList,
+        getTotalLogs,
         getDailyDosesToLog,
         getDailyMissedDoses,
         getMissedDosesHistory,
+        doseToDelete,
+        deleteDose
     };
 
 }

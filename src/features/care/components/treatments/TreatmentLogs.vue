@@ -18,16 +18,17 @@ const props = defineProps<{
     colorIndex: number
 }>();
 
-const { addNewLog, deleteSelectedLog, careError, selectedMedicationLog } = usePets();
-const { getTodayLoggedList, getDailyDosesToLog, getDailyMissedDoses, loading } = useTreatments();
+const { addNewLog, careError } = usePets();
+const { getTodayLoggedList, getDailyDosesToLog, getDailyMissedDoses, doseToDelete, deleteDose, loading } = useTreatments();
 const { t, locale } = useI18n();
 const { show } = useToast();
 
 const isEditing = ref<boolean>(false);
+const isAdding = ref<boolean>(false);
 const editedLog = ref<MedicationLogExtended | null>(null);
 
 const logDose = async (medication: MedicineDb) => {
-    loading.value = true;
+    isAdding.value = true;
     const log: Log = {
         type: "medication",
         treatmentId: props.treatment.id,
@@ -37,17 +38,10 @@ const logDose = async (medication: MedicineDb) => {
         await addNewLog(log, props.pet.id);
     } catch (e) {
         show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
-    } finally { loading.value = false; }
+    } finally {
+        isAdding.value = false;
+    }
 };
-
-const deleteDose = async (log: MedicationLogExtended) => {
-    loading.value = true;
-    try {
-        await deleteSelectedLog(log, props.pet.id);
-    } catch (e) {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
-    } finally { loading.value = false; }
-}
 
 const editLogTime = async (log: MedicationLogExtended) => {
     editedLog.value = log;
@@ -62,7 +56,7 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
 <template>
     <div class="flex gap-0.5 mt-0.5 flex-wrap" :style="{ '--custom-color': getTreatmentColor(colorIndex), }">
         <div v-for="log in getSortedLoggedList(props.pet, props.treatment, medication)" :key="log.id"
-            :class="{ 'log p-0.5 rounded-xl flex gap-1 items-center': true, 'opacity-40 animate-pulse': loading && selectedMedicationLog?.id === log.id }"
+            :class="{ 'log p-0.5 rounded-xl flex gap-1 justify-between items-center': true, 'opacity-40 animate-pulse': loading && (editedLog?.id === log.id || doseToDelete?.id === log.id) }"
             :style="{
                 color: getTreatmentColor(colorIndex), backgroundColor: getTreatmentBackground(colorIndex)
             }">
@@ -80,12 +74,12 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
                     <Pen :size="13" />
                 </Button>
                 <Button :disabled="loading && editedLog?.id === log.id" variant="ghost" size="min"
-                    :aria-label="t('common.button.delete')" @click="deleteDose(log)">
+                    :aria-label="t('common.button.delete')" @click="deleteDose(log, pet.id)">
                     <X :size="13" />
                 </Button>
             </div>
         </div>
-        <Button :disabled="loading" v-for="number in getDailyDosesToLog(props.pet, props.treatment, medication)"
+        <Button :disabled="isAdding" v-for="number in getDailyDosesToLog(props.pet, props.treatment, medication)"
             :key="number" variant="card" size="xs" @click="logDose(medication)"
             :class="{ 'dose': true, 'missed': getDailyMissedDoses(pet, treatment, medication) && number === 1 }">
             {{ t("health.cta.logDose") }} {{ getDailyDose(medication.frequency) !== undefined ? number +

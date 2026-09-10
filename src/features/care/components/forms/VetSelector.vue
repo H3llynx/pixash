@@ -16,7 +16,7 @@ withDefaults(defineProps<{
 
 const readonly = inject("readonly", ref(false));
 const model = defineModel<string>();
-const vetTextInput = defineModel<boolean>('vetTextInput');
+const vetTextInput = defineModel<boolean>("vetTextInput");
 
 const onVetChange = () => {
     if (model.value === "other") {
