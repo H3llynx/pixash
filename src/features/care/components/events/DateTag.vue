@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<{
 }>(), { withMissed: false });
 
 const getTagStyle = () => {
-    const daysUntil = tsToDate(props.date, "timeUntil", t);
+    const daysUntil = tsToDate(props.date, "timeUntil");
     const isThisWeek = tsToDate(props.date, "isThisWeek");
     const isNotPast = !tsToDate(props.date, "isPast");
     const isMissed = props.withMissed && tsToDate(props.date, "isPast") && props.date.toDate() < new Date();
@@ -28,7 +28,7 @@ const getTagStyle = () => {
 </script>
 
 <template>
-    <span :class="getTagStyle()">{{ tsToDate(date, 'timeUntil', t) }}</span>
+    <span :class="getTagStyle()">{{ tsToDate(date, 'timeUntil') }}</span>
 </template>
 
 <style scoped>

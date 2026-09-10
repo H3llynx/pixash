@@ -374,7 +374,15 @@ export default {
             treatments: "Treatments",
             pastTreatments: "Past treatments",
             scheduledTreatments: "Scheduled treatments",
-            viewMedLog: "View Log history"
+            viewMedLog: "View Log history",
+            historyModal: {
+                logged: "Logged",
+                missed: "Missed",
+                window: "Current window",
+                beforeStart: "Before start date",
+                afterStart: "After end date",
+                bottomText: "Logs outside the treatment's current dates are kept but flagged — edit or remove them here if they no longer apply."
+            }
         },
         medicine: {
             title: "Medicine {index}",

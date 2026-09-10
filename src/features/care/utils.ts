@@ -1,5 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import { tsToDay } from "../../utils";
+import { i18n } from "../language/config/i18n";
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, LOG_SUBTYPES, MED_FREQUENCY, PARASITES, TREATMENTCOLORS, VACCINE_TYPES } from "./config";
@@ -30,7 +31,8 @@ export const getNextAntiparasitic = (logs: LogExtended[]) => {
     );
 };
 
-export const showVaccines = (vaccineType: VaccineTypes["id"][], pet: PetExtended, t: (key: string) => string) => {
+export const showVaccines = (vaccineType: VaccineTypes["id"][], pet: PetExtended) => {
+    const t = i18n.global.t;
     const vaccines = getVaccineTypes(pet.species);
     if (!vaccines) return;
     const labels: string[] = [];
@@ -47,7 +49,9 @@ export const getAntiparasites = (species: typeof SPECIES[number]["id"] | "defaul
     return [...specific, ...ANTIPARASITE_TYPES.default];
 };
 
-export const showAntiparasites = (treated: AntiparasiteTypes["id"][], locale: string, t: (key: string) => string, asList?: boolean) => {
+export const showAntiparasites = (treated: AntiparasiteTypes["id"][], asList?: boolean) => {
+    const locale = i18n.global.locale.value;
+    const t = i18n.global.t;
     const labels: string[] = [];
     treated.forEach(parasite => {
         const item = Object.values(PARASITES).find(p => p.id === parasite);
@@ -82,33 +86,28 @@ export const getTreatmentEndDate = (medication: MedicineDb[]): Timestamp | null 
     return new Timestamp(Math.max(...endDates), 0);
 };
 
-export const getTreatmentProgress = (treatment: TreatmentExtended): number | null => {
-    if (!treatment.endDate) return null;
+export const getStartOfDayAfter = (date: Date): number => {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() + 1);
+    return d.getTime();
+};
 
+const getProgress = (startMs: number, endTimestamp: Timestamp | null): number | null => {
+    if (!endTimestamp) return null;
     const now = Date.now();
-    const start = treatment.startDate.toMillis()
-    const end = treatment.endDate.toMillis()
-
+    const end = getStartOfDayAfter(endTimestamp.toDate());
     if (now >= end) return 100;
-    if (now <= start) return 0;
-
-    const progress = ((now - start) / (end - start)) * 100;
+    if (now <= startMs) return 0;
+    const progress = ((now - startMs) / (end - startMs)) * 100;
     return Math.round(Math.min(Math.max(progress, 0), 100));
 };
 
-export const getMedicationProgress = (treatment: TreatmentExtended, medication: MedicineDb): number | null => {
-    if (!medication.endDate) return null;
+export const getMedicationProgress = (treatment: TreatmentExtended, medication: MedicineDb): number | null =>
+    getProgress(treatment.startDate.toMillis(), medication.endDate);
 
-    const now = Date.now();
-    const start = treatment.startDate.toMillis()
-    const end = medication.endDate.toMillis()
-
-    if (now >= end) return 100;
-    if (now <= start) return 0;
-
-    const progress = ((now - start) / (end - start)) * 100;
-    return Math.round(Math.min(Math.max(progress, 0), 100));
-};
+export const getTreatmentProgress = (treatment: TreatmentExtended): number | null =>
+    getProgress(treatment.startDate.toMillis(), treatment.endDate);
 
 export const getDailyDose = (frequency: string): number | undefined => {
     const count = MED_FREQUENCY.find(f => f.id === frequency)?.dailyDose;

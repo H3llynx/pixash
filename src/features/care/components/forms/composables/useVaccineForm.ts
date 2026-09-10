@@ -79,7 +79,7 @@ export const useVaccineForm = () => {
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.vaccineAdded", { name: selectedPet.value.name, type: showVaccines(typesSnapshot, selectedPet.value, t) }),
+                    message: t("toast.success.message.vaccineAdded", { name: selectedPet.value.name, type: showVaccines(typesSnapshot, selectedPet.value) }),
                 });
                 resetForm(formData, defaultForm);
             }
@@ -96,7 +96,7 @@ export const useVaccineForm = () => {
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
-                        message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showVaccines(typesSnapshot, selectedPet.value, t) }),
+                        message: t("toast.success.message.vaccineUpdated", { name: selectedPet.value.name, type: showVaccines(typesSnapshot, selectedPet.value) }),
                     });
                     resetForm(formData, defaultForm);
                 }
@@ -115,7 +115,7 @@ export const useVaccineForm = () => {
         const vaccine = selectedVaccine.value;
         if (!vaccine || !pet) return;
         open({
-            title: t("dialog.deleteRecord.title", { name: pet.name, title: showVaccines(vaccine.types, pet, t) }),
+            title: t("dialog.deleteRecord.title", { name: pet.name, title: showVaccines(vaccine.types, pet) }),
             message: t("dialog.deleteGenericMsg"),
             isDelete: true,
             onConfirm: async () => {
@@ -125,7 +125,7 @@ export const useVaccineForm = () => {
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
-                        message: t("toast.success.message.eventDeleted", { name: pet.name, title: showVaccines(vaccine.types, pet, t) }),
+                        message: t("toast.success.message.eventDeleted", { name: pet.name, title: showVaccines(vaccine.types, pet) }),
                     });
                     resetForm(formData, defaultForm);
                 } catch (error) {

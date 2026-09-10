@@ -22,12 +22,12 @@ export const useEvents = () => {
                 const pet = pets.value.find(pet => pet.id === vaccine.petId)!;
                 const events = [];
                 if (vaccine.givenAt) events.push({
-                    title: `${getPetIcon(pet)} ${showVaccines(vaccine.types, pet, t)}`,
+                    title: `${getPetIcon(pet)} ${showVaccines(vaccine.types, pet)}`,
                     date: tsToDate(vaccine.givenAt, "input"),
                     event: vaccine,
                 });
                 if (vaccine.dueOn) events.push({
-                    title: `${getPetIcon(pet)} ${showVaccines(vaccine.types, pet, t)}`,
+                    title: `${getPetIcon(pet)} ${showVaccines(vaccine.types, pet)}`,
                     date: tsToDate(vaccine.dueOn, "input"),
                     event: vaccine,
                 });
@@ -95,7 +95,7 @@ export const useEvents = () => {
         ...logs.value.filter(log => log.type === "antiparasite").filter(log => log.dueOn).map(log => ({ ...log, ts: log.dueOn! })),
     ].sort((a, b) => a.ts!.seconds - b.ts!.seconds));
 
-    const eventsThisMonth = computed(() => eventsInTs.value.filter(event => tsToDate(event.ts, "thatMonth", undefined, currentMonth.value)));
+    const eventsThisMonth = computed(() => eventsInTs.value.filter(event => tsToDate(event.ts, "thatMonth", currentMonth.value)));
 
     const petUpcomingEvents = computed(() => {
         if (!selectedPet.value) return [];
@@ -111,7 +111,7 @@ export const useEvents = () => {
         });
         const title = computed(() => {
             const e = event.value;
-            if (e.eventType === "vaccine" && e.types && pet.value) return showVaccines(e.types, pet.value, t);
+            if (e.eventType === "vaccine" && e.types && pet.value) return showVaccines(e.types, pet.value);
             if (e.eventType === "visit") return e.title;
             if (e.type === "weight") return t("events.weightLog");
             if (e.type === "antiparasite") return t("events.antiparasitics")

@@ -3,22 +3,38 @@ import { History } from '@lucide/vue';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import type { MedicineDb } from '../../types.ts';
+import type { PetExtended } from '../../../pets/types.ts';
+import type { LogExtended, MedicineDb, TreatmentExtended } from '../../types.ts';
 import ViewLogs from './modals/ViewLogs.vue';
 
 const { t } = useI18n();
 
-defineProps<{ medication: MedicineDb }>();
+const props = defineProps<{
+    pet: PetExtended
+    treatment: TreatmentExtended
+    medication: MedicineDb
+    logs: LogExtended[]
+}>();
 
 const isViewing = ref<boolean>(false);
 </script>
 
+
 <template>
-    <div class="p-1">
-        <Button variant="ghost" class="w-full" @click="isViewing = true">
-            <History />
-            {{ t("health.treatment.viewMedLog") }}
-        </Button>
-    </div>
-    <ViewLogs v-model="isViewing" :medication="medication" />
+    <Button variant="ghost" size="xxs" @click="isViewing = true">
+        <History :size="20" />
+        {{ t("health.treatment.viewMedLog") }}
+    </Button>
+    <ViewLogs v-model="isViewing" :pet="pet" :treatment="treatment" :medication="medication" :logs="logs" />
 </template>
+
+<style scoped>
+button {
+    background: transparent;
+    justify-content: start;
+
+    &:not(:hover) {
+        color: var(--color-text-secondary);
+    }
+}
+</style>

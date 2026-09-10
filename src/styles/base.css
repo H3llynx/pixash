@@ -48,7 +48,7 @@
   --color-error-bg: #FCEBEB;
   --color-error-border: #F09595;
   --color-error-text: #A32D2D;
-  --color-error-rgba: rgba(226, 75, 74, 0.23);
+  --color-error-rgba: rgba(226, 75, 74, 0.16);
 
   --color-success: #639922;
   --color-success-bg: #EAF3DE;
@@ -298,9 +298,15 @@
     font-family: var(--font-title);
   }
 
+  h1,
+  h3,
+  h4,
+  h5 {
+    @apply font-medium;
+  }
+
   h1 {
     color: var(--color-accent-softer);
-    font-weight: 500;
     font-size: x-large;
   }
 
@@ -309,7 +315,11 @@
   }
 
   h3 {
-    @apply text-lg font-medium;
+    @apply text-lg;
+  }
+
+  h5 {
+    @apply uppercase
   }
 }
 
@@ -374,6 +384,10 @@
   .modal-pop-leave-from {
     opacity: 1;
     transform: scale(1) translateY(0);
+  }
+
+  .dialog-overlay {
+    @apply m-auto bg-transparent text-text backdrop:bg-grey-dark-rgba backdrop:filter-blur;
   }
 
   .error-icon {

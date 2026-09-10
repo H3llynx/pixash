@@ -12,7 +12,7 @@ const button = tv({
             primary: "bg-accent text-bg rounded-full enabled:hover:bg-interactive",
             secondary: "bg-bg-2 text-text rounded-full enabled:hover:bg-interactive enabled:hover:text-bg",
             tertiary: "text-text-softer enabled:hover:text-interactive bg-bg-rgba border-border rounded-full",
-            ghost: "enabled:hover:text-accent bg-bg-rgba disabled:opacity-100 disabled:bg-transparent",
+            ghost: "enabled:hover:text-accent bg-bg-rgba disabled:opacity-100 disabled:bg-transparent h-max",
             addon: "text-text-secondary addon-focus rounded-full",
             stacked: "stacked-btn text-text-secondary capitalize",
             tile: "tile-btn capitalize justify-end items-end",

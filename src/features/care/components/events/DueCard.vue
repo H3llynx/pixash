@@ -20,7 +20,7 @@ const date = computed(() => props.data.dueOn ? tsToDate(props.data.dueOn, "date"
     <div class="card border border-border flex-col justify-between min-w-1/2 shrink-0 md:min-w-1/3 lg:min-w-9">
         <div class="text-left flex flex-col h-full">
             <h3>{{ title }}</h3>
-            <p class="font-medium">{{ date }}</p>
+            <p class="font-medium mb-1">{{ date }}</p>
             <DateTag :date="timestamp" class="mt-auto" withMissed />
         </div>
     </div>

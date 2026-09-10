@@ -1,5 +1,5 @@
 import { computed, ref } from "vue";
-import { isSameOrAfterDay, tsToDay } from "../../../utils";
+import { tsToDate, tsToDay } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import type { PetExtended } from "../../pets/types";
 import type { MedicationLogExtended, MedicineDb, MissedDoseRecord, TreatmentExtended } from "../types";
@@ -24,7 +24,7 @@ export const useTreatments = () => {
     };
 
     const isMedicationEnded = (medication: MedicineDb): boolean =>
-        medication.endDate && !isSameOrAfterDay(medication.endDate.toDate(), new Date());
+        !!tsToDate(medication.endDate, "isPast");
 
     const treatmentsThisMonth = computed(() => {
         const now = new Date();
@@ -41,7 +41,7 @@ export const useTreatments = () => {
             .map((t, index) => ({
                 ...t,
                 color: getTreatmentColor(index),
-                isActive: t.startDate.toDate() <= now && (!t.endDate || isSameOrAfterDay(t.endDate.toDate(), now)),
+                isActive: t.startDate.toDate() <= now && (!t.endDate || !tsToDate(t.endDate, "isPast")),
                 isPast: t.endDate && t.endDate.toDate() < now
             }))
     });
@@ -54,7 +54,7 @@ export const useTreatments = () => {
     const activeTreatments = computed(() => {
         const now = new Date();
         return treatments.value
-            .filter(t => t.startDate.toDate() <= now && (!t.endDate || isSameOrAfterDay(t.endDate.toDate(), now)))
+            .filter(t => t.startDate.toDate() <= now && (!t.endDate || !tsToDate(t.endDate, "isPast")))
             .sort(byStartThenEndDesc)
     });
 
@@ -185,6 +185,7 @@ export const useTreatments = () => {
     return {
         loading,
         byStartThenEndDesc,
+        isMedicationEnded,
         treatmentsThisMonth,
         activeTreatments,
         scheduledTreatments,

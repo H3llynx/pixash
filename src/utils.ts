@@ -1,5 +1,6 @@
 import equal from 'fast-deep-equal';
 import { Timestamp } from "firebase/firestore";
+import { i18n } from "./features/language/config/i18n";
 
 export const resetState = (state: Record<string, boolean>) => {
     Object.keys(state).forEach((key) => {
@@ -24,7 +25,6 @@ export const resetForm = <T extends object>(
 };
 
 type DateFormatMode = "date" | "timeUntil" | "input" | "datetime" | "upcoming" | "thatMonth" | "isThisWeek" | "isPast";
-type TFunction = (key: string, params?: Record<string, unknown>) => string;
 
 export const tsToDay = (ts: Timestamp) => {
     const d = ts.toDate();
@@ -43,14 +43,16 @@ const getCleanDates = (date: Date) => {
     return { eventDay, today, diffDays, diffMonths }
 }
 
-export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, t?: TFunction, month?: Date) => {
+export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, month?: Date) => {
     if (!ts) return;
     const date = ts.toDate();
+    const locale = i18n.global.locale.value;
+    const t = i18n.global.t;
     const { today, diffDays, diffMonths, eventDay } = getCleanDates(date);
 
     switch (mode) {
         case "date":
-            return date.toLocaleDateString(undefined, {
+            return date.toLocaleDateString(locale, {
                 day: "numeric",
                 month: "short",
                 year: "numeric"
@@ -70,7 +72,6 @@ export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, t?: TF
                 String(date.getMinutes()).padStart(2, "0")
             ].join(":");
         case "timeUntil": {
-            if (!t) return;
             if (diffDays === -1) return t("tsToDate.yesterday");
             if (diffDays === 0) return t("tsToDate.today");
             if (diffDays === 1) return t("tsToDate.tomorrow");
@@ -123,10 +124,10 @@ export const todayAsInput = () => {
     ].join("-");
 };
 
-export const isSameOrAfterDay = (a: Date, b: Date): boolean => {
-    const aDay = new Date(a); aDay.setHours(0, 0, 0, 0);
-    const bDay = new Date(b); bDay.setHours(0, 0, 0, 0);
-    return aDay >= bDay;
+export const formatDateRange = (start: Date, end: Date) => {
+    const locale = i18n.global.locale.value;
+    const formatter = new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric" });
+    return formatter.formatRange(start, end);
 };
 
 export const getLabel = (item: string, array: { id: string, label: string }[]) => {

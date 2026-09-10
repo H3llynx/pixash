@@ -9,7 +9,7 @@ import type { PetEvent } from '../types.ts';
 import { showAntiparasites } from '../utils.ts';
 import DueCard from './events/DueCard.vue';
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const route = useRoute();
 
 defineProps<{
@@ -27,7 +27,7 @@ defineProps<{
         <h1>{{ t("common.text.done") }}</h1>
         <p v-if="log.treated" class="md:max-w-2/3 mx-auto">
             {{ t("common.text.antiparasiticLogged", {
-                parasites: showAntiparasites(log.treated, locale, t),
+                parasites: showAntiparasites(log.treated),
                 name: pet.name
             }) }}
         </p>

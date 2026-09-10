@@ -374,7 +374,15 @@ export default {
             treatments: "Tratamientos",
             pastTreatments: "Tratamientos anteriores",
             scheduledTreatments: "Tratamientos programados",
-            viewMedLog: "Ver registros"
+            viewMedLog: "Ver registros",
+            historyModal: {
+                logged: "Registradas",
+                missed: "Omitidas",
+                window: "Periodo actual",
+                beforeStart: "Antes de la fecha de inicio",
+                afterStart: "Después de la fecha de fin",
+                bottomText: "Los registros fuera de las fechas actuales del tratamiento se conservan, pero quedan marcados. Edítalos o elimínalos aquí si ya no corresponden."
+            }
         },
         medicine: {
             title: "Medicamento {index}",

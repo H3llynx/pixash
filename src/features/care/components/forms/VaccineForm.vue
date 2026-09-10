@@ -20,7 +20,7 @@ import { useVaccineForm } from './composables/useVaccineForm.ts';
 import VetSelector from './VetSelector.vue';
 
 const { selectedPet, isAddingCare, selectedVaccine, vetLoading } = usePets();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const { mode, isReadonly } = useFormMode();
 const { vetTextInput, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete, loading } = useVaccineForm();
 provide('readonly', isReadonly);
@@ -57,7 +57,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                             class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
                             <PetIcon :pet="selectedPet" />
                         </div>
-                        <h1>{{ selectedPet!.name }} · {{ showVaccines(formData.types, selectedPet!, t) }}</h1>
+                        <h1>{{ selectedPet!.name }} · {{ showVaccines(formData.types, selectedPet!) }}</h1>
                     </div>
                     <Button v-if="selectedVaccine" action="delete" :aria-label="t('health.cta.deleteVaccine')"
                         @click="handleDelete" />
@@ -115,10 +115,11 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                     {{
                                         selectedPet.name
                                     }} · {{
-                                        showVaccines(formData.types, selectedPet, t) }}
+                                        showVaccines(formData.types, selectedPet) }}
                                 </p>
                                 <p v-if="formData.dueOn" class="text-text-secondary w-full">
-                                    {{ t("health.sharedFields.dueDate") }}{{ new Date(formData.dueOn).toLocaleDateString()
+                                    {{ t("health.sharedFields.dueDate") }}: {{ new
+                                        Date(formData.dueOn).toLocaleDateString(locale)
                                     }}
                                 </p>
                             </div>

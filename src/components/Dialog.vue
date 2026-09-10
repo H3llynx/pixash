@@ -28,9 +28,8 @@ watch(dialog, (newVal) => {
 </script>
 
 <template>
-    <dialog ref="dialogRef"
-        class="m-auto bg-transparent text-text max-w-xs md:max-w-sm backdrop:bg-grey-dark-rgba backdrop:filter-blur"
-        :aria-labelledby="dialog?.title" @click.self="closeDialog">
+    <dialog ref="dialogRef" class="dialog-overlay max-w-xs md:max-w-sm" :aria-labelledby="dialog?.title"
+        @click.self="closeDialog">
         <Transition name="modal-pop" appear>
             <div v-if="dialog" class="dialog-box text-center items-center">
                 <div class="rounded-full w-4 h-4 bg-accent-rgba text-4xl flex shrink-0 justify-center items-center">

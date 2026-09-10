@@ -1,4 +1,5 @@
 import { computed, ref } from "vue";
+import { tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import type { PetEvent } from "../types";
 import { getLogTs } from "../utils";
@@ -32,11 +33,11 @@ export const useHistory = () => {
 
     const petHistory = computed(() => history.value.filter(h => h.petId === selectedPet.value?.id) as PetEvent[]);
 
+
     const finishedTreatments = computed(() => treatments.value
-        .filter(t => t.endDate && t.endDate.toDate() < new Date())
+        .filter(t => t.endDate && tsToDate(t.endDate, "isPast"))
         .filter(t => t.petId === selectedPet.value?.id)
-        .sort(byStartThenEndDesc)
-    );
+        .sort(byStartThenEndDesc));
 
     const filteredPetHistory = computed(() => eventType.value
         ? petHistory.value.filter(e => {

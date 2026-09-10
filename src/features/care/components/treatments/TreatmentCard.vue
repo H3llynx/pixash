@@ -9,22 +9,30 @@ import { ROUTES } from '../../../../router/config.ts';
 import { getLabel, tsToDate } from '../../../../utils.ts';
 import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
-import type { PetExtended } from '../../../pets/types.ts';
 import { useAllPetsView } from '../../composables/useAllPetsView.ts';
+import { useTreatments } from '../../composables/useTreatments.ts';
 import { MED_FREQUENCY } from '../../config.ts';
-import type { TreatmentExtended } from '../../types.ts';
+import type { MedicineDb, TreatmentExtended } from '../../types.ts';
 import { getMedicationProgress, getTreatmentColor } from '../../utils.ts';
 import DateTag from '../events/DateTag.vue';
+import LogHistory from './LogHistory.vue';
 
 const { pets, vets, selectTreatment, treatmentLoading, selectedTreatment } = usePets();
+const { isMedicationEnded } = useTreatments();
 const { petViewed } = useAllPetsView();
 const { t } = useI18n();
 const route = useRoute();
 
 const props = defineProps<{ treatment: TreatmentExtended }>();
 
+const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.petId));
 const isRegisteredVet = computed(() => vets.value?.find(vet => vet.id === props.treatment.vet));
 const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
+const medicationLogs = computed(() => (medication: MedicineDb) =>
+    pet.value?.logs.filter((log: any) =>
+        log.type === "medication" &&
+        log.treatmentId === props.treatment.id &&
+        log.medicineId === medication.id) ?? []);
 </script>
 
 <template>
@@ -32,9 +40,8 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
         :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'card w-full md:max-w-md border border-border gap-1': true }">
         <div>
             <div class="card flex-row w-full justify-between items-start">
-                <h4 class="font-medium inline">{{ treatment.name }}</h4>
-                <PetTag v-if="!petViewed" class="ml-auto"
-                    :pet="pets.find((pet: PetExtended) => pet.id === treatment.petId)!" :color="false" />
+                <h4>{{ treatment.name }}</h4>
+                <PetTag v-if="!petViewed" class="ml-auto" :pet="pet!" :color="false" />
                 <Button variant="ghost" size="xs" class="inline ml-0.25 py-0.25" @click="selectTreatment(treatment)"
                     :aria-label="t('health.cta.viewTreatment')">
                     <Ellipsis :size="18" />
@@ -50,7 +57,8 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
                 </p>
             </div>
         </div>
-        <div v-for="(medication, index) in treatment.medication" class="text-sm" :key="medication.id">
+        <div v-for="(medication, index) in treatment.medication" class="text-sm flex flex-col gap-0.5"
+            :key="medication.id">
             <div class="flex gap-1 justify-between items-center">
                 <div>
                     <p>{{ medication.name }}</p>
@@ -62,15 +70,17 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
                         <span v-else>{{ t("health.treatment.until") }}</span>
                         {{ tsToDate(medication.endDate, "date") }}</span>
                 </div>
-                <DateTag v-if="treatment.endDate" :date="medication.endDate" class="inline float-right ml-0.5" />
+                <DateTag v-if="treatment.endDate" :date="medication.endDate" />
             </div>
-            <template v-if="route.path !== ROUTES.history">
+            <template v-if="!isMedicationEnded(medication)">
                 <ProgressBar v-if="medication.endDate" :progress="getMedicationProgress(treatment, medication)!"
                     :color="getTreatmentColor(index)" class="w-full my-0.25" />
                 <span v-else class="tag bg-border-light text-text-secondary inline float-right">{{
                     t("health.treatment.ongoing")
                     }}</span>
             </template>
+            <LogHistory v-if="medicationLogs(medication).length" :pet="pet!" :treatment="treatment"
+                :medication="medication" :logs="medicationLogs(medication)" />
         </div>
     </div>
 </template>
