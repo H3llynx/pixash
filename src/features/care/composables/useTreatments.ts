@@ -49,7 +49,7 @@ export const useTreatments = () => {
                 ...t,
                 color: getTreatmentColor(index),
                 isActive: t.startDate.toDate() <= now && (!t.endDate || !tsToDate(t.endDate, "isPast")),
-                isPast: t.endDate && tsToDate(t.endDate, "isPast")
+                isPast: !!t.endDate && tsToDate(t.endDate, "isPast")
             }))
     });
 
