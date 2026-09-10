@@ -92,7 +92,7 @@ export const useVaccineForm = () => {
                     nextDose: selectedVaccine.value.dueOn ? true : false,
                 };
                 if (!shallowEqual(formData, originalData)) {
-                    await updateSelectedVaccine(selectedVaccine.value, selectedPet.value.id, { ...formData });
+                    await updateSelectedVaccine(selectedVaccine.value, { ...formData });
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
@@ -121,7 +121,7 @@ export const useVaccineForm = () => {
             onConfirm: async () => {
                 loading.value = true;
                 try {
-                    await deleteSelectedVaccine(vaccine, pet.id);
+                    await deleteSelectedVaccine(vaccine);
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),

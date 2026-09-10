@@ -48,9 +48,9 @@ const handleDelete = () => {
             loading.value = true;
             try {
                 loading.value = true;
-                if (props.event.eventType === "vaccine") await deleteSelectedVaccine(props.event as VaccineExtended, pet.id);
-                else if (props.event.eventType === "visit") await deleteSelectedVisit(props.event as VisitExtended, pet.id);
-                else await deleteSelectedLog(props.event as LogExtended, pet.id)
+                if (props.event.eventType === "vaccine") await deleteSelectedVaccine(props.event as VaccineExtended);
+                else if (props.event.eventType === "visit") await deleteSelectedVisit(props.event as VisitExtended);
+                else await deleteSelectedLog(props.event as LogExtended)
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),

@@ -46,7 +46,7 @@ export const useVetVisitForm = () => {
             }
             else if (selectedVisit.value && !shallowEqual(formData,
                 { ...selectedVisit.value, date: tsToDate(selectedVisit.value.date, "datetime") })) {
-                await updateSelectedVisit(selectedVisit.value, selectedPet.value.id, { ...formData });
+                await updateSelectedVisit(selectedVisit.value, { ...formData });
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),
@@ -74,7 +74,7 @@ export const useVetVisitForm = () => {
             onConfirm: async () => {
                 loading.value = true;
                 try {
-                    await deleteSelectedVisit(visit, pet.id);
+                    await deleteSelectedVisit(visit);
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),

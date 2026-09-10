@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { Pen, X } from '@lucide/vue';
-import { nextTick, ref } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { useToast } from '../../../../composables/useToast.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../../pets/types.ts';
 import { useTreatments } from '../../composables/useTreatments.ts';
-import type { Log, MedicationLogExtended, MedicineDb, TreatmentExtended } from '../../types.ts';
+import type { Log, MedicineDb, TreatmentExtended } from '../../types.ts';
 import { getDailyDose, getTreatmentBackground, getTreatmentColor } from '../../utils.ts';
-import EditLogTime from './modals/EditLogTime.vue';
 
 const props = defineProps<{
     pet: PetExtended
@@ -19,13 +18,11 @@ const props = defineProps<{
 }>();
 
 const { addNewLog, careError } = usePets();
-const { getTodayLoggedList, getDailyDosesToLog, getDailyMissedDoses, doseToDelete, deleteDose, loading } = useTreatments();
+const { getTodayLoggedList, getDailyDosesToLog, getDailyMissedDoses, deleteDose, editLogTime, savingLogIds } = useTreatments();
 const { t, locale } = useI18n();
 const { show } = useToast();
 
-const isEditing = ref<boolean>(false);
 const isAdding = ref<boolean>(false);
-const editedLog = ref<MedicationLogExtended | null>(null);
 
 const logDose = async (medication: MedicineDb) => {
     isAdding.value = true;
@@ -43,12 +40,6 @@ const logDose = async (medication: MedicineDb) => {
     }
 };
 
-const editLogTime = async (log: MedicationLogExtended) => {
-    editedLog.value = log;
-    await nextTick();
-    isEditing.value = true;
-}
-
 const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, medication: MedicineDb) =>
     [...getTodayLoggedList(pet, treatment, medication)].sort((a, b) => a.givenAt.toMillis() - b.givenAt.toMillis());
 </script>
@@ -56,7 +47,7 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
 <template>
     <div class="flex gap-0.5 mt-0.5 flex-wrap" :style="{ '--custom-color': getTreatmentColor(colorIndex), }">
         <div v-for="log in getSortedLoggedList(props.pet, props.treatment, medication)" :key="log.id"
-            :class="{ 'log p-0.5 rounded-xl flex gap-1 justify-between items-center': true, 'opacity-40 animate-pulse': loading && (editedLog?.id === log.id || doseToDelete?.id === log.id) }"
+            :class="{ 'log p-0.5 rounded-xl flex gap-1 justify-between items-center': true, 'opacity-40 animate-pulse': savingLogIds.has(log.id) }"
             :style="{
                 color: getTreatmentColor(colorIndex), backgroundColor: getTreatmentBackground(colorIndex)
             }">
@@ -69,12 +60,12 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
                     minute: '2-digit'
                 }) }}</p>
             <div class="flex gap-[3px] flex-col">
-                <Button :disabled="loading && editedLog?.id === log.id" variant="ghost" size="min"
-                    :aria-label="t('health.cta.editMedTime')" @click="editLogTime(log)">
+                <Button :disabled="savingLogIds.has(log.id)" variant="ghost" size="min"
+                    :aria-label="t('health.cta.editMedTime')" @click="editLogTime(log, medication)">
                     <Pen :size="13" />
                 </Button>
-                <Button :disabled="loading && editedLog?.id === log.id" variant="ghost" size="min"
-                    :aria-label="t('common.button.delete')" @click="deleteDose(log, pet.id)">
+                <Button :disabled="savingLogIds.has(log.id)" variant="ghost" size="min"
+                    :aria-label="t('common.button.delete')" @click="deleteDose(log)">
                     <X :size="13" />
                 </Button>
             </div>
@@ -87,7 +78,6 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
                 : "" }}
         </Button>
     </div>
-    <EditLogTime v-if="editedLog" v-model="isEditing" :medication="medication" :log="editedLog" :pet="pet" />
 </template>
 
 <style scoped>

@@ -62,14 +62,14 @@ const markAsDone = async (event: PetEvent) => {
                 notes: event.notes,
             };
             if (event.givenAt && event.dueOn) {
-                await updateSelectedVaccine(event as VaccineExtended, pet.value.id, {
+                await updateSelectedVaccine(event as VaccineExtended, {
                     ...baseData,
                     givenAt: tsToDate(event.givenAt, "input") as string,
                     dueOn: ""
                 });
                 await addNewVaccine({ ...baseData, givenAt: today, dueOn: nextDueDate.value }, pet.value.id);
             } else {
-                await updateSelectedVaccine(event as VaccineExtended, pet.value.id, {
+                await updateSelectedVaccine(event as VaccineExtended, {
                     ...baseData,
                     givenAt: today,
                     dueOn: nextDueDate.value
@@ -84,14 +84,14 @@ const markAsDone = async (event: PetEvent) => {
                 type: event.type,
             };
             if (event.givenAt && event.dueOn) {
-                await updateSelectedLog(event as LogExtended, pet.value.id, {
+                await updateSelectedLog(event as LogExtended, {
                     ...baseData,
                     givenAt: tsToDate(event.givenAt, "input") as string,
                     dueOn: ""
                 });
                 await addNewLog({ ...baseData, givenAt: today, dueOn: nextDueDate.value }, pet.value.id);
             } else {
-                await updateSelectedLog(event as LogExtended, pet.value.id, {
+                await updateSelectedLog(event as LogExtended, {
                     ...baseData,
                     givenAt: today,
                     dueOn: nextDueDate.value

@@ -138,7 +138,7 @@ describe("useCare", () => {
             mockRefresh([updatedVaccine]);
             const [result, unmount] = withSetup(() => useCare(pets))
             result.selectVaccine(vaccine);
-            await result.updateSelectedVaccine(vaccine, "1", createMockVaccineRecord({ types: ["leish"] }));
+            await result.updateSelectedVaccine(vaccine, createMockVaccineRecord({ types: ["leish"] }));
             expect(updateVaccine).toHaveBeenCalled();
             expect(result.selectedVaccine.value).toBeNull();
             unmount();
@@ -152,7 +152,7 @@ describe("useCare", () => {
 
             const [result, unmount] = withSetup(() => useCare(pets));
             result.selectVaccine(vaccine);
-            await result.deleteSelectedVaccine(vaccine, '1');
+            await result.deleteSelectedVaccine(vaccine);
 
             expect(deleteVaccine).toHaveBeenCalled();
             expect(pets.value[0].vaccines).toEqual([]);
@@ -182,7 +182,7 @@ describe("useCare", () => {
             vi.mocked(deleteVisit).mockResolvedValue(undefined);
             const [result, unmount] = withSetup(() => useCare(pets));
             result.selectVisit(visit);
-            await result.deleteSelectedVisit(visit, "1");
+            await result.deleteSelectedVisit(visit);
             expect(result.selectedVisit.value).toBeNull();
             expect(pets.value[0].vetVisits).toEqual([]);
             unmount();
@@ -232,7 +232,7 @@ describe("useCare", () => {
             vi.mocked(deleteLog).mockResolvedValue(undefined);
             const [result, unmount] = withSetup(() => useCare(pets));
             result.selectLog(log);
-            await result.deleteSelectedLog(log, "1");
+            await result.deleteSelectedLog(log);
             expect(result.selectedLog.value).toBeNull();
             unmount();
         })
@@ -259,7 +259,7 @@ describe("useCare", () => {
             vi.mocked(deleteTreatment).mockResolvedValue(undefined);
             const [result, unmount] = withSetup(() => useCare(pets));
             result.selectTreatment(treatment);
-            await result.deleteSelectedTreatment(treatment, "1");
+            await result.deleteSelectedTreatment(treatment);
             expect(result.selectedTreatment.value).toBeNull();
             expect(pets.value[0].treatments).toEqual([]);
             unmount();

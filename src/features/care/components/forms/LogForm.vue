@@ -111,7 +111,7 @@ const handleSubmit = async () => {
                 notes: selectedOtherLog.value.notes ?? "",
             };
             if (!shallowEqual(formData, originalData)) {
-                await updateSelectedLog(selectedOtherLog.value, selectedPet.value.id, log);
+                await updateSelectedLog(selectedOtherLog.value, log);
                 pictures.value = [];
             };
         };
@@ -133,7 +133,7 @@ const handleDelete = () => {
         onConfirm: async () => {
             try {
                 loading.value = true;
-                await deleteSelectedLog(log, pet.id);
+                await deleteSelectedLog(log);
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),

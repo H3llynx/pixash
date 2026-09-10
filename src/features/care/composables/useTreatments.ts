@@ -1,4 +1,4 @@
-import { computed, ref } from "vue";
+import { computed, nextTick, reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "../../../composables/useToast";
 import { tsToDate } from "../../../utils";
@@ -8,8 +8,10 @@ import type { MedicationLogExtended, MedicineDb, MissedDoseRecord, TreatmentExte
 import { checkOverlapsMonth, getDailyDose, getIntervalHours, getTreatmentColor } from "../utils";
 import { useEvents } from "./useEvents";
 
-const loading = ref<boolean>(false);
-const doseToDelete = ref<MedicationLogExtended | null>(null);
+const isEditing = ref<boolean>(false);
+const editedLog = ref<MedicationLogExtended | null>(null);
+const logMedication = ref<MedicineDb | null>(null);
+const savingLogIds = reactive(new Set<string>());
 
 export const useTreatments = () => {
     const { treatments, deleteSelectedLog, careError } = usePets();
@@ -47,7 +49,7 @@ export const useTreatments = () => {
                 ...t,
                 color: getTreatmentColor(index),
                 isActive: t.startDate.toDate() <= now && (!t.endDate || !tsToDate(t.endDate, "isPast")),
-                isPast: t.endDate && t.endDate.toDate() < now
+                isPast: t.endDate && tsToDate(t.endDate, "isPast")
             }))
     });
 
@@ -192,21 +194,31 @@ export const useTreatments = () => {
         return missedDoses;
     };
 
-    const deleteDose = async (log: MedicationLogExtended, petId: string) => {
-        doseToDelete.value = log;
-        loading.value = true;
+    const editLogTime = async (log: MedicationLogExtended, medication: MedicineDb) => {
+        logMedication.value = medication;
+        editedLog.value = log;
+        await nextTick();
+        isEditing.value = true;
+    };
+
+    const deleteDose = async (log: MedicationLogExtended) => {
+        savingLogIds.add(log.id);
         try {
-            await deleteSelectedLog(log, petId);
+            await deleteSelectedLog(log);
         } catch (e) {
             show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
         } finally {
-            doseToDelete.value = null;
-            loading.value = false;
+            savingLogIds.delete(log.id);
         }
-    }
+    };
 
     return {
-        loading,
+        isEditing,
+        editedLog,
+        logMedication,
+        savingLogIds,
+        deleteDose,
+        editLogTime,
         byStartThenEndDesc,
         isMedicationEnded,
         treatmentsThisMonth,
@@ -216,9 +228,7 @@ export const useTreatments = () => {
         getTotalLogs,
         getDailyDosesToLog,
         getDailyMissedDoses,
-        getMissedDosesHistory,
-        doseToDelete,
-        deleteDose
+        getMissedDosesHistory
     };
 
 }

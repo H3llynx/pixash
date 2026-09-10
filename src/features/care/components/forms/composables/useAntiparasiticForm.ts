@@ -58,7 +58,7 @@ export const useAntiparasiticForm = () => {
             onConfirm: async () => {
                 try {
                     loading.value = true;
-                    await deleteSelectedLog(log, pet.id);
+                    await deleteSelectedLog(log);
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
@@ -95,7 +95,7 @@ export const useAntiparasiticForm = () => {
                 };
                 if (!shallowEqual(formData, originalData)) {
                     const logId = selectedAntiparasiticLog.value.id;
-                    await updateSelectedLog(selectedAntiparasiticLog.value, selectedPet.value.id, log);
+                    await updateSelectedLog(selectedAntiparasiticLog.value, log);
                     newLog.value = logs.value.find(l => l.id === logId) as AntiparasiteLogExtended ?? null;
                     resetForm(formData, defaultForm);
                 };

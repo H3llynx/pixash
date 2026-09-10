@@ -8,11 +8,9 @@ import { useToast } from '../../../../../composables/useToast.ts';
 import { tsFromInput } from '../../../../../utils.ts';
 import { usePets } from '../../../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../../../pets/types.ts';
-import { useTreatments } from '../../../composables/useTreatments.ts';
 import type { Log, MedicineDb, TreatmentExtended } from '../../../types.ts';
 
 const { careError, addNewLog } = usePets();
-const { loading } = useTreatments();
 const { show } = useToast();
 const { t } = useI18n();
 
@@ -31,6 +29,7 @@ const formatDateTimeLocal = (date: Date) => {
 };
 
 const dateTimeData = ref<string>("");
+const loading = ref<boolean>(false);
 
 const minMedicationDate = computed(() => {
     return formatDateTimeLocal(props.treatment.startDate.toDate());
@@ -85,7 +84,7 @@ watch(() => isAdding.value, (adding) => {
             <Button :disabled="loading">{{ t("common.button.confirm") }}</Button>
             <Button :disabled="loading" type="button" variant="ghost" @click="isAdding = false;">{{
                 t("common.button.cancel")
-            }}</Button>
+                }}</Button>
         </form>
     </FreeModal>
 </template>

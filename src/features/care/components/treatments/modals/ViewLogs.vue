@@ -9,7 +9,7 @@ import type { PetExtended } from '../../../../pets/types.ts';
 import { useTreatments } from '../../../composables/useTreatments.ts';
 import type { MedicationLogExtended, MedicineDb, TreatmentExtended } from '../../../types.ts';
 
-const { getMissedDosesHistory, doseToDelete, deleteDose, loading } = useTreatments();
+const { getMissedDosesHistory, deleteDose, editLogTime, savingLogIds } = useTreatments();
 const { t, locale } = useI18n();
 
 const props = defineProps<{
@@ -25,7 +25,7 @@ const missed = computed(() => getMissedDosesHistory(props.pet, props.treatment, 
 </script>
 
 <template>
-    <FreeModal v-model="isViewing">
+    <FreeModal v-model="isViewing" class="list-modal">
         <div class="flex justify-between gap-1 px-1.5 py-1">
             <div>
                 <h3>{{ medication.name }}</h3>
@@ -56,7 +56,7 @@ const missed = computed(() => getMissedDosesHistory(props.pet, props.treatment, 
                     t("health.treatment.historyModal.window") }}</p>
             </div>
         </div>
-        <div :class="{ 'flex justify-between items-center px-1.5 py-1 text-sm border-b border-border': true, 'opacity-40 animate-pulse': loading && doseToDelete === log }"
+        <div :class="{ 'flex justify-between items-center px-1.5 py-1 text-sm border-b border-border': true, 'opacity-40 animate-pulse': savingLogIds.has(log.id) }"
             v-for="log in logs" :key="log.id">
             <div>
                 <h4>{{ tsToDate(log.givenAt, "date") }}</h4>
@@ -68,11 +68,12 @@ const missed = computed(() => getMissedDosesHistory(props.pet, props.treatment, 
                 </p>
             </div>
             <div class="flex gap-0.5">
-                <Button variant="ghost" size="min">
+                <Button :disabled="savingLogIds.has(log.id)" variant="ghost" size="min"
+                    :aria-label="t('health.cta.editMedTime')" @click="editLogTime(log, medication)">
                     <Pen :size="13" />
                 </Button>
-                <Button :disabled="loading" variant="ghost" size="min" :aria-label="t('common.button.delete')"
-                    @click="deleteDose(log, pet.id)">
+                <Button :disabled="savingLogIds.has(log.id)" variant="ghost" size="min"
+                    :aria-label="t('common.button.delete')" @click="deleteDose(log)">
                     <X :size="13" />
                 </Button>
             </div>
@@ -83,11 +84,11 @@ const missed = computed(() => getMissedDosesHistory(props.pet, props.treatment, 
 </template>
 
 <style scoped>
-dialog {
+.list-modal {
     max-width: 500px;
 }
 
-:deep(.dialog-box) {
+.list-modal :deep(.dialog-box) {
     padding: 0;
     background: var(--color-bg);
     gap: 0;

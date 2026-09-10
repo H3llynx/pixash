@@ -67,7 +67,7 @@ export const useTreatmentForm = () => {
                     }))
                 };
                 if (!shallowEqual(formData, originalData)) {
-                    await updateSelectedTreatment(selectedTreatment.value, selectedPet.value.id, { ...formData });
+                    await updateSelectedTreatment(selectedTreatment.value, { ...formData });
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
@@ -97,7 +97,7 @@ export const useTreatmentForm = () => {
                 loading.value = true;
                 try {
                     loading.value = true;
-                    await deleteSelectedTreatment(treatment, pet.id);
+                    await deleteSelectedTreatment(treatment);
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
