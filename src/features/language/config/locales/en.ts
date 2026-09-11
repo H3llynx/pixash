@@ -380,7 +380,7 @@ export default {
                 missed: "Missed",
                 window: "Current window",
                 beforeStart: "Before start date",
-                afterStart: "After end date",
+                afterEnd: "After end date",
                 bottomText: "Logs outside the treatment's current dates are kept but flagged — edit or remove them here if they no longer apply."
             }
         },

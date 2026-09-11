@@ -380,7 +380,7 @@ export default {
                 missed: "Omitidas",
                 window: "Periodo actual",
                 beforeStart: "Antes de la fecha de inicio",
-                afterStart: "Después de la fecha de fin",
+                afterEnd: "Después de la fecha de fin",
                 bottomText: "Los registros fuera de las fechas actuales del tratamiento se conservan, pero quedan marcados. Edítalos o elimínalos aquí si ya no corresponden."
             }
         },

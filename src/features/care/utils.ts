@@ -86,8 +86,8 @@ export const getTreatmentEndDate = (medication: MedicineDb[]): Timestamp | null 
     return new Timestamp(Math.max(...endDates), 0);
 };
 
-export const getStartOfDayAfter = (date: Date): number => {
-    const d = new Date(date);
+export const getStartOfDayAfter = (ts: Timestamp): number => {
+    const d = ts.toDate();
     d.setHours(0, 0, 0, 0);
     d.setDate(d.getDate() + 1);
     return d.getTime();
@@ -96,7 +96,7 @@ export const getStartOfDayAfter = (date: Date): number => {
 const getProgress = (startMs: number, endTimestamp: Timestamp | null): number | null => {
     if (!endTimestamp) return null;
     const now = Date.now();
-    const end = getStartOfDayAfter(endTimestamp.toDate());
+    const end = getStartOfDayAfter(endTimestamp);
     if (now >= end) return 100;
     if (now <= startMs) return 0;
     const progress = ((now - startMs) / (end - startMs)) * 100;

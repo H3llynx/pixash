@@ -25,7 +25,6 @@ const { mode, isReadonly } = useFormMode();
 const { vetTextInput, givenBy, fillVaccineData, formData, vaccineTypes, error, handleClose, handleSubmit, handleDelete, loading } = useVaccineForm();
 provide('readonly', isReadonly);
 const { types, stage, given, givenDate, dueDate, nextDose, vet, notes } = vaccineFields;
-const today = todayAsInput();
 
 watch(() => selectedVaccine.value, (vaccine) => {
     mode.value = vaccine ? "view" : "edit";
@@ -81,7 +80,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                     <div class="default-padding flex flex-col gap-1">
                         <Toggle v-if="mode === 'edit'" v-model="formData.given"
                             :label="t(given.label, { name: selectedPet!.name })" :id="given.id" />
-                        <Input v-if="formData.given" v-model="formData.givenAt" :id="givenDate.id" :max="today"
+                        <Input v-if="formData.given" v-model="formData.givenAt" :id="givenDate.id" :max="todayAsInput()"
                             :label="t(givenDate.label)" :type="givenDate.type" required>
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
@@ -90,7 +89,8 @@ watch(() => isAddingCare.vaccine, (adding) => {
                         <Toggle v-if="formData.given && mode === 'edit'" v-model="formData.nextDose"
                             :label="t(nextDose.label)" :id="nextDose.id" />
                         <Input v-if="(!formData.given || formData.nextDose)" v-model="formData.dueOn" :id="dueDate.id"
-                            :label="t(dueDate.label)" :type="dueDate.type" :min="formData.givenAt || today" required>
+                            :label="t(dueDate.label)" :type="dueDate.type" :min="formData.givenAt || todayAsInput()"
+                            required>
                             <template #addon>
                                 <CalendarClock class="mr-0.5" color="var(--color-border)" />
                             </template>
@@ -129,7 +129,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                     {{ t("common.button.cancel") }}
                                 </Button>
                                 <Button size="sm" :disabled="loading">{{ t("health.cta.saveVaccine")
-                                    }}</Button>
+                                }}</Button>
                             </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"

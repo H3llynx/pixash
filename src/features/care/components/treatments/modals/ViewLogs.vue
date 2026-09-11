@@ -9,7 +9,7 @@ import type { PetExtended } from '../../../../pets/types.ts';
 import { useTreatments } from '../../../composables/useTreatments.ts';
 import type { MedicationLogExtended, MedicineDb, TreatmentExtended } from '../../../types.ts';
 
-const { getMissedDosesHistory, deleteDose, editLogTime, savingLogIds } = useTreatments();
+const { getMissedDosesHistory, deleteDose, editLogTime, savingLogIds, isMedicationEnded } = useTreatments();
 const { t, locale } = useI18n();
 
 const props = defineProps<{
@@ -67,6 +67,12 @@ const missed = computed(() => getMissedDosesHistory(props.pet, props.treatment, 
                     }) }}
                 </p>
             </div>
+            <span class="py-[5px] px-0.5 rounded-lg bg-orange-rgba text-orange font-medium uppercase text-xs"
+                v-if="log.givenAt < treatment.startDate">{{
+                    t("health.treatment.historyModal.beforeStart") }}</span>
+            <span class="py-[5px] px-0.5 rounded-lg bg-error-rgba text-error font-medium uppercase text-xs"
+                v-if="medication.endDate && log.givenAt > medication.endDate">{{
+                    t("health.treatment.historyModal.afterEnd") }}</span>
             <div class="flex gap-0.5">
                 <Button :disabled="savingLogIds.has(log.id)" variant="ghost" size="min"
                     :aria-label="t('health.cta.editMedTime')" @click="editLogTime(log, medication)">

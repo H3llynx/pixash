@@ -101,7 +101,10 @@ export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, month?
 
 export const tsFromInput = (value: string) => {
     if (!value) return;
-    const date = new Date(value);
+    const [datePart, timePart] = value.split("T");
+    const [year, month, day] = datePart.split("-").map(Number);
+    const [hours, minutes] = (timePart ?? "00:00").split(":").map(Number);
+    const date = new Date(year, month - 1, day, hours, minutes, 0, 0);
     return Timestamp.fromDate(date);
 };
 
@@ -122,6 +125,11 @@ export const todayAsInput = () => {
         String(now.getMonth() + 1).padStart(2, "0"),
         String(now.getDate()).padStart(2, "0")
     ].join("-");
+};
+
+export const formatDateTimeLocal = (date: Date) => {
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 };
 
 export const formatDateRange = (start: Date, end: Date) => {

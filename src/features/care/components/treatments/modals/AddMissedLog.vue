@@ -5,7 +5,7 @@ import Button from '../../../../../components/Button.vue';
 import FreeModal from '../../../../../components/FreeModal.vue';
 import Input from '../../../../../components/Input.vue';
 import { useToast } from '../../../../../composables/useToast.ts';
-import { tsFromInput } from '../../../../../utils.ts';
+import { formatDateTimeLocal, tsFromInput, tsToDate } from '../../../../../utils.ts';
 import { usePets } from '../../../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../../../pets/types.ts';
 import type { Log, MedicineDb, TreatmentExtended } from '../../../types.ts';
@@ -23,24 +23,19 @@ const props = defineProps<{
 
 const isAdding = defineModel<boolean>();
 
-const formatDateTimeLocal = (date: Date) => {
-    const pad = (n: number) => String(n).padStart(2, "0");
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-};
-
 const dateTimeData = ref<string>("");
 const loading = ref<boolean>(false);
 
-const minMedicationDate = computed(() => {
-    return formatDateTimeLocal(props.treatment.startDate.toDate());
-});
-
+const minMedicationDate = computed(() => tsToDate(props.treatment.startDate, "datetime"));
 const maxMedicationDate = computed(() => {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    yesterday.setHours(23, 59, 59, 999);
+    const now = new Date();
     const endDate = props.medication?.endDate?.toDate();
-    const max = endDate && endDate < yesterday ? endDate : yesterday;
+    let max = now;
+    if (endDate) {
+        const endOfMedicationDay = new Date(endDate);
+        endOfMedicationDay.setHours(23, 59, 59, 999);
+        if (endOfMedicationDay < max) max = endOfMedicationDay;
+    }
     return formatDateTimeLocal(max);
 });
 
