@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { TriangleAlert } from '@lucide/vue';
-import { nextTick, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { PetExtended } from '../../../pets/types.ts';
-import type { MedicineDb, MissedDoseRecord, TreatmentExtended } from '../../types';
-import AddMissedLog from './modals/AddMissedLog.vue';
+import { useTreatments } from '../../composables/useTreatments.ts';
+import type { MissedDoseRecord, TreatmentExtended } from '../../types';
 
+const { openModal } = useTreatments();
 const { t, locale } = useI18n();
 
 defineProps<{
@@ -14,16 +14,6 @@ defineProps<{
     missedDoses: MissedDoseRecord[]
 }>();
 
-const isAdding = ref<boolean>(false);
-const selectedMedication = ref<MedicineDb | null>(null);
-const missedLogDate = ref<Date | null>(null);
-
-const addMissedLog = async (medication: MedicineDb, date: Date) => {
-    selectedMedication.value = medication;
-    missedLogDate.value = date;
-    await nextTick();
-    isAdding.value = true;
-};
 </script>
 
 <template>
@@ -38,10 +28,8 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
             <span class="flex w-1.5 h-1.5 rounded-full bg-error text-white items-center justify-center">{{
                 missed.count
             }}</span>
-            <button tabindex="0" @click="addMissedLog(missed.medication, missed.date)"
+            <button tabindex="0" @click="openModal('add', treatment, missed.medication, undefined, missed.date)"
                 class="rounded-full border border-error-text text-error-text px-1 py-[3px] ml-auto hover:bg-error hover:text-white hover:border-error-border">Log</button>
         </div>
     </div>
-    <AddMissedLog v-if="selectedMedication && missedLogDate" v-model="isAdding" :treatment="treatment"
-        :medication="selectedMedication" :pet="pet" :date="missedLogDate" />
 </template>

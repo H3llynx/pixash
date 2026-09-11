@@ -368,7 +368,7 @@ export default {
             until: "hasta ",
             ended: "finalizado: ",
             summaryLabel: "ver acciones del registro",
-            editMedTime: "¿Cuándo le diste {medication} a {name}?",
+            modalTitle: "¿Cuándo le diste {medication} a {name}?",
             missedDoses: "Omitidas",
             missedDoseToday: "Has olvidado una dosis hoy",
             treatments: "Tratamientos",

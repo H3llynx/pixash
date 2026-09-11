@@ -1,20 +1,25 @@
 import { computed, nextTick, reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "../../../composables/useToast";
-import { tsToDate } from "../../../utils";
+import { tsFromInput, tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import type { PetExtended } from "../../pets/types";
-import type { MedicationLogExtended, MedicineDb, MissedDoseRecord, TreatmentExtended } from "../types";
+import type { Log, MedicationLogExtended, MedicineDb, MissedDoseRecord, TreatmentExtended } from "../types";
 import { checkOverlapsMonth, getDailyDose, getIntervalHours, getTreatmentColor } from "../utils";
 import { useEvents } from "./useEvents";
 
-const isEditing = ref<boolean>(false);
 const editedLog = ref<MedicationLogExtended | null>(null);
+const editedTreatment = ref<TreatmentExtended | null>(null);
+const missedDate = ref<Date | null>(null);
 const logMedication = ref<MedicineDb | null>(null);
 const savingLogIds = reactive(new Set<string>());
+const savingNewLog = ref<boolean>(false);
+
+const isModalOpen = ref<boolean>(false);
+const modalState = ref<"add" | "edit" | null>(null);
 
 export const useTreatments = () => {
-    const { treatments, deleteSelectedLog, careError } = usePets();
+    const { treatments, addNewLog, updateSelectedLog, deleteSelectedLog, careError } = usePets();
     const { currentMonth } = useEvents();
     const { show } = useToast();
     const { t } = useI18n();
@@ -217,12 +222,41 @@ export const useTreatments = () => {
         return uncovered.map(date => ({ date, count: 1, medication }));
     };
 
-    const editLogTime = async (log: MedicationLogExtended, medication: MedicineDb) => {
+    const openModal = async (
+        action: "edit" | "add",
+        treatment: TreatmentExtended,
+        medication: MedicineDb,
+        log?: MedicationLogExtended,
+        date?: Date
+    ) => {
+        modalState.value = action;
+        editedTreatment.value = treatment;
         logMedication.value = medication;
-        editedLog.value = log;
+        if (action === "edit" && log) editedLog.value = log;
+        if (action === "add" && date) missedDate.value = date;
         await nextTick();
-        isEditing.value = true;
+        isModalOpen.value = true;
     };
+
+    const closeModal = () => {
+        modalState.value = null;
+        logMedication.value = null;
+        editedTreatment.value = null;
+        editedLog.value = null;
+        missedDate.value = null;
+        isModalOpen.value = false;
+    };
+
+    const editLogTime = async (log: MedicationLogExtended, updatedLog: Log) => {
+        savingLogIds.add(log.id);
+        try {
+            await updateSelectedLog(log, updatedLog);
+        } catch (e) {
+            show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
+        } finally {
+            savingLogIds.delete(log.id);
+        }
+    }
 
     const deleteDose = async (log: MedicationLogExtended) => {
         savingLogIds.add(log.id);
@@ -235,12 +269,36 @@ export const useTreatments = () => {
         }
     };
 
+    const logDose = async (treatment: TreatmentExtended, medication: MedicineDb, date: string) => {
+        savingNewLog.value = true;
+        const log: Log = {
+            type: "medication",
+            treatmentId: treatment.id,
+            medicineId: medication.id,
+            givenAt: tsFromInput(date)
+        };
+        try {
+            await addNewLog(log, treatment.petId);
+        } catch (e) {
+            show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
+        } finally {
+            savingNewLog.value = false;
+        }
+    };
+
     return {
-        isEditing,
+        openModal,
+        closeModal,
+        isModalOpen,
+        modalState,
         editedLog,
+        editedTreatment,
         logMedication,
         savingLogIds,
+        savingNewLog,
+        missedDate,
         deleteDose,
+        logDose,
         editLogTime,
         byStartThenEndDesc,
         isMedicationEnded,

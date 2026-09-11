@@ -7,7 +7,7 @@ import LogForm from './features/care/components/forms/LogForm.vue';
 import TreatmentForm from './features/care/components/forms/TreatmentForm.vue';
 import VaccineForm from './features/care/components/forms/VaccineForm.vue';
 import VetVisitForm from './features/care/components/forms/VetVisitForm.vue';
-import EditMedicationLog from './features/care/components/treatments/modals/EditMedicationLog.vue';
+import MedicationLog from './features/care/components/treatments/modals/MedicationLog.vue';
 import PetForm from './features/pets/components/PetForm.vue';
 import { useAuth } from './features/user/composables/useAuth';
 import LoadingView from './views/LoadingView.vue';
@@ -25,7 +25,7 @@ const { loading, user } = useAuth();
   <AntiparasiticForm />
   <LogForm />
   <PetForm />
-  <EditMedicationLog />
+  <MedicationLog />
   <Toast />
   <Dialog />
 </template>

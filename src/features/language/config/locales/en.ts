@@ -368,7 +368,7 @@ export default {
             until: "until ",
             ended: "ended: ",
             summaryLabel: "view log actions",
-            editMedTime: "When did you give {medication} to {name}?",
+            modalTitle: "When did you give {medication} to {name}?",
             missedDoses: "Missed doses",
             missedDoseToday: "You've missed a dose today",
             treatments: "Treatments",

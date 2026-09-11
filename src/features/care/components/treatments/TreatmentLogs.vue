@@ -18,7 +18,7 @@ const props = defineProps<{
 }>();
 
 const { addNewLog, careError } = usePets();
-const { getTodayLoggedList, getDailyDosesToLog, getDailyMissedDoses, deleteDose, editLogTime, savingLogIds } = useTreatments();
+const { openModal, getTodayLoggedList, getDailyDosesToLog, getDailyMissedDoses, deleteDose, savingLogIds } = useTreatments();
 const { t, locale } = useI18n();
 const { show } = useToast();
 
@@ -61,7 +61,7 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
                 }) }}</p>
             <div class="flex gap-[3px] flex-col">
                 <Button :disabled="savingLogIds.has(log.id)" variant="ghost" size="min"
-                    :aria-label="t('health.cta.editMedTime')" @click="editLogTime(log, medication)">
+                    :aria-label="t('health.cta.editMedTime')" @click="openModal('edit', treatment, medication, log)">
                     <Pen :size="13" />
                 </Button>
                 <Button :disabled="savingLogIds.has(log.id)" variant="ghost" size="min"
