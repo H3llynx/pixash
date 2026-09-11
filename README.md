@@ -106,8 +106,10 @@ Current progress:
 - [x] Custom user and pet profile pictures
 - [x] History view per pet and care event
 - [x] Other logs (feeding, activity, grooming, etc...)
-- [IN PROGRESS] Missed medicine tracking and medication compliance
+- [x] Missed medicine tracking and medication compliance
 - [ ] Lump tracking
+- [ ] Offline mode
+- [ ] Profile sharing between app users
 
 ---
 
