@@ -24,10 +24,10 @@ export const useTreatments = () => {
     const byStartThenEndDesc = (a: TreatmentExtended, b: TreatmentExtended) => {
         const startDiff = b.startDate!.seconds - a.startDate!.seconds;
         if (startDiff !== 0) return startDiff;
-        const NO_END = Number.MAX_SAFE_INTEGER;
-        const aEnd = a.endDate?.seconds ?? NO_END;
-        const bEnd = b.endDate?.seconds ?? NO_END;
-        return bEnd - aEnd;
+        if (!a.endDate && !b.endDate) return 0;
+        if (!a.endDate) return -1;
+        if (!b.endDate) return 1;
+        return b.endDate.seconds - a.endDate.seconds;
     };
 
     const isMedicationEnded = (medication: MedicineDb): boolean =>
@@ -97,7 +97,8 @@ export const useTreatments = () => {
         pet: PetExtended,
         treatment: TreatmentExtended,
         medication: MedicineDb
-    ): MedicationLogExtended | undefined => getTotalLogs(pet, treatment, medication)[0];
+    ): MedicationLogExtended | undefined =>
+        getTotalLogs(pet, treatment, medication)[0];
 
     const getDailyDosesToLog = (
         pet: PetExtended,
@@ -162,36 +163,57 @@ export const useTreatments = () => {
         medication: MedicineDb
     ): MissedDoseRecord[] => {
         const dailyDose = getDailyDose(medication.frequency);
-        if (dailyDose === undefined) return [];
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-
         const scanStart = treatment.startDate.toDate();
         scanStart.setHours(0, 0, 0, 0);
-
         let scanEnd = today;
 
         if (medication.endDate) {
-            const medEnd = medication.endDate.toDate();
-            medEnd.setHours(0, 0, 0, 0);
-            const dayAfterMedEnd = new Date(medEnd);
-            dayAfterMedEnd.setDate(dayAfterMedEnd.getDate() + 1);
-            if (dayAfterMedEnd < scanEnd) scanEnd = dayAfterMedEnd;
-        };
-
-        const missedDoses: MissedDoseRecord[] = [];
-        const cursor = new Date(scanStart);
-
-        while (cursor < scanEnd) {
-            const given = getLoggedListForDate(pet, treatment, medication, cursor).length;
-            const count = dailyDose - given;
-            if (count > 0) {
-                missedDoses.push({ date: new Date(cursor), count, medication: medication });
-            }
-            cursor.setDate(cursor.getDate() + 1);
+            const medEnded = medication.endDate.toDate();
+            medEnded.setHours(0, 0, 0, 0);
+            const dayAfterMedEnded = new Date(medEnded);
+            dayAfterMedEnded.setDate(dayAfterMedEnded.getDate() + 1);
+            if (dayAfterMedEnded < scanEnd) scanEnd = dayAfterMedEnded;
         }
-        return missedDoses;
+
+        if (dailyDose !== undefined) {
+            const missedDoses: MissedDoseRecord[] = [];
+            const cursor = new Date(scanStart);
+            while (cursor < scanEnd) {
+                const given = getLoggedListForDate(pet, treatment, medication, cursor).length;
+                const count = dailyDose - given;
+                if (count > 0) missedDoses.push({ date: new Date(cursor), count, medication });
+                cursor.setDate(cursor.getDate() + 1);
+            }
+            return missedDoses;
+        }
+
+        const intervalHours = getIntervalHours(medication.frequency);
+        if (intervalHours === undefined) return [];
+
+        const expectedSlots: Date[] = [];
+        const cursor = new Date(scanStart);
+        while (cursor < scanEnd) {
+            expectedSlots.push(new Date(cursor));
+            cursor.setTime(cursor.getTime() + intervalHours * 3_600_000);
+        }
+        const logDates = getTotalLogs(pet, treatment, medication)
+            .map(l => l.givenAt.toDate())
+            .sort((a, b) => a.getTime() - b.getTime());
+
+        const uncovered = [...expectedSlots];
+        for (const logDate of logDates) {
+            let bestIndex = -1;
+            let bestDiff = Infinity;
+            uncovered.forEach((slot, i) => {
+                const diff = Math.abs(slot.getTime() - logDate.getTime());
+                if (diff < bestDiff) { bestDiff = diff; bestIndex = i; }
+            });
+            if (bestIndex !== -1) uncovered.splice(bestIndex, 1);
+        }
+        return uncovered.map(date => ({ date, count: 1, medication }));
     };
 
     const editLogTime = async (log: MedicationLogExtended, medication: MedicineDb) => {
