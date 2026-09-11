@@ -30,7 +30,7 @@ const addMissedLog = async (medication: MedicineDb, date: Date) => {
     <div class="flex flex-col gap-0.5 text-sm">
         <div class="inline-flex gap-0.5 mb-0.5 text-text-secondary">
             <TriangleAlert :size="20" />
-            <h5>{{ t('health.treatment.missedDoses') }}</h5>
+            <h5 class="uppercase tracking-wide">{{ t('health.treatment.missedDoses') }}</h5>
         </div>
         <div v-for="missed in missedDoses" :key="`${treatment.id}-${missed.medication.id}-${missed.date}`"
             class="inline-flex items-center gap-1 w-full p-0.75 rounded-xl bg-error-rgba border-l-3 border-error">

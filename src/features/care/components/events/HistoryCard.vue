@@ -6,6 +6,7 @@ import Button from '../../../../components/Button.vue';
 import Loading from '../../../../components/loading/Loading.vue';
 import { useDialog } from '../../../../composables/useDialog.ts';
 import { useToast } from '../../../../composables/useToast.ts';
+import { tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { prefersKg } from '../../../pets/utils.ts';
 import { useEvents } from '../../composables/useEvents.ts';
@@ -75,11 +76,7 @@ const handleDelete = () => {
                 <div class="flex gap-0.5 flex-1">
                     <div class="w-1/2 flex flex-col">
                         <p class="text-text-secondary text-xs">
-                            {{ date.toDate().toLocaleDateString(locale, {
-                                day: "numeric",
-                                month: "long",
-                                year: "numeric"
-                            }) }}</p>
+                            {{ tsToDate(date, "date") }}</p>
                         <h4 class="text-sm mt-0.25">{{ title }}</h4>
                         <ul class="text-text-secondary text-xs mt-0.5 flex flex-wrap gap-x-0.5" v-if="event.treated">
                             <li v-for="treated in showAntiparasites(event.treated, true)" :key="treated"

@@ -317,10 +317,6 @@
   h3 {
     @apply text-lg;
   }
-
-  h5 {
-    @apply uppercase
-  }
 }
 
 @layer components {

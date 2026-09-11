@@ -130,11 +130,7 @@ const cancelMarkDone = () => {
                 </div>
                 <div>
                     <p class="text-text-secondary mb-0.5">
-                        {{ event.ts.toDate().toLocaleDateString(locale, {
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric"
-                        }) }}</p>
+                        {{ tsToDate(event.ts, "date") }}</p>
                     <Button
                         v-if="event.eventType === 'vaccine' || event.eventType === 'log' && event.type === 'antiparasite'"
                         size="xxs" variant="tertiary" @click="nextDueModal = true">

@@ -32,7 +32,7 @@ const pet = computed(() => pets.value.find(pet => pet.id === props.treatment.pet
     <div :class="{ 'animate-pulse': treatmentLoading && selectedTreatment?.id === treatment.id, 'card card-border': true }"
         v-if="pet">
         <div class="flex gap-1 justify-between">
-            <h3>{{ treatment.name }}</h3>
+            <h4>{{ treatment.name }}</h4>
             <PetTag v-if="tag && !petViewed" class="ml-auto"
                 :pet="pets.find((pet: PetExtended) => pet.id === treatment.petId)!" :color="false" />
             <Button variant="ghost" size="xs" @click="selectTreatment(treatment)"
