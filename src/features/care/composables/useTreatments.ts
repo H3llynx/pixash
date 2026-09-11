@@ -113,7 +113,9 @@ export const useTreatments = () => {
         if (isMedicationEnded(medication)) return 0;
         const loggedList = getTodayLoggedList(pet, treatment, medication) || [];
         const dailyDose = getDailyDose(medication.frequency);
-        return dailyDose !== undefined ? dailyDose - loggedList.length : 1;
+        if (dailyDose !== undefined) return dailyDose - loggedList.length;
+        if (medication.frequency === "every_48_hours") return 1 - loggedList.length;
+        return 1;
     };
 
     const getDailyMissedDoses = (
@@ -269,14 +271,14 @@ export const useTreatments = () => {
         }
     };
 
-    const logDose = async (treatment: TreatmentExtended, medication: MedicineDb, date: string) => {
+    const logDose = async (treatment: TreatmentExtended, medication: MedicineDb, date?: string) => {
         savingNewLog.value = true;
         const log: Log = {
             type: "medication",
             treatmentId: treatment.id,
             medicineId: medication.id,
-            givenAt: tsFromInput(date)
         };
+        if (date) log.givenAt = tsFromInput(date);
         try {
             await addNewLog(log, treatment.petId);
         } catch (e) {

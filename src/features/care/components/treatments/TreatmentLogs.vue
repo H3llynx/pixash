@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { Pen, X } from '@lucide/vue';
-import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import { useToast } from '../../../../composables/useToast.ts';
-import { usePets } from '../../../pets/composables/usePets.ts';
 import type { PetExtended } from '../../../pets/types.ts';
 import { useTreatments } from '../../composables/useTreatments.ts';
-import type { Log, MedicineDb, TreatmentExtended } from '../../types.ts';
+import type { MedicineDb, TreatmentExtended } from '../../types.ts';
 import { getDailyDose, getTreatmentBackground, getTreatmentColor } from '../../utils.ts';
 
 const props = defineProps<{
@@ -17,28 +14,8 @@ const props = defineProps<{
     colorIndex: number
 }>();
 
-const { addNewLog, careError } = usePets();
-const { openModal, getTodayLoggedList, getDailyDosesToLog, getDailyMissedDoses, deleteDose, savingLogIds } = useTreatments();
+const { openModal, getTodayLoggedList, getDailyDosesToLog, getDailyMissedDoses, deleteDose, savingLogIds, savingNewLog, logDose } = useTreatments();
 const { t, locale } = useI18n();
-const { show } = useToast();
-
-const isAdding = ref<boolean>(false);
-
-const logDose = async (medication: MedicineDb) => {
-    isAdding.value = true;
-    const log: Log = {
-        type: "medication",
-        treatmentId: props.treatment.id,
-        medicineId: medication.id
-    };
-    try {
-        await addNewLog(log, props.pet.id);
-    } catch (e) {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
-    } finally {
-        isAdding.value = false;
-    }
-};
 
 const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, medication: MedicineDb) =>
     [...getTodayLoggedList(pet, treatment, medication)].sort((a, b) => a.givenAt.toMillis() - b.givenAt.toMillis());
@@ -70,8 +47,8 @@ const getSortedLoggedList = (pet: PetExtended, treatment: TreatmentExtended, med
                 </Button>
             </div>
         </div>
-        <Button :disabled="isAdding" v-for="number in getDailyDosesToLog(props.pet, props.treatment, medication)"
-            :key="number" variant="card" size="xs" @click="logDose(medication)"
+        <Button :disabled="savingNewLog" v-for="number in getDailyDosesToLog(props.pet, props.treatment, medication)"
+            :key="number" variant="card" size="xs" @click="logDose(treatment, medication)"
             :class="{ 'dose': true, 'missed': getDailyMissedDoses(pet, treatment, medication) && number === 1 }">
             {{ t("health.cta.logDose") }} {{ getDailyDose(medication.frequency) !== undefined ? number +
                 getTodayLoggedList(props.pet, props.treatment, medication).length

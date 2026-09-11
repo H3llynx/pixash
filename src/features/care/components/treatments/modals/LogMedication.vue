@@ -24,7 +24,6 @@ const isToday = computed(() => {
 });
 
 const dosesRemainingToday = computed(() => {
-    console.log(pet.value, editedTreatment.value, logMedication.value, pet.value);
     if (!pet.value || !editedTreatment.value || !logMedication.value) return null;
     return getDailyDosesToLog(pet.value, editedTreatment.value, logMedication.value);
 });
@@ -34,7 +33,6 @@ const minMedicationDate = computed(() =>
 );
 
 const maxMedicationDate = computed(() => {
-    console.log(modalState.value, dosesRemainingToday.value)
     const now = new Date();
     const endDate = logMedication.value?.endDate?.toDate();
     let max = now;
@@ -127,7 +125,7 @@ watch(() => modalState.value, (state) => {
                 medication: logMedication?.name, name:
                     pet?.name
             })
-            }}
+                }}
             </h3>
             <Input v-model="timeData" :type="inputType" id="medication-time-log"
                 :min="inputType === 'datetime-local' ? minMedicationDate : undefined"
