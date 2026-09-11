@@ -18,7 +18,7 @@ import DateTag from './DateTag.vue';
 import EventIcon from './EventIcon.vue';
 
 const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, careError, careLoading } = usePets();
-const { locale, t } = useI18n();
+const { t } = useI18n();
 const { useEventData, selectedEvent } = useEvents();
 const { show } = useToast();
 
@@ -151,7 +151,7 @@ const cancelMarkDone = () => {
             <h3 class="font-title">{{ t("common.text.askingNextDue") }}</h3>
             <Button v-if="!nextDueInput" @click="nextDueInput = true">{{ t("common.text.yes") }}</Button>
             <Button v-if="!nextDueDate" variant="secondary" @click="markAsDone(event)">{{ t("common.text.noNeed")
-            }}</Button>
+                }}</Button>
             <template v-if="nextDueInput">
                 <Input v-model="nextDueDate" type="date" :min="todayAsInput()">
                     <template #addon>

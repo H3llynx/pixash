@@ -16,7 +16,7 @@ import EventIcon from './EventIcon.vue';
 import TypeTag from './TypeTag.vue';
 
 const { careLoading, vets, pets, selectedPet, deleteSelectedVaccine, deleteSelectedVisit, deleteSelectedLog, careError } = usePets();
-const { locale, t } = useI18n();
+const { t } = useI18n();
 const { useEventData, selectedEvent } = useEvents();
 const { open } = useDialog();
 const { show } = useToast();
