@@ -38,22 +38,22 @@ const missed = computed(() => getMissedDosesHistory(props.pet, props.treatment, 
                     <X :size="18" />
                 </Button>
             </div>
-            <div class="flex gap-2 px-1.5 py-1 border-t border-b border-border flex-wrap">
+            <div class="flex items-end gap-1 md:gap-2 px-1.5 py-1 border-t border-b border-border">
                 <div>
                     <p class="text-xl font-bold">{{ logs.length }}</p>
-                    <p class="text-sm tracking-wide uppercase text-text-secondary">{{
+                    <p class="text-xs tracking-wide uppercase text-text-secondary">{{
                         t("health.treatment.historyModal.logged") }}</p>
                 </div>
                 <div>
-                    <p class="text-xl font-bold">{{ missed }}</p>
-                    <p class="text-sm tracking-wide uppercase text-text-secondary">{{
+                    <p :class="{ 'text-xl font-bold': true, 'text-error': missed > 0 }">{{ missed }}</p>
+                    <p class="text-xs tracking-wide uppercase text-text-secondary">{{
                         t("health.treatment.historyModal.missed") }}</p>
                 </div>
                 <div>
-                    <p class="text-xl font-bold">{{
+                    <p class="text-base font-bold">{{
                         formatDateRange(treatment.startDate.toDate(),
                             new Date()) }}</p>
-                    <p class="text-sm tracking-wide uppercase text-text-secondary">{{
+                    <p class="text-xs tracking-wide uppercase text-text-secondary">{{
                         t("health.treatment.historyModal.window") }}</p>
                 </div>
             </div>
