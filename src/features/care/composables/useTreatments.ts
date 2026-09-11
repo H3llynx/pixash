@@ -201,6 +201,7 @@ export const useTreatments = () => {
         }
         const logDates = getTotalLogs(pet, treatment, medication)
             .map(l => l.givenAt.toDate())
+            .filter(d => d < scanEnd)
             .sort((a, b) => a.getTime() - b.getTime());
 
         const uncovered = [...expectedSlots];
