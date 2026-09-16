@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Camera, X } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
-import { useAddPictures } from '../composables/useAddPictures.ts';
+import { useAddPictures, type Picture } from '../composables/useAddPictures.ts';
 import Button from './Button.vue';
 
 defineProps<{
@@ -10,7 +10,9 @@ defineProps<{
 }>();
 
 const { t } = useI18n();
-const { pictures, onFileChange, deletePicture } = useAddPictures();
+
+const pictures = defineModel<Picture[]>({ required: true });
+const { onFileChange, deletePicture } = useAddPictures(pictures);
 </script>
 
 <template>

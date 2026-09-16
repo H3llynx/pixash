@@ -10,7 +10,7 @@ import LoadingPet from '../../../../components/loading/LoadingPet.vue';
 import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import Textarea from '../../../../components/Textarea.vue';
-import { useAddPictures } from '../../../../composables/useAddPictures.ts';
+import { type Picture } from '../../../../composables/useAddPictures.ts';
 import { useDialog } from '../../../../composables/useDialog.ts';
 import { useFormMode } from '../../../../composables/useFormMode.ts';
 import { useToast } from '../../../../composables/useToast.ts';
@@ -30,11 +30,11 @@ const { t } = useI18n();
 const { show } = useToast();
 const { open } = useDialog();
 const { mode, isReadonly } = useFormMode();
-const { pictures } = useAddPictures();
 provide('readonly', isReadonly);
 
 const { subtype, date, notes } = logFields;
 const loading = ref<boolean>(false);
+const pictures = ref<Picture[]>([]);
 const loadedPictures = reactive(new Set<string>());
 const defaultForm = {
     subtype: subtype.options[0].id,
@@ -185,7 +185,7 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedOtherLog!.subtype}`)
                     })
-                        }}
+                    }}
                     </h1>
                     <Button v-if="selectedOtherLog" action="delete" :aria-label="t('common.button.delete')"
                         @click="handleDelete" />
@@ -219,7 +219,8 @@ watch(() => formData.pictures, (pictures) => {
                                     <X :size="20" />
                                 </Button>
                             </div>
-                            <AddPictures v-if="mode === 'edit'" :initialImages="formData.pictures.length" :max="10" />
+                            <AddPictures v-if="mode === 'edit'" v-model="pictures"
+                                :initialImages="formData.pictures.length" :max="10" />
                         </div>
                         <VueEasyLightbox :visible="visibleRef" :imgs="imgsRef" :index="indexRef" :loop="true"
                             @hide="onHide" />
