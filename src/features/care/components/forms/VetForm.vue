@@ -178,12 +178,3 @@ watch(() => selectedVet.value,
         </Panel>
     </Transition>
 </template>
-
-<style scoped>
-:deep(fieldset:has(input:not(required))) legend::after {
-    content: "(optional)";
-    margin-left: 10px;
-    color: var(--color-text-secondary);
-    font-size: small;
-}
-</style>

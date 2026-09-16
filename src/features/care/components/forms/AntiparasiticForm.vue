@@ -98,15 +98,6 @@ watch(() => mode.value, (mode) => {
 </template>
 
 <style scoped>
-:deep(label:not(:has(input[type="checkbox"]))) p,
-:deep(legend) {
-    text-transform: uppercase;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-    letter-spacing: 1px;
-    font-size: 14px;
-}
-
 :deep(label:has(input[type="checkbox"])) p {
     display: flex;
     height: 3rem;

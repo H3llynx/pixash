@@ -121,7 +121,7 @@ watch(() => formData.species, () => {
                 <form @submit.prevent="handleSubmit">
                     <fieldset class="min-w-0">
                         <legend class="default-padding">{{ t(species.label) }}</legend>
-                        <div class="pet-selector">
+                        <div class="pet-selector pt-0.5">
                             <Input v-model="formData.species" v-for="(option, index) in species.options" :id="option.id"
                                 :value="option.id" :key="option.id" :label="option.icon" :aria-label="t(option.name)"
                                 :type="species.type" :name="species.name" :required="index === 0" />
@@ -158,19 +158,6 @@ watch(() => formData.species, () => {
 </template>
 
 <style scoped>
-button {
-    gap: 0.8rem;
-}
-
-legend,
-:deep(label p) {
-    text-transform: uppercase;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-    letter-spacing: 1px;
-    padding-bottom: 10px;
-}
-
 :deep(.pet-selector) p {
     width: 5rem;
     aspect-ratio: 1/1;

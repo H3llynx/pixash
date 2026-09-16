@@ -126,15 +126,3 @@ watch(() => mode.value, (mode) => {
         </Panel>
     </Transition>
 </template>
-
-<style scoped>
-legend,
-:deep(label p),
-:deep(label span) {
-    font-size: medium;
-}
-
-:deep(fieldset label p) {
-    font-size: 14px;
-}
-</style>

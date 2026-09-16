@@ -318,6 +318,7 @@ export default {
             givenDate: "Date given",
             nextDose: "Next dose scheduled?",
             dueDate: "Next due",
+            notes: "Notes",
             notesPlaceholder: "Comments (optional)",
         },
         antiparasiteForm: {
@@ -332,14 +333,12 @@ export default {
             stage: "Stage",
             given: "{name} has already received this vaccine",
             vet: "Vet",
-            notes: "Notes",
             validationTypes: "You must select a vaccine type",
         },
         vetVisitForm: {
             title: "Reason for visit",
             date: "Date",
             vet: "Vet",
-            notes: "Notes",
             other: "Other",
             placeholderVet: "Type your vet's name...",
             chooseExisting: "Pick from my vets"
@@ -348,7 +347,24 @@ export default {
             name: "Treatment name",
             startDate: "Start date",
             vet: "Prescribed by",
-            notes: "Notes",
+        },
+        lumpForm: {
+            title: "Title",
+            location: {
+                label: "Location",
+                left: "Left side",
+                right: "Right side"
+            },
+            size: "Size",
+            photo: "Photo",
+            status: {
+                label: "Status",
+                monitoring: "Monitoring",
+                checked: "Checked - all clear",
+                flagged: "Flagged for vet",
+                pending: "Pending lab results",
+                removed: "Removed",
+            }
         },
         vetForm: {
             name: "Name",
@@ -358,7 +374,6 @@ export default {
             postCode: "Postcode",
             types: "Vet role(s)",
             assignedPets: "Assigned pet(s)",
-            notes: "Notes",
             phone: "Phone number",
             email: "Email",
             hours: "Working hours"

@@ -1,4 +1,3 @@
-import { LOG_SUBTYPES } from "../care/config";
 
 export const SPECIES = [
     { id: "dog", name: "pet.species.dog", icon: "🐶", prefersKg: true },
@@ -9,6 +8,7 @@ export const SPECIES = [
     { id: "reptile", name: "pet.species.reptile", icon: "🦎", prefersKg: false },
     { id: "amphibian", name: "pet.species.amphibian", icon: "🐸", prefersKg: false },
 ] as const;
+
 
 export const dogBreeds = [
     { id: "akita", label: "pet.breeds.dog.akita" },
@@ -122,22 +122,3 @@ export const petFields = {
         label: "pet.form.microchipped",
     }
 };
-
-export const logFields = {
-    subtype: {
-        label: "pet.form.logType",
-        type: "radio",
-        options: LOG_SUBTYPES,
-    },
-    date: {
-        id: "log-date",
-        label: "pet.form.date",
-        type: "date",
-    },
-    notes: {
-        id: "log-notes",
-        label: "pet.form.notes",
-        type: "text",
-        placeholder: "pet.form.notesPlaceholder"
-    },
-} as const;

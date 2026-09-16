@@ -27,7 +27,7 @@ watch(() => medData.value?.noEnd, (noEnd) => {
 
 <template>
     <div class="p-1 rounded-xl border border-border bg-bg-rgba" v-if="medData">
-        <div class="flex flex-col gap-0.5 mb-0.5">
+        <div class="flex flex-col gap-1 mb-0.5">
             <h3>{{ t(title, { index: index }) }}</h3>
             <Input v-model="medData.name" :id="`med-name-${medData.id}`" :label="t(name.label)" required />
             <Input v-model="medData.instructions" :id="`med-instructions-${medData.id}`"
@@ -50,8 +50,11 @@ watch(() => medData.value?.noEnd, (noEnd) => {
 </template>
 
 <style scoped>
-:deep(legend) {
-    font-size: 14px;
+:deep(legend),
+:deep(p) {
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--color-text-softer);
 }
 
 :deep(label:has(input[type="radio"])) p {

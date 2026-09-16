@@ -8,15 +8,3 @@ defineProps<{ legend: string }>();
         <slot></slot>
     </fieldset>
 </template>
-
-<style scoped>
-legend,
-:deep(label p),
-:deep(label span) {
-    font-size: medium;
-}
-
-:deep(fieldset label p) {
-    font-size: 14px;
-}
-</style>

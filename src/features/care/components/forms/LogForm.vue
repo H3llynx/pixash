@@ -19,8 +19,8 @@ import { resetForm, shallowEqual, tsToDate } from '../../../../utils.ts';
 import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
-import { logFields } from '../../../pets/config.ts';
 import { useEvents } from '../../composables/useEvents.ts';
+import { logFields } from '../../config.ts';
 import type { Log, LogExtended, OtherLogExtended } from '../../types.ts';
 import ButtonArea from './ButtonArea.vue';
 
@@ -187,7 +187,7 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedOtherLog!.subtype}`)
                     })
-                    }}
+                        }}
                     </h1>
                     <Button v-if="selectedOtherLog" action="delete" :aria-label="t('common.button.delete')"
                         @click="handleDelete" />
@@ -240,13 +240,12 @@ watch(() => formData.pictures, (pictures) => {
 </template>
 
 <style scoped>
-legend,
-:deep(label p),
-:deep(label span) {
-    font-size: medium;
-}
-
-:deep(fieldset label p) {
+:deep(label:not(:has(input[type="radio"]))) p,
+:deep(legend) {
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    letter-spacing: 1px;
     font-size: 14px;
 }
 </style>

@@ -318,6 +318,7 @@ export default {
             givenDate: "Fecha de administración",
             nextDose: "¿Próxima dosis programada?",
             dueDate: "Próxima fecha",
+            notes: "Notas",
             notesPlaceholder: "Comentarios (opcional)",
         },
         antiparasiteForm: {
@@ -332,14 +333,12 @@ export default {
             stage: "Etapa",
             given: "{name} ya ha recibido esta vacuna",
             vet: "Veterinario",
-            notes: "Notas",
             validationTypes: "Debes seleccionar un tipo de vacuna",
         },
         vetVisitForm: {
             title: "Motivo de la visita",
             date: "Fecha",
             vet: "Veterinario",
-            notes: "Notas",
             other: "Otro",
             placeholderVet: "Escribe el nombre de tu veterinario...",
             chooseExisting: "Elegir de mis veterinarios"
@@ -348,7 +347,24 @@ export default {
             name: "Nombre del tratamiento",
             startDate: "Fecha de inicio",
             vet: "Prescrito por",
-            notes: "Notas",
+        },
+        lumpForm: {
+            title: "Título",
+            location: {
+                label: "Ubicación",
+                left: "Lado izquierdo",
+                right: "Lado derecho"
+            },
+            size: "Tamaño",
+            photo: "Foto",
+            status: {
+                label: "Estado",
+                monitoring: "En observación",
+                checked: "Revisado - sin problemas",
+                flagged: "Marcado para el veterinario",
+                pending: "Resultados pendientes",
+                removed: "Extirpado",
+            }
         },
         vetForm: {
             name: "Nombre",
@@ -358,7 +374,6 @@ export default {
             postCode: "Código postal",
             types: "Rol(es) del veterinario",
             assignedPets: "Mascota(s) asignada(s)",
-            notes: "Notas",
             phone: "Número de teléfono",
             email: "Correo electrónico",
             hours: "Horario de atención"

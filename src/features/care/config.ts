@@ -192,7 +192,7 @@ export const vaccineFields = {
     },
     notes: {
         id: "vaccine-notes",
-        label: "health.vaccineForm.notes",
+        label: "health.sharedFields.notes",
         placeholder: "health.sharedFields.notesPlaceholder"
     },
 } as const;
@@ -214,7 +214,7 @@ export const vetVisitFields = {
     },
     notes: {
         id: "visit-notes",
-        label: "health.vetVisitForm.notes",
+        label: "health.sharedFields.notes",
         placeholder: "health.sharedFields.notesPlaceholder"
     },
 } as const;
@@ -252,7 +252,7 @@ export const vetFormFields = {
     },
     notes: {
         id: "vet-notes",
-        label: "health.vetForm.notes",
+        label: "health.sharedFields.notes",
     },
     assignedPets: {
         label: "health.vetForm.assignedPets",
@@ -274,6 +274,25 @@ export const vetFormFields = {
     },
 } as const;
 
+export const logFields = {
+    subtype: {
+        label: "pet.form.logType",
+        type: "radio",
+        options: LOG_SUBTYPES,
+    },
+    date: {
+        id: "log-date",
+        label: "pet.form.date",
+        type: "date",
+    },
+    notes: {
+        id: "log-notes",
+        label: "pet.form.notes",
+        type: "text",
+        placeholder: "pet.form.notesPlaceholder"
+    },
+} as const;
+
 export const treatmentFields = {
     name: {
         id: "treatment-name",
@@ -291,7 +310,33 @@ export const treatmentFields = {
     },
     notes: {
         id: "treatment-notes",
-        label: "health.treatmentForm.notes",
+        label: "health.sharedFields.notes",
+        type: "text",
+        placeholder: "health.sharedFields.notesPlaceholder"
+    },
+} as const;
+
+export const lumpFields = {
+    title: {
+        id: "lump-title",
+        label: "health.lumpForm.title",
+    },
+    location1: {
+        label: "health.lumpForm.location.label",
+        type: "radio",
+        options: [
+            { id: "left", label: "health.lumpForm.location.left" },
+            { id: "right", label: "health.lumpForm.location.right" }
+        ]
+    },
+    date: {
+        id: "log-date",
+        label: "pet.form.date",
+        type: "date",
+    },
+    notes: {
+        id: "lump-notes",
+        label: "health.sharedFields.notes",
         type: "text",
         placeholder: "health.sharedFields.notesPlaceholder"
     },
