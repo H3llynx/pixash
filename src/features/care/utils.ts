@@ -140,3 +140,7 @@ export const getLogIcon = (log: OtherLogExtended) => {
     if (!log) return;
     return LOG_SUBTYPES.find(s => s.id === log.subtype)?.icon;
 }
+
+export const fromMm = (mm: number, unit: "cm" | "mm") =>
+    unit === "cm" ? Math.round((mm / 10) * 100) / 100 : mm;
+export const cmToMm = (cm: number) => Math.round(cm * 10); 

@@ -202,3 +202,25 @@ export type OtherLogExtended = {
 };
 
 export type LogExtended = AntiparasiteLogExtended | WeightLogExtended | MedicationLogExtended | OtherLogExtended;
+
+export type LumpLocation = {
+    side: "left" | "right";
+    x: number;
+    y: number;
+};
+
+export type LumpRecord = {
+    title: string;
+    location: LumpLocation;
+    size: number;
+    pictures?: string[];
+    notes?: string;
+    status: "monitoring" | "checked" | "flagged" | "pending" | "removed";
+};
+
+export type LumpExtended = LumpRecord & {
+    id: string;
+    petId: string;
+    userId: string;
+    createdAt: Timestamp;
+};

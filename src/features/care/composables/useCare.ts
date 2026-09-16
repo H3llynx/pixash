@@ -1,10 +1,10 @@
 import { FirebaseError } from "firebase/app";
 import { computed, reactive, ref, type Ref } from "vue";
-import { addLog, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchPetLogs, fetchPetTreatments, fetchPetVaccines, fetchPetVisits, fetchVets, updateLog, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/care";
+import { addLog, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchPetLogs, fetchPetLumps, fetchPetTreatments, fetchPetVaccines, fetchPetVisits, fetchVets, updateLog, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/care";
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { Log, LogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { Log, LogExtended, LumpExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
 
 export const useCare = (pets: Ref<PetExtended[]>) => {
@@ -15,6 +15,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
     const selectedVet = ref<VetExtended | null>(null);
     const selectedTreatment = ref<TreatmentExtended | null>(null)
     const selectedLog = ref<LogExtended | null>(null);
+    const selectedLump = ref<LumpExtended | null>(null);
 
     const selectedAntiparasiticLog = computed(() => selectedLog.value?.type === "antiparasite" ? selectedLog.value : null);
     const selectedMedicationLog = computed(() => selectedLog.value?.type === "medication" ? selectedLog.value : null);
@@ -30,6 +31,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         visit: false,
         antiparasitic: false,
         treatment: false,
+        lump: false,
         weight: false,
         other: false,
     });
@@ -39,6 +41,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
     const vetVisits = computed(() => pets.value.flatMap(pet => pet.vetVisits || []));
     const logs = computed(() => pets.value.flatMap(pet => pet.logs || []));
     const treatments = computed(() => pets.value.flatMap(pet => pet.treatments || []));
+    const lumps = computed(() => pets.value.flatMap(pet => pet.lumps || []));
 
     const selectVaccine = (vaccine: VaccineExtended | null) => {
         resetState(isAddingCare);
@@ -72,6 +75,15 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         selectedLog.value = log;
     };
 
+    const selectLump = (lump: LumpExtended | null) => {
+        resetState(isAddingCare);
+        selectedVaccine.value = null;
+        selectedVisit.value = null;
+        selectedTreatment.value = null;
+        selectedLog.value = null;
+        selectedLump.value = lump;
+    };
+
     const handleHealthAction = async <T>(
         action: () => Promise<T>,
         onFinal?: () => void
@@ -97,10 +109,11 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         const petIndex = pets.value.findIndex(p => p.id === petId);
         if (petIndex === -1) return;
         loading.value = true;
-        const [vaccines, vetVisits, treatments, logs] = await Promise.all([
+        const [vaccines, vetVisits, treatments, lumps, logs] = await Promise.all([
             fetchPetVaccines(user.value!.uid, petId),
             fetchPetVisits(user.value!.uid, petId),
             fetchPetTreatments(user.value!.uid, petId),
+            fetchPetLumps(user.value!.uid, petId),
             fetchPetLogs(user.value!.uid, petId),
         ]);
 
@@ -109,6 +122,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
             vaccines,
             vetVisits,
             treatments,
+            lumps,
             logs,
             nextVaccine: getNextVaccine(vaccines),
             nextVetVisit: getNextVisit(vetVisits),
@@ -319,6 +333,9 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         addNewTreatment,
         updateSelectedTreatment,
         deleteSelectedTreatment,
-        selectTreatment
+        selectTreatment,
+        selectLump,
+        selectedLump,
+        lumps
     };
 };

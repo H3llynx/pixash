@@ -5,6 +5,7 @@ export const DB = {
     vaccines: "vaccines",
     vetVisits: "vetVisits",
     treatments: "treatments",
+    lumps: "lumps",
     logs: "logs",
     weightLogs: "weightLogs"
 } as const;

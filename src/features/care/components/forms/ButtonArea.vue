@@ -3,13 +3,13 @@ import { Pen } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { useMedia } from '../../../../composables/useMedia.ts';
-import type { LogExtended, TreatmentExtended, VisitExtended } from '../../types.ts';
+import type { LogExtended, LumpExtended, TreatmentExtended, VisitExtended } from '../../types.ts';
 
 const { t } = useI18n();
 const { isMd } = useMedia();
 
 defineProps<{
-    selectedCare: LogExtended | VisitExtended | TreatmentExtended | null;
+    selectedCare: LogExtended | VisitExtended | TreatmentExtended | LumpExtended | null;
     loading: boolean;
     customCta: string;
 }>();

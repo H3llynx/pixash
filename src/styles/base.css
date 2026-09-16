@@ -237,7 +237,7 @@
 
   label:not(:has(input[type="radio"], input[type="checkbox"])) p,
   legend {
-    @apply text-sm uppercase text-text-secondary font-medium tracking-widest pb-0.25;
+    @apply text-sm uppercase text-text-secondary font-medium tracking-wide pb-0.25;
   }
 
   label {

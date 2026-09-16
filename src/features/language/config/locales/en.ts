@@ -84,7 +84,8 @@ export default {
         vet: "Add vet",
         log: "New log",
         antiparasitic: "Add antiparasitic",
-        treatment: "Add treatment"
+        treatment: "Add treatment",
+        lump: "Add a lump"
     },
     userMenu: {
         logout: "Log out",
@@ -301,6 +302,7 @@ export default {
             saveVaccine: "Save vaccine",
             saveVisit: "Save vet visit",
             saveVet: "Save {name}",
+            saveLump: "Save lump",
             deleteVaccine: "Delete vaccine",
             deleteVisit: "Delete vet visit",
             deleteVet: "Delete vet",
@@ -320,6 +322,7 @@ export default {
             dueDate: "Next due",
             notes: "Notes",
             notesPlaceholder: "Comments (optional)",
+            photos: "Photos"
         },
         antiparasiteForm: {
             treated: "What did you treat?",
@@ -349,6 +352,7 @@ export default {
             vet: "Prescribed by",
         },
         lumpForm: {
+            heading: "Add a lump",
             title: "Title",
             location: {
                 label: "Location",
@@ -356,7 +360,6 @@ export default {
                 right: "Right side"
             },
             size: "Size",
-            photo: "Photo",
             status: {
                 label: "Status",
                 monitoring: "Monitoring",
@@ -364,7 +367,8 @@ export default {
                 flagged: "Flagged for vet",
                 pending: "Pending lab results",
                 removed: "Removed",
-            }
+            },
+            validationLocationSide: "Indicate where the lump is located",
         },
         vetForm: {
             name: "Name",

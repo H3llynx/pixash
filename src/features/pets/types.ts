@@ -1,5 +1,5 @@
 import type { Timestamp } from "firebase/firestore";
-import type { LogExtended, TreatmentExtended, VaccineExtended, VisitExtended } from "../care/types";
+import type { LogExtended, LumpExtended, TreatmentExtended, VaccineExtended, VisitExtended } from "../care/types";
 import type { SPECIES } from "./config";
 
 export type Pet = {
@@ -24,6 +24,7 @@ export type PetExtended = Pet & {
     vaccines: VaccineExtended[];
     vetVisits: VisitExtended[];
     treatments: TreatmentExtended[];
+    lumps: LumpExtended[];
     logs: LogExtended[];
     nextVaccine?: VaccineExtended;
     nextVetVisit?: VisitExtended;

@@ -185,7 +185,7 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedOtherLog!.subtype}`)
                     })
-                    }}
+                        }}
                     </h1>
                     <Button v-if="selectedOtherLog" action="delete" :aria-label="t('common.button.delete')"
                         @click="handleDelete" />
@@ -204,6 +204,8 @@ watch(() => formData.pictures, (pictures) => {
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>
                         </Input>
+                        <h3 class="text-sm uppercase text-text-secondary font-medium tracking-wide">{{
+                            t("health.sharedFields.photos") }}</h3>
                         <div class="preview-container">
                             <div v-for="(picture, index) in formData.pictures" :key="picture"
                                 class="relative rounded-lg mb-0.25 min-w-[140px] cursor-pointer">

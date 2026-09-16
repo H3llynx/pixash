@@ -84,7 +84,8 @@ export default {
         vet: "Añadir veterinario",
         log: "Nuevo registro",
         antiparasitic: "Añadir antiparasitario",
-        treatment: "Añadir tratamiento"
+        treatment: "Añadir tratamiento",
+        lump: "Registrar un bulto"
     },
     userMenu: {
         logout: "Cerrar sesión",
@@ -301,6 +302,7 @@ export default {
             saveVaccine: "Guardar vacuna",
             saveVisit: "Guardar visita veterinaria",
             saveVet: "Guardar {name}",
+            saveLump: "Registrar bulto",
             deleteVaccine: "Eliminar vacuna",
             deleteVisit: "Eliminar visita veterinaria",
             deleteVet: "Eliminar veterinario",
@@ -349,6 +351,7 @@ export default {
             vet: "Prescrito por",
         },
         lumpForm: {
+            heading: "Registrar un bulto",
             title: "Título",
             location: {
                 label: "Ubicación",
@@ -356,7 +359,7 @@ export default {
                 right: "Lado derecho"
             },
             size: "Tamaño",
-            photo: "Foto",
+            photos: "Fotos",
             status: {
                 label: "Estado",
                 monitoring: "En observación",
@@ -364,7 +367,8 @@ export default {
                 flagged: "Marcado para el veterinario",
                 pending: "Resultados pendientes",
                 removed: "Extirpado",
-            }
+            },
+            validationLocationSide: "Debes indicar de qué lado se encuentra el bulto.",
         },
         vetForm: {
             name: "Nombre",

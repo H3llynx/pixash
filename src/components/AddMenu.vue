@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BriefcaseMedical, BugOff, PawPrint, Pill, Scale, Stethoscope, Syringe } from '@lucide/vue';
+import { BriefcaseMedical, BugOff, CircleDot, PawPrint, Pill, Scale, Stethoscope, Syringe } from '@lucide/vue';
 import { onClickOutside } from '@vueuse/core';
 import { ref, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -32,37 +32,23 @@ const handleClick = (action: string) => {
     <Transition name="overlay">
         <div v-if="visible" class="fixed inset-0 w-full h-dvh bg-grey-dark-rgba filter-blur">
             <Transition name="toast" appear>
-                <div ref="menuRef" v-if="vet"
+                <div ref="menuRef"
                     class="flex flex-col items-end gap-1 max-w-2xs absolute bottom-11 md:bottom-7 right-1.5"
                     role="menu">
-                    <div class="row">
-                        <Button variant="secondary" @click="handleClick('vet')">{{ t("addMenu.vet") }}</Button>
-                        <BriefcaseMedical class="btn-icon default-transition filter-blur" :size="40" />
-                    </div>
-                    <div class="row">
-                        <Button variant="secondary" @click="handleClick('visit')">{{ t("addMenu.vetVisit") }}</Button>
-                        <Stethoscope class="btn-icon default-transition filter-blur" :size="40" />
-                    </div>
-                    <div class="row">
-                        <Button variant="secondary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
-                            }}</Button>
-                        <Pill class="btn-icon default-transition filter-blur" :size="40" />
-                    </div>
-                </div>
-
-                <div v-else ref="menuRef"
-                    class="flex flex-col items-end gap-1 max-w-2xs absolute bottom-11 md:bottom-7 right-1.5"
-                    role="menu">
-                    <div class="row">
+                    <div class="row" v-if="!vet">
                         <Button variant="secondary" @click="handleClick('pet')">{{ t("addMenu.pet") }}</Button>
                         <PawPrint class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
-                    <div class="row">
+                    <div class="row" v-if="!vet">
                         <Button variant="secondary" @click="handleClick('antiparasitic')">{{ t("addMenu.antiparasitic")
                         }}</Button>
                         <BugOff class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
-                    <div class="row">
+                    <div class="row" v-if="vet">
+                        <Button variant="secondary" @click="handleClick('vet')">{{ t("addMenu.vet") }}</Button>
+                        <BriefcaseMedical class="btn-icon default-transition filter-blur" :size="40" />
+                    </div>
+                    <div class="row" v-if="!vet">
                         <Button variant="secondary" @click="handleClick('vaccine')">{{ t("addMenu.vaccine") }}</Button>
                         <Syringe class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
@@ -70,7 +56,7 @@ const handleClick = (action: string) => {
                         <Button variant="secondary" @click="handleClick('visit')">{{ t("addMenu.vetVisit") }}</Button>
                         <Stethoscope class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
-                    <div class="row">
+                    <div class="row" v-if="!vet">
                         <Button variant="secondary" @click="handleClick('weight')">{{ t("health.cta.logWeight")
                         }}</Button>
                         <Scale class="btn-icon default-transition filter-blur" :size="40" />
@@ -79,6 +65,11 @@ const handleClick = (action: string) => {
                         <Button variant="secondary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
                         }}</Button>
                         <Pill class="btn-icon default-transition filter-blur" :size="40" />
+                    </div>
+                    <div class="row">
+                        <Button variant="secondary" @click="handleClick('lump')">{{ t("addMenu.lump")
+                        }}</Button>
+                        <CircleDot class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                 </div>
             </Transition>

@@ -4,6 +4,7 @@ import NavBar from './components/NavBar.vue';
 import Toast from './components/Toast.vue';
 import AntiparasiticForm from './features/care/components/forms/AntiparasiticForm.vue';
 import LogForm from './features/care/components/forms/LogForm.vue';
+import LumpForm from './features/care/components/forms/LumpForm.vue';
 import TreatmentForm from './features/care/components/forms/TreatmentForm.vue';
 import VaccineForm from './features/care/components/forms/VaccineForm.vue';
 import VetVisitForm from './features/care/components/forms/VetVisitForm.vue';
@@ -24,6 +25,7 @@ const { loading, user } = useAuth();
   <TreatmentForm />
   <AntiparasiticForm />
   <LogForm />
+  <LumpForm />
   <PetForm />
   <LogMedication />
   <Toast />

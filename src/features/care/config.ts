@@ -113,6 +113,7 @@ export const medFields = {
         type: "text",
     },
     frequency: {
+        name: "medication-frequency",
         label: "health.medicine.frequency.label",
         type: "radio",
         options: MED_FREQUENCY
@@ -276,6 +277,7 @@ export const vetFormFields = {
 
 export const logFields = {
     subtype: {
+        name: "log-subtype",
         label: "pet.form.logType",
         type: "radio",
         options: LOG_SUBTYPES,
@@ -321,7 +323,8 @@ export const lumpFields = {
         id: "lump-title",
         label: "health.lumpForm.title",
     },
-    location1: {
+    location: {
+        name: "lump-location",
         label: "health.lumpForm.location.label",
         type: "radio",
         options: [
@@ -329,10 +332,21 @@ export const lumpFields = {
             { id: "right", label: "health.lumpForm.location.right" }
         ]
     },
-    date: {
-        id: "log-date",
-        label: "pet.form.date",
-        type: "date",
+    size: {
+        id: "lump-size",
+        type: "number",
+        label: "health.lumpForm.size"
+    },
+    status: {
+        name: "lump-status",
+        type: "radio",
+        options: [
+            { id: "monitoring", label: "health.lumpForm.status.monitoring" },
+            { id: "checked", label: "health.lumpForm.status.checked" },
+            { id: "flagged", label: "health.lumpForm.status.flagged" },
+            { id: "pending", label: "health.lumpForm.status.pending" },
+            { id: "removed", label: "health.lumpForm.status.removed" },
+        ]
     },
     notes: {
         id: "lump-notes",

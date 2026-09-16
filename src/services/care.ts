@@ -1,7 +1,7 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where, writeBatch } from "firebase/firestore";
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
-import type { AntiparasiteLogExtended, Log, LogExtended, MedicationLogExtended, OtherLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/care/types";
+import type { AntiparasiteLogExtended, Log, LogExtended, LumpExtended, MedicationLogExtended, OtherLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/care/types";
 import { getTreatmentEndDate } from "../features/care/utils";
 import { tsFromInput } from "../utils";
 
@@ -54,6 +54,21 @@ export const fetchPetTreatments = async (userId: string, petId: string): Promise
         });
     } catch (error) {
         console.error("Fetch treatments error:", error);
+        throw error;
+    }
+};
+export const fetchPetLumps = async (userId: string, petId: string): Promise<LumpExtended[]> => {
+    try {
+        const snapshot = await getDocs(
+            collection(db, DB.users, userId, DB.pets, petId, DB.lumps)
+        );
+        return snapshot.docs.map(doc => ({
+            id: doc.id,
+            petId,
+            ...doc.data() as Omit<LumpExtended, "id" | "petId">,
+        }));
+    } catch (error) {
+        console.error("Fetch lumps error:", error);
         throw error;
     }
 };
@@ -122,6 +137,7 @@ export const fetchPetLogs = async (userId: string, petId: string): Promise<LogEx
         throw error;
     }
 };
+
 
 const getVaccineDoc = (userId: string, petId: string, vaccineId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
 

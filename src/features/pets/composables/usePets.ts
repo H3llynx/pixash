@@ -57,7 +57,10 @@ const {
   addNewTreatment,
   updateSelectedTreatment,
   deleteSelectedTreatment,
-  selectTreatment
+  selectTreatment,
+  lumps,
+  selectLump,
+  selectedLump
 } = useCare(pets);
 
 const hasVets = computed(() => vets.value.length > 0);
@@ -72,6 +75,7 @@ const handleAdd = (action: string) => {
   else if (action === "treatment") isAddingCare.treatment = true;
   else if (action === "log") isAddingCare.other = true;
   else if (action === "weight") isAddingCare.weight = true;
+  else if (action === "lump") isAddingCare.lump = true;
   else return;
 }
 
@@ -263,6 +267,7 @@ watch(selectedVaccine, (vaccine) => syncPetFromEvent(vaccine?.petId));
 watch(selectedVisit, (visit) => syncPetFromEvent(visit?.petId));
 watch(selectedTreatment, (treatment) => syncPetFromEvent(treatment?.petId));
 watch(selectedLog, (log) => syncPetFromEvent(log?.petId));
+watch(selectedLump, (lump) => syncPetFromEvent(lump?.petId));
 
 export const usePets = () => {
   return {
@@ -320,6 +325,9 @@ export const usePets = () => {
     deleteSelectedTreatment,
     selectTreatment,
     handleAdd,
-    isForSpecificPet
+    isForSpecificPet,
+    selectLump,
+    selectedLump,
+    lumps,
   };
 };
