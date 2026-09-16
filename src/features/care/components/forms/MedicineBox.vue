@@ -34,7 +34,7 @@ watch(() => medData.value?.noEnd, (noEnd) => {
                 :label="t(instructions.label)" />
         </div>
         <Selector :legend="t(frequency.label)" class="px-0">
-            <Input v-model="medData.frequency" v-for="option in frequency.options" :name="`${option.id}-${medData.id}`"
+            <Input v-model="medData.frequency" v-for="option in frequency.options" :name="frequency.name"
                 :value="option.id" :key="`${option.id}-${medData.id}`" :label="t(option.label)" :type="frequency.type"
                 @input="error = false" />
             <p v-if="error" class="text-sm w-full text-error pb-0.5">{{

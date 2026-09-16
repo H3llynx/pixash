@@ -7,19 +7,16 @@ import Input from '../../../components/Input.vue';
 import LoadingPet from '../../../components/loading/LoadingPet.vue';
 import { usePetDetails } from '../../pets/composables/usePetDetails.ts';
 import { usePets } from '../../pets/composables/usePets.ts';
-import type { PetExtended } from '../../pets/types.ts';
 import type { Log } from '../types.ts';
 
-const props = defineProps<{ pet: PetExtended }>();
-
-const { isAddingCare, addNewLog } = usePets();
+const { isAddingCare, addNewLog, selectedPet } = usePets();
 const { t } = useI18n();
-const { getWeightInGrams, weightForm } = usePetDetails(props.pet);
+const { getWeightInGrams, weightForm } = usePetDetails();
 
 const loading = ref<boolean>(false);
 
 const handleSubmit = async () => {
-    if (!weightForm.data) return;
+    if (!selectedPet.value || !weightForm.data) return;
     loading.value = true;
     const grams = getWeightInGrams();
     if (grams === null) return;
@@ -27,7 +24,7 @@ const handleSubmit = async () => {
         type: "weight",
         weight: grams,
     };
-    await addNewLog(log, props.pet.id);
+    await addNewLog(log, selectedPet.value.id);
     loading.value = false;
     isAddingCare.weight = false;
 };
@@ -37,7 +34,7 @@ const handleSubmit = async () => {
     <FreeModal v-model="isAddingCare.weight">
         <LoadingPet v-if="loading" class="max-w-xs" />
         <form v-else class="flex flex-col gap-1 mini-form" @submit.prevent="handleSubmit">
-            <h2>{{ t('pet.profile.edit.weight', { name: pet.name }) }}</h2>
+            <h2>{{ t('pet.profile.edit.weight', { name: selectedPet?.name }) }}</h2>
             <div class="flex gap-0.5">
                 <Input v-model="weightForm.data" type="number" id="first-weight-log"
                     :step="weightForm.unit === 'kg' ? '0.001' : '1'" ref="weightInputRef" />
@@ -51,7 +48,7 @@ const handleSubmit = async () => {
             <Button>{{ t("common.button.confirm") }}</Button>
             <Button type="button" variant="ghost" @click="isAddingCare.weight = false">{{
                 t("common.button.cancel")
-                }}</Button>
+            }}</Button>
         </form>
     </FreeModal>
 </template>

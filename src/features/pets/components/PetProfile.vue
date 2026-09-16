@@ -16,7 +16,7 @@ const { isLg } = useMedia();
         <section class="pet-section p-0">
             <div class="default-padding">
                 <h2>{{ t("dashboard.title.petProfile", { name: selectedPet.name }) }}</h2>
-                <PetCard :pet="selectedPet" />
+                <PetCard />
             </div>
             <NextDue v-if="!isLg" />
         </section>

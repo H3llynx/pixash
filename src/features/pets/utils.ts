@@ -51,12 +51,6 @@ export const getAge = (pet: Pet) => {
 export const kgToGrams = (kg: number) => Math.round(kg * 1000);
 export const gramsToKg = (g: number) => g / 1000;
 
-export const getWeight = (pet: Pet) => {
-    if (!pet?.weight) return;
-    if (pet.species === "dog" || pet.species === "cat") return `${gramsToKg(pet.weight)} kg`;
-    else return `${pet.weight} g`;
-};
-
 export const getBreedOptions = (species: string) => {
     if (species === "dog") return dogBreeds;
     if (species === "cat") return catBreeds;

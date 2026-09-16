@@ -30,7 +30,7 @@ const props = defineProps<{
 const { t, locale } = useI18n();
 const { theme } = useTheme();
 const { isAddingCare } = usePets();
-const { unitFactor, preferredUnit } = usePetDetails(props.pet);
+const { unitFactor, preferredUnit } = usePetDetails();
 
 ChartJS.register(
     CategoryScale,
@@ -53,7 +53,7 @@ const chartData = computed<ChartData<"line">>(() => {
         month: "short",
         year: "2-digit"
     }));
-    const data = displayed.value.map(log => log.weight * unitFactor);
+    const data = displayed.value.map(log => log.weight * unitFactor.value);
     theme.value;
     return {
         labels,
@@ -138,7 +138,7 @@ const chartOptions = computed<ChartOptions<"line">>(() => {
                 <div class="ml-auto text-right">
                     <p class="text-2xl font-medium">{{ chartData.datasets[0].data.at(-1) }} {{
                         preferredUnit
-                    }}</p>
+                        }}</p>
                     <p v-if="displayed.length" class="text-text-secondary text-xs">{{ t("common.text.lastLogged") }} {{
                         displayed.at(-1)?.measuredAt.toDate().toLocaleDateString(locale, {
                             day: "numeric",

@@ -35,7 +35,6 @@ provide('readonly', isReadonly);
 
 const { subtype, date, notes } = logFields;
 const loading = ref<boolean>(false);
-const error = ref<boolean>(false);
 const loadedPictures = reactive(new Set<string>());
 const defaultForm = {
     subtype: subtype.options[0].id,
@@ -60,7 +59,6 @@ const fillLogData = (log: OtherLogExtended) => {
 };
 
 const handleClose = () => {
-    error.value = false;
     selectedDate.value = null;
     isAddingCare.other = false;
     selectLog(null);
@@ -156,7 +154,7 @@ watch(() => isAddingCare.other, (adding) => {
 watch(() => selectedOtherLog.value, (log) => {
     mode.value = log ? "view" : "edit";
     loadedPictures.clear();
-    if (log) fillLogData(selectedOtherLog.value!);
+    if (log) fillLogData(log);
     else resetForm(formData, defaultForm);
 }, { deep: true });
 
@@ -196,7 +194,8 @@ watch(() => formData.pictures, (pictures) => {
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <Selector v-if="mode === 'edit'" :legend="t(subtype.label)" class="mb-0.5">
                         <Input v-model="formData.subtype" v-for="option in subtype.options" :id="option.id"
-                            :value="option.id" :key="option.id" :label="t(option.label)" :type="subtype.type" />
+                            :value="option.id" :key="option.id" :label="t(option.label)" :type="subtype.type"
+                            :name="subtype.name" />
                     </Selector>
                     <div class="default-padding flex flex-col gap-1">
                         <Input v-model="formData.date" :id="date.id" :label="t(date.label)" :type="date.type"
