@@ -212,7 +212,10 @@ export type LumpLocation = {
 export type LumpRecord = {
     title: string;
     location: LumpLocation;
-    size: number;
+    size: {
+        valueMm: number;
+        displayUnit: "cm" | "mm";
+    };
     pictures?: string[];
     notes?: string;
     status: "monitoring" | "checked" | "flagged" | "pending" | "removed";

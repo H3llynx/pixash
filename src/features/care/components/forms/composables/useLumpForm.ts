@@ -1,5 +1,4 @@
-import { useLocalStorage } from "@vueuse/core";
-import { computed, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { Picture } from "../../../../../composables/useAddPictures";
 import { useDialog } from "../../../../../composables/useDialog";
@@ -9,7 +8,7 @@ import { resetForm, shallowEqual } from "../../../../../utils";
 import { usePets } from "../../../../pets/composables/usePets";
 import { lumpFields } from "../../../config";
 import type { LumpExtended } from "../../../types";
-import { cmToMm, fromMm } from "../../../utils";
+import { fromMm, toMm } from "../../../utils";
 
 
 export const useLumpForm = () => {
@@ -20,14 +19,6 @@ export const useLumpForm = () => {
 
     const loading = ref<boolean>(false);
     const pictures = ref<Picture[]>([]);
-    const lumpSizeUnits = useLocalStorage<Record<string, "cm" | "mm">>("lump_size_units", {});
-
-    const preferredUnit = computed({
-        get: () => (selectedPet.value ? lumpSizeUnits.value[selectedPet.value.id] ?? "cm" : "cm"),
-        set: (unit: "cm" | "mm") => {
-            if (selectedPet.value) lumpSizeUnits.value[selectedPet.value.id] = unit;
-        }
-    });
 
     const { location, status } = lumpFields;
 
@@ -40,7 +31,7 @@ export const useLumpForm = () => {
         },
         size: {
             data: "",
-            unit: "cm"
+            unit: "cm" as ("cm" | "mm")
         },
         pictures: [] as string[],
         notes: "",
@@ -57,8 +48,8 @@ export const useLumpForm = () => {
                 y: lump.location.y,
             },
             size: {
-                data: fromMm(lump.size, preferredUnit.value),
-                unit: preferredUnit.value
+                data: String(fromMm(lump.size.valueMm, lump.size.displayUnit)),
+                unit: lump.size.displayUnit
             },
             pictures: lump.pictures,
             notes: lump.notes ?? "",
@@ -66,10 +57,13 @@ export const useLumpForm = () => {
         })
     };
 
-    const getSizeInMm = (): number | null => {
-        const numeric = Number(formData.size);
-        if (isNaN(numeric) || numeric <= 0) return null;
-        return formData.size.unit === "cm" ? cmToMm(numeric) : numeric;
+    const setUnit = (newUnit: "cm" | "mm") => {
+        if (formData.size.unit === newUnit) return;
+        if (formData.size.data) {
+            const mm = toMm(Number(formData.size.data), formData.size.unit);
+            formData.size.data = String(fromMm(mm, newUnit));
+        }
+        formData.size.unit = newUnit;
     };
 
     const loadedPictures = reactive(new Set<string>());
@@ -156,6 +150,6 @@ export const useLumpForm = () => {
     };
 
     return {
-        loading, defaultForm, formData, fillLumpData, preferredUnit, deletePicture, pictures, loadedPictures, handleClose, handleDelete, handleSubmit
+        loading, defaultForm, formData, fillLumpData, setUnit, deletePicture, pictures, loadedPictures, handleClose, handleDelete, handleSubmit
     }
 }

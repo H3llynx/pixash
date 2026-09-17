@@ -20,7 +20,7 @@ import ButtonArea from './ButtonArea.vue';
 import { useLumpForm } from './composables/useLumpForm.ts';
 
 const { selectedPet, isAddingCare, selectedLump } = usePets();
-const { formData, defaultForm, fillLumpData, preferredUnit, loading, pictures, loadedPictures, deletePicture, handleClose, handleDelete, handleSubmit } = useLumpForm();
+const { formData, defaultForm, fillLumpData, setUnit, loading, pictures, loadedPictures, deletePicture, handleClose, handleDelete, handleSubmit } = useLumpForm();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
 provide('readonly', isReadonly);
@@ -30,12 +30,11 @@ const { title, location, size, status, notes } = lumpFields;
 const { show: showLightbox, onHide, visibleRef, indexRef, imgsRef } = useEasyLightbox({
     imgs: formData.pictures,
     initIndex: 0
-})
+});
 
 watch(() => isAddingCare.lump, (adding) => {
     if (adding) mode.value = "edit";
     resetForm(formData, defaultForm);
-    formData.size.unit = preferredUnit.value;
 });
 
 watch(() => selectedLump.value, (lump) => {
@@ -69,7 +68,7 @@ watch(() => formData.pictures, (pictures) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.lumpForm.heading") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ selectedLump!.title
-                        }}
+                    }}
                     </h1>
                     <Button v-if="selectedLump" action="delete" :aria-label="t('common.button.delete')"
                         @click="handleDelete" />
@@ -92,7 +91,8 @@ watch(() => formData.pictures, (pictures) => {
                             <Input v-model="formData.size.data" :type="size.type" :id="size.id" :label="t(size.label)"
                                 step="0.1" />
                             <div class="input-container w-max">
-                                <select v-model="formData.size.unit" class="p-0.5 w-3">
+                                <select :value="formData.size.unit" class="p-0.5 w-3"
+                                    @change="setUnit(($event.target as HTMLSelectElement).value as 'cm' | 'mm')">
                                     <option>cm</option>
                                     <option>mm</option>
                                 </select>
