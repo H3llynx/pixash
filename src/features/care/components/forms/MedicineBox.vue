@@ -12,7 +12,6 @@ const { title, name, instructions, frequency, noEnd, endDate } = medFields;
 const { formData } = useTreatmentForm();
 const { t } = useI18n();
 const readonly = inject("readonly", ref(false));
-const error = ref<boolean>(false);
 
 defineProps<{ index: number }>();
 
@@ -35,10 +34,8 @@ watch(() => medData.value?.noEnd, (noEnd) => {
         </div>
         <Selector :legend="t(frequency.label)" class="px-0">
             <Input v-model="medData.frequency" v-for="option in frequency.options" :name="frequency.name"
-                :value="option.id" :key="`${option.id}-${medData.id}`" :label="t(option.label)" :type="frequency.type"
-                @input="error = false" />
-            <p v-if="error" class="text-sm w-full text-error pb-0.5">{{
-                t("health.medicine.validationFrequency") }}</p>
+                :value="option.id" :key="`${option.id}-${medData.id}`" :label="t(option.label)"
+                :type="frequency.type" />
         </Selector>
         <div class="flex flex-col">
             <Toggle v-if="!readonly" v-model="medData.noEnd" :label="t(noEnd.label)" :id="`${noEnd.id}-${medData.id}`"

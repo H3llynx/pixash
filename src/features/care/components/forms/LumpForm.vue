@@ -20,7 +20,7 @@ import ButtonArea from './ButtonArea.vue';
 import { useLumpForm } from './composables/useLumpForm.ts';
 
 const { selectedPet, isAddingCare, selectedLump } = usePets();
-const { formData, defaultForm, fillLumpData, preferredUnit, error, loading, pictures, loadedPictures, deletePicture, handleClose, handleDelete, handleSubmit } = useLumpForm();
+const { formData, defaultForm, fillLumpData, preferredUnit, loading, pictures, loadedPictures, deletePicture, handleClose, handleDelete, handleSubmit } = useLumpForm();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
 provide('readonly', isReadonly);
@@ -69,7 +69,7 @@ watch(() => formData.pictures, (pictures) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.lumpForm.heading") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ selectedLump!.title
-                    }}
+                        }}
                     </h1>
                     <Button v-if="selectedLump" action="delete" :aria-label="t('common.button.delete')"
                         @click="handleDelete" />
@@ -86,8 +86,6 @@ watch(() => formData.pictures, (pictures) => {
                                 :name="location.name" :id="option.id" :value="option.id" :key="option.id"
                                 :label="t(option.label)" :type="location.type" />
                         </div>
-                        <p v-if="error" class="text-sm w-full text-error pb-0.5">{{
-                            t("health.lumpForm.validationLocationSide") }}</p>
                     </Selector>
                     <div class="default-padding flex flex-col gap-1">
                         <div class="flex gap-0.5 items-end">
