@@ -59,7 +59,7 @@ const chartData = computed<ChartData<"line">>(() => {
         labels,
         datasets: [
             {
-                label: `${t("pet.profile.labels.weight")} ${preferredUnit.value})`,
+                label: `${t("pet.profile.labels.weight")} (${preferredUnit.value})`,
                 data,
                 borderColor: getChartColor("--color-accent"),
                 borderWidth: 2,
@@ -136,9 +136,8 @@ const chartOptions = computed<ChartOptions<"line">>(() => {
                     {{ t("health.cta.logWeight") }}
                 </Button>
                 <div class="ml-auto text-right">
-                    <p class="text-2xl font-medium">{{ chartData.datasets[0].data.at(-1) }} {{
-                        preferredUnit
-                        }}</p>
+                    <p class="text-2xl font-medium">{{ Math.round(Number(chartData.datasets[0].data.at(-1)) * 100) /
+                        100 }} {{ preferredUnit }}</p>
                     <p v-if="displayed.length" class="text-text-secondary text-xs">{{ t("common.text.lastLogged") }} {{
                         displayed.at(-1)?.measuredAt.toDate().toLocaleDateString(locale, {
                             day: "numeric",

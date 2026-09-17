@@ -23,6 +23,7 @@ const { show } = useToast();
 const loading = ref<boolean>(false);
 
 const props = defineProps<{ event: PetEvent }>();
+
 const { vet, title } = useEventData(toRef(props, "event"));
 const date = computed(() => {
     if (props.event.givenAt) return props.event.givenAt;
@@ -34,7 +35,7 @@ const weight = computed(() => {
     else {
         const unit = prefersKg(pet) ? "kg" : "g";
         const unitFactor = prefersKg(pet) ? 1 / 1000 : 1;
-        return `${props.event.weight * unitFactor} ${unit}`
+        return `${Math.round(props.event.weight * unitFactor * 100) / 100} ${unit}`
     };
 });
 

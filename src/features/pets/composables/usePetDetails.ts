@@ -37,8 +37,13 @@ export const usePetDetails = () => {
     };
 
     watch(preferredUnit, (unit) => {
+        if (weightForm.data) {
+            const grams = weightForm.unit === "kg" ? kgToGrams(Number(weightForm.data)) : Number(weightForm.data);
+            weightForm.data = String(unit === "kg" ? grams / 1000 : grams);
+        };
         weightForm.unit = unit;
     });
+
 
     return { chipData, isInsured, isUpdatingInsurance, insuranceData, weightForm, getWeightInGrams, unitFactor, preferredUnit }
 }
