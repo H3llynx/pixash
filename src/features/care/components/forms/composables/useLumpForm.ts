@@ -19,7 +19,6 @@ export const useLumpForm = () => {
     const { t } = useI18n();
 
     const loading = ref<boolean>(false);
-    const error = ref<boolean>(false);
     const pictures = ref<Picture[]>([]);
     const lumpSizeUnits = useLocalStorage<Record<string, "cm" | "mm">>("lump_size_units", {});
 
@@ -79,7 +78,6 @@ export const useLumpForm = () => {
     };
 
     const handleClose = () => {
-        error.value = false;
         selectLump(null);
         pictures.value = [];
         loadedPictures.clear();
@@ -158,6 +156,6 @@ export const useLumpForm = () => {
     };
 
     return {
-        loading, error, defaultForm, formData, fillLumpData, preferredUnit, deletePicture, pictures, loadedPictures, handleClose, handleDelete, handleSubmit
+        loading, defaultForm, formData, fillLumpData, preferredUnit, deletePicture, pictures, loadedPictures, handleClose, handleDelete, handleSubmit
     }
 }
