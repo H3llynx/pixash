@@ -16,7 +16,7 @@ import DateTag from '../events/DateTag.vue';
 import LogHistory from './LogHistory.vue';
 
 const { pets, vets, selectTreatment, treatmentLoading, selectedTreatment } = usePets();
-const { isMedicationEnded, getTotalLogs } = useTreatments();
+const { getTotalLogs } = useTreatments();
 const { petViewed } = useAllPetsView();
 const { t } = useI18n();
 const route = useRoute();
@@ -57,7 +57,7 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
                     <p>{{ medication.name }}</p>
                     <span class="italic font-medium text-eucalyptus text-xs">{{ t(getLabel(medication.frequency,
                         MED_FREQUENCY))
-                        }}</span>
+                    }}</span>
                     <span v-if="medication.endDate" class="italic font-medium text-text-secondary text-xs ml-0.5">
                         <span v-if="route.path === ROUTES.history">{{ t("health.treatment.ended") }}</span>
                         <span v-else>{{ t("health.treatment.until") }}</span>
