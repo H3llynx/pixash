@@ -67,7 +67,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                         <Input v-model="formData.types"
                             v-for="option in isReadonly ? vaccineTypes.filter(o => formData.types.includes(o.id)) : vaccineTypes"
                             :id="option.id" :value="option.id" :key="option.id" :label="t(option.label)"
-                            :type="types.type" @input="error = false" />
+                            :type="types.type" @change="error = false" />
                         <p v-if="error" class="text-sm w-full text-error pb-0.5">{{
                             t("health.vaccineForm.validationTypes") }}</p>
                     </Selector>
@@ -129,7 +129,7 @@ watch(() => isAddingCare.vaccine, (adding) => {
                                     {{ t("common.button.cancel") }}
                                 </Button>
                                 <Button size="sm" :disabled="loading">{{ t("health.cta.saveVaccine")
-                                }}</Button>
+                                    }}</Button>
                             </div>
                         </div>
                         <Button v-if="selectedVaccine && mode === 'view'" size="sm" class="mt-1 md:ml-auto"

@@ -63,9 +63,11 @@ const handleChange = (event: Event) => {
         <div :class="{ 'input-container': true, 'hidden': readonly && (type === 'date' || type === 'datetime-local') }"
             :aria-hidden="readonly && (type === 'date' || type === 'datetime-local')">
             <input v-bind="$attrs" :id="id" :type="type" :placeholder="placeholder" :value="inputValue"
-                :checked="inputChecked" class="pl-1 pr-2.5 py-0.5" @change="handleChange" @input="handleInput"
-                @click="readonly && $event.preventDefault()" :readonly="readonly" :aria-readonly="readonly"
-                :tabindex="readonly ? -1 : 0" />
+                :checked="inputChecked" class="pl-1 pr-2.5 py-0.5"
+                :readonly="readonly && !['radio', 'checkbox'].includes(type)"
+                :disabled="readonly && ['radio', 'checkbox'].includes(type)" :tabindex="readonly ? -1 : 0"
+                @change="handleChange" @input="handleInput" @click="readonly && ['date', 'datetime-local'].includes(type) && $event.preventDefault()
+                    " />
             <div class="absolute right-0.5 top-1/2 -translate-y-1/2 flex items-center">
                 <slot name="addon"></slot>
                 <AlertCircle class="error-icon" />

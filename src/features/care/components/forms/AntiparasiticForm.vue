@@ -51,7 +51,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                        }}
+                    }}
                     </h1>
                     <Button v-if="selectedAntiparasiticLog" action="delete"
                         :aria-label="t('health.cta.deleteAntiparasitic')" @click="handleDelete" />
@@ -62,7 +62,7 @@ watch(() => mode.value, (mode) => {
                         <Input v-model="formData.treated"
                             v-for="option in isReadonly ? antiparasitics.filter(o => formData.treated.includes(o.id)) : antiparasitics"
                             :id="option.id" :value="option.id" :key="option.id" :label="t(option.label)"
-                            :type="treated.type" @input="error = false" />
+                            :type="treated.type" @change="error = false" />
                         <p v-if="error" class="text-sm w-full text-error pb-0.5">{{
                             t("health.antiparasiteForm.validationTypes") }}</p>
                     </Selector>
