@@ -108,7 +108,7 @@ watch(() => mode.value, (mode) => {
                         <Input v-if="mode === 'edit'" v-model="formData.name" :id="name.id" :label="t(name.label)"
                             required />
                         <Input v-model="formData.startDate" :id="startDate.id" :label="t(startDate.label)"
-                            :type="startDate.type" :class="mode === 'view'" required>
+                            :type="startDate.type" required>
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>

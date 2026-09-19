@@ -185,7 +185,7 @@ watch(() => formData.pictures, (pictures) => {
                         subtype:
                             t(`pet.logs.${selectedOtherLog!.subtype}`)
                     })
-                        }}
+                    }}
                     </h1>
                     <Button v-if="selectedOtherLog" action="delete" :aria-label="t('common.button.delete')"
                         @click="handleDelete" />
@@ -198,8 +198,7 @@ watch(() => formData.pictures, (pictures) => {
                             :name="subtype.name" />
                     </Selector>
                     <div class="default-padding flex flex-col gap-1">
-                        <Input v-model="formData.date" :id="date.id" :label="t(date.label)" :type="date.type"
-                            :class="mode === 'view'" required>
+                        <Input v-model="formData.date" :id="date.id" :label="t(date.label)" :type="date.type" required>
                             <template #addon>
                                 <CalendarCheck class=" mr-0.5" color="var(--color-border)" />
                             </template>
