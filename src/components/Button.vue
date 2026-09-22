@@ -47,7 +47,7 @@ defineProps<{
 
 
 <template>
-    <button v-if="action === 'delete'" variant="ghost" size="xs"
+    <button v-if="action === 'delete'" variant="ghost" size="xs" tabindex="0"
         :class="[button({ variant: 'ghost', size: 'xs' }), 'ml-auto mb-auto text-text-secondary']">
         <Trash2 :size="22" />
     </button>

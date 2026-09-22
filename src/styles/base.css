@@ -193,17 +193,17 @@
     border-radius: 0.75rem;
 
     &[readonly] {
-      background: var(--color-bg-bg-2);
-
-      &:focus-visible {
-        outline: none;
-      }
+      background: var(--color-bg-2);
     }
   }
 
   textarea {
     min-height: 5rem;
     padding: 0.5rem 1rem;
+
+    &:read-only:focus-visible {
+      outline: none;
+    }
   }
 
   input::placeholder {
@@ -216,6 +216,14 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     color: var(--color-text-softer);
+
+    &:user-invalid {
+      outline-width: 2px;
+      outline-style: solid;
+      outline-offset: 1px;
+      outline-color: var(--color-error);
+      border-radius: 5px;
+    }
   }
 
   header {
@@ -268,8 +276,8 @@
         outline-color: var(--color-gold);
       }
 
-      &:has(input[readonly]) {
-        cursor: auto;
+      &:has(input:read-only) {
+        cursor: default;
       }
     }
 
@@ -401,7 +409,7 @@
       color: var(--color-error);
     }
 
-    &:has(select)::after {
+    &:has(select:not(.select-read-only))::after {
       content: "";
       position: absolute;
       pointer-events: none;
@@ -434,6 +442,10 @@
       letter-spacing: 1px;
       padding-bottom: 10px;
     }
+  }
+
+  .select-read-only {
+    @apply pointer-events-none bg-bg-2 focus-visible:outline-0;
   }
 
   .pet-selector {
@@ -544,6 +556,18 @@
     border-radius: 8px;
     padding: 3px;
     border: 1px solid var(--color-border-light);
+  }
+
+  .overlay {
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0% 50%, transparent 84%, var(--color-bg) 100%);
+      pointer-events: none;
+    }
   }
 }
 
