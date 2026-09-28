@@ -92,9 +92,17 @@ export const MED_FREQUENCY = [
 export const TREATMENTCOLORS = [
     { rgb: "rgb(45, 194, 142)", rgba: "rgba(45, 194, 142, 0.06)" },
     { rgb: "rgb(207, 136, 22)", rgba: "rgba(207, 136, 22, 0.1)" },
-    { rgb: "rgb(163, 45, 45)", rgba: "rgba(163, 45, 45, 0.1)" },
+    { rgb: "rgb(226, 75, 74)", rgba: "rgba(226, 75, 74, 0.1)" },
     { rgb: "rgb(93, 144, 175)", rgba: "rgba(93, 144, 175, 0.1)" },
     { rgb: "rgb(92, 164, 110)", rgba: "rgba(92, 164, 110, 0.1)" }
+];
+
+export const LUMP_STATUS = [
+    { id: "monitoring", label: "health.lumpForm.status.monitoring", rgb: "rgb(207, 136, 22)", rgba: "rgba(207, 136, 22, 0.3)" },
+    { id: "checked", label: "health.lumpForm.status.checked", rgb: "rgb(57, 159, 84)", rgba: "rgba(50, 126, 70, 0.2)" },
+    { id: "flagged", label: "health.lumpForm.status.flagged", rgb: "rgb(226, 75, 74)", rgba: "rgba(163, 45, 45, 0.2)" },
+    { id: "pending", label: "health.lumpForm.status.pending", rgb: "rgb(172, 94, 255)", rgba: "rgba(134, 71, 182, 0.2)" },
+    { id: "removed", label: "health.lumpForm.status.removed", rgb: "rgb(57, 159, 84)", rgba: "rgba(50, 126, 70, 0.2)" },
 ];
 
 const vetFields = {
@@ -340,13 +348,8 @@ export const lumpFields = {
     status: {
         name: "lump-status",
         type: "radio",
-        options: [
-            { id: "monitoring", label: "health.lumpForm.status.monitoring" },
-            { id: "checked", label: "health.lumpForm.status.checked" },
-            { id: "flagged", label: "health.lumpForm.status.flagged" },
-            { id: "pending", label: "health.lumpForm.status.pending" },
-            { id: "removed", label: "health.lumpForm.status.removed" },
-        ]
+        label: "health.lumpForm.status.label",
+        options: LUMP_STATUS
     },
     notes: {
         id: "lump-notes",

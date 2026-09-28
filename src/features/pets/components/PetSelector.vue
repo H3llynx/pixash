@@ -46,7 +46,7 @@ const getAllChipStyle = () => {
             : selectedPet ? t("common.a11y.petSelected", { name: selectedPet.name }) : ""
         }}
     </span>
-    <div class="pet-selector" role="group" aria-label="select another pet">
+    <div class="pet-selector" role="group" :aria-label="t('common.text.petSelector')">
         <Button v-if="viewAll" variant="tile" :size="stacked ? 'md' : 'tile'" :class="getAllChipStyle()"
             @click="petViewed = ''" :aria-pressed="petViewed === ''">
             <div class="inline-flex gap-0.5">

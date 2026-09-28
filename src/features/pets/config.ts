@@ -1,4 +1,3 @@
-
 export const SPECIES = [
     { id: "dog", name: "pet.species.dog", icon: "🐶", prefersKg: true },
     { id: "cat", name: "pet.species.cat", icon: "🐱", prefersKg: true },
@@ -122,3 +121,41 @@ export const petFields = {
         label: "pet.form.microchipped",
     }
 };
+
+export const catBodyRegions = [
+    { id: "snout", x: 960, y: 365 },
+    { id: "head", x: 860, y: 340 },
+    { id: "head", x: 918, y: 322 },
+    { id: "ear", x: 885, y: 290 },
+    { id: "neckCollar", x: 860, y: 435 },
+    { id: "shoulder", x: 740, y: 480 },
+    { id: "back", x: 600, y: 425 },
+    { id: "belly", x: 560, y: 595 },
+    { id: "flank", x: 450, y: 540 },
+    { id: "hip", x: 390, y: 490 },
+    { id: "frontLeg", x: 740, y: 700 },
+    { id: "hindLeg", x: 360, y: 700 },
+    { id: "tail", x: 350, y: 495 },
+    { id: "tail", x: 170, y: 590 },
+    { id: "tail", x: 65, y: 550 },
+];
+
+export const dogBodyRegions = [
+    { id: "snout", x: 858, y: 267 },
+    { id: "head", x: 790, y: 195 },
+    { id: "ear", x: 705, y: 235 },
+    { id: "neckCollar", x: 738, y: 339 },
+    { id: "shoulder", x: 654, y: 381 },
+    { id: "back", x: 474, y: 405 },
+    { id: "belly", x: 474, y: 537 },
+    { id: "flank", x: 318, y: 501 },
+    { id: "hip", x: 235, y: 453 },
+    { id: "frontLeg", x: 654, y: 717 },
+    { id: "hindLeg", x: 210, y: 620 },
+    { id: "hindLeg", x: 190, y: 750 },
+    { id: "hindLeg", x: 290, y: 680 },
+    { id: "hindLeg", x: 300, y: 770 },
+    { id: "tail", x: 163, y: 453 },
+    { id: "tail", x: 127, y: 549 },
+    { id: "tail", x: 151, y: 633 },
+];

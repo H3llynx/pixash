@@ -33,7 +33,8 @@ export default {
             errorCopy: "Failed to copy",
             askingNextDue: "Is there a next due date?",
             yes: "Yes",
-            noNeed: "No need"
+            noNeed: "No need",
+            petSelector: "select another pet"
         },
         header: {
             vetH2: "Vet care",
@@ -102,6 +103,7 @@ export default {
             nextAntiparasitic: "Next antiparasitic",
             weightTracking: "Weight tracking",
             activeTreatments: "Active treatments",
+            lumpMonitoring: "Lumps & growths"
         }
     },
     vet: {
@@ -368,7 +370,21 @@ export default {
                 pending: "Pending lab results",
                 removed: "Removed",
             },
-            validationLocationSide: "Indicate where the lump is located",
+            bodyRegions: {
+                instructions: "Select a spot on the diagram",
+                snout: "Snout",
+                head: "Head",
+                ear: "Ear",
+                neckCollar: "Neck / collar",
+                shoulder: "Shoulder / chest",
+                back: "Back",
+                belly: "Belly",
+                flank: "Flank",
+                hip: "Hip",
+                frontLeg: "Front leg",
+                hindLeg: "Hind leg",
+                tail: "Tail",
+            }
         },
         vetForm: {
             name: "Name",
@@ -503,6 +519,7 @@ export default {
                 insuranceDeleted: "Insurance information deleted",
                 markedDone: "All set, this care task has been completed.",
                 insuranceUpdated: "{name}'s insurance information successfully updated",
+                lumpAdded: "{name}'s new lump has been successfully registered",
             },
         },
         error: {

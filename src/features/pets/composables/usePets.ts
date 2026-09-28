@@ -1,6 +1,6 @@
 import { FirebaseError } from "firebase/app";
 import { computed, ref, watch } from "vue";
-import { fetchPetLogs, fetchPetTreatments, fetchPetVaccines, fetchPetVisits } from "../../../services/care";
+import { fetchPetLogs, fetchPetLumps, fetchPetTreatments, fetchPetVaccines, fetchPetVisits } from "../../../services/care";
 import { addPet, deletePet, deletePetField, fetchPets, updatePet } from "../../../services/pets";
 import { resetState } from "../../../utils";
 import { useCare } from "../../care/composables/useCare";
@@ -60,10 +60,12 @@ const {
   selectTreatment,
   lumps,
   selectLump,
-  selectedLump
+  selectedLump,
+  addNewLump
 } = useCare(pets);
 
 const hasVets = computed(() => vets.value.length > 0);
+const isDogOrCat = (pet: Pet | PetExtended) => ['dog', 'cat'].includes(pet.species);
 
 const handleAdd = (action: string) => {
   resetPetActions();
@@ -125,10 +127,11 @@ const fetchUserPets = async () => {
 
     pets.value = await Promise.all(
       fetchedPets.map(async (pet) => {
-        const [vaccines, vetVisits, treatments, logs] = await Promise.all([
+        const [vaccines, vetVisits, treatments, lumps, logs] = await Promise.all([
           fetchPetVaccines(user.value!.uid, pet.id),
           fetchPetVisits(user.value!.uid, pet.id),
           fetchPetTreatments(user.value!.uid, pet.id),
+          fetchPetLumps(user.value!.uid, pet.id),
           fetchPetLogs(user.value!.uid, pet.id),
         ]);
 
@@ -137,6 +140,7 @@ const fetchUserPets = async () => {
           vaccines,
           vetVisits,
           treatments,
+          lumps,
           logs,
           nextVaccine: getNextVaccine(vaccines),
           nextVetVisit: getNextVisit(vetVisits),
@@ -262,6 +266,7 @@ watch(vaccines, resyncSelectedPet);
 watch(vetVisits, resyncSelectedPet);
 watch(treatments, resyncSelectedPet);
 watch(logs, resyncSelectedPet);
+watch(lumps, resyncSelectedPet);
 
 watch(selectedVaccine, (vaccine) => syncPetFromEvent(vaccine?.petId));
 watch(selectedVisit, (visit) => syncPetFromEvent(visit?.petId));
@@ -288,6 +293,7 @@ export const usePets = () => {
     deleteSelectedPet,
     deleteSelectedPetField,
     hasPets,
+    isDogOrCat,
     vaccines,
     vetVisits,
     selectedVaccine,
@@ -329,5 +335,6 @@ export const usePets = () => {
     selectLump,
     selectedLump,
     lumps,
+    addNewLump
   };
 };

@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { usePets } from '../features/pets/composables/usePets';
 import Button from './Button.vue';
 
-const { handleAdd } = usePets();
+const { handleAdd, isDogOrCat, selectedPet } = usePets();
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -41,7 +41,7 @@ const handleClick = (action: string) => {
                     </div>
                     <div class="row" v-if="!vet">
                         <Button variant="secondary" @click="handleClick('antiparasitic')">{{ t("addMenu.antiparasitic")
-                        }}</Button>
+                            }}</Button>
                         <BugOff class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row" v-if="vet">
@@ -58,17 +58,17 @@ const handleClick = (action: string) => {
                     </div>
                     <div class="row" v-if="!vet">
                         <Button variant="secondary" @click="handleClick('weight')">{{ t("health.cta.logWeight")
-                        }}</Button>
+                            }}</Button>
                         <Scale class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                     <div class="row">
                         <Button variant="secondary" @click="handleClick('treatment')">{{ t("addMenu.treatment")
-                        }}</Button>
+                            }}</Button>
                         <Pill class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
-                    <div class="row">
+                    <div class="row" v-if="selectedPet && isDogOrCat(selectedPet)">
                         <Button variant="secondary" @click="handleClick('lump')">{{ t("addMenu.lump")
-                        }}</Button>
+                            }}</Button>
                         <CircleDot class="btn-icon default-transition filter-blur" :size="40" />
                     </div>
                 </div>

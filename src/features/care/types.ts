@@ -213,7 +213,7 @@ export type LumpRecord = {
     title: string;
     location: LumpLocation;
     size: {
-        valueMm: number;
+        valueMm: string;
         displayUnit: "cm" | "mm";
     };
     pictures?: string[];

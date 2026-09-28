@@ -12,7 +12,7 @@ import { fromMm, toMm } from "../../../utils";
 
 
 export const useLumpForm = () => {
-    const { selectedPet, isAddingCare, selectLump, selectedLump, careError } = usePets();
+    const { selectedPet, isAddingCare, selectLump, selectedLump, addNewLump, careError } = usePets();
     const { show } = useToast();
     const { open } = useDialog();
     const { t } = useI18n();
@@ -30,8 +30,8 @@ export const useLumpForm = () => {
             y: 0,
         },
         size: {
-            data: "",
-            unit: "cm" as ("cm" | "mm")
+            value: "",
+            displayUnit: "cm" as ("cm" | "mm")
         },
         pictures: [] as string[],
         notes: "",
@@ -48,8 +48,8 @@ export const useLumpForm = () => {
                 y: lump.location.y,
             },
             size: {
-                data: String(fromMm(lump.size.valueMm, lump.size.displayUnit)),
-                unit: lump.size.displayUnit
+                value: String(fromMm(Number(lump.size.valueMm), lump.size.displayUnit)),
+                displayUnit: lump.size.displayUnit
             },
             pictures: lump.pictures,
             notes: lump.notes ?? "",
@@ -58,12 +58,12 @@ export const useLumpForm = () => {
     };
 
     const setUnit = (newUnit: "cm" | "mm") => {
-        if (formData.size.unit === newUnit) return;
-        if (formData.size.data) {
-            const mm = toMm(Number(formData.size.data), formData.size.unit);
-            formData.size.data = String(fromMm(mm, newUnit));
+        if (formData.size.displayUnit === newUnit) return;
+        if (formData.size.value) {
+            const mm = toMm(Number(formData.size.value), formData.size.displayUnit);
+            formData.size.value = String(fromMm(mm, newUnit));
         }
-        formData.size.unit = newUnit;
+        formData.size.displayUnit = newUnit;
     };
 
     const loadedPictures = reactive(new Set<string>());
@@ -98,11 +98,18 @@ export const useLumpForm = () => {
         try {
             if (pictures.value.length) await hostPictures();
             if (isAddingCare.lump) {
-                //  await add function - pending to create
+                const lump = {
+                    ...formData,
+                    size: {
+                        displayUnit: formData.size.displayUnit,
+                        valueMm: String(toMm(Number(formData.size.value), formData.size.displayUnit))
+                    }
+                };
+                await addNewLump(lump, selectedPet.value.id)
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),
-                    message: "pending translation", // --->
+                    message: t("toast.success.message.lumpAdded"),
                 });
                 resetForm(formData, defaultForm);
                 isAddingCare.lump = false;

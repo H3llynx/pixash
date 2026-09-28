@@ -1,10 +1,10 @@
 import { FirebaseError } from "firebase/app";
 import { computed, reactive, ref, type Ref } from "vue";
-import { addLog, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchPetLogs, fetchPetLumps, fetchPetTreatments, fetchPetVaccines, fetchPetVisits, fetchVets, updateLog, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/care";
+import { addLog, addLump, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchPetLogs, fetchPetLumps, fetchPetTreatments, fetchPetVaccines, fetchPetVisits, fetchVets, updateLog, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/care";
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { Log, LogExtended, LumpExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { Log, LogExtended, LumpExtended, LumpRecord, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
 
 export const useCare = (pets: Ref<PetExtended[]>) => {
@@ -294,6 +294,14 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         });
     };
 
+    const addNewLump = async (newLump: LumpRecord, petId: string) => {
+        await handleHealthAction(async () => {
+            await addLump(newLump, petId, user.value!.uid);
+            await refreshPetHealth(petId);
+            isAddingCare.lump = false;
+        });
+    };
+
     return {
         error,
         loading,
@@ -336,6 +344,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         selectTreatment,
         selectLump,
         selectedLump,
-        lumps
+        lumps,
+        addNewLump
     };
 };

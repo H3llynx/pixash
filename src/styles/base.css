@@ -483,9 +483,14 @@
     display: flex;
     align-items: center;
     width: max-content;
-    padding: 0.25rem 1rem;
+    padding: 0.25rem 0.75rem;
     flex-shrink: 0;
     @apply text-xs rounded-full h-max;
+  }
+
+  .lump-status {
+    background: var(--bg-color);
+    color: var(--text-color);
   }
 
   .profile-row {

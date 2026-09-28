@@ -15,7 +15,8 @@ import { resetForm } from '../../../../utils.ts';
 import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
-import { lumpFields } from '../../config.ts';
+import { LUMP_STATUS, lumpFields } from '../../config.ts';
+import BodyMap from '../lumps/BodyMap.vue';
 import ButtonArea from './ButtonArea.vue';
 import { useLumpForm } from './composables/useLumpForm.ts';
 
@@ -67,39 +68,49 @@ watch(() => formData.pictures, (pictures) => {
                         <PetIcon :pet="selectedPet" />
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.lumpForm.heading") }}</h1>
-                    <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ selectedLump!.title
-                    }}
-                    </h1>
+                    <template v-else>
+                        <h1 class="font-medium">{{ selectedPet!.name }} · {{ selectedLump!.title
+                            }}
+                        </h1>
+                        <span v-if="selectedLump" class="lump-status tag uppercase font-medium mt-0.5"
+                            :style="{ '--bg-color': LUMP_STATUS.find(s => s.id === selectedLump?.status)?.rgba, '--text-color': LUMP_STATUS.find(s => s.id === selectedLump?.status)?.rgb }">
+                            {{t(LUMP_STATUS.find(s => s.id === selectedLump?.status)!.label)}}
+                        </span>
+                    </template>
                     <Button v-if="selectedLump" action="delete" :aria-label="t('common.button.delete')"
                         @click="handleDelete" />
                 </div>
                 <PetSelector v-if="isAddingCare.lump" stacked />
                 <form @submit.prevent="handleSubmit">
-                    <div class="default-padding flex flex-col gap-1">
-                        <Input v-model="formData.title" :id="title.id" :label="t(title.label)" :class="mode === 'view'"
-                            required />
+                    <div v-if="mode === 'edit'" class="default-padding flex flex-col gap-1">
+                        <Input v-model="formData.title" :id="title.id" :label="t(title.label)" required />
                     </div>
-                    <Selector v-if="mode === 'edit'" :legend="t(location.label)" class="location my-1">
+                    <Selector v-if="mode === 'edit'" :legend="t(location.label)" class="location mt-1 mb-0.5">
                         <div class="flex w-max bg-bg-rgba p-0.25 rounded-xl">
                             <Input v-model="formData.location.side" v-for="option in location.options"
                                 :name="location.name" :id="option.id" :value="option.id" :key="option.id"
                                 :label="t(option.label)" :type="location.type" />
                         </div>
                     </Selector>
+                    <BodyMap v-model="formData.location" />
                     <div class="default-padding flex flex-col gap-1">
                         <div class="flex gap-0.5 items-end">
-                            <Input v-model="formData.size.data" :type="size.type" :id="size.id" :label="t(size.label)"
-                                step="0.1" />
+                            <Input v-model="formData.size.value" :type="size.type" :id="size.id" :label="t(size.label)"
+                                step="0.1" required />
                             <div class="input-container w-max">
-                                <select :value="formData.size.unit" class="p-0.5 w-3"
-                                    @change="setUnit(($event.target as HTMLSelectElement).value as 'cm' | 'mm')">
+                                <select :value="formData.size.displayUnit" class="p-0.5 w-3"
+                                    @change="setUnit(($event.target as HTMLSelectElement).value as 'cm' | 'mm')"
+                                    :class="mode === 'view' && 'select-read-only'"
+                                    @keydown.space.enter.up.down.prevent="mode === 'view' && $event.preventDefault()"
+                                    required>
                                     <option>cm</option>
                                     <option>mm</option>
                                 </select>
                             </div>
                         </div>
-                        <h3 class="text-sm uppercase text-text-secondary font-medium tracking-wide">{{
-                            t("health.sharedFields.photos") }}</h3>
+                        <h3 v-if="mode === 'edit' || selectedLump?.pictures?.length"
+                            class="text-sm uppercase text-text-secondary font-medium tracking-wide">{{
+                                t("health.sharedFields.photos") }}</h3>
                         <div class="preview-container">
                             <div v-for="(picture, index) in formData.pictures" :key="picture"
                                 class="relative rounded-lg mb-0.25 min-w-[140px] cursor-pointer">
@@ -126,6 +137,18 @@ watch(() => formData.pictures, (pictures) => {
                                 :readonly="!!selectedLump && mode === 'view'" :placeholder="t(notes.placeholder)"
                                 :maxLength="500" />
                         </label>
+                    </div>
+                    <Selector v-if="mode === 'edit'" :legend="t(status.label)" class="mt-1 status">
+                        <div v-for="option in isReadonly ? status.options.filter(o => o.id === formData.status) : status.options"
+                            :key="option.id" :style="{
+                                '--bg-color': option.rgba,
+                                '--text-color': option.rgb
+                            }">
+                            <Input v-model="formData.status" :name="status.name" :id="option.id" :value="option.id"
+                                :label="t(option.label)" :type="status.type" />
+                        </div>
+                    </Selector>
+                    <div class="default-padding">
                         <ButtonArea v-model="mode" :loading="loading" :selectedCare="selectedLump"
                             :customCta="t('health.cta.saveLump')" />
                     </div>
@@ -144,5 +167,15 @@ watch(() => formData.pictures, (pictures) => {
 :deep(.location label:has(input[type='radio']:not(:checked)) p) {
     background: transparent;
     border: none;
+}
+
+:deep(.status label:has(input[type='radio']:checked) p) {
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+.select-read-only {
+    border: none;
+    color: var(--color-text-softer)
 }
 </style>

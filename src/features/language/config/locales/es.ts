@@ -33,7 +33,8 @@ export default {
             errorCopy: "Error al copiar",
             askingNextDue: "¿Deseas indicar la fecha de la próxima dosis?",
             yes: "Si",
-            noNeed: "No hace falta"
+            noNeed: "No hace falta",
+            petSelector: "selecciona otra mascota"
         },
         header: {
             vetH2: "Cuidado veterinario",
@@ -102,6 +103,7 @@ export default {
             nextAntiparasitic: "Próximo antiparasitario",
             weightTracking: "Seguimiento de peso",
             activeTreatments: "Tratamientos activos",
+            lumpMonitoring: "Bultos y protuberancias"
         }
     },
     vet: {
@@ -322,6 +324,7 @@ export default {
             dueDate: "Próxima fecha",
             notes: "Notas",
             notesPlaceholder: "Comentarios (opcional)",
+            photos: "Fotos",
         },
         antiparasiteForm: {
             treated: "¿Qué trataste?",
@@ -359,7 +362,6 @@ export default {
                 right: "Lado derecho"
             },
             size: "Tamaño",
-            photos: "Fotos",
             status: {
                 label: "Estado",
                 monitoring: "En observación",
@@ -368,7 +370,21 @@ export default {
                 pending: "Resultados pendientes",
                 removed: "Extirpado",
             },
-            validationLocationSide: "Debes indicar de qué lado se encuentra el bulto.",
+            bodyRegions: {
+                instructions: "Selecciona un punto en la imagen",
+                snout: "Hocico",
+                head: "Cabeza",
+                ear: "Oreja",
+                neckCollar: "Cuello / collar",
+                shoulder: "Hombro / pecho",
+                back: "Lomo",
+                belly: "Vientre",
+                flank: "Costado",
+                hip: "Cadera",
+                frontLeg: "Pata delantera",
+                hindLeg: "Pata trasera",
+                tail: "Cola",
+            }
         },
         vetForm: {
             name: "Nombre",
@@ -503,6 +519,7 @@ export default {
                 insuranceDeleted: "Información del seguro eliminada",
                 markedDone: "Listo, esta tarea de cuidado se ha completado.",
                 insuranceUpdated: "La información del seguro de {name} se ha actualizado correctamente",
+                lumpAdded: "Nuevo bulto de {name} registrado correctamente",
             },
         },
         error: {

@@ -1,7 +1,7 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where, writeBatch } from "firebase/firestore";
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
-import type { AntiparasiteLogExtended, Log, LogExtended, LumpExtended, MedicationLogExtended, OtherLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/care/types";
+import type { AntiparasiteLogExtended, Log, LogExtended, LumpExtended, LumpRecord, MedicationLogExtended, OtherLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/care/types";
 import { getTreatmentEndDate } from "../features/care/utils";
 import { tsFromInput } from "../utils";
 
@@ -137,7 +137,6 @@ export const fetchPetLogs = async (userId: string, petId: string): Promise<LogEx
         throw error;
     }
 };
-
 
 const getVaccineDoc = (userId: string, petId: string, vaccineId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
 
@@ -433,6 +432,28 @@ export const deleteLog = async (logId: string, petId: string, userId: string) =>
 
 const getTreatmentDoc = (userId: string, petId: string, treatmentId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.treatments, treatmentId);
 
+export const addTreatment = async (treatment: TreatmentRecord, petId: string, userId: string) => {
+    const newTreatment = {
+        petId: petId,
+        userId: userId,
+        name: treatment.name,
+        startDate: tsFromInput(treatment.startDate),
+        vet: treatment.vet,
+        notes: treatment.notes,
+        medication: treatment.medication.map(med => ({
+            ...med,
+            endDate: med.endDate && !med.noEnd ? tsFromInput(med.endDate) : null
+        }))
+    };
+    try {
+        const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.treatments), newTreatment);
+        return docRef.id;
+    } catch (error) {
+        console.error("Error adding treatment: ", error);
+        throw error;
+    }
+};
+
 export const updateTreatment = async (
     treatment: TreatmentExtended,
     petId: string,
@@ -481,28 +502,6 @@ export const updateTreatment = async (
     }
 };
 
-export const addTreatment = async (treatment: TreatmentRecord, petId: string, userId: string) => {
-    const newTreatment = {
-        petId: petId,
-        userId: userId,
-        name: treatment.name,
-        startDate: tsFromInput(treatment.startDate),
-        vet: treatment.vet,
-        notes: treatment.notes,
-        medication: treatment.medication.map(med => ({
-            ...med,
-            endDate: med.endDate && !med.noEnd ? tsFromInput(med.endDate) : null
-        }))
-    };
-    try {
-        const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.treatments), newTreatment);
-        return docRef.id;
-    } catch (error) {
-        console.error("Error adding treatment: ", error);
-        throw error;
-    }
-};
-
 export const deleteTreatment = async (treatmentId: string, petId: string, userId: string) => {
     try {
         const treatmentRef = getTreatmentDoc(userId, petId, treatmentId);
@@ -518,6 +517,37 @@ export const deleteTreatment = async (treatmentId: string, petId: string, userId
         await deleteDoc(treatmentRef);
     } catch (error) {
         console.error("Error deleting treatment: ", error);
+        throw error;
+    }
+};
+
+const getLumpDoc = (userId: string, petId: string, lumpId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.lumps, lumpId);
+
+export const addLump = async (lump: LumpRecord, petId: string, userId: string) => {
+    const newLump = {
+        petId: petId,
+        userId: userId,
+        title: lump.title,
+        location: lump.location,
+        size: lump.size,
+        pictures: lump.pictures,
+        notes: lump.notes,
+        status: lump.status
+    };
+    try {
+        const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.lumps), newLump);
+        return docRef.id;
+    } catch (error) {
+        console.error("Error adding lump: ", error);
+        throw error;
+    }
+};
+
+export const deleteLump = async (lumpId: string, petId: string, userId: string) => {
+    try {
+        await deleteDoc(getLumpDoc(userId, petId, lumpId));
+    } catch (error) {
+        console.error("Error deleting lump: ", error);
         throw error;
     }
 };

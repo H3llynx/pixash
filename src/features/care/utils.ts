@@ -143,4 +143,5 @@ export const getLogIcon = (log: OtherLogExtended) => {
 
 export const fromMm = (mm: number, unit: "cm" | "mm") =>
     unit === "cm" ? Math.round((mm / 10) * 100) / 100 : mm;
+
 export const toMm = (value: number, unit: "cm" | "mm") => unit === "cm" ? value * 10 : value;

@@ -12,7 +12,7 @@ const { isLg } = useMedia();
 </script>
 
 <template>
-    <div v-if="selectedPet" class="flex flex-col gap-2 md:pb-3">
+    <div v-if="selectedPet" class="flex flex-col gap-2">
         <section class="pet-section p-0">
             <div class="default-padding">
                 <h2>{{ t("dashboard.title.petProfile", { name: selectedPet.name }) }}</h2>
