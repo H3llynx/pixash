@@ -20,7 +20,7 @@ export const useVetVisitForm = () => {
         notes: "",
     };
 
-    const formData = reactive({ ...defaultForm });
+    const formData = reactive(structuredClone(defaultForm));
     const loading = ref<boolean>(false);
 
     const handleClose = () => {

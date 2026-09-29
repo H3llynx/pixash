@@ -103,7 +103,7 @@ export const LUMP_STATUS = [
     { id: "flagged", label: "health.lumpForm.status.flagged", rgb: "rgb(226, 75, 74)", rgba: "rgba(163, 45, 45, 0.2)" },
     { id: "pending", label: "health.lumpForm.status.pending", rgb: "rgb(172, 94, 255)", rgba: "rgba(134, 71, 182, 0.2)" },
     { id: "removed", label: "health.lumpForm.status.removed", rgb: "rgb(57, 159, 84)", rgba: "rgba(50, 126, 70, 0.2)" },
-];
+] as const;
 
 const vetFields = {
     label: "health.vetVisitForm.vet",

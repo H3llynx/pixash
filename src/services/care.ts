@@ -527,12 +527,8 @@ export const addLump = async (lump: LumpRecord, petId: string, userId: string) =
     const newLump = {
         petId: petId,
         userId: userId,
-        title: lump.title,
-        location: lump.location,
-        size: lump.size,
-        pictures: lump.pictures,
-        notes: lump.notes,
-        status: lump.status
+        createdAt: serverTimestamp(),
+        ...lump
     };
     try {
         const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.lumps), newLump);

@@ -38,7 +38,7 @@ export const useAntiparasiticForm = () => {
         dueOn: "",
         notes: "",
     };
-    const formData = reactive({ ...defaultForm });
+    const formData = reactive(structuredClone(defaultForm));
     const handleClose = () => {
         newLog.value = null;
         error.value = false;

@@ -1,5 +1,5 @@
 import { Timestamp } from "firebase/firestore";
-import type { ANTIPARASITE_TYPES, STAGE, VACCINE_TYPES } from "./config";
+import type { ANTIPARASITE_TYPES, LUMP_STATUS, STAGE, VACCINE_TYPES } from "./config";
 
 export type VaccineTypes = (typeof VACCINE_TYPES)[keyof typeof VACCINE_TYPES][number];
 export type AntiparasiteTypes = (typeof ANTIPARASITE_TYPES)[keyof typeof ANTIPARASITE_TYPES][number];
@@ -209,16 +209,21 @@ export type LumpLocation = {
     y: number;
 };
 
-export type LumpRecord = {
-    title: string;
-    location: LumpLocation;
-    size: {
+export type LumpCheck = {
+    date: Timestamp;
+    size?: {
         valueMm: string;
         displayUnit: "cm" | "mm";
     };
     pictures?: string[];
-    notes?: string;
-    status: "monitoring" | "checked" | "flagged" | "pending" | "removed";
+    note?: string;
+    status?: typeof LUMP_STATUS[number]["id"];
+};
+
+export type LumpRecord = {
+    title: string;
+    location: LumpLocation;
+    checks: LumpCheck[];
 };
 
 export type LumpExtended = LumpRecord & {

@@ -10,11 +10,10 @@ import LoadingPet from '../../../../components/loading/LoadingPet.vue';
 import Panel from '../../../../components/Panel.vue';
 import Selector from '../../../../components/Selector.vue';
 import Textarea from '../../../../components/Textarea.vue';
-import { type Picture } from '../../../../composables/useAddPictures.ts';
+import { useAddPictures, type Picture } from '../../../../composables/useAddPictures.ts';
 import { useDialog } from '../../../../composables/useDialog.ts';
 import { useFormMode } from '../../../../composables/useFormMode.ts';
 import { useToast } from '../../../../composables/useToast.ts';
-import { hostImg } from '../../../../services/img-hosting.ts';
 import { resetForm, shallowEqual, tsToDate } from '../../../../utils.ts';
 import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
@@ -42,7 +41,9 @@ const defaultForm = {
     pictures: [] as string[],
     notes: ""
 };
-const formData = reactive({ ...defaultForm });
+const formData = reactive(structuredClone(defaultForm));
+
+const { hostFormPictures, deleteFormPicture } = useAddPictures(pictures);
 
 const { show: showLightbox, onHide, visibleRef, indexRef, imgsRef } = useEasyLightbox({
     imgs: formData.pictures,
@@ -53,7 +54,7 @@ const fillLogData = (log: OtherLogExtended) => {
     Object.assign(formData, {
         subtype: log.subtype,
         date: tsToDate(log.date, "input"),
-        pictures: log.pictures,
+        pictures: [...(log.pictures ?? [])],
         notes: log.notes ?? "",
     })
 };
@@ -67,29 +68,11 @@ const handleClose = () => {
     resetForm(formData, defaultForm);
 };
 
-const hostPictures = async () => {
-    for (const picture of pictures.value) {
-        try {
-            const url = await hostImg(picture.file);
-            formData.pictures.push(url);
-            pictures.value = pictures.value.filter(p => p !== picture);
-
-        } catch (error) {
-            console.error(error);
-            show({ type: "error", title: t("toast.error.genericTitle"), message: t("toast.error.errorPicture") });
-        }
-    };
-};
-
-const deletePicture = async (picture: string) => {
-    formData.pictures = formData.pictures.filter(p => p !== picture);
-};
-
 const handleSubmit = async () => {
     if (!selectedPet.value) return;
     loading.value = true;
     try {
-        if (pictures.value.length) await hostPictures();
+        if (pictures.value.length) await hostFormPictures(formData);
         const log: Log = { ...formData, type: "other" };
         if (isAddingCare.other) {
             await addNewLog(log, selectedPet.value.id);
@@ -216,7 +199,8 @@ watch(() => formData.pictures, (pictures) => {
                                 <img :src="picture" @load="loadedPictures.add(picture)" class="rounded-lg relative"
                                     @click="showLightbox(index)" :class="{ 'hidden': !loadedPictures.has(picture) }" />
                                 <Button v-if="mode === 'edit'" type="button" variant="ghost" size="xxs"
-                                    :aria-label="t('common.button.delete')" @click.stop="deletePicture(picture)"
+                                    :aria-label="t('common.button.delete')"
+                                    @click.stop="deleteFormPicture(formData, picture)"
                                     class="delete-btn hover:bg-error">
                                     <X :size="20" />
                                 </Button>

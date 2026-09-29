@@ -1,13 +1,13 @@
+import { Timestamp } from "firebase/firestore";
 import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { Picture } from "../../../../../composables/useAddPictures";
+import { useAddPictures, type Picture } from "../../../../../composables/useAddPictures";
 import { useDialog } from "../../../../../composables/useDialog";
 import { useToast } from "../../../../../composables/useToast";
-import { hostImg } from "../../../../../services/img-hosting";
 import { resetForm, shallowEqual } from "../../../../../utils";
 import { usePets } from "../../../../pets/composables/usePets";
 import { lumpFields } from "../../../config";
-import type { LumpExtended } from "../../../types";
+import type { LumpCheck, LumpExtended } from "../../../types";
 import { fromMm, toMm } from "../../../utils";
 
 
@@ -19,108 +19,99 @@ export const useLumpForm = () => {
 
     const loading = ref<boolean>(false);
     const pictures = ref<Picture[]>([]);
+    const loadedPictures = reactive(new Set<string>());
 
+    const { hostFormPictures } = useAddPictures(pictures);
     const { location, status } = lumpFields;
 
-    const defaultForm = {
+    const defaultLump = {
         title: "",
-        location: {
-            side: location.options[0].id,
-            x: 0,
-            y: 0,
-        },
+        location: { side: location.options[0].id, x: 0, y: 0 },
+    };
+
+    const defaultCheck = {
         size: {
             value: "",
-            displayUnit: "cm" as ("cm" | "mm")
+            displayUnit: "cm" as "cm" | "mm"
         },
         pictures: [] as string[],
         notes: "",
-        status: status.options[0].id
+        status: status.options[0].id,
     };
 
-    const formData = reactive({ ...defaultForm });
+    const lumpData = reactive(structuredClone(defaultLump));
+    const checkData = reactive(structuredClone(defaultCheck));
+
+    const reset = () => {
+        resetForm(lumpData, defaultLump);
+        resetForm(checkData, defaultCheck);
+    };
+
     const fillLumpData = (lump: LumpExtended) => {
-        Object.assign(formData, {
+        Object.assign(lumpData, {
             title: lump.title,
-            location: {
-                side: lump.location.side,
-                x: lump.location.x,
-                y: lump.location.y,
-            },
-            size: {
-                value: String(fromMm(Number(lump.size.valueMm), lump.size.displayUnit)),
-                displayUnit: lump.size.displayUnit
-            },
-            pictures: lump.pictures,
-            notes: lump.notes ?? "",
-            status: lump.status
-        })
+            location: { ...lump.location },
+        });
     };
 
     const setUnit = (newUnit: "cm" | "mm") => {
-        if (formData.size.displayUnit === newUnit) return;
-        if (formData.size.value) {
-            const mm = toMm(Number(formData.size.value), formData.size.displayUnit);
-            formData.size.value = String(fromMm(mm, newUnit));
+        if (checkData.size.displayUnit === newUnit) return;
+        if (checkData.size.value) {
+            const mm = toMm(Number(checkData.size.value), checkData.size.displayUnit);
+            checkData.size.value = String(fromMm(mm, newUnit));
         }
-        formData.size.displayUnit = newUnit;
-    };
-
-    const loadedPictures = reactive(new Set<string>());
-    const deletePicture = async (picture: string) => {
-        formData.pictures = formData.pictures.filter(p => p !== picture);
+        checkData.size.displayUnit = newUnit;
     };
 
     const handleClose = () => {
         selectLump(null);
         pictures.value = [];
         loadedPictures.clear();
-        resetForm(formData, defaultForm);
+        reset();
     };
 
-    const hostPictures = async () => {
-        for (const picture of pictures.value) {
-            try {
-                const url = await hostImg(picture.file);
-                formData.pictures.push(url);
-                pictures.value = pictures.value.filter(p => p !== picture);
+    const addCheck = (checkRecord: typeof checkData): LumpCheck => {
+        const check: LumpCheck = { date: Timestamp.now() };
 
-            } catch (error) {
-                console.error(error);
-                show({ type: "error", title: t("toast.error.genericTitle"), message: t("toast.error.errorPicture") });
-            }
-        };
+        if (checkRecord.size.value) {
+            check.size = {
+                displayUnit: checkRecord.size.displayUnit,
+                valueMm: String(toMm(Number(checkRecord.size.value), checkRecord.size.displayUnit)),
+            };
+        }
+        if (checkRecord.pictures.length) check.pictures = [...checkRecord.pictures];
+        if (checkRecord.notes) check.note = checkRecord.notes;
+        if (checkRecord.status) check.status = checkRecord.status;
+
+        return check;
     };
 
     const handleSubmit = async () => {
         if (!selectedPet.value) return;
         loading.value = true;
         try {
-            if (pictures.value.length) await hostPictures();
+            if (pictures.value.length) await hostFormPictures(checkData);
             if (isAddingCare.lump) {
                 const lump = {
-                    ...formData,
-                    size: {
-                        displayUnit: formData.size.displayUnit,
-                        valueMm: String(toMm(Number(formData.size.value), formData.size.displayUnit))
-                    }
+                    ...lumpData,
+                    checks: [addCheck(checkData)]
                 };
-                await addNewLump(lump, selectedPet.value.id)
+                await addNewLump(lump, selectedPet.value.id);
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),
                     message: t("toast.success.message.lumpAdded"),
                 });
-                resetForm(formData, defaultForm);
+                reset();
                 isAddingCare.lump = false;
                 pictures.value = [];
             }
             else if (selectedLump.value) {
                 const originalData = {
-                    ...selectedLump.value,
-                    notes: selectedLump.value.notes ?? "",
+                    title: selectedLump.value.title,
+                    location: selectedLump.value.location
                 };
-                if (!shallowEqual(formData, originalData)) {
+                if (!shallowEqual(lumpData, originalData)) {
                     //  await update function - pending to create
                     pictures.value = [];
                 };
@@ -157,6 +148,6 @@ export const useLumpForm = () => {
     };
 
     return {
-        loading, defaultForm, formData, fillLumpData, setUnit, deletePicture, pictures, loadedPictures, handleClose, handleDelete, handleSubmit
+        loading, lumpData, checkData, reset, fillLumpData, setUnit, pictures, loadedPictures, handleClose, handleDelete, handleSubmit
     }
 }

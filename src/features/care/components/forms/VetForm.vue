@@ -40,7 +40,7 @@ const defaultForm: Vet = {
     email: "",
     hours: "",
 };
-const formData = reactive({ ...defaultForm });
+const formData = reactive(structuredClone(defaultForm));
 
 const handleClose = () => {
     isUpdatingVet.value = false;

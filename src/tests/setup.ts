@@ -32,6 +32,7 @@ export const createMockPet = (index: number, overrides?: Partial<PetExtended>): 
     vetVisits: [],
     treatments: [],
     logs: [],
+    lumps: [],
     ...overrides,
 });
 

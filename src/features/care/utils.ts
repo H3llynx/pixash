@@ -4,7 +4,7 @@ import { i18n } from "../language/config/i18n";
 import { SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, LOG_SUBTYPES, MED_FREQUENCY, PARASITES, TREATMENTCOLORS, VACCINE_TYPES } from "./config";
-import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, MedicineDb, OtherLogExtended, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
+import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, LumpCheck, MedicineDb, OtherLogExtended, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
 
 export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default") => {
     if (!species) return;
@@ -145,3 +145,13 @@ export const fromMm = (mm: number, unit: "cm" | "mm") =>
     unit === "cm" ? Math.round((mm / 10) * 100) / 100 : mm;
 
 export const toMm = (value: number, unit: "cm" | "mm") => unit === "cm" ? value * 10 : value;
+
+export const getLatestLumpCheckValue = <K extends keyof LumpCheck>(
+    checks: LumpCheck[],
+    key: K
+): LumpCheck[K] | undefined => {
+    for (let i = checks.length - 1; i >= 0; i--) {
+        if (checks[i][key] !== undefined) return checks[i][key];
+    }
+    return undefined;
+}

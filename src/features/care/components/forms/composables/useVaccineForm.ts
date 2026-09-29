@@ -55,7 +55,8 @@ export const useVaccineForm = () => {
             notes: vaccine.notes ?? "",
         })
     };
-    const formData = reactive({ ...defaultForm });
+
+    const formData = reactive(structuredClone(defaultForm));
 
     const handleClose = () => {
         error.value = false;

@@ -16,7 +16,7 @@ const defaultForm = {
     medication: [],
 };
 
-const formData = reactive<TreatmentRecord>({ ...defaultForm });
+const formData = reactive<TreatmentRecord>(structuredClone(defaultForm));
 
 export const useTreatmentForm = () => {
     const { isAddingCare, selectedTreatment, selectTreatment, selectedPet, addNewTreatment, updateSelectedTreatment, careError, deleteSelectedTreatment } = usePets();
