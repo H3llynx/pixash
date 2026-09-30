@@ -2,12 +2,12 @@
 import { Check } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import Button from '../../../components/Button.vue';
-import { ROUTES } from '../../../router/config.ts';
-import type { PetExtended } from '../../pets/types.ts';
-import type { PetEvent } from '../types.ts';
-import { showAntiparasites } from '../utils.ts';
-import DueCard from './events/DueCard.vue';
+import Button from '../../../../components/Button.vue';
+import { ROUTES } from '../../../../router/config.ts';
+import type { PetExtended } from '../../../pets/types.ts';
+import type { PetEvent } from '../../types.ts';
+import { showAntiparasites } from '../../utils.ts';
+import DueCard from '../events/DueCard.vue';
 
 const { t } = useI18n();
 const route = useRoute();

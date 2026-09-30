@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Button from '../../../components/Button.vue';
-import FreeModal from '../../../components/FreeModal.vue';
-import Input from '../../../components/Input.vue';
-import LoadingPet from '../../../components/loading/LoadingPet.vue';
-import { usePetDetails } from '../../pets/composables/usePetDetails.ts';
-import { usePets } from '../../pets/composables/usePets.ts';
-import type { Log } from '../types.ts';
+import Button from '../../../../components/Button.vue';
+import FreeModal from '../../../../components/FreeModal.vue';
+import Input from '../../../../components/Input.vue';
+import LoadingPet from '../../../../components/loading/LoadingPet.vue';
+import { usePetDetails } from '../../../pets/composables/usePetDetails.ts';
+import { usePets } from '../../../pets/composables/usePets.ts';
+import type { Log } from '../../types.ts';
 
 const { isAddingCare, addNewLog, selectedPet } = usePets();
 const { t } = useI18n();

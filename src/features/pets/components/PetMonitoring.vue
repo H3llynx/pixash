@@ -2,10 +2,10 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useMedia } from '../../../composables/useMedia.ts';
-import WeightChart from '../../care/components/charts/WeightChart.vue';
 import EventList from '../../care/components/events/EventList.vue';
-import LogWeightModal from '../../care/components/LogWeightModal.vue';
 import ActiveTreatments from '../../care/components/treatments/ActiveTreatments.vue';
+import LogWeightModal from '../../care/components/weight/LogWeightModal.vue';
+import WeightChart from '../../care/components/weight/WeightChart.vue';
 import { useEvents } from '../../care/composables/useEvents.ts';
 import { usePets } from '../composables/usePets';
 

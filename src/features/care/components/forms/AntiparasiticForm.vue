@@ -14,9 +14,9 @@ import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { antiparasiteFields } from '../../config.ts';
-import LogSuccess from '../LogSuccess.vue';
 import ButtonArea from './ButtonArea.vue';
 import { useAntiparasiticForm } from './composables/useAntiparasiticForm.ts';
+import LogSuccess from './LogSuccess.vue';
 
 const { isAddingCare, selectedAntiparasiticLog, selectedPet } = usePets();
 const { loading, formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error } = useAntiparasiticForm();
