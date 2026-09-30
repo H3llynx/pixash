@@ -520,6 +520,7 @@ export default {
                 markedDone: "All set, this care task has been completed.",
                 insuranceUpdated: "{name}'s insurance information successfully updated",
                 lumpAdded: "{name}'s new lump has been successfully registered",
+                lumpDeleted: "{title} has been successfully deleted",
             },
         },
         error: {
@@ -548,6 +549,9 @@ export default {
         deleteTreatment: {
             title: "Delete {title}?",
             message: "This will permanently delete {name}'s {title} treatment. This action cannot be undone. Are you sure you'd like to proceed?",
+        },
+        deleteLump: {
+            title: "Delete {title}?",
         },
         deletePicture: {
             title: "Delete picture ?",

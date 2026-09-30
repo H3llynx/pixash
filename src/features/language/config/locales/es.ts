@@ -520,6 +520,7 @@ export default {
                 markedDone: "Listo, esta tarea de cuidado se ha completado.",
                 insuranceUpdated: "La información del seguro de {name} se ha actualizado correctamente",
                 lumpAdded: "Nuevo bulto de {name} registrado correctamente",
+                lumpDeleted: "El bulto siguiente: {title} se ha eliminado correctamente",
             },
         },
         error: {
@@ -548,6 +549,9 @@ export default {
         deleteTreatment: {
             title: "¿Eliminar {title}?",
             message: "Esto eliminará permanentemente el tratamento {title} de {name}. Esta acción no se puede deshacer. ¿Seguro que deseas continuar?",
+        },
+        deleteLump: {
+            title: "¿Eliminar {title}?",
         },
         deletePicture: {
             title: "¿Eliminar foto?",

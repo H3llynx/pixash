@@ -12,7 +12,7 @@ import { fromMm, toMm } from "../../../utils";
 
 
 export const useLumpForm = () => {
-    const { selectedPet, isAddingCare, selectLump, selectedLump, addNewLump, careError } = usePets();
+    const { selectedPet, isAddingCare, selectLump, selectedLump, addNewLump, deleteSelectedLump, careError } = usePets();
     const { show } = useToast();
     const { open } = useDialog();
     const { t } = useI18n();
@@ -128,17 +128,17 @@ export const useLumpForm = () => {
         const lump = selectedLump.value;
         if (!lump || !pet) return;
         open({
-            title: t("dialog.deleteRecord.title", { name: pet.name, title: lump.title }),
+            title: t("dialog.deleteLump.title", { title: lump.title }),
             message: t("dialog.deleteGenericMsg"),
             isDelete: true,
             onConfirm: async () => {
                 try {
                     loading.value = true;
-                    //delete function here - pending to create
+                    await deleteSelectedLump(lump);
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
-                        message: "pending translation" // --->
+                        message: t("toast.success.message.lumpDeleted", { title: lump.title }),
                     });
                 } catch (error) {
                     show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
