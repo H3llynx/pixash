@@ -89,7 +89,8 @@ const selectPet = (pet: PetExtended | null) => {
   if (selectedVaccine.value) selectVaccine(null);
   if (selectedVisit.value) selectVisit(null);
   if (selectedTreatment.value) selectTreatment(null);
-  if (selectedLog.value) selectLog(null)
+  if (selectedLog.value) selectLog(null);
+  if (selectedLump.value) selectLump(null);
   selectedPet.value = pet;
 }
 
