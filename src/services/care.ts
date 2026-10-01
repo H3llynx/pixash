@@ -547,3 +547,20 @@ export const deleteLump = async (lumpId: string, petId: string, userId: string) 
         throw error;
     }
 };
+
+export const updateLump = async (
+    lump: LumpExtended,
+    userId: string,
+    data: Pick<LumpRecord, "title" | "location">
+) => {
+    const docRef = getLumpDoc(userId, lump.petId, lump.id);
+    try {
+        await updateDoc(docRef, {
+            title: data.title,
+            location: data.location,
+        });
+    } catch (error) {
+        console.error("Error updating lump: ", error);
+        throw error;
+    }
+};

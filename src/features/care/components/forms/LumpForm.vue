@@ -65,7 +65,7 @@ watch(() => checkData.pictures, (pictures) => {
                     <h1 v-if="mode === 'edit'">{{ t("health.lumpForm.heading") }}</h1>
                     <template v-else>
                         <h1 class="font-medium">{{ selectedPet!.name }} · {{ selectedLump!.title
-                        }}
+                            }}
                         </h1>
                     </template>
                     <Button v-if="selectedLump" action="delete" :aria-label="t('common.button.delete')"

@@ -520,6 +520,7 @@ export default {
                 markedDone: "Listo, esta tarea de cuidado se ha completado.",
                 insuranceUpdated: "La información del seguro de {name} se ha actualizado correctamente",
                 lumpAdded: "Nuevo bulto de {name} registrado correctamente",
+                lumpUpdated: "{title} se ha actualizado correctamente",
                 lumpDeleted: "El bulto siguiente: {title} se ha eliminado correctamente",
             },
         },

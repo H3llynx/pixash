@@ -12,7 +12,7 @@ import { fromMm, toMm } from "../../../utils";
 
 
 export const useLumpForm = () => {
-    const { selectedPet, isAddingCare, selectLump, selectedLump, addNewLump, deleteSelectedLump, careError } = usePets();
+    const { selectedPet, isAddingCare, selectLump, selectedLump, addNewLump, updateSelectedLump, deleteSelectedLump, careError } = usePets();
     const { show } = useToast();
     const { open } = useDialog();
     const { t } = useI18n();
@@ -21,7 +21,7 @@ export const useLumpForm = () => {
     const pictures = ref<Picture[]>([]);
     const loadedPictures = reactive(new Set<string>());
 
-    const { hostFormPictures } = useAddPictures(pictures);
+    const { hostFormPictures, resetFormPictureState } = useAddPictures(pictures);
     const { location, status } = lumpFields;
 
     const defaultLump = {
@@ -45,6 +45,7 @@ export const useLumpForm = () => {
     const reset = () => {
         resetForm(lumpData, defaultLump);
         resetForm(checkData, defaultCheck);
+        resetFormPictureState(loadedPictures);
     };
 
     const fillLumpData = (lump: LumpExtended) => {
@@ -65,8 +66,6 @@ export const useLumpForm = () => {
 
     const handleClose = () => {
         selectLump(null);
-        pictures.value = [];
-        loadedPictures.clear();
         reset();
     };
 
@@ -104,7 +103,6 @@ export const useLumpForm = () => {
                 });
                 reset();
                 isAddingCare.lump = false;
-                pictures.value = [];
             }
             else if (selectedLump.value) {
                 const originalData = {
@@ -112,8 +110,12 @@ export const useLumpForm = () => {
                     location: selectedLump.value.location
                 };
                 if (!shallowEqual(lumpData, originalData)) {
-                    //  await update function - pending to create
-                    pictures.value = [];
+                    await updateSelectedLump(selectedLump.value, lumpData);
+                    show({
+                        type: "success",
+                        title: t("toast.success.title.generic"),
+                        message: t("toast.success.message.lumpUpdated", { title: lumpData.title }),
+                    });
                 };
             };
         }

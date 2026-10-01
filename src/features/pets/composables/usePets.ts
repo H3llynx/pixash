@@ -62,6 +62,7 @@ const {
   selectLump,
   selectedLump,
   addNewLump,
+  updateSelectedLump,
   deleteSelectedLump
 } = useCare(pets);
 
@@ -337,6 +338,7 @@ export const usePets = () => {
     selectedLump,
     lumps,
     addNewLump,
+    updateSelectedLump,
     deleteSelectedLump
   };
 };

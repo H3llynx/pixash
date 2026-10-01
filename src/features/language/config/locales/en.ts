@@ -520,6 +520,7 @@ export default {
                 markedDone: "All set, this care task has been completed.",
                 insuranceUpdated: "{name}'s insurance information successfully updated",
                 lumpAdded: "{name}'s new lump has been successfully registered",
+                lumpUpdated: "{title} has been successfully updated",
                 lumpDeleted: "{title} has been successfully deleted",
             },
         },
