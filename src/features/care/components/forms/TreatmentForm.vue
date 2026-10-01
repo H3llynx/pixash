@@ -59,6 +59,7 @@ const fillTreatmentData = (treatment: Partial<TreatmentExtended>) => {
 watch(() => isAddingCare.treatment, (adding) => {
     if (adding) {
         mode.value = "edit";
+        resetForm(formData, defaultForm);
         formData.vet = assignedVet.value;
         formData.startDate = dateInit.value;
         formData.medication = [addMedicine()];

@@ -58,6 +58,7 @@ const fillVisitData = (visit: Partial<VisitExtended>) => {
 watch(() => isAddingCare.visit, (adding) => {
     if (adding) {
         mode.value = "edit";
+        resetForm(formData, defaultForm);
         formData.vet = assignedVet.value;
         formData.date = visitDate.value;
     }
