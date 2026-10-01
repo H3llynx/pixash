@@ -10,22 +10,20 @@ const readonly = inject("readonly", ref(false));
 const model = defineModel<LumpPosition>({ required: true });
 
 const {
-    wrapper,
     svgRef,
+    wrapperStyle,
     pin,
     locationText,
     zoom,
     placePin,
     select,
     getReadoutStyle,
-    applyTransform
 } = useBodyMap(model.value, readonly);
 
-const mapRefs = [wrapper, svgRef, pin];
+const mapRefs = [svgRef, pin];
 void mapRefs;
 
 onMounted(() => {
-    applyTransform();
     if (model.value.x || model.value.y) placePin(model.value.x, model.value.y);
 });
 </script>
@@ -33,7 +31,7 @@ onMounted(() => {
 <template>
     <div :class="{ 'default-padding pb-1': true, 'pt-1': readonly }">
         <div class="relative bg-bg-rgba rounded-xl flex items-center justify-center p-1 overflow-hidden">
-            <div :class="{ 'default-transition body-map': true, 'cursor-crosshair': !readonly }" ref="wrapper">
+            <div :class="{ 'default-transition body-map': true, 'cursor-crosshair': !readonly }" :style="wrapperStyle">
                 <svg v-if="selectedPet?.species === 'cat'" ref="svgRef" viewBox="0 150 1024 700"
                     preserveAspectRatio="xMidYMid meet" fill="currentColor" @click="select">
                     <g transform="translate(-51.2 -51.2) scale(1.1)">

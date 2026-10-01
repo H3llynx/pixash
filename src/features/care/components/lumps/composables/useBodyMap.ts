@@ -9,7 +9,6 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
     const { t, locale } = useI18n();
 
     const currentZoom = ref<number>(1);
-    const wrapper = ref<null | HTMLDivElement>(null);
     const svgRef = ref<SVGSVGElement | null>(null);
     const pin = ref<SVGCircleElement | null>(null);
     const locationText = ref<string>(t("health.lumpForm.bodyRegions.instructions"));
@@ -23,38 +22,42 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
         h: 700,
     } as const;
 
-    const activeRegions = computed(() =>
-        selectedPet.value?.species === "dog" ? dogBodyRegions : catBodyRegions
-    );
-
-    const applyTransform = () => {
-        if (!wrapper.value) return;
-        const flip = model.side === "right" ? -1 : 1;
-        wrapper.value.style.transform = `scale(${currentZoom.value}) scaleX(${flip})`;
-    };
+    const wrapperStyle = computed(() => {
+        const flipX = model.side === "right" ? -1 : 1;
+        return {
+            transform: `scale(${currentZoom.value}) scaleX(${flipX})`,
+        };
+    });
 
     const zoom = (factor: number) => {
         currentZoom.value = Math.min(2.5, Math.max(1, currentZoom.value * factor));
-        if (wrapper.value) wrapper.value.style.transform = `scale(${currentZoom.value})`;
-        applyTransform();
     };
 
-    const placePin = (x: number, y: number) => {
-        if (!pin.value) return;
-        pin.value.setAttribute("cx", String(x));
-        pin.value.setAttribute("cy", String(y));
-        pin.value.setAttribute("r", "14");
-        let nearest: BodyRegion = activeRegions.value[0];
+    const getNearestBodyRegion = (
+        species: "dog" | "cat",
+        x: number,
+        y: number
+    ): BodyRegion => {
+        const regions = species === "dog" ? dogBodyRegions : catBodyRegions;
+        let nearest = regions[0];
         let bestDist = Infinity;
-        for (const r of activeRegions.value) {
+        for (const r of regions) {
             const d = Math.hypot(r.x - x, r.y - y);
             if (d < bestDist) { bestDist = d; nearest = r; }
         }
-        lastNearest = nearest;
+        return nearest;
+    };
+
+    const placePin = (x: number, y: number) => {
+        if (!pin.value || !selectedPet.value) return;
+        pin.value.setAttribute("cx", String(x));
+        pin.value.setAttribute("cy", String(y));
+        pin.value.setAttribute("r", "14");
+        lastNearest = getNearestBodyRegion(selectedPet.value.species as "dog" | "cat", x, y);
         model.x = x;
         model.y = y;
         updateReadout();
-    }
+    };
 
     const select = (e: MouseEvent) => {
         if (readonly.value || !svgRef.value || !selectedPet.value) return;
@@ -74,7 +77,7 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
             locationText.value = t("health.lumpForm.bodyRegions.instructions");
             return;
         }
-        locationText.value = `📍 ${t(`health.lumpForm.location.${model.side}`)} - ${t(`health.lumpForm.bodyRegions.${lastNearest.id}`).toLowerCase()}`;
+        locationText.value = `📍 ${t(`health.lumpForm.bodyRegions.${lastNearest.id}.${model.side}`)}`;
     };
 
     const getReadoutStyle = () => {
@@ -86,24 +89,26 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
 
     watch(() => [model.side, locale.value, readonly.value], () => {
         updateReadout();
-        applyTransform();
-    })
+    });
 
     watch(() => readonly.value, (readonly) => {
-        applyTransform();
-        if (readonly && selectedLump.value) placePin(selectedLump.value.location.x, selectedLump.value.location.y);
-    })
+        if (readonly && selectedLump.value) {
+            model.side = selectedLump.value!.location.side;
+            placePin(selectedLump.value.location.x, selectedLump.value.location.y);
+            currentZoom.value = 1;
+        };
+    });
 
     return {
         currentZoom,
-        wrapper,
         svgRef,
+        wrapperStyle,
         pin,
         locationText,
         zoom,
+        getNearestBodyRegion,
         placePin,
         select,
         getReadoutStyle,
-        applyTransform,
     }
 }
