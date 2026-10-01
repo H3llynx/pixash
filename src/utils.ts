@@ -38,10 +38,10 @@ const getCleanDates = (date: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const diffMs = eventDay.getTime() - today.getTime();
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
     const diffMonths = (eventDay.getFullYear() - today.getFullYear()) * 12 + (eventDay.getMonth() - today.getMonth());
     return { eventDay, today, diffDays, diffMonths }
-}
+};
 
 export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, month?: Date) => {
     if (!ts) return;

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{ list: any[] }>();
 
@@ -14,11 +17,10 @@ const barWidth = computed(() => {
 
 const handleScroll = () => {
     if (!cardSelector.value) return;
-    const el = cardSelector.value;
-    const scrollPosition = el.scrollLeft;
-    const maxScroll = el.scrollWidth - el.clientWidth;
-    const scrollPercent = scrollPosition / maxScroll;
-    activeIndex.value = Math.round(scrollPercent * (props.list.length - 1));
+    const maxScroll = cardSelector.value.scrollWidth - cardSelector.value.clientWidth;
+    activeIndex.value = maxScroll <= 0
+        ? 0
+        : Math.round((cardSelector.value.scrollLeft / maxScroll) * (props.list.length - 1));
 };
 
 const scrollToCard = (index: number) => {
@@ -42,8 +44,9 @@ watch(
 
 <template>
     <div class="relative">
-        <div v-if="list.length > 1" class="flex gap-0.5 w-full mb-0.5 default-padding" aria-hidden>
+        <div v-if="list.length > 1" class="flex gap-0.5 w-full mb-0.5 default-padding">
             <button tabindex="0" v-for="(_item, index) in list" :key="index" ref="scrollBtn"
+                :aria-label="t('common.all1.goToItem', { number: index + 1 })" :aria-current="index === activeIndex"
                 class="h-0.25 default-transition rounded cursor-pointer"
                 :class="index === activeIndex ? 'bg-accent focus-visible:bg-interactive' : 'bg-border-light focus-visible:bg-accent-rgba'"
                 :style="{ width: `${barWidth}%` }" @click="scrollToCard(index)" />

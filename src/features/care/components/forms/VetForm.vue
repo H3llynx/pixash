@@ -178,3 +178,12 @@ watch(() => selectedVet.value,
         </Panel>
     </Transition>
 </template>
+
+<style scoped>
+:deep(label:has(input[required])) p::after {
+    content: "*";
+    margin-left: 5px;
+    color: var(--color-text-secondary);
+    font-size: small;
+}
+</style>

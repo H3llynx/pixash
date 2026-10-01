@@ -51,7 +51,8 @@ export default {
         fileInputLabel: "Subir desde tu dispositivo.",
         a11y: {
             petSelected: "Mascota seleccionada: {name}",
-            allPetsSelected: "Todas las mascotas seleccionadas"
+            allPetsSelected: "Todas las mascotas seleccionadas",
+            goToItem: "Ir al elemento {number}",
         }
     },
     auth: {

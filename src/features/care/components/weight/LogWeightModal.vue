@@ -17,9 +17,9 @@ const loading = ref<boolean>(false);
 
 const handleSubmit = async () => {
     if (!selectedPet.value || !weightForm.data) return;
-    loading.value = true;
     const grams = getWeightInGrams();
     if (grams === null) return;
+    loading.value = true;
     const log: Log = {
         type: "weight",
         weight: grams,
@@ -48,7 +48,7 @@ const handleSubmit = async () => {
             <Button>{{ t("common.button.confirm") }}</Button>
             <Button type="button" variant="ghost" @click="isAddingCare.weight = false">{{
                 t("common.button.cancel")
-                }}</Button>
+            }}</Button>
         </form>
     </FreeModal>
 </template>

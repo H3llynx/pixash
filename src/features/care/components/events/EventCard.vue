@@ -133,7 +133,8 @@ const cancelMarkDone = () => {
                         {{ tsToDate(event.ts, "date") }}</p>
                     <Button
                         v-if="event.eventType === 'vaccine' || event.eventType === 'log' && event.type === 'antiparasite'"
-                        size="xxs" variant="tertiary" @click="nextDueModal = true">
+                        size="xxs" variant="tertiary" @click="nextDueModal = true" @click.stop="nextDueModal = true"
+                        @keydown.enter.stop>
                         <Check :size="16" />{{ t("common.button.markDone") }}
                     </Button>
                 </div>

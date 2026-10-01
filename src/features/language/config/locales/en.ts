@@ -51,7 +51,8 @@ export default {
         fileInputLabel: "Upload from your device.",
         a11y: {
             petSelected: "{name} selected",
-            allPetsSelected: "All pets selected"
+            allPetsSelected: "All pets selected",
+            goToItem: "Go to item {number}"
         }
     },
     auth: {
@@ -395,7 +396,7 @@ export default {
             assignedPets: "Assigned pet(s)",
             phone: "Phone number",
             email: "Email",
-            hours: "Working hours"
+            hours: "Working hours",
         },
         treatment: {
             ongoing: "Ongoing treatment",

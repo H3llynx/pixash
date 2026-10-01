@@ -38,8 +38,8 @@ const onVetChange = () => {
     <Input v-else v-model="model" :id="vet.id" :label="t(vet.label)" :placeholder="t(vet.placeholder)"
         :required="required">
         <template #addon>
-            <Button variant="ghost" size="xs" type="button" v-if="!readonly"
-                @click="vetTextInput = false; model = selectedVet ? selectedVet.id : vets[0].id">
+            <Button variant="ghost" size="xs" type="button" v-if="!readonly && vets.length"
+                @click=" vetTextInput = false; model = selectedVet ? selectedVet.id : vets[0].id">
                 {{ t("health.vetVisitForm.chooseExisting") }}
             </Button>
         </template>
