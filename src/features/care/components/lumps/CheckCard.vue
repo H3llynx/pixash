@@ -10,9 +10,11 @@ defineProps<{ check: LumpCheck }>();
 </script>
 
 <template>
-    <div class="card border border-border w-9 p-0 overflow-hidden">
-        <img v-if="check.pictures?.length" :src="check.pictures.at(-1)">
-        <span v-else class="w-full text-center py-2 bg-bg-rgba">📷</span>
+    <div class="card border border-border p-0 overflow-hidden w-10">
+        <div class="w-full card-border h-7 flex justify-center items-center overflow-hidden">
+            <img v-if="check.pictures?.length" :src="check.pictures.at(-1)" class="w-full object-cover">
+            <span v-else>📷</span>
+        </div>
         <div class="px-1 pb-1 pt-0.25 text-left">
             <span v-if="check.size" class="text-text-secondary text-xs">{{ fromMm(Number(check.size.valueMm),
                 check.size.displayUnit) }} {{

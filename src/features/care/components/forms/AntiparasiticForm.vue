@@ -35,7 +35,7 @@ watch(() => selectedAntiparasiticLog.value, (log) => {
 });
 
 watch(() => mode.value, (mode) => {
-    if (mode === "view") fillLogData(selectedAntiparasiticLog.value!)
+    if (mode === "view") fillLogData(selectedAntiparasiticLog.value!);
 })
 </script>
 
@@ -51,7 +51,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
                     <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
-                    }}
+                        }}
                     </h1>
                     <Button v-if="selectedAntiparasiticLog" action="delete"
                         :aria-label="t('health.cta.deleteAntiparasitic')" @click="handleDelete" />

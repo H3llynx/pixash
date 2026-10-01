@@ -167,6 +167,7 @@ watch(() => checkData.pictures, (pictures) => {
 :deep(.status label:has(input[type='radio']:checked) p) {
     background: var(--bg-color);
     color: var(--text-color);
+    border-color: var(--color-border-light);
 }
 
 .select-read-only {

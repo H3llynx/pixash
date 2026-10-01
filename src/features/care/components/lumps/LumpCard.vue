@@ -1,28 +1,40 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { LUMP_STATUS } from '../../config.ts';
 import type { LumpExtended } from '../../types';
 import { fromMm, getLatestLumpCheckValue } from '../../utils.ts';
+import { useBodyMap } from './composables/useBodyMap.ts';
 
-const { selectLump } = usePets();
+const { pets, selectLump } = usePets();
 const { t } = useI18n();
 
 const props = defineProps<{ lump: LumpExtended }>();
+const { getNearestBodyRegion } = useBodyMap(props.lump.location, ref(false));
 
+const pet = computed(() => pets.value.find(p => p.id === props.lump.petId));
 const status = computed(() => getLatestLumpCheckValue(props.lump.checks, "status"));
 const size = computed(() => getLatestLumpCheckValue(props.lump.checks, "size"));
 const picture = computed(() => getLatestLumpCheckValue(props.lump.checks, "pictures")?.at(-1));
+const location = computed(() => {
+    const region = getNearestBodyRegion(pet.value?.species as "dog" | "cat", props.lump.location.x, props.lump.location.y);
+    return t(`health.lumpForm.bodyRegions.${region.id}.${props.lump.location.side}`);
+});
 </script>
 
 <template>
-    <button tabindex="0" @click="selectLump(lump)" class="card border border-border w-3xs p-0 overflow-hidden">
-        <img v-if="picture" :src="picture">
-        <span v-else class="w-full text-center py-2 card-border">📷</span>
+    <button tabindex="0" @click="selectLump(lump)" class="card w-3xs border border-border p-0 overflow-hidden">
+        <div class="w-full card-border h-7 flex justify-center items-center overflow-hidden">
+            <img v-if="picture" :src="picture" class="w-full object-cover">
+            <span v-else>📷</span>
+        </div>
         <div class="px-1 pb-1 pt-0.25 text-left">
-            <div class="flex justify-between gap-1 items-center">
-                <h4>{{ lump.title }}</h4>
+            <div class="flex justify-between gap-1">
+                <div>
+                    <h4>{{ lump.title }}</h4>
+                    <span class="text-text-secondary text-xs font-medium">{{ location }}</span>
+                </div>
                 <span class="text-text-secondary text-xs">{{ fromMm(Number(size!.valueMm), size!.displayUnit) }} {{
                     size?.displayUnit }}</span>
             </div>
