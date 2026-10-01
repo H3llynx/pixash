@@ -51,5 +51,11 @@ export const useAddPictures = (pictures: Ref<Picture[]>) => {
         formData.pictures = formData.pictures.filter(p => p !== picture);
     };
 
-    return { pictures, onFileChange, deletePicture, hostFormPictures, deleteFormPicture };
+    const resetFormPictureState = (loadedPictures: Set<string>) => {
+        pictures.value.forEach(p => URL.revokeObjectURL(p.preview));
+        pictures.value = [];
+        loadedPictures.clear();
+    };
+
+    return { pictures, onFileChange, deletePicture, hostFormPictures, deleteFormPicture, resetFormPictureState };
 };

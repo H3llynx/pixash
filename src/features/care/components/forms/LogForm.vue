@@ -43,7 +43,7 @@ const defaultForm = {
 };
 const formData = reactive(structuredClone(defaultForm));
 
-const { hostFormPictures, deleteFormPicture } = useAddPictures(pictures);
+const { hostFormPictures, deleteFormPicture, resetFormPictureState } = useAddPictures(pictures);
 
 const { show: showLightbox, onHide, visibleRef, indexRef, imgsRef } = useEasyLightbox({
     imgs: formData.pictures,
@@ -59,13 +59,16 @@ const fillLogData = (log: OtherLogExtended) => {
     })
 };
 
+const reset = () => {
+    resetForm(formData, defaultForm);
+    resetFormPictureState(loadedPictures);
+};
+
 const handleClose = () => {
     selectedDate.value = null;
     isAddingCare.other = false;
     selectLog(null);
-    pictures.value = [];
-    loadedPictures.clear();
-    resetForm(formData, defaultForm);
+    reset();
 };
 
 const handleSubmit = async () => {
@@ -81,9 +84,8 @@ const handleSubmit = async () => {
                 title: t("toast.success.title.generic"),
                 message: t("toast.success.message.logAdded", { name: selectedPet.value.name, subtype: t(`pet.logs.${formData.subtype}`) }),
             });
-            resetForm(formData, defaultForm);
+            reset();
             isAddingCare.other = false;
-            pictures.value = [];
         }
         else if (selectedOtherLog.value) {
             const originalData = {
@@ -130,6 +132,7 @@ const handleDelete = () => {
 watch(() => isAddingCare.other, (adding) => {
     if (adding) {
         mode.value = "edit";
+        reset();
         Object.assign(formData, { date: selectedDate.value ?? "" });
     };
 });
@@ -138,7 +141,7 @@ watch(() => selectedOtherLog.value, (log) => {
     mode.value = log ? "view" : "edit";
     loadedPictures.clear();
     if (log) fillLogData(log);
-    else resetForm(formData, defaultForm);
+    else reset();
 }, { deep: true });
 
 watch(() => mode.value, () => {
