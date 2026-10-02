@@ -10,7 +10,7 @@ const { t } = useI18n();
 
 <template>
     <label for="profile-picture" :aria-label="t('common.fileInputLabel')">
-        <input id="profile-picture" type="file" accept="image/*" class="sr-only" ref="fileInputRef" tabindex="0"
+        <input id="profile-picture" type="file" accept="image/*" class="sr-only" ref="fileInputRef"
             @change="onFileChange" @click="(e) => (e.target as HTMLInputElement).value = ''" />
         <Camera />
     </label>

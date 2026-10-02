@@ -26,7 +26,7 @@ const { onFileChange, deletePicture } = useAddPictures(pictures);
     </div>
     <label for="pictures" :aria-label="t('common.fileInputLabel')" v-show="pictures.length + initialImages < max"
         class="w-[160px] h-[120px] mb-0.25 border border-dashed border-text-secondary text-text-secondary rounded-xl flex items-center gap-[5px] justify-center p-0.5 default-transition hover:text-accent hover:border-accent focus-within:text-accent focus-within:border-accent">
-        <input id="pictures" type="file" accept="image/*" class="sr-only" tabindex="0" multiple
+        <input id="pictures" type="file" accept="image/*" class="sr-only" multiple
             @change="onFileChange($event, max, initialImages)"
             @click="(e) => (e.target as HTMLInputElement).value = ''" />
         <Camera class="shrink-0" />

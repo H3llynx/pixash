@@ -47,17 +47,17 @@ defineProps<{
 
 
 <template>
-    <button v-if="action === 'delete'" variant="ghost" size="xs" tabindex="0"
+    <button v-if="action === 'delete'" variant="ghost" size="xs"
         :class="[button({ variant: 'ghost', size: 'xs' }), 'ml-auto mb-auto text-text-secondary']">
         <Trash2 :size="22" />
     </button>
 
-    <button v-else-if="action === 'hide'" :aria-label="t('common.button.close')" tabindex="0" class="hide-btn">
+    <button v-else-if="action === 'hide'" :aria-label="t('common.button.close')" class="hide-btn">
         <div class="h-[7px] w-4 rounded-full bg-border md:hidden"></div>
         <X class="hidden md:block focus-within:bg-gold" />
     </button>
 
-    <button v-else tabindex="0" :class="button({ variant, size })">
+    <button v-else :class="button({ variant, size })">
         <slot />
     </button>
 </template>

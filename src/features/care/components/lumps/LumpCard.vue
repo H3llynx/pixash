@@ -26,7 +26,7 @@ const lastChecked = computed(() => getLatestLumpCheckValue(props.lump.checks, "d
 </script>
 
 <template>
-    <button tabindex="0" @click="selectLump(lump)" class="card w-3xs border border-border p-0 overflow-hidden">
+    <button @click="selectLump(lump)" class="card w-3xs border border-border p-0 overflow-hidden">
         <div class="w-full bg-picture-placeholder h-7 flex justify-center items-center overflow-hidden">
             <img v-if="picture" :src="picture" class="w-full object-cover">
             <span v-else>📷</span>
@@ -34,12 +34,11 @@ const lastChecked = computed(() => getLatestLumpCheckValue(props.lump.checks, "d
         <div class="px-1 pb-1 pt-0.25 text-left">
             <div class="flex justify-between gap-1">
                 <h4>{{ lump.title }}</h4>
-                <span class="text-text-secondary text-xs shrink-0">{{ fromMm(Number(size!.valueMm),
-                    size!.displayUnit)
-                }} {{
-                        size?.displayUnit }}</span>
+                <span v-if="size" class="text-text-secondary text-xs shrink-0">{{ fromMm(Number(size.valueMm),
+                    size.displayUnit)
+                }} {{ size.displayUnit }}</span>
             </div>
-            <span class="text-text-secondary text-xs font-medium">
+            <span class="text-text-secondary text-xs font-medium inline-flex">
                 {{ location }} · {{ t('common.text.lastChecked', { date: tsToDate(lastChecked, "dateShort") })
                 }}
             </span>

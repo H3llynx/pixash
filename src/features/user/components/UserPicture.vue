@@ -12,7 +12,7 @@ const menuBtnRef = ref<HTMLButtonElement | null>(null);
 
 <template>
     <div class="relative">
-        <button tabindex="0" @click="visible = !visible" v-if="user" ref="menuBtnRef"
+        <button @click="visible = !visible" v-if="user" ref="menuBtnRef"
             class="rounded-full w-2.5 h-2.5 shrink-0 overflow-hidden bg-text-softer flex items-center justify-center">
             <Avatar :user="user" />
         </button>

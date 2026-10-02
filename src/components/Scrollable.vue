@@ -45,7 +45,7 @@ watch(
 <template>
     <div class="relative">
         <div v-if="list.length > 1" class="flex gap-0.5 w-full mb-0.5 default-padding">
-            <button tabindex="0" v-for="(_item, index) in list" :key="index" ref="scrollBtn"
+            <button v-for="(_item, index) in list" :key="index" ref="scrollBtn"
                 :aria-label="t('common.all1.goToItem', { number: index + 1 })" :aria-current="index === activeIndex"
                 class="h-0.25 default-transition rounded cursor-pointer"
                 :class="index === activeIndex ? 'bg-accent focus-visible:bg-interactive' : 'bg-border-light focus-visible:bg-accent-rgba'"

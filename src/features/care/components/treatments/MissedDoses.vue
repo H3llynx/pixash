@@ -27,8 +27,8 @@ defineProps<{
             <span>{{ missed.date.toLocaleDateString(locale) }}</span>
             <span class="flex w-1.5 h-1.5 rounded-full bg-error text-white items-center justify-center">{{
                 missed.count
-            }}</span>
-            <button tabindex="0" @click="openModal('add', treatment, missed.medication, undefined, missed.date)"
+                }}</span>
+            <button @click="openModal('add', treatment, missed.medication, undefined, missed.date)"
                 class="rounded-full border border-error-text text-error-text px-1 py-[3px] ml-auto hover:bg-error hover:text-white hover:border-error-border">Log</button>
         </div>
     </div>

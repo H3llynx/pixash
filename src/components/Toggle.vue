@@ -19,7 +19,7 @@ defineEmits(["update:modelValue"]);
                 : 'toggle-track-md',
             { active: modelValue }
         ]">
-            <input v-bind="$attrs" type="checkbox" :id="id" class="sr-only" :checked="modelValue" tabindex="0"
+            <input v-bind="$attrs" type="checkbox" :id="id" class="sr-only" :checked="modelValue"
                 @change="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)" />
             <div class="toggle-knob"></div>
         </div>
