@@ -25,7 +25,7 @@ const missed = computed(() => getMissedDosesHistory(props.pet, props.treatment, 
 </script>
 
 <template>
-    <FreeModal v-model="isViewing" class="list-modal">
+    <FreeModal v-model="isViewing" size="md" color="secondary">
         <div class="scroll-container">
             <div class="flex justify-between gap-1 px-1.5 py-1">
                 <div>
@@ -91,30 +91,3 @@ const missed = computed(() => getMissedDosesHistory(props.pet, props.treatment, 
         </div>
     </FreeModal>
 </template>
-
-<style scoped>
-.list-modal {
-    max-width: 500px;
-    overflow: hidden;
-}
-
-.list-modal :deep(.dialog-box) {
-    padding: 0;
-    background: var(--color-bg);
-    gap: 0;
-    color: var(--color-text-softer);
-}
-
-.scroll-container {
-    max-height: 90dvh;
-    overflow-y: auto;
-
-    &::-webkit-scrollbar {
-        width: 4px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: var(--color-border);
-    }
-}
-</style>

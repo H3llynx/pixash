@@ -41,10 +41,3 @@ const handleSubmit = async () => {
         </form>
     </FreeModal>
 </template>
-
-<style scoped>
-:deep(label) p {
-    font-family: var(--font-title);
-    font-size: large;
-}
-</style>

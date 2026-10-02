@@ -577,6 +577,19 @@
       pointer-events: none;
     }
   }
+
+  .scroll-container {
+    max-height: 90dvh;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-border);
+    }
+  }
 }
 
 @keyframes move-overlay {
