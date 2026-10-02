@@ -34,7 +34,8 @@ export default {
             askingNextDue: "Is there a next due date?",
             yes: "Yes",
             noNeed: "No need",
-            petSelector: "select another pet"
+            petSelector: "select another pet",
+            lastChecked: "last checked {date}",
         },
         header: {
             vetH2: "Vet care",

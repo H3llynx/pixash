@@ -24,7 +24,7 @@ export const resetForm = <T extends object>(
     }
 };
 
-type DateFormatMode = "date" | "timeUntil" | "input" | "datetime" | "upcoming" | "thatMonth" | "isThisWeek" | "isPast";
+type DateFormatMode = "date" | "dateShort" | "timeUntil" | "input" | "datetime" | "upcoming" | "thatMonth" | "isThisWeek" | "isPast";
 
 export const tsToDay = (ts: Timestamp) => {
     const d = ts.toDate();
@@ -56,6 +56,15 @@ export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, month?
                 day: "numeric",
                 month: "short",
                 year: "numeric"
+            });
+        case "dateShort":
+            if (diffDays === -1) return t("tsToDate.yesterday").toLowerCase();
+            if (diffDays === 0) return t("tsToDate.today").toLowerCase();
+            const isCurrentYear = date.getFullYear() === new Date().getFullYear();
+            return date.toLocaleDateString(locale, {
+                day: "numeric",
+                month: "short",
+                ...(isCurrentYear ? {} : { year: "numeric" })
             });
         case "input":
             return [date.getFullYear(),

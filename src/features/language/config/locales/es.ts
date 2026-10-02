@@ -34,7 +34,8 @@ export default {
             askingNextDue: "¿Deseas indicar la fecha de la próxima dosis?",
             yes: "Si",
             noNeed: "No hace falta",
-            petSelector: "selecciona otra mascota"
+            petSelector: "selecciona otra mascota",
+            lastChecked: "última actualización: {date}",
         },
         header: {
             vetH2: "Cuidado veterinario",
