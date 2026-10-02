@@ -2,7 +2,6 @@ import { FirebaseError } from "firebase/app";
 import { computed, ref, watch } from "vue";
 import { fetchPetLogs, fetchPetLumps, fetchPetTreatments, fetchPetVaccines, fetchPetVisits } from "../../../services/care";
 import { addPet, deletePet, deletePetField, fetchPets, updatePet } from "../../../services/pets";
-import { resetState } from "../../../utils";
 import { useCare } from "../../care/composables/useCare";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../../care/utils";
 import { useAuth } from "../../user/composables/useAuth";
@@ -24,6 +23,7 @@ const {
   vetLoading,
   treatmentLoading,
   isAddingCare,
+  resetCareState,
   vaccines,
   vetVisits,
   selectedVaccine,
@@ -97,10 +97,7 @@ const selectPet = (pet: PetExtended | null) => {
 const resetPetActions = () => {
   isAddingPet.value = false;
   isUpdatingPet.value = false;
-  resetState(isAddingCare);
-  selectLog(null);
-  selectVaccine(null);
-  selectVisit(null);
+  resetCareState();
 };
 
 const handlePetAction = async (
@@ -223,9 +220,9 @@ watch(user, async (newUser) => {
 }, { immediate: true });
 
 watch(
-  [selectedVaccine, selectedVisit, selectedTreatment, selectedLog],
-  ([vaccine, visit, treatment, log]) => {
-    if (vaccine || visit || treatment || log) {
+  [selectedVaccine, selectedVisit, selectedTreatment, selectedLog, selectedLump],
+  ([vaccine, visit, treatment, log, lump]) => {
+    if (vaccine || visit || treatment || log || lump) {
       isAddingPet.value = false;
       isUpdatingPet.value = false;
     }
@@ -234,23 +231,18 @@ watch(
 
 watch(isAddingPet, (adding) => {
   if (adding) {
-    resetState(isAddingCare);
     isUpdatingPet.value = false;
-    selectVaccine(null);
-    selectVisit(null);
-    selectLog(null);
+    resetCareState();
   }
 });
 
 watch(isUpdatingPet, (editing) => {
   if (editing) {
-    resetState(isAddingCare);
     isAddingPet.value = false;
-    selectVaccine(null);
-    selectVisit(null);
-    selectLog(null);
+    resetCareState();
   }
 });
+
 
 const resyncSelectedPet = () => {
   if (selectedPet.value) {

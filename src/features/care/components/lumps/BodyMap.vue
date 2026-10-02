@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { inject, onMounted, ref } from 'vue';
+import { inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { usePets } from '../../../pets/composables/usePets';
+import type { LumpPosition } from '../../types';
 import { useBodyMap } from './composables/useBodyMap';
-import type { LumpPosition } from './types';
 
-const { selectedPet } = usePets();
+const { selectedPet, selectedLump, selectLump } = usePets();
+const { t } = useI18n();
 
 const readonly = inject("readonly", ref(false));
 const model = defineModel<LumpPosition>({ required: true });
@@ -18,20 +20,37 @@ const {
     placePin,
     select,
     getReadoutStyle,
+    onPointerDown,
+    onPointerMove,
+    onPointerUp,
+    isDragging,
+    currentZoom,
+    containerRef
 } = useBodyMap(model.value, readonly);
 
-const mapRefs = [svgRef, pin];
+const mapRefs = [svgRef, pin, containerRef];
 void mapRefs;
 
 onMounted(() => {
     if (model.value.x || model.value.y) placePin(model.value.x, model.value.y);
 });
+
+watch(() => model.value, (newValue) => {
+    if (!newValue) return;
+    placePin(newValue.x, newValue.y);
+});
 </script>
 
 <template>
     <div :class="{ 'default-padding pb-1': true, 'pt-1': readonly }">
-        <div class="relative bg-bg-rgba rounded-xl flex items-center justify-center p-1 overflow-hidden">
-            <div :class="{ 'default-transition body-map': true, 'cursor-crosshair': !readonly }" :style="wrapperStyle">
+        <div class="relative bg-bg-rgba rounded-xl flex items-center justify-center p-1 overflow-hidden"
+            ref="containerRef" @pointerdown="onPointerDown" @pointermove="onPointerMove" @pointerup="onPointerUp"
+            @pointercancel="onPointerUp">
+            <div :class="{
+                'body-map': true, 'default-transition': !isDragging,
+                'cursor-grab': !isDragging && currentZoom > 1,
+                'cursor-grabbing': isDragging
+            }" :style="wrapperStyle">
                 <svg v-if="selectedPet?.species === 'cat'" ref="svgRef" viewBox="0 150 1024 700"
                     preserveAspectRatio="xMidYMid meet" fill="currentColor" @click="select">
                     <g transform="translate(-51.2 -51.2) scale(1.1)">
@@ -40,7 +59,7 @@ onMounted(() => {
                         <path
                             d="M927.703 392.445C927.749 390.05 928.489 387.447 931.348 388.09C929.843 390.231 929.525 390.728 927.703 392.445Z" />
                     </g>
-                    <circle ref="pin" class="pin" cx="0" cy="0" r="0" fill="#ea6a6a" stroke="#fff" stroke-width="3" />
+                    <circle ref="pin" cx="0" cy="0" r="0" fill="#ea6a6a" stroke="#fff" stroke-width="3" />
                 </svg>
                 <svg v-else ref="svgRef" viewBox="0 150 1024 700" preserveAspectRatio="xMidYMid meet"
                     fill="currentColor" @click="select">
@@ -62,12 +81,20 @@ onMounted(() => {
                         <path
                             d="M1489.43 1133.39C1492.26 1130.1 1495.42 1127.98 1496.6 1123.7C1497.15 1121.7 1499.61 1119.17 1501.88 1119.89C1504.62 1122.87 1496.1 1141.2 1493.8 1144.29C1493.55 1136.65 1496.16 1135.54 1489.43 1133.39Z" />
                     </g>
-                    <circle ref="pin" class="pin" cx="0" cy="0" r="0" fill="#ea6a6a" stroke="#fff" stroke-width="3" />
+                    <circle ref="pin" cx="0" cy="0" r="0" fill="#ea6a6a" stroke="#fff" stroke-width="3" />
+                    <g v-for="lump in selectedPet?.lumps.filter(
+                        lump => lump.id !== selectedLump?.id
+                    )" :key="lump.id" class="lump-marker cursor-pointer" role="button" tabindex="0"
+                        :aria-label="t('common.all1.goToItem', { item: lump.title })" @click.stop="selectLump(lump)"
+                        @keydown.enter="selectLump(lump)">
+                        <circle :cx="lump.location.x" :cy="lump.location.y" r="10" fill="transparent"
+                            stroke="rgba(255, 255, 255, 0.35)" stroke-width="2.5" />
+                    </g>
                 </svg>
             </div>
-            <div class="absolute bottom-0.5 right-0.5 flex flex-col gap-0.25">
-                <button type="button" tabindex="0" class="zoom-btn" @click="zoom(1.3)">+</button>
-                <button type="button" tabindex="0" class="zoom-btn" @click="zoom(0.77)">−</button>
+            <div class="absolute bottom-0.5 right-0.5 flex flex-col gap-0.25" @pointerdown.stop>
+                <button type="button" class="zoom-btn" @click="zoom(1.3)">+</button>
+                <button type="button" class="zoom-btn" @click="zoom(0.77)">−</button>
             </div>
         </div>
         <p :class="getReadoutStyle()" id="locationReadout">{{ locationText }}</p>
@@ -93,5 +120,14 @@ onMounted(() => {
     aspect-ratio: 1/1;
     border-radius: 8px;
     background: var(--color-border);
+}
+
+.lump-marker:focus-visible circle {
+    outline-width: 4px;
+    outline-style: solid;
+    outline-offset: 3px;
+    outline-color: var(--color-gold);
+    border-radius: 0.75rem;
+    border-radius: 999px;
 }
 </style>

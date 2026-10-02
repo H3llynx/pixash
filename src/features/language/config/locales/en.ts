@@ -53,7 +53,7 @@ export default {
         a11y: {
             petSelected: "{name} selected",
             allPetsSelected: "All pets selected",
-            goToItem: "Go to item {number}"
+            goToItem: "Go to item {item}",
         }
     },
     auth: {

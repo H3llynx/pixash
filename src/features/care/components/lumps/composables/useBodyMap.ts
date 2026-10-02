@@ -1,19 +1,29 @@
-import { computed, ref, watch, type Ref } from "vue";
+import { computed, reactive, ref, watch, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { usePets } from "../../../../pets/composables/usePets.ts";
 import { catBodyRegions, dogBodyRegions } from "../../../../pets/config";
-import type { BodyRegion, LumpPosition } from "../types.ts";
+import type { BodyRegion, LumpPosition } from "../../../types.ts";
+
+const DRAG_THRESHOLD = 6;
 
 export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
     const { selectedLump, selectedPet } = usePets();
     const { t, locale } = useI18n();
 
+    const pan = reactive({ x: 0, y: 0 });
+    const isDragging = ref(false);
     const currentZoom = ref<number>(1);
+
+    const containerRef = ref<HTMLDivElement | null>(null);
     const svgRef = ref<SVGSVGElement | null>(null);
     const pin = ref<SVGCircleElement | null>(null);
     const locationText = ref<string>(t("health.lumpForm.bodyRegions.instructions"));
 
     let lastNearest: BodyRegion | null = null;
+    let dragStart = { x: 0, y: 0 };
+    let panStart = { x: 0, y: 0 };
+    let dragDistance = 0;
+    let pointerId: number | null = null;
 
     const viewBoxBySpecies = {
         minX: 0,
@@ -25,9 +35,62 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
     const wrapperStyle = computed(() => {
         const flipX = model.side === "right" ? -1 : 1;
         return {
-            transform: `scale(${currentZoom.value}) scaleX(${flipX})`,
+            transform: `translate(${pan.x}px, ${pan.y}px) scale(${currentZoom.value}) scaleX(${flipX})`,
         };
     });
+
+    const clampPan = () => {
+        if (!containerRef.value || currentZoom.value <= 1) {
+            pan.x = 0;
+            pan.y = 0;
+            return;
+        }
+        const rect = containerRef.value.getBoundingClientRect();
+        const overflowX = (rect.width * (currentZoom.value - 1)) / 2;
+        const overflowY = (rect.height * (currentZoom.value - 1)) / 2;
+        pan.x = Math.min(overflowX, Math.max(-overflowX, pan.x));
+        pan.y = Math.min(overflowY, Math.max(-overflowY, pan.y));
+    };
+
+    const selectFromScreenPoint = (clientX: number, clientY: number) => {
+        if (readonly.value || !svgRef.value || !selectedPet.value) return;
+        const rect = svgRef.value.getBoundingClientRect();
+        let xPct = (clientX - rect.left) / rect.width;
+        const yPct = (clientY - rect.top) / rect.height;
+        if (model.side === "right") xPct = 1 - xPct;
+        const px = viewBoxBySpecies.minX + xPct * viewBoxBySpecies.w;
+        const py = viewBoxBySpecies.minY + yPct * viewBoxBySpecies.h;
+        placePin(px, py);
+    };
+
+    const onPointerDown = (e: PointerEvent) => {
+        if (currentZoom.value <= 1) return;
+        isDragging.value = true;
+        dragDistance = 0;
+        pointerId = e.pointerId;
+        dragStart = { x: e.clientX, y: e.clientY };
+        panStart = { x: pan.x, y: pan.y };
+        (e.target as Element).setPointerCapture(e.pointerId);
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+        if (!isDragging.value || e.pointerId !== pointerId) return;
+        const dx = e.clientX - dragStart.x;
+        const dy = e.clientY - dragStart.y;
+        dragDistance = Math.hypot(dx, dy);
+        pan.x = panStart.x + dx;
+        pan.y = panStart.y + dy;
+        clampPan();
+    };
+
+    const onPointerUp = (e: PointerEvent) => {
+        if (e.pointerId !== pointerId) return;
+        isDragging.value = false;
+        pointerId = null;
+        if (dragDistance < DRAG_THRESHOLD) {
+            selectFromScreenPoint(e.clientX, e.clientY);
+        }
+    };
 
     const zoom = (factor: number) => {
         currentZoom.value = Math.min(2.5, Math.max(1, currentZoom.value * factor));
@@ -60,16 +123,8 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
     };
 
     const select = (e: MouseEvent) => {
-        if (readonly.value || !svgRef.value || !selectedPet.value) return;
-        const rect = svgRef.value.getBoundingClientRect();
-        let xPct = (e.clientX - rect.left) / rect.width;
-        const yPct = (e.clientY - rect.top) / rect.height;
-        if (model.side === "right") {
-            xPct = 1 - xPct;
-        };
-        const px = viewBoxBySpecies.minX + xPct * viewBoxBySpecies.w;
-        const py = viewBoxBySpecies.minY + yPct * viewBoxBySpecies.h;
-        placePin(px, py);
+        if (currentZoom.value > 1) return;
+        selectFromScreenPoint(e.clientX, e.clientY);
     };
 
     const updateReadout = () => {
@@ -87,6 +142,14 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
         }
     };
 
+    watch(() => currentZoom.value, () => {
+        if (currentZoom.value <= 1.01
+        ) {
+            pan.x = 0;
+            pan.y = 0;
+        }
+    });
+
     watch(() => [model.side, locale.value, readonly.value], () => {
         updateReadout();
     });
@@ -96,19 +159,26 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
             model.side = selectedLump.value!.location.side;
             placePin(selectedLump.value.location.x, selectedLump.value.location.y);
             currentZoom.value = 1;
+            pan.x = 0;
+            pan.y = 0;
         };
     });
 
     return {
         currentZoom,
+        containerRef,
         svgRef,
         wrapperStyle,
         pin,
         locationText,
+        isDragging,
         zoom,
         getNearestBodyRegion,
         placePin,
         select,
+        onPointerDown,
+        onPointerMove,
+        onPointerUp,
         getReadoutStyle,
     }
 }

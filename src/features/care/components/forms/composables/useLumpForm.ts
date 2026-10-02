@@ -7,7 +7,7 @@ import { useToast } from "../../../../../composables/useToast";
 import { resetForm, shallowEqual } from "../../../../../utils";
 import { usePets } from "../../../../pets/composables/usePets";
 import { lumpFields } from "../../../config";
-import type { LumpCheck, LumpExtended } from "../../../types";
+import type { LumpCheck, LumpCheckRecord, LumpExtended } from "../../../types";
 import { fromMm, toMm } from "../../../utils";
 
 
@@ -41,10 +41,11 @@ export const useLumpForm = () => {
 
     const lumpData = reactive(structuredClone(defaultLump));
     const checkData = reactive(structuredClone(defaultCheck));
+    const resetCheckData = () => resetForm(checkData, defaultCheck);
 
     const reset = () => {
         resetForm(lumpData, defaultLump);
-        resetForm(checkData, defaultCheck);
+        resetCheckData();
         resetFormPictureState(loadedPictures);
     };
 
@@ -69,17 +70,17 @@ export const useLumpForm = () => {
         reset();
     };
 
-    const addCheck = (checkRecord: typeof checkData): LumpCheck => {
+    const addCheck = (checkRecord: LumpCheckRecord): LumpCheck => {
         const check: LumpCheck = { date: Timestamp.now() };
 
-        if (checkRecord.size.value) {
+        if (checkRecord.size?.value) {
             check.size = {
                 displayUnit: checkRecord.size.displayUnit,
                 valueMm: String(toMm(Number(checkRecord.size.value), checkRecord.size.displayUnit)),
             };
         }
-        if (checkRecord.pictures.length) check.pictures = [...checkRecord.pictures];
-        if (checkRecord.notes) check.note = checkRecord.notes;
+        if (checkRecord.pictures?.length) check.pictures = [...checkRecord.pictures];
+        if (checkRecord.notes) check.notes = checkRecord.notes;
         if (checkRecord.status) check.status = checkRecord.status;
 
         return check;
@@ -150,6 +151,6 @@ export const useLumpForm = () => {
     };
 
     return {
-        loading, lumpData, checkData, reset, fillLumpData, setUnit, pictures, loadedPictures, handleClose, handleDelete, handleSubmit
+        loading, lumpData, checkData, resetCheckData, reset, fillLumpData, setUnit, pictures, loadedPictures, handleClose, handleDelete, handleSubmit
     }
 }

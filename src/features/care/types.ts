@@ -203,10 +203,22 @@ export type OtherLogExtended = {
 
 export type LogExtended = AntiparasiteLogExtended | WeightLogExtended | MedicationLogExtended | OtherLogExtended;
 
-export type LumpLocation = {
+export type LumpPosition = {
     side: "left" | "right";
     x: number;
-    y: number;
+    y: number
+};
+
+export type BodyRegion = { id: string; x: number; y: number };
+
+export type LumpCheckRecord = {
+    size: {
+        value: string,
+        displayUnit: "cm" | "mm"
+    },
+    pictures: string[],
+    notes: string,
+    status: typeof LUMP_STATUS[number]["id"];
 };
 
 export type LumpCheck = {
@@ -216,13 +228,13 @@ export type LumpCheck = {
         displayUnit: "cm" | "mm";
     };
     pictures?: string[];
-    note?: string;
+    notes?: string;
     status?: typeof LUMP_STATUS[number]["id"];
 };
 
 export type LumpRecord = {
     title: string;
-    location: LumpLocation;
+    location: LumpPosition;
     checks: LumpCheck[];
 };
 
