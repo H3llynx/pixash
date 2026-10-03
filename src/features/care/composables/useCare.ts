@@ -84,6 +84,15 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         selectedLump.value = lump;
     };
 
+    const resetCareState = () => {
+        resetState(isAddingCare);
+        selectLog(null);
+        selectVaccine(null);
+        selectVisit(null);
+        selectLump(null);
+        selectTreatment(null);
+    };
+
     const handleHealthAction = async <T>(
         action: () => Promise<T>,
         onFinal?: () => void
@@ -323,6 +332,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         loading,
         vetLoading,
         treatmentLoading,
+        resetCareState,
         vaccines,
         vetVisits,
         selectedVaccine,

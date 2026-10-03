@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, onMounted, ref, watch } from 'vue';
+import { defineModel, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { usePets } from '../../../pets/composables/usePets';
 import type { LumpPosition } from '../../types';
@@ -83,10 +83,11 @@ watch(() => model.value, (newValue) => {
                     </g>
                     <circle ref="pin" cx="0" cy="0" r="0" fill="#ea6a6a" stroke="#fff" stroke-width="3" />
                     <g v-for="lump in selectedPet?.lumps.filter(
-                        lump => lump.id !== selectedLump?.id
-                    )" :key="lump.id" class="lump-marker cursor-pointer" role="button" tabindex="0"
-                        :aria-label="t('common.all1.goToItem', { item: lump.title })" @click.stop="selectLump(lump)"
-                        @keydown.enter="selectLump(lump)">
+                        lump => lump.id !== selectedLump?.id && lump.location.side === model.side
+                    )" :key="lump.id" :class="{ 'lump-marker cursor-pointer': readonly }" role="button"
+                        :aria-label="t('common.a11y.goToItem', { item: lump.title })"
+                        @click.stop="readonly && selectLump(lump)" @keydown.enter="readonly && selectLump(lump)"
+                        :tabindex="readonly ? 0 : -1">
                         <circle :cx="lump.location.x" :cy="lump.location.y" r="10" fill="transparent"
                             stroke="rgba(255, 255, 255, 0.35)" stroke-width="2.5" />
                     </g>

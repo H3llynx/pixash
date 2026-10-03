@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, defineProps, nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -46,7 +46,7 @@ watch(
     <div class="relative">
         <div v-if="list.length > 1" class="flex gap-0.5 w-full mb-0.5 default-padding">
             <button v-for="(_item, index) in list" :key="index" ref="scrollBtn"
-                :aria-label="t('common.all1.goToItem', { item: index + 1 })" :aria-current="index === activeIndex"
+                :aria-label="t('common.a11y.goToItem', { item: index + 1 })" :aria-current="index === activeIndex"
                 class="h-0.25 default-transition rounded cursor-pointer"
                 :class="index === activeIndex ? 'bg-accent focus-visible:bg-interactive' : 'bg-border-light focus-visible:bg-accent-rgba'"
                 :style="{ width: `${barWidth}%` }" @click="scrollToCard(index)" />
