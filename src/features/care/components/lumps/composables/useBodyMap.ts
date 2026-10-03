@@ -1,12 +1,12 @@
 import { computed, reactive, ref, watch, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { usePets } from "../../../../pets/composables/usePets.ts";
-import { catBodyRegions, dogBodyRegions } from "../../../../pets/config";
 import type { BodyRegion, LumpPosition } from "../../../types.ts";
+import { getNearestBodyRegion } from "../../../utils.ts";
 
 const DRAG_THRESHOLD = 6;
 
-export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
+export const useBodyMap = (model: Ref<LumpPosition>, readonly: Ref<boolean>) => {
     const { selectedLump, selectedPet } = usePets();
     const { t, locale } = useI18n();
 
@@ -33,7 +33,7 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
     } as const;
 
     const wrapperStyle = computed(() => {
-        const flipX = model.side === "right" ? -1 : 1;
+        const flipX = model.value.side === "right" ? -1 : 1;
         return {
             transform: `translate(${pan.x}px, ${pan.y}px) scale(${currentZoom.value}) scaleX(${flipX})`,
         };
@@ -57,7 +57,7 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
         const rect = svgRef.value.getBoundingClientRect();
         let xPct = (clientX - rect.left) / rect.width;
         const yPct = (clientY - rect.top) / rect.height;
-        if (model.side === "right") xPct = 1 - xPct;
+        if (model.value.side === "right") xPct = 1 - xPct;
         const px = viewBoxBySpecies.minX + xPct * viewBoxBySpecies.w;
         const py = viewBoxBySpecies.minY + yPct * viewBoxBySpecies.h;
         placePin(px, py);
@@ -96,29 +96,14 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
         currentZoom.value = Math.min(2.5, Math.max(1, currentZoom.value * factor));
     };
 
-    const getNearestBodyRegion = (
-        species: "dog" | "cat",
-        x: number,
-        y: number
-    ): BodyRegion => {
-        const regions = species === "dog" ? dogBodyRegions : catBodyRegions;
-        let nearest = regions[0];
-        let bestDist = Infinity;
-        for (const r of regions) {
-            const d = Math.hypot(r.x - x, r.y - y);
-            if (d < bestDist) { bestDist = d; nearest = r; }
-        }
-        return nearest;
-    };
-
     const placePin = (x: number, y: number) => {
         if (!pin.value || !selectedPet.value) return;
         pin.value.setAttribute("cx", String(x));
         pin.value.setAttribute("cy", String(y));
         pin.value.setAttribute("r", "14");
         lastNearest = getNearestBodyRegion(selectedPet.value.species as "dog" | "cat", x, y);
-        model.x = x;
-        model.y = y;
+        model.value.x = x;
+        model.value.y = y;
         updateReadout();
     };
 
@@ -132,7 +117,7 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
             locationText.value = t("health.lumpForm.bodyRegions.instructions");
             return;
         }
-        locationText.value = `📍 ${t(`health.lumpForm.bodyRegions.${lastNearest.id}.${model.side}`)}`;
+        locationText.value = `📍 ${t(`health.lumpForm.bodyRegions.${lastNearest.id}.${model.value.side}`)}`;
     };
 
     const getReadoutStyle = () => {
@@ -150,13 +135,13 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
         }
     });
 
-    watch(() => [model.side, locale.value, readonly.value], () => {
+    watch(() => [model.value.side, locale.value, readonly.value], () => {
         updateReadout();
     });
 
     watch(() => readonly.value, (readonly) => {
         if (readonly && selectedLump.value) {
-            model.side = selectedLump.value!.location.side;
+            model.value.side = selectedLump.value!.location.side;
             placePin(selectedLump.value.location.x, selectedLump.value.location.y);
             currentZoom.value = 1;
             pan.x = 0;
@@ -173,7 +158,6 @@ export const useBodyMap = (model: LumpPosition, readonly: Ref<boolean>) => {
         locationText,
         isDragging,
         zoom,
-        getNearestBodyRegion,
         placePin,
         select,
         onPointerDown,

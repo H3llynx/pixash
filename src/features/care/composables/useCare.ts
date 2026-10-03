@@ -1,10 +1,10 @@
 import { FirebaseError } from "firebase/app";
 import { computed, reactive, ref, type Ref } from "vue";
-import { addLog, addLump, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteLump, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchPetLogs, fetchPetLumps, fetchPetTreatments, fetchPetVaccines, fetchPetVisits, fetchVets, updateLog, updateLump, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/care";
+import { addLog, addLump, addLumpCheck, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteLump, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchPetLogs, fetchPetLumps, fetchPetTreatments, fetchPetVaccines, fetchPetVisits, fetchVets, updateLog, updateLump, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/care";
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { Log, LogExtended, LumpExtended, LumpRecord, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { Log, LogExtended, LumpCheck, LumpExtended, LumpRecord, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
 
 export const useCare = (pets: Ref<PetExtended[]>) => {
@@ -319,11 +319,18 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         });
     };
 
-    const updateSelectedLump = async (lump: LumpExtended, data: Pick<LumpRecord, "title" | "location">) => {
+    const updateSelectedLump = async (lump: Pick<LumpExtended, "id" | "petId">, data: Pick<LumpRecord, "title" | "location">) => {
         await handleHealthAction(async () => {
             await updateLump(lump, user.value!.uid, data);
             await refreshPetHealth(lump.petId);
             selectLump(null);
+        });
+    };
+
+    const addNewLumpCheck = async (check: LumpCheck, lump: Pick<LumpExtended, "id" | "petId">) => {
+        await handleHealthAction(async () => {
+            await addLumpCheck(check, lump, user.value!.uid);
+            await refreshPetHealth(lump.petId);
         });
     };
 
@@ -373,6 +380,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         lumps,
         addNewLump,
         updateSelectedLump,
-        deleteSelectedLump
+        deleteSelectedLump,
+        addNewLumpCheck
     };
 };

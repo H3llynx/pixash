@@ -1,4 +1,4 @@
-import { computed, nextTick, reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "../../../composables/useToast";
 import { tsFromInput, tsToDate } from "../../../utils";
@@ -224,7 +224,7 @@ export const useTreatments = () => {
         return uncovered.map(date => ({ date, count: 1, medication }));
     };
 
-    const openModal = async (
+    const openModal = (
         action: "edit" | "add",
         treatment: TreatmentExtended,
         medication: MedicineDb,
@@ -236,7 +236,6 @@ export const useTreatments = () => {
         logMedication.value = medication;
         if (action === "edit" && log) editedLog.value = log;
         if (action === "add" && date) missedDate.value = date;
-        await nextTick();
         isModalOpen.value = true;
     };
 

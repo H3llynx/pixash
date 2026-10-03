@@ -1,18 +1,16 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, defineProps } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { LUMP_STATUS } from '../../config.ts';
 import type { LumpExtended } from '../../types';
-import { fromMm, getLatestLumpCheckValue } from '../../utils.ts';
-import { useBodyMap } from './composables/useBodyMap.ts';
+import { fromMm, getLatestLumpCheckValue, getNearestBodyRegion } from '../../utils.ts';
 
 const { pets, selectLump } = usePets();
 const { t } = useI18n();
 
 const props = defineProps<{ lump: LumpExtended }>();
-const { getNearestBodyRegion } = useBodyMap(props.lump.location, ref(false));
 
 const pet = computed(() => pets.value.find(p => p.id === props.lump.petId));
 const status = computed(() => getLatestLumpCheckValue(props.lump.checks, "status"));
@@ -36,7 +34,7 @@ const lastChecked = computed(() => getLatestLumpCheckValue(props.lump.checks, "d
                 <h4>{{ lump.title }}</h4>
                 <span v-if="size" class="text-text-secondary text-xs shrink-0">{{ fromMm(Number(size.valueMm),
                     size.displayUnit)
-                }} {{ size.displayUnit }}</span>
+                    }} {{ size.displayUnit }}</span>
             </div>
             <span class="text-text-secondary text-xs font-medium inline-flex">
                 {{ location }} · {{ t('common.text.lastChecked', { date: tsToDate(lastChecked, "dateShort") })

@@ -14,12 +14,14 @@ import { usePets } from '../../../pets/composables/usePets.ts';
 import { lumpFields } from '../../config.ts';
 import BodyMap from '../lumps/BodyMap.vue';
 import CheckCard from '../lumps/CheckCard.vue';
+import { useLumpCheck } from '../lumps/composables/useLumpCheck.ts';
 import ButtonArea from './ButtonArea.vue';
 import { useLumpForm } from './composables/useLumpForm.ts';
 import LumpCheckArea from './LumpCheckArea.vue';
 
 const { selectedPet, isAddingCare, selectedLump } = usePets();
 const { lumpData, checkData, reset, fillLumpData, loading, pictures, loadedPictures, handleClose, handleDelete, handleSubmit } = useLumpForm();
+const { openModal } = useLumpCheck();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
 provide('readonly', isReadonly);
@@ -52,7 +54,7 @@ watch(() => selectedLump.value, (lump) => {
                     <h1 v-if="mode === 'edit'">{{ t("health.lumpForm.heading") }}</h1>
                     <template v-else>
                         <h1 class="font-medium">{{ selectedPet!.name }} · {{ selectedLump!.title
-                        }}
+                            }}
                         </h1>
                     </template>
                     <Button v-if="selectedLump" action="delete" :aria-label="t('common.button.delete')"
@@ -75,7 +77,7 @@ watch(() => selectedLump.value, (lump) => {
                         :loadedPictures="loadedPictures" />
                     <div v-else-if="selectedLump && mode === 'view'" class="pet-selector">
                         <CheckCard v-for="check in selectedLump.checks" :check="check" />
-                        <Button variant="add" class="w-13" @click="isAddingCare.lumpCheck = true">
+                        <Button variant="add" class="w-13" @click="openModal(selectedLump)">
                             <Plus /> {{ t("common.button.add") }}
                         </Button>
                     </div>

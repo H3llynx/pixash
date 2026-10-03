@@ -1,7 +1,7 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where, writeBatch } from "firebase/firestore";
+import { addDoc, arrayUnion, collection, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where, writeBatch } from "firebase/firestore";
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
-import type { AntiparasiteLogExtended, Log, LogExtended, LumpExtended, LumpRecord, MedicationLogExtended, OtherLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/care/types";
+import type { AntiparasiteLogExtended, Log, LogExtended, LumpCheck, LumpExtended, LumpRecord, MedicationLogExtended, OtherLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/care/types";
 import { getTreatmentEndDate } from "../features/care/utils";
 import { tsFromInput } from "../utils";
 
@@ -549,7 +549,7 @@ export const deleteLump = async (lumpId: string, petId: string, userId: string) 
 };
 
 export const updateLump = async (
-    lump: LumpExtended,
+    lump: Pick<LumpExtended, "id" | "petId">,
     userId: string,
     data: Pick<LumpRecord, "title" | "location">
 ) => {
@@ -561,6 +561,20 @@ export const updateLump = async (
         });
     } catch (error) {
         console.error("Error updating lump: ", error);
+        throw error;
+    }
+};
+
+export const addLumpCheck = async (
+    check: LumpCheck,
+    lump: Pick<LumpExtended, "id" | "petId">,
+    userId: string
+) => {
+    try {
+        const docRef = getLumpDoc(userId, lump.petId, lump.id);
+        await updateDoc(docRef, { checks: arrayUnion(check) });
+    } catch (error) {
+        console.error("Error adding lump check for: ", error);
         throw error;
     }
 };

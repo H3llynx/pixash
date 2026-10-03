@@ -1,10 +1,10 @@
 import { Timestamp } from "firebase/firestore";
 import { tsToDay } from "../../utils";
 import { i18n } from "../language/config/i18n";
-import { SPECIES } from "../pets/config";
+import { catBodyRegions, dogBodyRegions, SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, LOG_SUBTYPES, MED_FREQUENCY, PARASITES, TREATMENTCOLORS, VACCINE_TYPES } from "./config";
-import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, LumpCheck, MedicineDb, OtherLogExtended, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
+import type { AntiparasiteLogExtended, AntiparasiteTypes, BodyRegion, LogExtended, LumpCheck, MedicineDb, OtherLogExtended, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
 
 export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default") => {
     if (!species) return;
@@ -145,6 +145,21 @@ export const fromMm = (mm: number, unit: "cm" | "mm") =>
     unit === "cm" ? Math.round((mm / 10) * 100) / 100 : mm;
 
 export const toMm = (value: number, unit: "cm" | "mm") => unit === "cm" ? value * 10 : value;
+
+export const getNearestBodyRegion = (
+    species: "dog" | "cat",
+    x: number,
+    y: number
+): BodyRegion => {
+    const regions = species === "dog" ? dogBodyRegions : catBodyRegions;
+    let nearest = regions[0];
+    let bestDist = Infinity;
+    for (const r of regions) {
+        const d = Math.hypot(r.x - x, r.y - y);
+        if (d < bestDist) { bestDist = d; nearest = r; }
+    }
+    return nearest;
+};
 
 export const getLatestLumpCheckValue = <K extends keyof LumpCheck>(
     checks: LumpCheck[],

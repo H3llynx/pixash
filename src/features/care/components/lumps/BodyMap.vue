@@ -26,7 +26,7 @@ const {
     isDragging,
     currentZoom,
     containerRef
-} = useBodyMap(model.value, readonly);
+} = useBodyMap(model, readonly);
 
 const mapRefs = [svgRef, pin, containerRef];
 void mapRefs;

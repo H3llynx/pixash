@@ -125,7 +125,7 @@ watch(() => modalState.value, (state) => {
                 medication: logMedication?.name, name:
                     pet?.name
             })
-                }}
+            }}
             </h3>
             <Input v-model="timeData" :type="inputType" id="medication-time-log"
                 :min="inputType === 'datetime-local' ? minMedicationDate : undefined"
