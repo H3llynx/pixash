@@ -4,7 +4,7 @@ import { useAddPictures, type Picture } from "../../../../../composables/useAddP
 import { resetForm } from "../../../../../utils";
 import { lumpFields } from "../../../config";
 import type { LumpCheck, LumpCheckRecord, LumpExtended } from "../../../types";
-import { toMm } from "../../../utils";
+import { isLumpRemoved, toMm } from "../../../utils";
 
 const isModalOpen = ref<boolean>(false);
 const checkedLump = ref<LumpExtended | null>(null);
@@ -67,5 +67,27 @@ export const useLumpCheck = () => {
         checkedLump.value = null;
     };
 
-    return { checkedLump, pictures, loadedPictures, resetFormPictureState, checkData, resetCheckData, isCheckEmpty, logCheck, isModalOpen, openModal, closeModal };
+    type SizeEntry = { date: Timestamp; valueMm: number };
+
+    const getSizeHistory = (checks: LumpCheck[]): SizeEntry[] => {
+        return checks
+            .filter((c): c is LumpCheck & { size: NonNullable<LumpCheck["size"]> } => !!c.size)
+            .map(c => ({ date: c.date, valueMm: Number(c.size.valueMm) }))
+            .sort((a, b) => a.date.toMillis() - b.date.toMillis());
+    };
+
+    const NOISE_THRESHOLD_MM = 1;
+
+    const getSizeTrend = (lump: LumpExtended): "up" | "down" | "stable" | null => {
+        const history = getSizeHistory(lump.checks);
+        if (history.length < 2 || isLumpRemoved(lump)) return null;
+        const last = history[history.length - 1];
+        const prev = history[history.length - 2];
+        const deltaMm = last.valueMm - prev.valueMm;
+        const direction =
+            Math.abs(deltaMm) < NOISE_THRESHOLD_MM ? "stable" : deltaMm > 0 ? "up" : "down";
+        return direction;
+    };
+
+    return { checkedLump, pictures, loadedPictures, resetFormPictureState, checkData, resetCheckData, isCheckEmpty, logCheck, isModalOpen, openModal, closeModal, getSizeTrend };
 }

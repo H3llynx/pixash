@@ -12,6 +12,7 @@ import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { lumpFields } from '../../config.ts';
+import { sortChecks } from '../../utils.ts';
 import BodyMap from '../lumps/BodyMap.vue';
 import CheckCard from '../lumps/CheckCard.vue';
 import { useLumpCheck } from '../lumps/composables/useLumpCheck.ts';
@@ -76,10 +77,10 @@ watch(() => selectedLump.value, (lump) => {
                     <LumpCheckArea v-if="isAddingCare.lump" v-model="checkData" v-model:pictures="pictures"
                         :loadedPictures="loadedPictures" />
                     <div v-else-if="selectedLump && mode === 'view'" class="pet-selector">
-                        <CheckCard v-for="check in selectedLump.checks" :check="check" />
                         <Button variant="add" class="w-13" @click="openModal(selectedLump)">
                             <Plus /> {{ t("common.button.add") }}
                         </Button>
+                        <CheckCard v-for="check in sortChecks(selectedLump)" :check="check" />
                     </div>
                     <div class="default-padding mt-1">
                         <ButtonArea v-model="mode" :loading="loading" :selectedCare="selectedLump"

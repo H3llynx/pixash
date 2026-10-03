@@ -1,19 +1,22 @@
 <script setup lang="ts">
+import { ArrowDown, ArrowUp } from '@lucide/vue';
 import { computed, defineProps } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { LUMP_STATUS } from '../../config.ts';
 import type { LumpExtended } from '../../types';
-import { fromMm, getLatestLumpCheckValue, getNearestBodyRegion } from '../../utils.ts';
+import { fromMm, getLatestLumpCheckValue, getNearestBodyRegion, isLumpRemoved } from '../../utils.ts';
+import { useLumpCheck } from './composables/useLumpCheck.ts';
 
 const { pets, selectLump } = usePets();
+const { getSizeTrend } = useLumpCheck();
 const { t } = useI18n();
 
 const props = defineProps<{ lump: LumpExtended }>();
 
 const pet = computed(() => pets.value.find(p => p.id === props.lump.petId));
-const status = computed(() => getLatestLumpCheckValue(props.lump.checks, "status"));
+const status = computed(() => isLumpRemoved(props.lump) ? "removed" : getLatestLumpCheckValue(props.lump.checks, "status"));
 const size = computed(() => getLatestLumpCheckValue(props.lump.checks, "size"));
 const picture = computed(() => getLatestLumpCheckValue(props.lump.checks, "pictures")?.at(-1));
 const location = computed(() => {
@@ -21,6 +24,7 @@ const location = computed(() => {
     return t(`health.lumpForm.bodyRegions.${region.id}.${props.lump.location.side}`);
 });
 const lastChecked = computed(() => getLatestLumpCheckValue(props.lump.checks, "date"));
+const trend = computed(() => getSizeTrend(props.lump));
 </script>
 
 <template>
@@ -40,10 +44,18 @@ const lastChecked = computed(() => getLatestLumpCheckValue(props.lump.checks, "d
                 {{ location }} · {{ t('common.text.lastChecked', { date: tsToDate(lastChecked, "dateShort") })
                 }}
             </span>
-            <span class="lump-status tag uppercase font-medium mt-0.75"
-                :style="{ '--bg-color': LUMP_STATUS.find(s => s.id === status)?.rgba, '--text-color': LUMP_STATUS.find(s => s.id === status)?.rgb }">
-                {{t(LUMP_STATUS.find(s => s.id === status)!.label)}}
-            </span>
+            <div class="flex justify-between items-center gap-1 mt-0.75">
+                <span class="lump-status rounded-full text-[0.7rem] px-0.5 py-0.25 tracking-wide uppercase font-medium"
+                    :style="{ '--bg-color': LUMP_STATUS.find(s => s.id === status)?.rgba, '--text-color': LUMP_STATUS.find(s => s.id === status)?.rgb }">
+                    {{t(LUMP_STATUS.find(s => s.id === status)!.label)}}
+                </span>
+                <span v-if="trend" class="flex gap-0.25 items-center"
+                    :style="{ color: trend === 'up' ? 'rgb(207, 167, 22)' : trend === 'down' ? 'var(--color-text-softer)' : 'var(--color-text-secondary)' }">
+                    <ArrowUp :size="14" v-if="trend === 'up'" />
+                    <ArrowDown :size="14" v-if="trend === 'down'" />
+                    <span class="text-xs">{{ t(`health.lumpTrend.${trend}`) }}</span>
+                </span>
+            </div>
         </div>
     </button>
 </template>

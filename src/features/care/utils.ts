@@ -4,7 +4,7 @@ import { i18n } from "../language/config/i18n";
 import { catBodyRegions, dogBodyRegions, SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, LOG_SUBTYPES, MED_FREQUENCY, PARASITES, TREATMENTCOLORS, VACCINE_TYPES } from "./config";
-import type { AntiparasiteLogExtended, AntiparasiteTypes, BodyRegion, LogExtended, LumpCheck, MedicineDb, OtherLogExtended, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
+import type { AntiparasiteLogExtended, AntiparasiteTypes, BodyRegion, LogExtended, LumpCheck, LumpExtended, MedicineDb, OtherLogExtended, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
 
 export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default") => {
     if (!species) return;
@@ -169,4 +169,8 @@ export const getLatestLumpCheckValue = <K extends keyof LumpCheck>(
         if (checks[i][key] !== undefined) return checks[i][key];
     }
     return undefined;
-}
+};
+
+export const sortChecks = (lump: LumpExtended) => lump.checks.sort((a, b) => b.date.toMillis() - a.date.toMillis());
+
+export const isLumpRemoved = (lump: LumpExtended) => lump.checks.find(c => c.status === "removed");

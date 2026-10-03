@@ -368,7 +368,7 @@ export default {
                 label: "Estado",
                 monitoring: "En observación",
                 checked: "Revisado",
-                pending: "Resultados pendientes",
+                pending: "En análisis",
                 removed: "Extirpado",
             },
             bodyRegions: {
@@ -473,6 +473,11 @@ export default {
                 myxo: "Mixomatosis + RHD",
                 distemper: "Moquillo",
             },
+        },
+        lumpTrend: {
+            up: "creciendo",
+            down: "reduciéndose",
+            stable: "estable",
         }
     },
     events: {

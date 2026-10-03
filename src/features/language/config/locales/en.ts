@@ -473,6 +473,11 @@ export default {
                 myxo: "Myxomatosis + RHD",
                 distemper: "Distemper",
             },
+        },
+        lumpTrend: {
+            up: "growing",
+            down: "shrinking",
+            stable: "stable",
         }
     },
     events: {
