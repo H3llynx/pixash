@@ -5,10 +5,10 @@ import { useDialog } from "../../../../../composables/useDialog";
 import { useToast } from "../../../../../composables/useToast";
 import { resetForm, shallowEqual } from "../../../../../utils";
 import { usePets } from "../../../../pets/composables/usePets";
+import { useLumpCheck } from "../../../composables/useLumpCheck";
 import { lumpFields } from "../../../config";
 import type { LumpExtended } from "../../../types";
 import { fromMm, toMm } from "../../../utils";
-import { useLumpCheck } from "../../lumps/composables/useLumpCheck";
 
 
 export const useLumpForm = () => {
@@ -17,7 +17,7 @@ export const useLumpForm = () => {
     const { show } = useToast();
     const { open } = useDialog();
     const { t } = useI18n();
-    const { checkData, resetCheckData } = useLumpCheck();
+    const { checkData, defaultCheck } = useLumpCheck();
 
     const loading = ref<boolean>(false);
     const pictures = ref<Picture[]>([]);
@@ -35,7 +35,7 @@ export const useLumpForm = () => {
 
     const reset = () => {
         resetForm(lumpData, defaultLump);
-        resetCheckData();
+        resetForm(checkData, defaultCheck);
         resetFormPictureState(loadedPictures);
     };
 
@@ -125,6 +125,6 @@ export const useLumpForm = () => {
     };
 
     return {
-        loading, lumpData, checkData, resetCheckData, reset, fillLumpData, setUnit, pictures, loadedPictures, handleClose, handleDelete, handleSubmit
+        loading, lumpData, checkData, reset, fillLumpData, setUnit, pictures, loadedPictures, handleClose, handleDelete, handleSubmit
     }
 }

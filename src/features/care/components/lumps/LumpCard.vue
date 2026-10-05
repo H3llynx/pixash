@@ -4,13 +4,13 @@ import { computed, defineProps } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
+import { useLumpCheck } from '../../composables/useLumpCheck.ts';
 import { LUMP_STATUS } from '../../config.ts';
 import type { LumpExtended } from '../../types';
 import { fromMm, getLatestLumpCheckValue, getNearestBodyRegion, isLumpRemoved } from '../../utils.ts';
-import { useLumpCheck } from './composables/useLumpCheck.ts';
 
-const { pets, selectLump } = usePets();
-const { getSizeTrend } = useLumpCheck();
+const { pets } = usePets();
+const { getSizeTrend, openModal } = useLumpCheck();
 const { t } = useI18n();
 
 const props = defineProps<{ lump: LumpExtended }>();
@@ -28,7 +28,7 @@ const trend = computed(() => getSizeTrend(props.lump));
 </script>
 
 <template>
-    <button @click="selectLump(lump)" class="card w-3xs border border-border p-0 overflow-hidden">
+    <button @click="openModal(lump, 'view')" class="card w-3xs border border-border p-0 overflow-hidden">
         <div class="w-full bg-picture-placeholder h-7 flex justify-center items-center overflow-hidden">
             <img v-if="picture" :src="picture" class="w-full object-cover">
             <span v-else>📷</span>
@@ -38,7 +38,7 @@ const trend = computed(() => getSizeTrend(props.lump));
                 <h4>{{ lump.title }}</h4>
                 <span v-if="size" class="text-text-secondary text-xs shrink-0">{{ fromMm(Number(size.valueMm),
                     size.displayUnit)
-                    }} {{ size.displayUnit }}</span>
+                }} {{ size.displayUnit }}</span>
             </div>
             <span class="text-text-secondary text-xs font-medium inline-flex">
                 {{ location }} · {{ t('common.text.lastChecked', { date: tsToDate(lastChecked, "dateShort") })
@@ -50,10 +50,10 @@ const trend = computed(() => getSizeTrend(props.lump));
                     {{t(LUMP_STATUS.find(s => s.id === status)!.label)}}
                 </span>
                 <span v-if="trend" class="flex gap-0.25 items-center"
-                    :style="{ color: trend === 'up' ? 'rgb(207, 167, 22)' : trend === 'down' ? 'var(--color-text-softer)' : 'var(--color-text-secondary)' }">
+                    :style="{ color: trend === 'up' ? 'var(--color-yellow)' : trend === 'down' ? 'var(--color-text-softer)' : 'var(--color-text-secondary)' }">
                     <ArrowUp :size="14" v-if="trend === 'up'" />
                     <ArrowDown :size="14" v-if="trend === 'down'" />
-                    <span class="text-xs">{{ t(`health.lumpTrend.${trend}`) }}</span>
+                    <span class="text-xs">{{ t(`health.lump.trend.${trend}`) }}</span>
                 </span>
             </div>
         </div>

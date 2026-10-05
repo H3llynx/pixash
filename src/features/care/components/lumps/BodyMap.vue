@@ -2,8 +2,8 @@
 import { defineModel, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { usePets } from '../../../pets/composables/usePets';
+import { useBodyMap } from '../../composables/useBodyMap';
 import type { LumpPosition } from '../../types';
-import { useBodyMap } from './composables/useBodyMap';
 
 const { selectedPet, selectedLump, selectLump } = usePets();
 const { t } = useI18n();

@@ -1,8 +1,8 @@
 import { computed, reactive, ref, watch, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { usePets } from "../../../../pets/composables/usePets.ts";
-import type { BodyRegion, LumpPosition } from "../../../types.ts";
-import { getNearestBodyRegion } from "../../../utils.ts";
+import { usePets } from "../../pets/composables/usePets.ts";
+import type { BodyRegion, LumpPosition } from "../types.ts";
+import { getNearestBodyRegion } from "../utils.ts";
 
 const DRAG_THRESHOLD = 6;
 

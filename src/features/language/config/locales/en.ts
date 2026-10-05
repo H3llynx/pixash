@@ -474,10 +474,15 @@ export default {
                 distemper: "Distemper",
             },
         },
-        lumpTrend: {
-            up: "growing",
-            down: "shrinking",
-            stable: "stable",
+        lump: {
+            trend: {
+                up: "growing",
+                down: "shrinking",
+                stable: "stable",
+            },
+            currentSize: "current size",
+            sinceFirstNoted: "since first noted",
+            checksLogged: "checks logged"
         }
     },
     events: {

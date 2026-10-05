@@ -474,10 +474,15 @@ export default {
                 distemper: "Moquillo",
             },
         },
-        lumpTrend: {
-            up: "creciendo",
-            down: "reduciéndose",
-            stable: "estable",
+        lump: {
+            trend: {
+                up: "creciendo",
+                down: "reduciéndose",
+                stable: "estable",
+            },
+            currentSize: "tamaño actual",
+            sinceFirstNoted: "desde primer registro",
+            checksLogged: "controles registrados"
         }
     },
     events: {

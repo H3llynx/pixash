@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import FreeModal from '../../../../components/FreeModal.vue';
-import { usePets } from '../../../pets/composables/usePets.ts';
-import { useLumpForm } from '../forms/composables/useLumpForm.ts';
-import LumpCheckArea from '../forms/LumpCheckArea.vue';
+import FreeModal from '../../../../../components/FreeModal.vue';
+import { usePets } from '../../../../pets/composables/usePets.ts';
+import { useLumpForm } from '../../forms/composables/useLumpForm.ts';
+import LumpCheckArea from '../../forms/LumpCheckArea.vue';
 import { computed, ref, watch } from 'vue';
-import Button from '../../../../components/Button.vue';
-import { useLumpCheck } from '../lumps/composables/useLumpCheck.ts';
-import PetIcon from '../../../pets/components/PetIcon.vue';
-import { fromMm, getLatestLumpCheckValue } from '../../utils.ts';
-import { tsToDate } from '../../../../utils.ts';
-import { useToast } from '../../../../composables/useToast.ts';
-import LoadingPet from '../../../../components/loading/LoadingPet.vue';
+import Button from '../../../../../components/Button.vue';
+import { useLumpCheck } from '../../../composables/useLumpCheck.ts';
+import PetIcon from '../../../../pets/components/PetIcon.vue';
+import { fromMm, getLatestLumpCheckValue } from '../../../utils.ts';
+import { tsToDate } from '../../../../../utils.ts';
+import { useToast } from '../../../../../composables/useToast.ts';
+import LoadingPet from '../../../../../components/loading/LoadingPet.vue';
 
 const { pets, addNewLumpCheck, careError } = usePets();
 const { checkData } = useLumpForm();
-const { pictures, loadedPictures, isCheckEmpty, logCheck, closeModal, checkedLump, isModalOpen } = useLumpCheck();
+const { pictures, loadedPictures, isCheckEmpty, logCheck, closeModal, checkedLump, isEditModalOpen } = useLumpCheck();
 const { show } = useToast();
 const { t } = useI18n();
 
@@ -37,7 +37,7 @@ const handleSubmit = async () => {
             title: t("toast.success.title.generic"),
             message: t("toast.success.message.lumpUpdated", { title: checkedLump.value.title }),
         });
-        closeModal();
+        closeModal('edit', checkData);
     }
     catch (e) {
         show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
@@ -51,11 +51,11 @@ watch(() => checkedLump.value, (lump) => {
     if (lump && lastStatus.value) {
         checkData.status = lastStatus.value;
     }
-});
+}, { immediate: true });
 </script>
 
 <template>
-    <FreeModal v-model="isModalOpen" size="md">
+    <FreeModal v-model="isEditModalOpen" size="md">
         <LoadingPet v-if="loading" />
         <div v-else class="scroll-container">
             <div class="flex gap-1 my-2 default-padding ">
@@ -86,7 +86,8 @@ watch(() => checkedLump.value, (lump) => {
                 <div class="flex flex-col gap-1 pt-1.5 default-padding">
                     <Button :disabled="isCheckEmpty(checkData, lastStatus) || loading" @click="handleSubmit">{{
                         t("common.button.confirm") }}</Button>
-                    <Button type="button" variant="ghost" @click="closeModal">{{ t("common.button.cancel") }}</Button>
+                    <Button type="button" variant="ghost" @click="closeModal('edit')">{{ t("common.button.cancel")
+                        }}</Button>
                 </div>
             </form>
         </div>

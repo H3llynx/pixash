@@ -1,12 +1,13 @@
 import { Timestamp } from "firebase/firestore";
 import { reactive, ref } from "vue";
-import { useAddPictures, type Picture } from "../../../../../composables/useAddPictures";
-import { resetForm } from "../../../../../utils";
-import { lumpFields } from "../../../config";
-import type { LumpCheck, LumpCheckRecord, LumpExtended } from "../../../types";
-import { isLumpRemoved, toMm } from "../../../utils";
+import { useAddPictures, type Picture } from "../../../composables/useAddPictures";
+import { resetForm } from "../../../utils";
+import { lumpFields } from "../config";
+import type { LumpCheck, LumpCheckRecord, LumpExtended } from "../types";
+import { isLumpRemoved, toMm } from "../utils";
 
-const isModalOpen = ref<boolean>(false);
+const isEditModalOpen = ref<boolean>(false);
+const isViewModalOpen = ref<boolean>(false);
 const checkedLump = ref<LumpExtended | null>(null);
 
 export const useLumpCheck = () => {
@@ -55,21 +56,24 @@ export const useLumpCheck = () => {
         return check;
     };
 
-    const openModal = (lump: LumpExtended) => {
+    const openModal = (lump: LumpExtended, mode: "edit" | "view") => {
         checkedLump.value = lump;
-        isModalOpen.value = true;
+        if (mode === 'edit') isEditModalOpen.value = true;
+        else if (mode === 'view') isViewModalOpen.value = true;
     };
 
-    const closeModal = () => {
-        isModalOpen.value = false;
-        resetCheckData();
-        resetFormPictureState(loadedPictures);
-        checkedLump.value = null;
+    const closeModal = (mode: "edit" | "view", checkData?: LumpCheckRecord) => {
+        if (mode === 'edit') {
+            isEditModalOpen.value = false;
+            if (checkData) resetForm(checkData, defaultCheck);
+            resetFormPictureState(loadedPictures);
+        } else if (mode === 'view') {
+            isViewModalOpen.value = false;
+            checkedLump.value = null;
+        }
     };
 
-    type SizeEntry = { date: Timestamp; valueMm: number };
-
-    const getSizeHistory = (checks: LumpCheck[]): SizeEntry[] => {
+    const getSizeHistory = (checks: LumpCheck[]): { date: Timestamp; valueMm: number }[] => {
         return checks
             .filter((c): c is LumpCheck & { size: NonNullable<LumpCheck["size"]> } => !!c.size)
             .map(c => ({ date: c.date, valueMm: Number(c.size.valueMm) }))
@@ -89,5 +93,11 @@ export const useLumpCheck = () => {
         return direction;
     };
 
-    return { checkedLump, pictures, loadedPictures, resetFormPictureState, checkData, resetCheckData, isCheckEmpty, logCheck, isModalOpen, openModal, closeModal, getSizeTrend };
+    const getSizeProgression = (lump: LumpExtended): number | null => {
+        const history = getSizeHistory(lump.checks);
+        if (history.length < 2) return null;
+        return history[history.length - 1].valueMm - history[0].valueMm;
+    };
+
+    return { checkedLump, pictures, loadedPictures, resetFormPictureState, defaultCheck, checkData, resetCheckData, isCheckEmpty, logCheck, isEditModalOpen, isViewModalOpen, openModal, closeModal, getSizeTrend, getSizeProgression };
 }

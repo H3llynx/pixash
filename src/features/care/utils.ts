@@ -161,16 +161,16 @@ export const getNearestBodyRegion = (
     return nearest;
 };
 
+export const sortChecks = (lump: LumpExtended) => [...lump.checks].sort((a, b) => b.date.toMillis() - a.date.toMillis());
+
 export const getLatestLumpCheckValue = <K extends keyof LumpCheck>(
     checks: LumpCheck[],
     key: K
-): LumpCheck[K] | undefined => {
-    for (let i = checks.length - 1; i >= 0; i--) {
-        if (checks[i][key] !== undefined) return checks[i][key];
+) => {
+    const sorted = [...checks].sort((a, b) => a.date.toMillis() - b.date.toMillis());
+    for (let i = sorted.length - 1; i >= 0; i--) {
+        if (sorted[i][key] !== undefined) return sorted[i][key];
     }
-    return undefined;
 };
-
-export const sortChecks = (lump: LumpExtended) => lump.checks.sort((a, b) => b.date.toMillis() - a.date.toMillis());
 
 export const isLumpRemoved = (lump: LumpExtended) => lump.checks.find(c => c.status === "removed");
