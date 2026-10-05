@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { inject, onMounted, ref, watch } from 'vue';
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
+import { defineProps, inject, onMounted, ref, withDefaults } from 'vue';
 import { usePets } from '../features/pets/composables/usePets';
 import Button from './Button.vue';
 
@@ -12,14 +13,11 @@ withDefaults(defineProps<{
 }>(), { canClose: true });
 
 const panelRef = ref<HTMLElement>();
+const { activate } = useFocusTrap(panelRef, { immediate: true, escapeDeactivates: false });
 
 onMounted(() => {
-    panelRef.value?.focus();
+    activate();
     document.documentElement.scrollTop = 0;
-});
-
-watch(readonly, () => {
-    panelRef.value?.focus();
 });
 </script>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Pen, X } from '@lucide/vue';
-import { computed } from 'vue';
+import { computed, defineModel, defineProps } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../../components/Button.vue';
 import FreeModal from '../../../../../components/FreeModal.vue';
@@ -40,21 +40,21 @@ const missed = computed(() => getMissedDosesHistory(props.pet, props.treatment, 
             </div>
             <div class="flex items-end gap-1 md:gap-2 px-1.5 py-1 border-t border-b border-border">
                 <div>
-                    <p class="text-xl font-bold">{{ logs.length }}</p>
-                    <p class="text-xs tracking-wide uppercase text-text-secondary">{{
-                        t("health.treatment.historyModal.logged") }}</p>
+                    <span class="block text-xl font-bold">{{ logs.length }}</span>
+                    <span class="block text-xs tracking-wide uppercase text-text-secondary">{{
+                        t("health.treatment.historyModal.logged") }}</span>
                 </div>
                 <div>
-                    <p :class="{ 'text-xl font-bold': true, 'text-error': missed > 0 }">{{ missed }}</p>
-                    <p class="text-xs tracking-wide uppercase text-text-secondary">{{
-                        t("health.treatment.historyModal.missed") }}</p>
+                    <span :class="{ 'block text-xl font-bold': true, 'text-error': missed > 0 }">{{ missed }}</span>
+                    <span class="block text-xs tracking-wide uppercase text-text-secondary">{{
+                        t("health.treatment.historyModal.missed") }}</span>
                 </div>
                 <div>
-                    <p class="text-base font-bold">{{
+                    <span class="block text-base font-bold">{{
                         formatDateRange(treatment.startDate.toDate(),
-                            new Date()) }}</p>
-                    <p class="text-xs tracking-wide uppercase text-text-secondary">{{
-                        t("health.treatment.historyModal.window") }}</p>
+                            new Date()) }}</span>
+                    <span class="block text-xs tracking-wide uppercase text-text-secondary">{{
+                        t("health.treatment.historyModal.window") }}</span>
                 </div>
             </div>
             <div :class="{ 'flex justify-between items-center px-1.5 py-1 text-sm border-b border-border': true, 'opacity-40 animate-pulse': savingLogIds.has(log.id) }"

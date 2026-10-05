@@ -26,8 +26,28 @@ button {
     background: transparent;
     font-weight: 400;
 
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        border-radius: 2rem;
+        transition: 0.6s;
+    }
+
     &:not(.active) {
         background: transparent;
+    }
+
+    &:focus-visible {
+        outline: none;
+        color: var(--color-interactive);
+
+        &::after {
+            animation: apearLeft 0.3s ease forwards;
+            height: 2px;
+            background: var(--color-interactive);
+        }
     }
 }
 
@@ -36,14 +56,9 @@ button {
     color: var(--color-accent);
 
     &::after {
-        content: "";
-        position: absolute;
         animation: apearLeft 0.3s ease forwards;
         height: 2px;
-        bottom: 0;
-        left: 0;
         background: var(--color-accent);
-        border-radius: 2rem;
     }
 }
 
