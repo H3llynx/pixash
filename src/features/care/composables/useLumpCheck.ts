@@ -41,8 +41,10 @@ export const useLumpCheck = () => {
     };
 
     const logCheck = (checkRecord: LumpCheckRecord): LumpCheck => {
-        const check: LumpCheck = { date: Timestamp.now() };
-
+        const check: LumpCheck = {
+            id: crypto.randomUUID(),
+            date: Timestamp.now()
+        };
         if (checkRecord.size?.value) {
             check.size = {
                 displayUnit: checkRecord.size.displayUnit,

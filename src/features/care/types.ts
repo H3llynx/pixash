@@ -222,6 +222,7 @@ export type LumpCheckRecord = {
 };
 
 export type LumpCheck = {
+    id: string,
     date: Timestamp;
     size?: {
         valueMm: string;

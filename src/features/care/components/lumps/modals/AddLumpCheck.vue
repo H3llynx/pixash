@@ -87,7 +87,7 @@ watch(() => checkedLump.value, (lump) => {
                     <Button :disabled="isCheckEmpty(checkData, lastStatus) || loading" @click="handleSubmit">{{
                         t("common.button.confirm") }}</Button>
                     <Button type="button" variant="ghost" @click="closeModal('edit')">{{ t("common.button.cancel")
-                        }}</Button>
+                    }}</Button>
                 </div>
             </form>
         </div>
