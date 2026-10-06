@@ -8,7 +8,8 @@ import LumpForm from './features/care/components/forms/LumpForm.vue';
 import TreatmentForm from './features/care/components/forms/TreatmentForm.vue';
 import VaccineForm from './features/care/components/forms/VaccineForm.vue';
 import VetVisitForm from './features/care/components/forms/VetVisitForm.vue';
-import AddLumpCheck from './features/care/components/lumps/AddLumpCheck.vue';
+import AddLumpCheck from './features/care/components/lumps/modals/AddLumpCheck.vue';
+import LumpDetail from './features/care/components/lumps/modals/LumpDetail.vue';
 import LogMedication from './features/care/components/treatments/modals/LogMedication.vue';
 import PetForm from './features/pets/components/PetForm.vue';
 import { useAuth } from './features/user/composables/useAuth';
@@ -30,6 +31,7 @@ const { loading, user } = useAuth();
   <PetForm />
   <LogMedication />
   <AddLumpCheck />
+  <LumpDetail />
   <Toast />
   <Dialog />
 </template>

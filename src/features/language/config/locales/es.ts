@@ -482,7 +482,8 @@ export default {
             },
             currentSize: "tamaño actual",
             sinceFirstNoted: "desde primer registro",
-            checksLogged: "controles registrados"
+            checksLogged: "seguimientos registrados",
+            addCheck: "Nuevo seguimiento"
         }
     },
     events: {

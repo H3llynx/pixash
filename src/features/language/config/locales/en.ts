@@ -474,7 +474,7 @@ export default {
                 distemper: "Distemper",
             },
         },
-        lump: {
+        lumps: {
             trend: {
                 up: "growing",
                 down: "shrinking",
@@ -482,7 +482,8 @@ export default {
             },
             currentSize: "current size",
             sinceFirstNoted: "since first noted",
-            checksLogged: "checks logged"
+            checksLogged: "checks logged",
+            addCheck: "Add a new check"
         }
     },
     events: {

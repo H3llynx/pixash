@@ -23,6 +23,7 @@
   --color-grey-mid: #87807a;
   --color-grey-dark: #333636;
   --color-grey-dark-rgba: rgba(46, 48, 48, 0.42);
+  --color-grey-rgba: rgba(135, 128, 122, 0.5);
 
   --color-green: #3e7d1a;
   --color-green-rgba: rgba(155, 210, 182, 0.28);
@@ -40,6 +41,7 @@
   --color-eucalyptus-light: #B8E2CB;
   --color-eucalyptus-rgba: rgba(155, 210, 182, 0.28);
 
+  --color-yellow: #CFA716;
   --color-blue: #185fA5;
   --color-purple: #A879DB;
   --color-purple-rgba: rgba(168, 121, 219, 0.22);
@@ -89,6 +91,7 @@
   --color-orange: #E67E22;
   --color-orange-dark: #B36017;
   --color-gold: #CD8E29;
+  --color-yellow: #EDA909;
   --color-blue: rgb(140, 188, 236);
 
   --color-bg: var(--color-charcoal);
@@ -197,6 +200,10 @@
 
     &[readonly] {
       background: var(--color-bg-2);
+
+      &:focus-visible {
+        outline: none;
+      }
     }
   }
 

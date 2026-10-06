@@ -38,7 +38,7 @@ const trend = computed(() => getSizeTrend(props.lump));
                 <h4>{{ lump.title }}</h4>
                 <span v-if="size" class="text-text-secondary text-xs shrink-0">{{ fromMm(Number(size.valueMm),
                     size.displayUnit)
-                }} {{ size.displayUnit }}</span>
+                    }} {{ size.displayUnit }}</span>
             </div>
             <span class="text-text-secondary text-xs font-medium inline-flex">
                 {{ location }} · {{ t('common.text.lastChecked', { date: tsToDate(lastChecked, "dateShort") })
@@ -53,7 +53,7 @@ const trend = computed(() => getSizeTrend(props.lump));
                     :style="{ color: trend === 'up' ? 'var(--color-yellow)' : trend === 'down' ? 'var(--color-text-softer)' : 'var(--color-text-secondary)' }">
                     <ArrowUp :size="14" v-if="trend === 'up'" />
                     <ArrowDown :size="14" v-if="trend === 'down'" />
-                    <span class="text-xs">{{ t(`health.lump.trend.${trend}`) }}</span>
+                    <span class="text-xs">{{ t(`health.lumps.trend.${trend}`) }}</span>
                 </span>
             </div>
         </div>
