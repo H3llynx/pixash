@@ -40,7 +40,7 @@ export const useTreatments = () => {
 
     const treatmentsThisMonth = computed(() => {
         const now = new Date();
-        return treatments.value
+        return [...treatments.value]
             .filter(t => {
                 const overlapsMonth = checkOverlapsMonth(
                     t.startDate,
@@ -58,14 +58,14 @@ export const useTreatments = () => {
             }))
     });
 
-    const scheduledTreatments = computed(() => treatments.value
+    const scheduledTreatments = computed(() => [...treatments.value]
         .filter(t => t.startDate.toDate() > new Date())
         .sort(byStartThenEndDesc)
     );
 
     const activeTreatments = computed(() => {
         const now = new Date();
-        return treatments.value
+        return [...treatments.value]
             .filter(t => t.startDate.toDate() <= now && (!t.endDate || !tsToDate(t.endDate, "isPast")))
             .sort(byStartThenEndDesc)
     });
@@ -95,7 +95,7 @@ export const useTreatments = () => {
             log.treatmentId === treatment.id &&
             log.medicineId === medication.id
         ) as MedicationLogExtended[];
-        return logs.sort((a, b) => b.givenAt.toDate().getTime() - a.givenAt.toDate().getTime());
+        return [...logs].sort((a, b) => b.givenAt.toDate().getTime() - a.givenAt.toDate().getTime());
     };
 
     const getLatestLog = (

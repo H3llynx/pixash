@@ -34,7 +34,7 @@ export const useHistory = () => {
     const petHistory = computed(() => history.value.filter(h => h.petId === selectedPet.value?.id) as PetEvent[]);
 
 
-    const finishedTreatments = computed(() => treatments.value
+    const finishedTreatments = computed(() => [...treatments.value]
         .filter(t => t.endDate && tsToDate(t.endDate, "isPast"))
         .filter(t => t.petId === selectedPet.value?.id)
         .sort(byStartThenEndDesc));

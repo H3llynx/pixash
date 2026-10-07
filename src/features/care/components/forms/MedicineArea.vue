@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { X } from '@lucide/vue';
-import { defineModel, inject, ref } from 'vue';
+import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import type { Medicine } from '../../types.ts';

@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap.js';
-import { defineProps, inject, onMounted, ref, withDefaults } from 'vue';
+import { defineProps, onMounted, ref, withDefaults } from 'vue';
 import { usePets } from '../features/pets/composables/usePets';
 import Button from './Button.vue';
 
 const { hasPets } = usePets();
-const readonly = inject("readonly", ref(false));
 
 withDefaults(defineProps<{
     canClose?: boolean
@@ -13,10 +11,9 @@ withDefaults(defineProps<{
 }>(), { canClose: true });
 
 const panelRef = ref<HTMLElement>();
-const { activate } = useFocusTrap(panelRef, { immediate: true, escapeDeactivates: false });
 
 onMounted(() => {
-    activate();
+    panelRef.value?.focus();
     document.documentElement.scrollTop = 0;
 });
 </script>
