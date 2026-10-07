@@ -1,7 +1,7 @@
-import { addDoc, arrayUnion, collection, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where, writeBatch } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, query, serverTimestamp, updateDoc, where, writeBatch } from "firebase/firestore";
 import { DB } from "../config/config";
 import { db } from "../config/firebase";
-import type { AntiparasiteLogExtended, Log, LogExtended, LumpCheck, LumpExtended, LumpRecord, MedicationLogExtended, OtherLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/care/types";
+import type { AntiparasiteLogExtended, Log, LogExtended, LumpCheckExtended, LumpExtended, LumpRecord, MedicationLogExtended, OtherLogExtended, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord, WeightLogExtended } from "../features/care/types";
 import { getTreatmentEndDate } from "../features/care/utils";
 import { tsFromInput } from "../utils";
 
@@ -87,7 +87,7 @@ export const fetchPetLogs = async (userId: string, petId: string): Promise<LogEx
                 petId,
                 userId,
                 eventType: "log",
-            }
+            };
             if (data.type === "antiparasite") {
                 const log = {
                     ...base,
@@ -98,7 +98,7 @@ export const fetchPetLogs = async (userId: string, petId: string): Promise<LogEx
                     notes: data.notes,
                 } as AntiparasiteLogExtended;
                 return log;
-            }
+            };
             if (data.type === "weight") {
                 const log = {
                     ...base,
@@ -107,7 +107,7 @@ export const fetchPetLogs = async (userId: string, petId: string): Promise<LogEx
                     measuredAt: data.measuredAt,
                 } as WeightLogExtended;
                 return log;
-            }
+            };
             if (data.type === "medication") {
                 const log = {
                     ...base,
@@ -117,7 +117,20 @@ export const fetchPetLogs = async (userId: string, petId: string): Promise<LogEx
                     givenAt: data.givenAt,
                 } as MedicationLogExtended;
                 return log;
-            }
+            };
+            if (data.type === "lump") {
+                const log = {
+                    ...base,
+                    type: "lump",
+                    lumpId: data.lumpId,
+                    date: data.date,
+                    size: data.size,
+                    pictures: data.pictures,
+                    notes: data.notes,
+                    status: data.status
+                } as LumpCheckExtended;
+                return log;
+            };
             if (data.type === "other") {
                 const log = {
                     ...base,
@@ -138,7 +151,7 @@ export const fetchPetLogs = async (userId: string, petId: string): Promise<LogEx
     }
 };
 
-const getVaccineDoc = (userId: string, petId: string, vaccineId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.vaccines, vaccineId);
+const getVaccineDoc = (vaccine: VaccineExtended, userId: string) => doc(db, DB.users, userId, DB.pets, vaccine.petId, DB.vaccines, vaccine.id);
 
 export const addVaccine = async (vaccine: VaccineRecord, petId: string, userId: string) => {
     const newVaccine = {
@@ -161,13 +174,12 @@ export const addVaccine = async (vaccine: VaccineRecord, petId: string, userId: 
 };
 
 export const updateVaccine = async (
-    vaccineId: string,
-    petId: string,
+    vaccine: VaccineExtended,
     userId: string,
     data: VaccineRecord
 ) => {
     const updated = {
-        petId: petId,
+        petId: vaccine.petId,
         userId: userId,
         types: data.types,
         stage: data.stage,
@@ -177,7 +189,7 @@ export const updateVaccine = async (
         notes: data.notes,
     };
     try {
-        const docRef = getVaccineDoc(userId, petId, vaccineId);
+        const docRef = getVaccineDoc(vaccine, userId);
         await updateDoc(docRef, updated);
     } catch (error) {
         console.error("Error updating vaccine: ", error);
@@ -185,16 +197,16 @@ export const updateVaccine = async (
     }
 };
 
-export const deleteVaccine = async (vaccineId: string, petId: string, userId: string) => {
+export const deleteVaccine = async (vaccine: VaccineExtended, userId: string) => {
     try {
-        await deleteDoc(getVaccineDoc(userId, petId, vaccineId));
+        await deleteDoc(getVaccineDoc(vaccine, userId));
     } catch (error) {
         console.error("Error deleting vaccine: ", error);
         throw error;
     }
 };
 
-const getVisitDoc = (userId: string, petId: string, visitId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.vetVisits, visitId);
+const getVisitDoc = (visit: VisitExtended, userId: string) => doc(db, DB.users, userId, DB.pets, visit.petId, DB.vetVisits, visit.id);
 
 export const addVetVisit = async (visit: VisitRecord, petId: string, userId: string) => {
     const newVisit = {
@@ -215,13 +227,12 @@ export const addVetVisit = async (visit: VisitRecord, petId: string, userId: str
 };
 
 export const updateVetVisit = async (
-    visitId: string,
-    petId: string,
+    visit: VisitExtended,
     userId: string,
     data: VisitRecord
 ) => {
     const updated = {
-        petId: petId,
+        petId: visit.petId,
         userId: userId,
         title: data.title,
         date: tsFromInput(data.date),
@@ -229,7 +240,7 @@ export const updateVetVisit = async (
         notes: data.notes,
     };
     try {
-        const docRef = getVisitDoc(userId, petId, visitId);
+        const docRef = getVisitDoc(visit, userId);
         await updateDoc(docRef, updated);
     } catch (error) {
         console.error("Error updating vet appointment: ", error);
@@ -237,9 +248,9 @@ export const updateVetVisit = async (
     }
 };
 
-export const deleteVisit = async (visitId: string, petId: string, userId: string) => {
+export const deleteVisit = async (visit: VisitExtended, userId: string) => {
     try {
-        await deleteDoc(getVisitDoc(userId, petId, visitId));
+        await deleteDoc(getVisitDoc(visit, userId));
     } catch (error) {
         console.error("Error deleting vet appointment: ", error);
         throw error;
@@ -322,8 +333,7 @@ export const addLog = async (log: Log, petId: string, userId: string) => {
         newLog = {
             petId: petId,
             userId: userId,
-            type: log.type,
-            treated: log.treated,
+            ...log,
             givenAt: log.givenAt ? tsFromInput(log.givenAt) : null,
             dueOn: log.dueOn ? tsFromInput(log.dueOn) : null,
             notes: log.notes ?? null,
@@ -332,19 +342,23 @@ export const addLog = async (log: Log, petId: string, userId: string) => {
         newLog = {
             petId: petId,
             userId: userId,
-            type: log.type,
-            weight: log.weight,
+            ...log,
             measuredAt: serverTimestamp()
         };
     else if (log.type === "medication")
         newLog = {
             petId: petId,
             userId: userId,
-            treatmentId: log.treatmentId,
-            medicineId: log.medicineId,
-            type: log.type,
+            ...log,
             givenAt: log.givenAt ?? serverTimestamp()
         };
+    else if (log.type === "lump")
+        newLog = {
+            petId: petId,
+            userId: userId,
+            ...log,
+            date: serverTimestamp()
+        }
     else if (log.type === "other")
         newLog = {
             petId: petId,
@@ -399,6 +413,17 @@ export const updateLog = async (
             type: log.type,
             givenAt: log.givenAt
         };
+    else if (log.type === "lump")
+        updated = {
+            petId: petId,
+            userId: userId,
+            lumpId: log.lumpId,
+            date: log.date,
+            size: log.size,
+            pictures: log.pictures,
+            notes: log.notes,
+            status: log.status,
+        };
     else if (log.type === "other")
         updated = {
             petId: petId,
@@ -421,16 +446,16 @@ export const updateLog = async (
     }
 };
 
-export const deleteLog = async (logId: string, petId: string, userId: string) => {
+export const deleteLog = async (log: Pick<LogExtended, "id" | "petId">, userId: string) => {
     try {
-        await deleteDoc(getLogDoc(userId, petId, logId));
+        await deleteDoc(getLogDoc(userId, log.petId, log.id));
     } catch (error) {
         console.error("Error deleting log: ", error);
         throw error;
     }
 };
 
-const getTreatmentDoc = (userId: string, petId: string, treatmentId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.treatments, treatmentId);
+const getTreatmentDoc = (treatment: TreatmentExtended, userId: string) => doc(db, DB.users, userId, DB.pets, treatment.petId, DB.treatments, treatment.id);
 
 export const addTreatment = async (treatment: TreatmentRecord, petId: string, userId: string) => {
     const newTreatment = {
@@ -456,12 +481,11 @@ export const addTreatment = async (treatment: TreatmentRecord, petId: string, us
 
 export const updateTreatment = async (
     treatment: TreatmentExtended,
-    petId: string,
     userId: string,
     data: TreatmentRecord
 ) => {
     const updated = {
-        petId: petId,
+        petId: treatment.petId,
         userId: userId,
         name: data.name,
         startDate: tsFromInput(data.startDate),
@@ -479,14 +503,14 @@ export const updateTreatment = async (
         if (!updatedMedicationIds.has(id)) removedMedicationIds.push(id);
     }
     try {
-        const docRef = getTreatmentDoc(userId, petId, treatment.id);
+        const docRef = getTreatmentDoc(treatment, userId);
         await updateDoc(docRef, updated);
 
         if (removedMedicationIds.length) {
             const batch = writeBatch(db);
             for (const medId of removedMedicationIds) {
                 const q = query(
-                    collection(db, DB.users, userId, DB.pets, petId, DB.logs),
+                    collection(db, DB.users, userId, DB.pets, treatment.petId, DB.logs),
                     where("type", "==", "medication"),
                     where("medicineId", "==", medId),
                     where("treatmentId", "==", treatment.id)
@@ -502,11 +526,11 @@ export const updateTreatment = async (
     }
 };
 
-export const deleteTreatment = async (treatmentId: string, petId: string, userId: string) => {
+export const deleteTreatment = async (treatment: TreatmentExtended, userId: string) => {
     try {
-        const treatmentRef = getTreatmentDoc(userId, petId, treatmentId);
-        const logsRef = collection(db, DB.users, userId, DB.pets, petId, DB.logs);
-        const associatedLogsSnapshot = await getDocs(query(logsRef, where('treatmentId', '==', treatmentId)));
+        const treatmentRef = getTreatmentDoc(treatment, userId);
+        const logsRef = collection(db, DB.users, userId, DB.pets, treatment.petId, DB.logs);
+        const associatedLogsSnapshot = await getDocs(query(logsRef, where('treatmentId', '==', treatment.id)));
         const logs = associatedLogsSnapshot.docs;
         const batchLimit = 499;
         for (let i = 0; i < logs.length; i += batchLimit) {
@@ -561,20 +585,6 @@ export const updateLump = async (
         });
     } catch (error) {
         console.error("Error updating lump: ", error);
-        throw error;
-    }
-};
-
-export const addLumpCheck = async (
-    check: LumpCheck,
-    lump: Pick<LumpExtended, "id" | "petId">,
-    userId: string
-) => {
-    try {
-        const docRef = getLumpDoc(userId, lump.petId, lump.id);
-        await updateDoc(docRef, { checks: arrayUnion(check) });
-    } catch (error) {
-        console.error("Error adding lump check for: ", error);
         throw error;
     }
 };

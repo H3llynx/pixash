@@ -8,11 +8,10 @@ import { usePets } from "../../../../pets/composables/usePets";
 import { useLumpCheck } from "../../../composables/useLumpCheck";
 import { lumpFields } from "../../../config";
 import type { LumpExtended } from "../../../types";
-import { fromMm, toMm } from "../../../utils";
 
 
 export const useLumpForm = () => {
-    const { selectedPet, isAddingCare, selectLump, selectedLump, addNewLump, updateSelectedLump, deleteSelectedLump, careError } = usePets();
+    const { selectedPet, isAddingCare, selectLump, selectedLump, addNewLump, updateSelectedLump, deleteSelectedLump, addNewLog, careError } = usePets();
     const { logCheck } = useLumpCheck();
     const { show } = useToast();
     const { open } = useDialog();
@@ -46,15 +45,6 @@ export const useLumpForm = () => {
         });
     };
 
-    const setUnit = (newUnit: "cm" | "mm") => {
-        if (checkData.size.displayUnit === newUnit) return;
-        if (checkData.size.value) {
-            const mm = toMm(Number(checkData.size.value), checkData.size.displayUnit);
-            checkData.size.value = String(fromMm(mm, newUnit));
-        }
-        checkData.size.displayUnit = newUnit;
-    };
-
     const handleClose = () => {
         selectLump(null);
         reset();
@@ -66,11 +56,8 @@ export const useLumpForm = () => {
         try {
             if (pictures.value.length) await hostFormPictures(checkData);
             if (isAddingCare.lump) {
-                const lump = {
-                    ...lumpData,
-                    checks: [logCheck(checkData)]
-                };
-                await addNewLump(lump, selectedPet.value.id);
+                const lump = await addNewLump(lumpData, selectedPet.value.id);
+                await addNewLog(logCheck(checkData, lump), selectedPet.value.id);
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),
@@ -125,6 +112,6 @@ export const useLumpForm = () => {
     };
 
     return {
-        loading, lumpData, checkData, reset, fillLumpData, setUnit, pictures, loadedPictures, handleClose, handleDelete, handleSubmit
+        loading, lumpData, checkData, reset, fillLumpData, pictures, loadedPictures, handleClose, handleDelete, handleSubmit
     }
 }

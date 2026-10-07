@@ -474,14 +474,14 @@ export default {
                 distemper: "Moquillo",
             },
         },
-        lump: {
+        lumps: {
             trend: {
                 up: "creciendo",
                 down: "reduciéndose",
                 stable: "estable",
             },
             currentSize: "tamaño actual",
-            sinceFirstNoted: "desde primer registro",
+            sinceFirstMeasured: "desde la primera medición",
             checksLogged: "seguimientos registrados",
             addCheck: "Nuevo seguimiento"
         }

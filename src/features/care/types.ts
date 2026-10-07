@@ -90,7 +90,7 @@ export type PetEvent = {
     notes?: string;
     types?: VaccineTypes["id"][];
     treated?: AntiparasiteTypes["id"][];
-    type?: LogTypes;
+    type?: "antiparasite" | "weight" | "other";
     stage?: typeof STAGE[number]["id"];
     date?: Timestamp;
     measuredAt?: Timestamp;
@@ -115,8 +115,6 @@ export type Vet = {
 
 export type VetExtended = Vet & { id: string; };
 
-export type LogTypes = "antiparasite" | "weight" | "other";
-
 export type AntiparasiteRecord = {
     treated: AntiparasiteTypes["id"][];
     given?: boolean;
@@ -134,7 +132,6 @@ export type MedicationRecord = {
     medicineId: string,
     givenAt?: Timestamp
 };
-
 
 export type MissedDoseRecord = {
     date: Date;
@@ -176,10 +173,31 @@ export type MedicationLogExtended = {
     type: "medication"
 };
 
+export type LumpCheckRecord = {
+    lumpId: string;
+    type: "lump",
+    date: Timestamp;
+    size?: {
+        valueMm: string;
+        displayUnit: "cm" | "mm";
+    };
+    pictures?: string[];
+    notes?: string;
+    status: typeof LUMP_STATUS[number]["id"];
+};
+
+export type LumpCheckExtended = LumpCheckRecord & {
+    id: string;
+    petId: string;
+    userId: string;
+    type: "lump";
+};
+
 export type Log =
     | (AntiparasiteRecord & { type: "antiparasite" })
     | (WeightRecord & { type: "weight" })
     | (MedicationRecord & { type: "medication" })
+    | LumpCheckRecord
     | {
         type: "other";
         subtype: string;
@@ -201,7 +219,7 @@ export type OtherLogExtended = {
     notes?: string;
 };
 
-export type LogExtended = AntiparasiteLogExtended | WeightLogExtended | MedicationLogExtended | OtherLogExtended;
+export type LogExtended = AntiparasiteLogExtended | WeightLogExtended | MedicationLogExtended | OtherLogExtended | LumpCheckExtended;
 
 export type LumpPosition = {
     side: "left" | "right";
@@ -211,32 +229,9 @@ export type LumpPosition = {
 
 export type BodyRegion = { id: string; x: number; y: number };
 
-export type LumpCheckRecord = {
-    size: {
-        value: string,
-        displayUnit: "cm" | "mm"
-    },
-    pictures: string[],
-    notes: string,
-    status: typeof LUMP_STATUS[number]["id"];
-};
-
-export type LumpCheck = {
-    id: string,
-    date: Timestamp;
-    size?: {
-        valueMm: string;
-        displayUnit: "cm" | "mm";
-    };
-    pictures?: string[];
-    notes?: string;
-    status?: typeof LUMP_STATUS[number]["id"];
-};
-
 export type LumpRecord = {
     title: string;
     location: LumpPosition;
-    checks: LumpCheck[];
 };
 
 export type LumpExtended = LumpRecord & {

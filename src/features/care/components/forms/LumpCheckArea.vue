@@ -9,27 +9,19 @@ import Input from '../../../../components/Input.vue';
 import Selector from '../../../../components/Selector.vue';
 import Textarea from '../../../../components/Textarea.vue';
 import { useAddPictures, type Picture } from '../../../../composables/useAddPictures.ts';
+import { useLumpCheck } from '../../composables/useLumpCheck.ts';
 import { lumpFields } from '../../config.ts';
-import type { LumpCheckRecord } from '../../types.ts';
-import { fromMm, toMm } from '../../utils.ts';
 
 const { t } = useI18n();
+const { setUnit, defaultCheck } = useLumpCheck();
 const { size, status, notes } = lumpFields;
 
-const checkData = defineModel<LumpCheckRecord>({ required: true });
+const checkData = defineModel<typeof defaultCheck>({ required: true });
 const pictures = defineModel<Picture[]>("pictures", { required: true });
+
 defineProps<{ loadedPictures: Set<string> }>();
 
 const { deleteFormPicture } = useAddPictures(pictures);
-
-const setUnit = (checkData: LumpCheckRecord, newUnit: "cm" | "mm") => {
-    if (checkData.size.displayUnit === newUnit) return;
-    if (checkData.size.value) {
-        const mm = toMm(Number(checkData.size.value), checkData.size.displayUnit);
-        checkData.size.value = String(fromMm(mm, newUnit));
-    }
-    checkData.size.displayUnit = newUnit;
-};
 
 const { show: showLightbox, onHide, visibleRef, indexRef, imgsRef } = useEasyLightbox({
     imgs: checkData.value?.pictures ?? [],

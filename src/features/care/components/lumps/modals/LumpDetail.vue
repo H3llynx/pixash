@@ -7,22 +7,18 @@ import FreeModal from '../../../../../components/FreeModal.vue';
 import { usePets } from '../../../../pets/composables/usePets.ts';
 import { useLumpCheck } from '../../../composables/useLumpCheck.ts';
 import { LUMP_STATUS } from '../../../config.ts';
-import { fromMm, getLatestLumpCheckValue, getNearestBodyRegion, isLumpRemoved } from '../../../utils.ts';
+import { fromMm, getLatestLumpCheckValue, getNearestBodyRegion } from '../../../utils.ts';
 
 const { pets, selectLump } = usePets();
-const { isViewModalOpen, openModal, checkedLump, closeModal, getSizeProgression } = useLumpCheck();
+const { selectedLumpChecks, isViewModalOpen, openModal, checkedLump, closeModal, isLumpRemoved, getSizeProgression } = useLumpCheck();
 const { t } = useI18n();
 
-const editLump = () => {
-    selectLump(checkedLump.value);
-    closeModal('view');
-}
-
 const pet = computed(() => pets.value.find(p => p.id === checkedLump.value?.petId));
-const size = computed(() => getLatestLumpCheckValue(checkedLump.value?.checks || [], "size"));
+
+const size = computed(() => getLatestLumpCheckValue(selectedLumpChecks.value, "size"));
 const status = computed(() => {
     if (!checkedLump.value) return null;
-    return isLumpRemoved(checkedLump.value) ? "removed" : getLatestLumpCheckValue(checkedLump.value.checks, "status");
+    return isLumpRemoved(checkedLump.value.id) ? "removed" : getLatestLumpCheckValue(selectedLumpChecks.value, "status");
 });
 const location = computed(() => {
     if (!checkedLump.value || !pet.value) return "";
@@ -32,13 +28,19 @@ const location = computed(() => {
 
 const progression = computed(() => {
     if (!checkedLump.value) return null;
-    const value = getSizeProgression(checkedLump.value);
+    const value = getSizeProgression(checkedLump.value.id);
     if (value === null || value === undefined) return null;
     return {
         value,
         sign: value >= 0 ? "+" : "",
     };
 });
+
+const editLump = () => {
+    if (!checkedLump.value) return;
+    selectLump(checkedLump.value);
+    closeModal('view');
+};
 </script>
 
 <template>
@@ -48,7 +50,7 @@ const progression = computed(() => {
                 <div class="flex justify-end items-center gap-0.5">
                     <Button variant="tertiary" size="rounded"
                         class="border-2 border-t-text-softer border-l-text-softer border-b-grey-rgba border-r-grey-rgba hover:border-t-interactive hover:border-l-interactive"
-                        @click="editLump" :aria-label="t('common.button.close')">
+                        @click="editLump" :aria-label="t('common.button.edit')">
                         <Pen :size="16" />
                     </Button>
                     <Button variant="ghost" size="min" @click="closeModal('view')"
@@ -80,12 +82,12 @@ const progression = computed(() => {
                             progression.sign }} {{ progression.value }}
                         mm</span>
                     <span class="block text-xs tracking-wide uppercase text-text-secondary">{{
-                        t("health.lumps.sinceFirstNoted")
-                    }}
+                        t("health.lumps.sinceFirstMeasured")
+                        }}
                     </span>
                 </div>
                 <div>
-                    <span class="block text-base font-bold">{{ checkedLump?.checks.length }}</span>
+                    <span class="block text-base font-bold">{{ selectedLumpChecks.length }}</span>
                     <span class="block text-xs tracking-wide uppercase text-text-secondary">{{
                         t("health.lumps.checksLogged") }}
                     </span>

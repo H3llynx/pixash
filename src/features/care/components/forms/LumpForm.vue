@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Plus } from '@lucide/vue';
-import { provide, watch } from 'vue';
+import { computed, provide, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Input from '../../../../components/Input.vue';
@@ -13,7 +13,6 @@ import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { useLumpCheck } from '../../composables/useLumpCheck.ts';
 import { lumpFields } from '../../config.ts';
-import { sortChecks } from '../../utils.ts';
 import BodyMap from '../lumps/BodyMap.vue';
 import CheckCard from '../lumps/CheckCard.vue';
 import ButtonArea from './ButtonArea.vue';
@@ -27,7 +26,13 @@ const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
 provide('readonly', isReadonly);
 
+const { lumpChecks } = useLumpCheck();
 const { title, location } = lumpFields;
+
+const checks = computed(() => [...lumpChecks.value]
+    .filter(check => check.lumpId === selectedLump.value?.id)
+    .sort((a, b) => b.date.toMillis() - a.date.toMillis())
+);
 
 watch(() => isAddingCare.lump, (adding) => {
     if (adding) mode.value = "edit";
@@ -55,7 +60,7 @@ watch(() => selectedLump.value, (lump) => {
                     <h1 v-if="mode === 'edit'">{{ t("health.lumpForm.heading") }}</h1>
                     <template v-else>
                         <h1 class="font-medium">{{ selectedPet!.name }} · {{ selectedLump!.title
-                            }}
+                        }}
                         </h1>
                     </template>
                     <Button v-if="selectedLump" action="delete" :aria-label="t('common.button.delete')"
@@ -80,7 +85,7 @@ watch(() => selectedLump.value, (lump) => {
                         <Button variant="add" class="w-13" @click="openModal(selectedLump, 'edit')">
                             <Plus /> {{ t("common.button.add") }}
                         </Button>
-                        <CheckCard v-for="check in sortChecks(selectedLump)" :check="check" />
+                        <CheckCard v-for="check in checks" :check="check" />
                     </div>
                     <div class="default-padding mt-1">
                         <ButtonArea v-model="mode" :loading="loading" :selectedCare="selectedLump"

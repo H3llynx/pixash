@@ -4,7 +4,7 @@ import { i18n } from "../language/config/i18n";
 import { catBodyRegions, dogBodyRegions, SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, LOG_SUBTYPES, MED_FREQUENCY, PARASITES, TREATMENTCOLORS, VACCINE_TYPES } from "./config";
-import type { AntiparasiteLogExtended, AntiparasiteTypes, BodyRegion, LogExtended, LumpCheck, LumpExtended, MedicineDb, OtherLogExtended, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
+import type { AntiparasiteLogExtended, AntiparasiteTypes, BodyRegion, LogExtended, LumpCheckExtended, MedicineDb, OtherLogExtended, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
 
 export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default") => {
     if (!species) return;
@@ -27,7 +27,7 @@ export const getNextVisit = (visits: VisitExtended[]) => {
 export const getNextAntiparasitic = (logs: LogExtended[]) => {
     const antiparasiticDue = logs.filter(log => log.type === "antiparasite" && log.dueOn) as AntiparasiteLogExtended[];
     return (
-        antiparasiticDue.sort((a, b) => tsToDay(a.dueOn!) - tsToDay(b.dueOn!),)[0] ?? null
+        [...antiparasiticDue].sort((a, b) => tsToDay(a.dueOn!) - tsToDay(b.dueOn!),)[0] ?? null
     );
 };
 
@@ -64,7 +64,7 @@ export const showAntiparasites = (treated: AntiparasiteTypes["id"][], asList?: b
 
 export const getCurrentWeight = (logs: LogExtended[]) => {
     const weightLogs = logs.filter(log => log.type === "weight") as WeightLogExtended[];
-    return weightLogs.sort((a, b) => b.measuredAt.seconds - a.measuredAt.seconds).at(0)?.weight ?? undefined;
+    return [...weightLogs].sort((a, b) => b.measuredAt.seconds - a.measuredAt.seconds).at(0)?.weight ?? undefined;
 };
 
 export const getLogTs = (log: LogExtended) => {
@@ -161,10 +161,8 @@ export const getNearestBodyRegion = (
     return nearest;
 };
 
-export const sortChecks = (lump: LumpExtended) => [...lump.checks].sort((a, b) => b.date.toMillis() - a.date.toMillis());
-
-export const getLatestLumpCheckValue = <K extends keyof LumpCheck>(
-    checks: LumpCheck[],
+export const getLatestLumpCheckValue = <K extends keyof LumpCheckExtended>(
+    checks: LumpCheckExtended[],
     key: K
 ) => {
     const sorted = [...checks].sort((a, b) => a.date.toMillis() - b.date.toMillis());
@@ -172,5 +170,3 @@ export const getLatestLumpCheckValue = <K extends keyof LumpCheck>(
         if (sorted[i][key] !== undefined) return sorted[i][key];
     }
 };
-
-export const isLumpRemoved = (lump: LumpExtended) => lump.checks.find(c => c.status === "removed");

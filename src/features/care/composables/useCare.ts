@@ -4,7 +4,7 @@ import { addLog, addLump, addLumpCheck, addTreatment, addVaccine, addVet, addVet
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
-import type { Log, LogExtended, LumpCheck, LumpExtended, LumpRecord, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
+import type { Log, LogExtended, LumpExtended, LumpRecord, TreatmentExtended, TreatmentRecord, VaccineExtended, VaccineRecord, Vet, VetExtended, VisitExtended, VisitRecord } from "../types";
 import { getCurrentWeight, getNextAntiparasitic, getNextVaccine, getNextVisit } from "../utils";
 
 export const useCare = (pets: Ref<PetExtended[]>) => {
@@ -97,7 +97,9 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         action: () => Promise<T>,
         onFinal?: () => void
     ) => {
-        if (!user.value) return;
+        if (!user.value) {
+            throw new Error("User is not authenticated");
+        };
         error.value = null;
         try {
             return await action();
@@ -152,7 +154,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
     const updateSelectedVaccine = async (vaccine: VaccineExtended, data: VaccineRecord) => {
         await handleHealthAction(async () => {
             loading.value = true;
-            await updateVaccine(vaccine.id, vaccine.petId, user.value!.uid, data);
+            await updateVaccine(vaccine, user.value!.uid, data);
             await refreshPetHealth(vaccine.petId);
             selectVaccine(null);
         }, () => {
@@ -163,7 +165,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
     const deleteSelectedVaccine = async (vaccine: VaccineExtended) => {
         await handleHealthAction(async () => {
             loading.value = true;
-            await deleteVaccine(vaccine.id, vaccine.petId, user.value!.uid);
+            await deleteVaccine(vaccine, user.value!.uid);
             await refreshPetHealth(vaccine.petId);
             selectVaccine(null);
         }, () => {
@@ -182,7 +184,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
     const updateSelectedVisit = async (visit: VisitExtended, data: VisitRecord) => {
         await handleHealthAction(async () => {
             loading.value = true;
-            await updateVetVisit(visit.id, visit.petId, user.value!.uid, data);
+            await updateVetVisit(visit, user.value!.uid, data);
             await refreshPetHealth(visit.petId);
             selectVisit(null);
         }, () => {
@@ -194,7 +196,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         await handleHealthAction(async () => {
             loading.value = true;
             selectVisit(null);
-            await deleteVisit(visit.id, visit.petId, user.value!.uid);
+            await deleteVisit(visit, user.value!.uid);
             await refreshPetHealth(visit.petId);
         }, () => {
             loading.value = false;
@@ -245,7 +247,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         );
     };
 
-    const addNewLog = async (newLog: Log, petId: string) => {
+    const addNewLog = async (newLog: Log, petId: string): Promise<string> => {
         return await handleHealthAction(async () => {
             const logId = await addLog(newLog, petId, user.value!.uid);
             await refreshPetHealth(petId);
@@ -265,9 +267,9 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         });
     };
 
-    const deleteSelectedLog = async (log: LogExtended) => {
+    const deleteSelectedLog = async (log: Pick<LogExtended, "id" | "petId">) => {
         await handleHealthAction(async () => {
-            await deleteLog(log.id, log.petId, user.value!.uid);
+            await deleteLog(log, user.value!.uid);
             await refreshPetHealth(log.petId);
             selectLog(null);
         });
@@ -284,7 +286,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
     const updateSelectedTreatment = async (treatment: TreatmentExtended, data: TreatmentRecord) => {
         await handleHealthAction(async () => {
             treatmentLoading.value = true;
-            await updateTreatment(treatment, treatment.petId, user.value!.uid, data);
+            await updateTreatment(treatment, user.value!.uid, data);
             await refreshPetHealth(treatment.petId);
             selectTreatment(null);
         }, () => {
@@ -295,7 +297,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
     const deleteSelectedTreatment = async (treatment: TreatmentExtended) => {
         await handleHealthAction(async () => {
             treatmentLoading.value = true;
-            await deleteTreatment(treatment.id, treatment.petId, user.value!.uid);
+            await deleteTreatment(treatment, user.value!.uid);
             await refreshPetHealth(treatment.petId);
             selectTreatment(null);
         }, () => {
@@ -303,11 +305,11 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         });
     };
 
-    const addNewLump = async (newLump: LumpRecord, petId: string) => {
-        await handleHealthAction(async () => {
-            await addLump(newLump, petId, user.value!.uid);
+    const addNewLump = async (newLump: LumpRecord, petId: string): Promise<string> => {
+        return await handleHealthAction(async () => {
+            const lumpId = await addLump(newLump, petId, user.value!.uid);
             await refreshPetHealth(petId);
-            isAddingCare.lump = false;
+            return lumpId;
         });
     };
 
@@ -327,7 +329,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         });
     };
 
-    const addNewLumpCheck = async (check: LumpCheck, lump: Pick<LumpExtended, "id" | "petId">) => {
+    const addNewLumpCheck = async (check: any, lump: Pick<LumpExtended, "id" | "petId">) => {
         await handleHealthAction(async () => {
             await addLumpCheck(check, lump, user.value!.uid);
             await refreshPetHealth(lump.petId);

@@ -7,24 +7,25 @@ import { usePets } from '../../../pets/composables/usePets.ts';
 import { useLumpCheck } from '../../composables/useLumpCheck.ts';
 import { LUMP_STATUS } from '../../config.ts';
 import type { LumpExtended } from '../../types';
-import { fromMm, getLatestLumpCheckValue, getNearestBodyRegion, isLumpRemoved } from '../../utils.ts';
+import { fromMm, getLatestLumpCheckValue, getNearestBodyRegion } from '../../utils.ts';
 
 const { pets } = usePets();
-const { getSizeTrend, openModal } = useLumpCheck();
+const { getSizeTrend, openModal, lumpChecks, isLumpRemoved } = useLumpCheck();
 const { t } = useI18n();
 
 const props = defineProps<{ lump: LumpExtended }>();
 
 const pet = computed(() => pets.value.find(p => p.id === props.lump.petId));
-const status = computed(() => isLumpRemoved(props.lump) ? "removed" : getLatestLumpCheckValue(props.lump.checks, "status"));
-const size = computed(() => getLatestLumpCheckValue(props.lump.checks, "size"));
-const picture = computed(() => getLatestLumpCheckValue(props.lump.checks, "pictures")?.at(-1));
+const checks = computed(() => lumpChecks.value.filter(check => check.lumpId === props.lump.id));
+const status = computed(() => isLumpRemoved(props.lump.id) ? "removed" : getLatestLumpCheckValue(checks.value, "status"));
+const size = computed(() => getLatestLumpCheckValue(checks.value, "size"));
+const picture = computed(() => getLatestLumpCheckValue(checks.value, "pictures")?.at(-1));
 const location = computed(() => {
     const region = getNearestBodyRegion(pet.value?.species as "dog" | "cat", props.lump.location.x, props.lump.location.y);
     return t(`health.lumpForm.bodyRegions.${region.id}.${props.lump.location.side}`);
 });
-const lastChecked = computed(() => getLatestLumpCheckValue(props.lump.checks, "date"));
-const trend = computed(() => getSizeTrend(props.lump));
+const lastChecked = computed(() => getLatestLumpCheckValue(checks.value, "date"));
+const trend = computed(() => getSizeTrend(props.lump.id));
 </script>
 
 <template>
@@ -38,14 +39,15 @@ const trend = computed(() => getSizeTrend(props.lump));
                 <h4>{{ lump.title }}</h4>
                 <span v-if="size" class="text-text-secondary text-xs shrink-0">{{ fromMm(Number(size.valueMm),
                     size.displayUnit)
-                    }} {{ size.displayUnit }}</span>
+                }} {{ size.displayUnit }}</span>
             </div>
             <span class="text-text-secondary text-xs font-medium inline-flex">
                 {{ location }} · {{ t('common.text.lastChecked', { date: tsToDate(lastChecked, "dateShort") })
                 }}
             </span>
             <div class="flex justify-between items-center gap-1 mt-0.75">
-                <span class="lump-status rounded-full text-[0.7rem] px-0.5 py-0.25 tracking-wide uppercase font-medium"
+                <span
+                    class="lump-status shrink-0 rounded-full text-[0.7rem] px-0.5 py-0.25 tracking-wide uppercase font-medium"
                     :style="{ '--bg-color': LUMP_STATUS.find(s => s.id === status)?.rgba, '--text-color': LUMP_STATUS.find(s => s.id === status)?.rgb }">
                     {{t(LUMP_STATUS.find(s => s.id === status)!.label)}}
                 </span>

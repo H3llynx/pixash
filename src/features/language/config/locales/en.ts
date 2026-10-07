@@ -481,7 +481,7 @@ export default {
                 stable: "stable",
             },
             currentSize: "current size",
-            sinceFirstNoted: "since first noted",
+            sinceFirstMeasured: "since first measured",
             checksLogged: "checks logged",
             addCheck: "Add a new check"
         }

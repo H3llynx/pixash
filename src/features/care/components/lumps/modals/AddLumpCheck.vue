@@ -10,29 +10,37 @@ import { useLumpCheck } from '../../../composables/useLumpCheck.ts';
 import PetIcon from '../../../../pets/components/PetIcon.vue';
 import { fromMm, getLatestLumpCheckValue } from '../../../utils.ts';
 import { tsToDate } from '../../../../../utils.ts';
-import { useToast } from '../../../../../composables/useToast.ts';
 import LoadingPet from '../../../../../components/loading/LoadingPet.vue';
+import { useToast } from '../../../../../composables/useToast.ts';
 
-const { pets, addNewLumpCheck, careError } = usePets();
+const { pets, addNewLog, careError } = usePets();
 const { checkData } = useLumpForm();
-const { pictures, loadedPictures, isCheckEmpty, logCheck, closeModal, checkedLump, isEditModalOpen } = useLumpCheck();
-const { show } = useToast();
+const { selectedLumpChecks, pictures, loadedPictures, isCheckEmpty, logCheck, closeModal, checkedLump, isEditModalOpen, isViewModalOpen } = useLumpCheck();
 const { t } = useI18n();
+const { show } = useToast();
 
 const loading = ref<boolean>(false);
+const error = ref<string | null>(null);
 
 const pet = computed(() => pets.value.find(pet => pet.id === checkedLump.value?.petId));
-const lastPicture = computed(() => getLatestLumpCheckValue(checkedLump.value?.checks || [], "pictures")?.at(-1));
-const lastSize = computed(() => getLatestLumpCheckValue(checkedLump.value?.checks || [], "size"));
-const lastChecked = computed(() => getLatestLumpCheckValue(checkedLump.value?.checks || [], "date"));
-const lastStatus = computed(() => getLatestLumpCheckValue(checkedLump.value?.checks || [], "status"));
+
+const lastPicture = computed(() => getLatestLumpCheckValue(selectedLumpChecks.value, "pictures")?.at(-1));
+const lastSize = computed(() => getLatestLumpCheckValue(selectedLumpChecks.value, "size"));
+const lastChecked = computed(() => getLatestLumpCheckValue(selectedLumpChecks.value, "date"));
+const lastStatus = computed(() => getLatestLumpCheckValue(selectedLumpChecks.value, "status"));
+
+const handleCancel = () => {
+    closeModal('edit', checkData);
+    error.value = null;
+};
 
 const handleSubmit = async () => {
-    if (!checkedLump.value || isCheckEmpty(checkData, lastStatus.value)) return;
+    if (!checkedLump.value || !pet.value || isCheckEmpty(checkData, lastStatus.value)) return;
+    if (error) error.value = null;
     loading.value = true;
     try {
-        await addNewLumpCheck(logCheck(checkData), checkedLump.value);
-        show({
+        await addNewLog(logCheck(checkData, checkedLump.value.id), pet.value.id);
+        if (!isViewModalOpen.value) show({
             type: "success",
             title: t("toast.success.title.generic"),
             message: t("toast.success.message.lumpUpdated", { title: checkedLump.value.title }),
@@ -40,7 +48,7 @@ const handleSubmit = async () => {
         closeModal('edit', checkData);
     }
     catch (e) {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
+        error.value = careError.value;
     }
     finally {
         loading.value = false;
@@ -58,6 +66,9 @@ watch(() => checkedLump.value, (lump) => {
     <FreeModal v-model="isEditModalOpen" size="md">
         <LoadingPet v-if="loading" />
         <div v-else class="scroll-container">
+            <p v-if="error" class="text-sm w-full text-error px-1 pt-1">
+                {{ error }}
+            </p>
             <div class="flex gap-1 my-2 default-padding ">
                 <div class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
                     <PetIcon :pet="pet!" />
@@ -86,8 +97,8 @@ watch(() => checkedLump.value, (lump) => {
                 <div class="flex flex-col gap-1 pt-1.5 default-padding">
                     <Button :disabled="isCheckEmpty(checkData, lastStatus) || loading" @click="handleSubmit">{{
                         t("common.button.confirm") }}</Button>
-                    <Button type="button" variant="ghost" @click="closeModal('edit')">{{ t("common.button.cancel")
-                    }}</Button>
+                    <Button type="button" variant="ghost" @click="handleCancel">{{ t("common.button.cancel")
+                        }}</Button>
                 </div>
             </form>
         </div>
