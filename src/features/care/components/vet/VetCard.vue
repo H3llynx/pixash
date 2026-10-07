@@ -9,20 +9,23 @@ import { usePets } from '../../../pets/composables/usePets.ts';
 import VetNotes from './VetNotes.vue';
 import VetProfileRow from './VetProfileRow.vue';
 import VetTypeTag from './VetTypeTag.vue';
+import type { VetExtended } from '../../types.ts';
 
 const { pets, selectPet, isAddingCare, selectedVet, isUpdatingVet } = usePets();
 const { t } = useI18n();
 
-const props = defineProps<{ vet: any }>();
+const props = defineProps<{ vet: VetExtended }>();
 
 const assignedPets = computed(() => {
-    return pets.value.filter(pet => props.vet.assignedPets.includes(pet.id));
+    const assignedPetIds = props.vet.assignedPets ?? [];
+    return assignedPetIds.length ? pets.value.filter(pet => assignedPetIds.includes(pet.id)) : null;
 });
 
 const handleVisit = () => {
     resetState(isAddingCare);
     selectedVet.value = props.vet;
-    const pet = pets.value.find(p => props.vet.assignedPets.includes(p.id));
+    const assignedPetIds = props.vet.assignedPets ?? [];
+    const pet = pets.value.find(p => assignedPetIds.includes(p.id));
     if (pet) selectPet(pet);
     isUpdatingVet.value = false;
     isAddingCare.visit = true;
