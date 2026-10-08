@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Camera, Edit2 } from '@lucide/vue';
+import { Camera } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../components/Button.vue';
 import { useDialog } from '../../../composables/useDialog.ts';
@@ -59,15 +59,15 @@ const handleDelete = async () => {
                     class="absolute -bottom-0.5 left-0 w-1.75 h-1.5 p-[3px] rounded-lg text-white md:opacity-0 md:group-hover:opacity-100 md:default-transition md:bottom-0 md:w-full md:h-full md:p-1 bg-charcoal-rgba" />
             </button>
             <div class="w-full">
-                <div class="flex gap-0.5 items-center">
+                <div class="flex gap-0.5 items-center justify-between">
                     <h1>{{ selectedPet.name }}</h1>
-                    <Button variant="ghost" size="xs"
-                        :aria-label="t('pet.profile.edit.generalInformation', { name: selectedPet.name })"
-                        @click="updatePetInfo">
-                        <Edit2 :size="15" />
-                    </Button>
-                    <Button action="delete" :aria-label="t('pet.cta.delete', { name: selectedPet.name })"
-                        @click="handleDelete" />
+                    <div class="flex gap-0.5 items-center">
+                        <Button action="edit"
+                            :aria-label="t('pet.profile.edit.generalInformation', { name: selectedPet.name })"
+                            @click="updatePetInfo" />
+                        <Button action="delete" :aria-label="t('pet.cta.delete', { name: selectedPet.name })"
+                            @click="handleDelete" />
+                    </div>
                 </div>
                 <div class="text-text-secondary text-sm mb-0.5">
                     <span v-if="selectedPet.breed" class="capitalize">{{ t(getLabel(selectedPet.breed,

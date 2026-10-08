@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Trash2, X } from '@lucide/vue';
+import { Pen, Trash2, X } from '@lucide/vue';
 import { tv } from 'tailwind-variants';
 import { useI18n } from 'vue-i18n';
 
@@ -39,7 +39,7 @@ const button = tv({
 });
 
 defineProps<{
-    action?: "hide" | "delete"
+    action?: "hide" | "delete" | "edit"
     variant?: keyof typeof button.variants.variant
     size?: keyof typeof button.variants.size
 }>();
@@ -47,9 +47,14 @@ defineProps<{
 
 
 <template>
-    <button v-if="action === 'delete'" variant="ghost" size="xs"
+    <button v-if="action === 'delete'"
         :class="[button({ variant: 'ghost', size: 'xs' }), 'ml-auto mb-auto text-text-secondary']">
         <Trash2 :size="22" />
+    </button>
+
+    <button v-else-if="action === 'edit'"
+        :class="[button({ variant: 'tertiary', size: 'rounded' }), 'border-2 border-t-text-softer border-l-text-softer border-b-grey-rgba border-r-grey-rgba hover:border-t-interactive hover:border-l-interactive']">
+        <Pen :size="16" />
     </button>
 
     <button v-else-if="action === 'hide'" :aria-label="t('common.button.close')" class="hide-btn">

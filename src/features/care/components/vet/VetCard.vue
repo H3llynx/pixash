@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { BriefcaseMedical, Edit2, NotebookPen } from '@lucide/vue';
+import { BriefcaseMedical, NotebookPen } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { resetState } from '../../../../utils.ts';
 import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
+import type { VetExtended } from '../../types.ts';
 import VetNotes from './VetNotes.vue';
 import VetProfileRow from './VetProfileRow.vue';
 import VetTypeTag from './VetTypeTag.vue';
-import type { VetExtended } from '../../types.ts';
 
 const { pets, selectPet, isAddingCare, selectedVet, isUpdatingVet } = usePets();
 const { t } = useI18n();
@@ -60,10 +60,7 @@ const handleVetUpdate = () => {
             <div class="px-1 text-text-secondary w-full">
                 <div class="flex gap-0.5 items-start justify-between">
                     <h1>{{ vet.name }}</h1>
-                    <Button variant="ghost" size="xs" :aria-label="t('vet.cta.edit', { name: vet.name })"
-                        @click="handleVetUpdate">
-                        <Edit2 :size="15" />
-                    </Button>
+                    <Button action="edit" @click="handleVetUpdate" :aria-label="t('common.button.edit')" />
                 </div>
                 <div class="flex flex-wrap gap-x-[5px]">
                     <span class="capitalize">{{ vet.address1 }}</span>

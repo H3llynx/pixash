@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Pen, Plus, X } from '@lucide/vue';
+import { Plus, X } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../../components/Button.vue';
@@ -48,11 +48,7 @@ const editLump = () => {
         <div v-if="checkedLump" class="scroll-container">
             <div class="px-1.5 py-1 bg-picture-placeholder">
                 <div class="flex justify-end items-center gap-0.5">
-                    <Button variant="tertiary" size="rounded"
-                        class="border-2 border-t-text-softer border-l-text-softer border-b-grey-rgba border-r-grey-rgba hover:border-t-interactive hover:border-l-interactive"
-                        @click="editLump" :aria-label="t('common.button.edit')">
-                        <Pen :size="16" />
-                    </Button>
+                    <Button action="edit" @click="editLump" :aria-label="t('common.button.edit')" />
                     <Button variant="ghost" size="min" @click="closeModal('view')"
                         :aria-label="t('common.button.close')">
                         <X :size="18" />
@@ -83,7 +79,7 @@ const editLump = () => {
                         mm</span>
                     <span class="block text-xs tracking-wide uppercase text-text-secondary">{{
                         t("health.lumps.sinceFirstMeasured")
-                        }}
+                    }}
                     </span>
                 </div>
                 <div>
