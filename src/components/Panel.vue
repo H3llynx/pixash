@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, onMounted, ref, withDefaults } from 'vue';
+import { onMounted, ref } from 'vue';
 import { usePets } from '../features/pets/composables/usePets';
 import Button from './Button.vue';
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ArrowDown, ArrowUp } from '@lucide/vue';
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';

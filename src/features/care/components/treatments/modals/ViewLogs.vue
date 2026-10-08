@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Pen, X } from '@lucide/vue';
-import { computed} from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../../components/Button.vue';
 import FreeModal from '../../../../../components/FreeModal.vue';
