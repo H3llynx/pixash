@@ -1,6 +1,6 @@
 import { FirebaseError } from "firebase/app";
 import { computed, reactive, ref, type Ref } from "vue";
-import { addLog, addLump, addLumpCheck, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteLump, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchPetLogs, fetchPetLumps, fetchPetTreatments, fetchPetVaccines, fetchPetVisits, fetchVets, updateLog, updateLump, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/care";
+import { addLog, addLump, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteLump, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchPetLogs, fetchPetLumps, fetchPetTreatments, fetchPetVaccines, fetchPetVisits, fetchVets, updateLog, updateLump, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/care";
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
@@ -258,7 +258,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
     const updateSelectedLog = async (log: LogExtended, data: Log) => {
         await handleHealthAction(async () => {
             loading.value = true;
-            await updateLog(log.id, log.petId, user.value!.uid, data);
+            await updateLog(log, user.value!.uid, data);
             await refreshPetHealth(log.petId);
             const updatedLog = logs.value.find(l => l.id === log.id);
             if (updatedLog) selectedLog.value = updatedLog;
@@ -315,7 +315,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
 
     const deleteSelectedLump = async (lump: LumpExtended) => {
         await handleHealthAction(async () => {
-            await deleteLump(lump.id, lump.petId, user.value!.uid);
+            await deleteLump(lump, user.value!.uid);
             await refreshPetHealth(lump.petId);
             selectLump(null);
         });
@@ -326,13 +326,6 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
             await updateLump(lump, user.value!.uid, data);
             await refreshPetHealth(lump.petId);
             selectLump(null);
-        });
-    };
-
-    const addNewLumpCheck = async (check: any, lump: Pick<LumpExtended, "id" | "petId">) => {
-        await handleHealthAction(async () => {
-            await addLumpCheck(check, lump, user.value!.uid);
-            await refreshPetHealth(lump.petId);
         });
     };
 
@@ -383,6 +376,5 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         addNewLump,
         updateSelectedLump,
         deleteSelectedLump,
-        addNewLumpCheck
     };
 };

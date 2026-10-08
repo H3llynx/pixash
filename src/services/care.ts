@@ -151,7 +151,7 @@ export const fetchPetLogs = async (userId: string, petId: string): Promise<LogEx
     }
 };
 
-const getVaccineDoc = (vaccine: VaccineExtended, userId: string) => doc(db, DB.users, userId, DB.pets, vaccine.petId, DB.vaccines, vaccine.id);
+const getVaccineDoc = (vaccine: Pick<VaccineExtended, "id" | "petId">, userId: string) => doc(db, DB.users, userId, DB.pets, vaccine.petId, DB.vaccines, vaccine.id);
 
 export const addVaccine = async (vaccine: VaccineRecord, petId: string, userId: string) => {
     const newVaccine = {
@@ -206,7 +206,7 @@ export const deleteVaccine = async (vaccine: VaccineExtended, userId: string) =>
     }
 };
 
-const getVisitDoc = (visit: VisitExtended, userId: string) => doc(db, DB.users, userId, DB.pets, visit.petId, DB.vetVisits, visit.id);
+const getVisitDoc = (visit: Pick<VisitExtended, "id" | "petId">, userId: string) => doc(db, DB.users, userId, DB.pets, visit.petId, DB.vetVisits, visit.id);
 
 export const addVetVisit = async (visit: VisitRecord, petId: string, userId: string) => {
     const newVisit = {
@@ -325,7 +325,7 @@ export const deleteVet = async (vetId: string, userId: string) => {
     }
 };
 
-const getLogDoc = (userId: string, petId: string, logId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.logs, logId);
+const getLogDoc = (userId: string, log: Pick<LogExtended, "id" | "petId">) => doc(db, DB.users, userId, DB.pets, log.petId, DB.logs, log.id);
 
 export const addLog = async (log: Log, petId: string, userId: string) => {
     let newLog;
@@ -382,63 +382,48 @@ export const addLog = async (log: Log, petId: string, userId: string) => {
 };
 
 export const updateLog = async (
-    logId: string,
-    petId: string,
+    log: Pick<LogExtended, "id" | "petId">,
     userId: string,
-    log: Log
+    data: Log
 ) => {
-    let updated;
-    if (log.type === "antiparasite")
+    let updated: any = {
+        userId: userId,
+        petId: log.petId,
+    }
+    if (data.type === "antiparasite")
         updated = {
-            petId: petId,
-            userId: userId,
-            treated: log.treated,
-            givenAt: log.givenAt ? tsFromInput(log.givenAt) : null,
-            dueOn: log.dueOn ? tsFromInput(log.dueOn) : null,
-            notes: log.notes,
+            treated: data.treated,
+            givenAt: data.givenAt ? tsFromInput(data.givenAt) : null,
+            dueOn: data.dueOn ? tsFromInput(data.dueOn) : null,
+            notes: data.notes,
         };
-    else if (log.type === "weight")
+    else if (data.type === "medication")
         updated = {
-            petId: petId,
-            userId: userId,
-            type: log.type,
-            weight: log.weight
+            treatmentId: data.treatmentId,
+            medicineId: data.medicineId,
+            givenAt: data.givenAt
         };
-    else if (log.type === "medication")
+    else if (data.type === "lump")
         updated = {
-            petId: petId,
-            userId: userId,
-            treatmentId: log.treatmentId,
-            medicineId: log.medicineId,
-            type: log.type,
-            givenAt: log.givenAt
+            lumpId: data.lumpId,
+            date: data.date,
+            size: data.size,
+            pictures: data.pictures,
+            notes: data.notes,
+            status: data.status,
         };
-    else if (log.type === "lump")
+    else if (data.type === "other")
         updated = {
-            petId: petId,
-            userId: userId,
-            lumpId: log.lumpId,
-            date: log.date,
-            size: log.size,
-            pictures: log.pictures,
-            notes: log.notes,
-            status: log.status,
-        };
-    else if (log.type === "other")
-        updated = {
-            petId: petId,
-            userId: userId,
-            type: log.type,
-            subtype: log.subtype,
-            pictures: log.pictures,
-            notes: log.notes,
-            date: tsFromInput(log.date)
+            subtype: data.subtype,
+            pictures: data.pictures,
+            notes: data.notes,
+            date: tsFromInput(data.date)
         };
     else {
         throw new Error("Unsupported log type");
     }
     try {
-        const docRef = getLogDoc(userId, petId, logId);
+        const docRef = getLogDoc(userId, log);
         await updateDoc(docRef, updated);
     } catch (error) {
         console.error("Error updating log: ", error);
@@ -448,7 +433,7 @@ export const updateLog = async (
 
 export const deleteLog = async (log: Pick<LogExtended, "id" | "petId">, userId: string) => {
     try {
-        await deleteDoc(getLogDoc(userId, log.petId, log.id));
+        await deleteDoc(getLogDoc(userId, log));
     } catch (error) {
         console.error("Error deleting log: ", error);
         throw error;
@@ -563,9 +548,9 @@ export const addLump = async (lump: LumpRecord, petId: string, userId: string) =
     }
 };
 
-export const deleteLump = async (lumpId: string, petId: string, userId: string) => {
+export const deleteLump = async (lump: Pick<LumpExtended, "id" | "petId">, userId: string) => {
     try {
-        await deleteDoc(getLumpDoc(userId, petId, lumpId));
+        await deleteDoc(getLumpDoc(userId, lump.petId, lump.id));
     } catch (error) {
         console.error("Error deleting lump: ", error);
         throw error;

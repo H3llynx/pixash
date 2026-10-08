@@ -64,7 +64,6 @@ const {
   addNewLump,
   updateSelectedLump,
   deleteSelectedLump,
-  addNewLumpCheck
 } = useCare(pets);
 
 const hasVets = computed(() => vets.value.length > 0);
@@ -333,7 +332,6 @@ export const usePets = () => {
     lumps,
     addNewLump,
     updateSelectedLump,
-    deleteSelectedLump,
-    addNewLumpCheck
+    deleteSelectedLump
   };
 };
