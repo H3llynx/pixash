@@ -12,10 +12,12 @@ import { fromMm, getLatestLumpCheckValue } from '../../../utils.ts';
 import { tsToDate } from '../../../../../utils.ts';
 import LoadingPet from '../../../../../components/loading/LoadingPet.vue';
 import { useToast } from '../../../../../composables/useToast.ts';
+import { useAddPictures } from '../../../../../composables/useAddPictures.ts';
 
 const { pets, addNewLog, careError } = usePets();
 const { checkData } = useLumpForm();
 const { selectedLumpChecks, pictures, loadedPictures, isCheckEmpty, logCheck, closeModal, checkedLump, isEditModalOpen, isViewModalOpen } = useLumpCheck();
+const { hostFormPictures } = useAddPictures(pictures);
 const { t } = useI18n();
 const { show } = useToast();
 
@@ -35,10 +37,11 @@ const handleCancel = () => {
 };
 
 const handleSubmit = async () => {
-    if (!checkedLump.value || !pet.value || isCheckEmpty(checkData, lastStatus.value)) return;
+    if (!checkedLump.value || !pet.value || isCheckEmpty(checkData, pictures.value, lastStatus.value)) return;
     if (error) error.value = null;
     loading.value = true;
     try {
+        if (pictures.value.length) await hostFormPictures(checkData);
         await addNewLog(logCheck(checkData, checkedLump.value.id), pet.value.id);
         if (!isViewModalOpen.value) show({
             type: "success",
@@ -95,8 +98,9 @@ watch(() => checkedLump.value, (lump) => {
             <form class="mini-form pb-2" @submit.prevent="">
                 <LumpCheckArea v-model="checkData" v-model:pictures="pictures" :loadedPictures="loadedPictures" />
                 <div class="flex flex-col gap-1 pt-1.5 default-padding">
-                    <Button :disabled="isCheckEmpty(checkData, lastStatus) || loading" @click="handleSubmit">{{
-                        t("common.button.confirm") }}</Button>
+                    <Button :disabled="isCheckEmpty(checkData, pictures, lastStatus) || loading"
+                        @click="handleSubmit">{{
+                            t("common.button.confirm") }}</Button>
                     <Button type="button" variant="ghost" @click="handleCancel">{{ t("common.button.cancel")
                         }}</Button>
                 </div>

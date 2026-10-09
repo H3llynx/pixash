@@ -46,10 +46,10 @@ export const useLumpCheck = () => {
         checkData.size.displayUnit = newUnit;
     };
 
-    const isCheckEmpty = (checkData: typeof defaultCheck, lastStatus: string | undefined) => {
+    const isCheckEmpty = (checkData: typeof defaultCheck, pictures: Picture[], lastStatus: string | undefined) => {
         return (
             !checkData.size?.value &&
-            checkData.pictures?.length === 0 &&
+            pictures.length === 0 &&
             !checkData.notes &&
             checkData.status === lastStatus
         );

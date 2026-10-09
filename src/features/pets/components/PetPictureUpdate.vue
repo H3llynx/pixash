@@ -34,7 +34,6 @@ const handleX = () => {
                 try {
                     await updateSelectedPet(selectedPet.value!, { photo: "" });
                 } catch (error) {
-                    console.log(error);
                     show({ type: "error", title: t("toast.error.genericTitle"), message: t("toast.error.errorDeletionPicture") });
                 }
             }
