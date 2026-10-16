@@ -16,7 +16,7 @@ import { useAddPictures } from '../../../../../composables/useAddPictures.ts';
 
 const { pets, addNewLog, careError } = usePets();
 const { checkData } = useLumpForm();
-const { selectedLumpChecks, pictures, loadedPictures, isCheckEmpty, logCheck, closeModal, checkedLump, isEditModalOpen, isViewModalOpen } = useLumpCheck();
+const { selectedLumpChecks, selectedCheck, pictures, loadedPictures, isCheckEmpty, buildCheck, closeModal, checkedLump, isEditModalOpen, isViewModalOpen, updateCheck } = useLumpCheck();
 const { hostFormPictures } = useAddPictures(pictures);
 const { t } = useI18n();
 const { show } = useToast();
@@ -42,12 +42,16 @@ const handleSubmit = async () => {
     loading.value = true;
     try {
         if (pictures.value.length) await hostFormPictures(checkData);
-        await addNewLog(logCheck(checkData, checkedLump.value.id), pet.value.id);
-        if (!isViewModalOpen.value) show({
-            type: "success",
-            title: t("toast.success.title.generic"),
-            message: t("toast.success.message.lumpUpdated", { title: checkedLump.value.title }),
-        });
+        if (selectedCheck.value) await updateCheck(selectedCheck.value, buildCheck(checkData, checkedLump.value.id));
+        else {
+            console.log("else running")
+            await addNewLog(buildCheck(checkData, checkedLump.value.id), pet.value.id);
+            if (!isViewModalOpen.value) show({
+                type: "success",
+                title: t("toast.success.title.generic"),
+                message: t("toast.success.message.lumpUpdated", { title: checkedLump.value.title }),
+            });
+        };
         closeModal('edit', checkData);
     }
     catch (e) {
@@ -61,6 +65,19 @@ const handleSubmit = async () => {
 watch(() => checkedLump.value, (lump) => {
     if (lump && lastStatus.value) {
         checkData.status = lastStatus.value;
+    }
+}, { immediate: true });
+
+watch(() => selectedCheck.value, (check) => {
+    if (check) {
+        Object.assign(checkData, {
+            pictures: [...(check.pictures ?? [])],
+            size: check.size
+                ? { value: String(fromMm(Number(check.size.valueMm), check.size.displayUnit)), displayUnit: check.size.displayUnit }
+                : { value: "", displayUnit: "cm" },
+            notes: check.notes ?? "",
+            status: check.status
+        });
     }
 }, { immediate: true });
 </script>

@@ -36,6 +36,8 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         other: false,
     });
     const isUpdatingVet = ref<boolean>(false);
+    const savingLogIds = reactive(new Set<string>());
+    const savingNewLog = ref<boolean>(false);
 
     const vaccines = computed(() => pets.value.flatMap(pet => pet.vaccines || []));
     const vetVisits = computed(() => pets.value.flatMap(pet => pet.vetVisits || []));
@@ -75,13 +77,13 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         selectedLog.value = log;
     };
 
-    const selectLump = (lump: LumpExtended | null) => {
+    const selectLump = (lumpId: string | null) => {
         resetState(isAddingCare);
         selectedVaccine.value = null;
         selectedVisit.value = null;
         selectedTreatment.value = null;
         selectedLog.value = null;
-        selectedLump.value = lump;
+        selectedLump.value = lumps.value.find(lump => lump.id === lumpId) ?? null;
     };
 
     const resetCareState = () => {
@@ -247,7 +249,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         );
     };
 
-    const addNewLog = async (newLog: Log, petId: string): Promise<string> => {
+    const addNewLog = async (newLog: Log, petId: string) => {
         return await handleHealthAction(async () => {
             const logId = await addLog(newLog, petId, user.value!.uid);
             await refreshPetHealth(petId);
@@ -305,9 +307,13 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         });
     };
 
-    const addNewLump = async (newLump: LumpRecord, petId: string): Promise<string> => {
+    const addNewLump = async (
+        newLump: LumpRecord,
+        logFirstCheck: (lumpId: string) => Log,
+        petId: string
+    ) => {
         return await handleHealthAction(async () => {
-            const lumpId = await addLump(newLump, petId, user.value!.uid);
+            const lumpId = await addLump(newLump, logFirstCheck, petId, user.value!.uid);
             await refreshPetHealth(petId);
             return lumpId;
         });
@@ -364,6 +370,8 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         addNewLog,
         updateSelectedLog,
         deleteSelectedLog,
+        savingLogIds,
+        savingNewLog,
         treatments,
         selectedTreatment,
         addNewTreatment,

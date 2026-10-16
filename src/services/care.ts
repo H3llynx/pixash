@@ -327,53 +327,44 @@ export const deleteVet = async (vetId: string, userId: string) => {
 
 const getLogDoc = (userId: string, log: Pick<LogExtended, "id" | "petId">) => doc(db, DB.users, userId, DB.pets, log.petId, DB.logs, log.id);
 
-export const addLog = async (log: Log, petId: string, userId: string) => {
-    let newLog;
-    if (log.type === "antiparasite")
-        newLog = {
-            petId: petId,
-            userId: userId,
-            ...log,
-            givenAt: log.givenAt ? tsFromInput(log.givenAt) : null,
-            dueOn: log.dueOn ? tsFromInput(log.dueOn) : null,
-            notes: log.notes ?? null,
-        };
-    else if (log.type === "weight")
-        newLog = {
-            petId: petId,
-            userId: userId,
-            ...log,
-            measuredAt: serverTimestamp()
-        };
-    else if (log.type === "medication")
-        newLog = {
-            petId: petId,
-            userId: userId,
-            ...log,
-            givenAt: log.givenAt ?? serverTimestamp()
-        };
-    else if (log.type === "lump")
-        newLog = {
-            petId: petId,
-            userId: userId,
-            ...log,
-            date: serverTimestamp()
-        }
-    else if (log.type === "other")
-        newLog = {
-            petId: petId,
-            userId: userId,
-            type: log.type,
-            subtype: log.subtype,
-            pictures: log.pictures,
-            notes: log.notes,
-            date: tsFromInput(log.date)
-        };
-    else {
-        throw new Error("Unsupported log type");
+const buildLogData = (log: Log, petId: string, userId: string) => {
+    const base = { petId, userId };
+    switch (log.type) {
+        case "antiparasite":
+            return {
+                ...base,
+                ...log,
+                givenAt: log.givenAt ? tsFromInput(log.givenAt) : null,
+                dueOn: log.dueOn ? tsFromInput(log.dueOn) : null,
+                notes: log.notes ?? null,
+            };
+        case "weight":
+            return { ...base, ...log, measuredAt: serverTimestamp() };
+        case "medication":
+            return { ...base, ...log, givenAt: log.givenAt ?? serverTimestamp() };
+        case "lump":
+            return { ...base, ...log, date: serverTimestamp() };
+        case "other":
+            return {
+                ...base,
+                type: log.type,
+                subtype: log.subtype,
+                pictures: log.pictures,
+                notes: log.notes,
+                date: tsFromInput(log.date),
+            };
+        default:
+            throw new Error("Unsupported log type");
     }
+};
+
+export const addLog = async (log: Log, petId: string, userId: string) => {
+    const newLog = buildLogData(log, petId, userId);
     try {
-        const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.logs), newLog);
+        const docRef = await addDoc(
+            collection(db, DB.users, userId, DB.pets, petId, DB.logs),
+            newLog
+        );
         return docRef.id;
     } catch (error) {
         console.error("Error adding log: ", error);
@@ -532,16 +523,23 @@ export const deleteTreatment = async (treatment: TreatmentExtended, userId: stri
 
 const getLumpDoc = (userId: string, petId: string, lumpId: string) => doc(db, DB.users, userId, DB.pets, petId, DB.lumps, lumpId);
 
-export const addLump = async (lump: LumpRecord, petId: string, userId: string) => {
-    const newLump = {
-        petId: petId,
-        userId: userId,
-        createdAt: serverTimestamp(),
-        ...lump
-    };
+
+export const addLump = async (
+    lump: LumpRecord,
+    logFirstCheck: (lumpId: string) => Log,
+    petId: string,
+    userId: string
+) => {
+    const lumpRef = doc(collection(db, DB.users, userId, DB.pets, petId, DB.lumps));
+    const logRef = doc(collection(db, DB.users, userId, DB.pets, petId, DB.logs));
+
+    const batch = writeBatch(db);
+    batch.set(lumpRef, { petId, userId, createdAt: serverTimestamp(), ...lump });
+    batch.set(logRef, buildLogData(logFirstCheck(lumpRef.id), petId, userId));
+
     try {
-        const docRef = await addDoc(collection(db, DB.users, userId, DB.pets, petId, DB.lumps), newLump);
-        return docRef.id;
+        await batch.commit();
+        return lumpRef.id;
     } catch (error) {
         console.error("Error adding lump: ", error);
         throw error;

@@ -1,18 +1,24 @@
 import { Timestamp } from "firebase/firestore";
 import { computed, reactive, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { useAddPictures, type Picture } from "../../../composables/useAddPictures";
+import { useToast } from "../../../composables/useToast";
 import { resetForm } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import { LUMP_STATUS, lumpFields } from "../config";
-import type { LumpCheckRecord, LumpExtended } from "../types";
+import type { LumpCheckExtended, LumpCheckRecord, LumpExtended } from "../types";
 import { fromMm, toMm } from "../utils";
 
 const isEditModalOpen = ref<boolean>(false);
 const isViewModalOpen = ref<boolean>(false);
 const checkedLump = ref<LumpExtended | null>(null);
+const selectedCheck = ref<LumpCheckExtended | null>(null);
 
 export const useLumpCheck = () => {
-    const { logs } = usePets();
+    const { logs, savingLogIds, deleteSelectedLog, updateSelectedLog, careError } = usePets();
+    const { show } = useToast();
+    const { t } = useI18n();
+
     const pictures = ref<Picture[]>([]);
     const loadedPictures = reactive(new Set<string>());
 
@@ -55,22 +61,21 @@ export const useLumpCheck = () => {
         );
     };
 
-    const logCheck = (checkRecord: typeof defaultCheck, lumpId: string): LumpCheckRecord => {
+    const buildCheck = (checkRecord: typeof defaultCheck, lumpId: string): LumpCheckRecord => {
         const check: LumpCheckRecord = {
             lumpId,
             date: Timestamp.now(),
             type: "lump",
-            status: checkRecord.status
+            status: checkRecord.status,
+            pictures: checkRecord.pictures.length ? [...checkRecord.pictures] : [],
+            notes: checkRecord.notes ?? ""
         };
         if (checkRecord.size && checkRecord.size.value) {
             check.size = {
                 displayUnit: checkRecord.size.displayUnit,
                 valueMm: String(toMm(Number(checkRecord.size.value), checkRecord.size.displayUnit)),
             };
-        }
-        if (checkRecord.pictures && checkRecord.pictures.length > 0) check.pictures = [...checkRecord.pictures];
-        if (checkRecord.notes) check.notes = checkRecord.notes;
-
+        };
         return check;
     };
 
@@ -88,7 +93,8 @@ export const useLumpCheck = () => {
         } else if (mode === 'view') {
             isViewModalOpen.value = false;
             checkedLump.value = null;
-        }
+        };
+        if (selectedCheck.value) selectedCheck.value = null;
     };
 
     const getSizeHistory = (lumpId: string): { date: Timestamp; valueMm: number }[] => {
@@ -126,5 +132,27 @@ export const useLumpCheck = () => {
         return history[history.length - 1].valueMm - history[0].valueMm;
     };
 
-    return { checkedLump, selectedLumpChecks, lumpChecks, pictures, loadedPictures, resetFormPictureState, defaultCheck, checkData, resetCheckData, setUnit, isCheckEmpty, logCheck, isEditModalOpen, isViewModalOpen, openModal, closeModal, isLumpRemoved, getSizeTrend, getSizeProgression };
+    const deleteCheck = async (log: LumpCheckExtended) => {
+        savingLogIds.add(log.id);
+        try {
+            await deleteSelectedLog(log);
+        } catch (e) {
+            show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
+        } finally {
+            savingLogIds.delete(log.id);
+        }
+    };
+
+    const updateCheck = async (log: LumpCheckExtended, updatedLog: LumpCheckRecord) => {
+        savingLogIds.add(log.id);
+        try {
+            await updateSelectedLog(log, updatedLog);
+        } catch (e) {
+            show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
+        } finally {
+            savingLogIds.delete(log.id);
+        }
+    };
+
+    return { checkedLump, selectedLumpChecks, lumpChecks, pictures, loadedPictures, resetFormPictureState, defaultCheck, checkData, resetCheckData, setUnit, isCheckEmpty, buildCheck, isEditModalOpen, isViewModalOpen, openModal, closeModal, isLumpRemoved, getSizeTrend, getSizeProgression, deleteCheck, updateCheck, selectedCheck };
 }

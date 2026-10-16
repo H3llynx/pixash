@@ -85,7 +85,7 @@ watch(() => selectedLump.value, (lump) => {
                         <Button variant="add" class="w-13" @click="openModal(selectedLump, 'edit')">
                             <Plus /> {{ t("common.button.add") }}
                         </Button>
-                        <CheckCard v-for="check in checks" :check="check" />
+                        <CheckCard v-for="check in checks" :key="check.id" :check="check" />
                     </div>
                     <div class="default-padding mt-1">
                         <ButtonArea v-model="mode" :loading="loading" :selectedCare="selectedLump"

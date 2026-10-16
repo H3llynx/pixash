@@ -28,7 +28,7 @@ watch(dialog, (newVal) => {
 </script>
 
 <template>
-    <dialog ref="dialogRef" class="dialog-overlay max-w-xs md:max-w-sm" :aria-labelledby="dialog?.title"
+    <dialog ref="dialogRef" class="dialog-overlay max-w-xs md:max-w-sm" aria-labelledby="dialog-title"
         @click.self="closeDialog">
         <Transition name="modal-pop" appear>
             <div v-if="dialog" class="dialog-box text-center items-center">
@@ -36,7 +36,7 @@ watch(dialog, (newVal) => {
                     <TriangleAlert v-if="dialog.isDelete" :size="30" />
                     <PawPrint v-else :size="30" />
                 </div>
-                <h2>{{ dialog.title }}</h2>
+                <h2 id="dialog-title">{{ dialog.title }}</h2>
                 <p>{{ dialog.message }}</p>
                 <div class="flex justify-center gap-0.5 mt-0.5">
                     <Button @click="closeDialog" variant="secondary">{{

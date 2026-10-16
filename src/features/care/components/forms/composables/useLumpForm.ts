@@ -12,7 +12,7 @@ import type { LumpExtended } from "../../../types";
 
 export const useLumpForm = () => {
     const { selectedPet, isAddingCare, selectLump, selectedLump, addNewLump, updateSelectedLump, deleteSelectedLump, addNewLog, careError } = usePets();
-    const { logCheck } = useLumpCheck();
+    const { buildCheck } = useLumpCheck();
     const { show } = useToast();
     const { open } = useDialog();
     const { t } = useI18n();
@@ -56,8 +56,7 @@ export const useLumpForm = () => {
         try {
             if (pictures.value.length) await hostFormPictures(checkData);
             if (isAddingCare.lump) {
-                const lump = await addNewLump(lumpData, selectedPet.value.id);
-                await addNewLog(logCheck(checkData, lump), selectedPet.value.id);
+                await addNewLump(lumpData, (lumpId) => buildCheck(checkData, lumpId), selectedPet.value.id);
                 show({
                     type: "success",
                     title: t("toast.success.title.generic"),

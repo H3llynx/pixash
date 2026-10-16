@@ -86,7 +86,7 @@ watch(() => model.value, (newValue) => {
                         lump => lump.id !== selectedLump?.id && lump.location.side === model.side
                     )" :key="lump.id" :class="{ 'lump-marker cursor-pointer': readonly }" role="button"
                         :aria-label="t('common.a11y.goToItem', { item: lump.title })"
-                        @click.stop="readonly && selectLump(lump)" @keydown.enter="readonly && selectLump(lump)"
+                        @click.stop="readonly && selectLump(lump.id)" @keydown.enter="readonly && selectLump(lump.id)"
                         :tabindex="readonly ? 0 : -1">
                         <circle :cx="lump.location.x" :cy="lump.location.y" r="10" fill="transparent"
                             stroke="rgba(255, 255, 255, 0.35)" stroke-width="2.5" />

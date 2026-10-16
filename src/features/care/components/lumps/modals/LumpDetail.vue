@@ -38,7 +38,7 @@ const progression = computed(() => {
 
 const editLump = () => {
     if (!checkedLump.value) return;
-    selectLump(checkedLump.value);
+    selectLump(checkedLump.value.id);
     closeModal('view');
 };
 </script>
@@ -79,7 +79,7 @@ const editLump = () => {
                         mm</span>
                     <span class="block text-xs tracking-wide uppercase text-text-secondary">{{
                         t("health.lumps.sinceFirstMeasured")
-                    }}
+                        }}
                     </span>
                 </div>
                 <div>

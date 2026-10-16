@@ -52,6 +52,8 @@ const {
   addNewLog,
   updateSelectedLog,
   deleteSelectedLog,
+  savingLogIds,
+  savingNewLog,
   treatments,
   selectedTreatment,
   addNewTreatment,
@@ -245,9 +247,10 @@ watch(isUpdatingPet, (editing) => {
 
 
 const resyncSelectedPet = () => {
-  if (selectedPet.value) {
-    const updated = pets.value.find(pet => pet.id === selectedPet.value!.id);
-    if (updated) selectPet(updated);
+  if (!selectedPet.value) return;
+  const updated = pets.value.find((pet) => pet.id === selectedPet.value!.id);
+  if (updated) {
+    selectedPet.value = updated;
   }
 };
 
@@ -319,6 +322,8 @@ export const usePets = () => {
     updateSelectedLog,
     deleteSelectedLog,
     resetPetActions,
+    savingLogIds,
+    savingNewLog,
     treatments,
     selectedTreatment,
     addNewTreatment,

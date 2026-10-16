@@ -1,4 +1,4 @@
-import { computed, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useToast } from "../../../composables/useToast";
 import { tsFromInput, tsToDate } from "../../../utils";
@@ -12,14 +12,12 @@ const editedLog = ref<MedicationLogExtended | null>(null);
 const editedTreatment = ref<TreatmentExtended | null>(null);
 const missedDate = ref<Date | null>(null);
 const logMedication = ref<MedicineDb | null>(null);
-const savingLogIds = reactive(new Set<string>());
-const savingNewLog = ref<boolean>(false);
 
 const isModalOpen = ref<boolean>(false);
 const modalState = ref<"add" | "edit" | null>(null);
 
 export const useTreatments = () => {
-    const { treatments, addNewLog, updateSelectedLog, deleteSelectedLog, careError } = usePets();
+    const { treatments, addNewLog, updateSelectedLog, deleteSelectedLog, careError, savingLogIds, savingNewLog } = usePets();
     const { currentMonth } = useEvents();
     const { show } = useToast();
     const { t } = useI18n();
@@ -257,7 +255,7 @@ export const useTreatments = () => {
         } finally {
             savingLogIds.delete(log.id);
         }
-    }
+    };
 
     const deleteDose = async (log: MedicationLogExtended) => {
         savingLogIds.add(log.id);
