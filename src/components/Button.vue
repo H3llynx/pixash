@@ -20,7 +20,7 @@ const button = tv({
             card: "bg-bg-rgba border-border gap-1 hover:scale-105 hover:bg-bg-2"
         },
         size: {
-            rounded: "w-2 h-2 aspect-square text-xs",
+            rounded: "w-2 h-2 aspect-square text-xs rounded-full",
             min: "p-[5px]",
             xxs: "p-0.5 text-xs",
             xs: "p-0.5 text-sm ",
