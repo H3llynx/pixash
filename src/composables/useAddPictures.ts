@@ -21,12 +21,8 @@ export const useAddPictures = (pictures: Ref<Picture[]>) => {
             if (remaining <= 0) return;
             files = files.slice(0, remaining);
         };
-        files.forEach(file => {
-            pictures.value.push({
-                file,
-                preview: URL.createObjectURL(file),
-            });
-        });
+        const added = files.map(file => ({ file, preview: URL.createObjectURL(file) }));
+        pictures.value = [...pictures.value, ...added];
     };
 
     const deletePicture = (picture: Picture) => {
