@@ -39,7 +39,7 @@ watch(visible, (visible) => visible ? openDialog() : closeDialog());
 </script>
 
 <template>
-    <dialog ref="dialogRef" @click.self="closeDialog" @close="visible = false" :class="dialog({ size, color })">
+    <dialog ref="dialogRef" @close="visible = false" :class="dialog({ size, color })">
         <transition name="toast">
             <div v-if="visible" class="dialog-box">
                 <slot />

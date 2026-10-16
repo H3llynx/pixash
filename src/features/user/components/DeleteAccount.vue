@@ -28,18 +28,18 @@ const handleConfirmDelete = async () => {
     try {
         await reauthenticate(isPasswordProvider.value ? password.value : undefined);
         await deleteAccount(user.value.uid);
-        window.location.href = '/';
-    } catch (error: any) {
-        if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+        visible.value = false;
+        window.location.href = import.meta.env.BASE_URL;
+    } catch (e: any) {
+        if (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
             error.value = "auth.deleteAccount.wrongPassword";
-        } else if (error.code === 'auth/popup-closed-by-user') {
+        } else if (e.code === 'auth/popup-closed-by-user') {
             error.value = "auth.deleteAccount.popupClosed";
         } else {
             error.value = "common.text.genericError";
         }
     } finally {
         isDeleting.value = false;
-        visible.value = false;
     }
 };
 
@@ -66,7 +66,7 @@ const handleCancel = () => {
             </Input>
         </div>
         <p v-if="error" class="text-sm w-full text-error pb-0.5">
-            {{ error }}
+            {{ t(error) }}
         </p>
         <div class="flex flex-col-reverse gap-0.5 mt-0.5 shrink-0 w-full md:flex-row md:ml-auto md:w-max">
             <Button variant="secondary" size="sm" @click="handleCancel" :disabled="isDeleting">

@@ -24,18 +24,16 @@ watch(error, (newError) => {
 });
 
 watch(user, (newUser) => {
-    if (!newUser) return;
-    const firstName = newUser.firstName;
-    if (firstName) {
-        show({
-            type: "success",
-            title: isLogin.value
-                ? t("toast.success.title.loggedUser")
-                : t("toast.success.title.newUser", { name: newUser.firstName }),
-            message: t("toast.success.message.userAuthenticated"),
-        });
-        router.push(ROUTES.dashboard);
-    }
+    if (!newUser?.firstName) return;
+    const isNew = newUser.metadata.creationTime === newUser.metadata.lastSignInTime;
+    show({
+        type: "success",
+        title: isNew
+            ? t("toast.success.title.newUser", { name: newUser.firstName })
+            : t("toast.success.title.loggedUser"),
+        message: t("toast.success.message.userAuthenticated"),
+    });
+    router.push(ROUTES.dashboard);
 });
 
 const handleAuth = async () => {
