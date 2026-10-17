@@ -50,14 +50,13 @@ const vet = computed(() => isRegisteredVet.value?.name ?? props.treatment.vet);
                 </p>
             </div>
         </div>
-        <div v-for="(medication, index) in treatment.medication" class="text-sm flex flex-col gap-0.5"
-            :key="medication.id">
+        <div v-for="medication in treatment.medication" class="text-sm flex flex-col gap-0.5" :key="medication.id">
             <div class="flex gap-1 justify-between items-center">
                 <div>
                     <p>{{ medication.name }}</p>
                     <span class="italic font-medium text-eucalyptus text-xs">{{ t(getLabel(medication.frequency,
                         MED_FREQUENCY))
-                    }}</span>
+                        }}</span>
                     <span v-if="medication.endDate" class="italic font-medium text-text-secondary text-xs ml-0.5">
                         <span v-if="route.path === ROUTES.history">{{ t("health.treatment.ended") }}</span>
                         <span v-else>{{ t("health.treatment.until") }}</span>

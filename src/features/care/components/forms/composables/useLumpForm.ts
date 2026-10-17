@@ -11,7 +11,7 @@ import type { LumpExtended } from "../../../types";
 
 
 export const useLumpForm = () => {
-    const { selectedPet, isAddingCare, selectLump, selectedLump, addNewLump, updateSelectedLump, deleteSelectedLump, addNewLog, careError } = usePets();
+    const { selectedPet, isAddingCare, selectLump, selectedLump, addNewLump, updateSelectedLump, deleteSelectedLump, careError } = usePets();
     const { buildCheck } = useLumpCheck();
     const { show } = useToast();
     const { open } = useDialog();
