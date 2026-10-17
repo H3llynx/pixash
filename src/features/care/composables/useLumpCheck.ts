@@ -26,7 +26,10 @@ export const useLumpCheck = () => {
     const { status } = lumpFields;
 
     const lumpChecks = computed(() => logs.value.filter(logs => logs.type === "lump"));
-    const selectedLumpChecks = computed(() => lumpChecks.value.filter(check => check.lumpId === checkedLump.value?.id));
+    const selectedLumpChecks = computed(() => [...lumpChecks.value]
+        .filter(check => check.lumpId === checkedLump.value?.id)
+        .sort((a, b) => b.date.toMillis() - a.date.toMillis())
+    );
 
     const defaultCheck = {
         size: {

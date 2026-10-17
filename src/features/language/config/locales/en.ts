@@ -36,6 +36,7 @@ export default {
             noNeed: "No need",
             petSelector: "select another pet",
             lastChecked: "last checked {date}",
+            timeline: "Timeline",
         },
         header: {
             vetH2: "Vet care",
@@ -483,7 +484,7 @@ export default {
             currentSize: "current size",
             sinceFirstMeasured: "since first measured",
             checksLogged: "checks logged",
-            addCheck: "Add a new check"
+            addCheck: "Add a new check",
         }
     },
     events: {

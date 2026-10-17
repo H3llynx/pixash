@@ -160,6 +160,7 @@
 
   *::-webkit-scrollbar {
     width: 6px;
+    height: 5px;
     background: transparent;
   }
 
@@ -513,7 +514,7 @@
   }
 
   .dialog-box {
-    @apply bg-bg-2 p-1.5 rounded-2xl border border-border flex flex-col gap-1;
+    @apply bg-bg-2 p-1.5 rounded-2xl border border-border flex flex-col gap-1 overflow-hidden;
   }
 
   .preview {

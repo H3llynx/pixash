@@ -35,7 +35,7 @@ const removeCheck = () => {
         :class="{ 'card border border-border p-0 w-13 relative overflow-hidden': true, 'opacity-40 animate-pulse': savingLogIds.has(check.id) }">
         <div
             class="w-full bg-picture-placeholder border-b border-border-light h-6 flex justify-center items-center overflow-hidden">
-            <img v-if="check.pictures?.length" :src="check.pictures.at(-1)" class="w-full object-cover">
+            <img v-if="check.pictures?.length" :src="check.pictures[0]" class="w-full object-cover">
             <span v-else>📷</span>
         </div>
         <div class="px-1 pb-1 pt-0.25 text-left">

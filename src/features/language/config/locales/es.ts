@@ -36,6 +36,7 @@ export default {
             noNeed: "No hace falta",
             petSelector: "selecciona otra mascota",
             lastChecked: "última actualización: {date}",
+            timeline: "Cronología"
         },
         header: {
             vetH2: "Cuidado veterinario",
