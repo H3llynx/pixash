@@ -37,12 +37,14 @@ export default {
             petSelector: "select another pet",
             lastChecked: "last checked {date}",
             timeline: "Timeline",
+            about: "About Pixash"
         },
         header: {
             vetH2: "Vet care",
             vetSpan: "Clinics & treatments",
             historyH2: "History",
             historySpan: "Health records & stats per pet",
+            login: "Sign in"
         },
         navbar: {
             home: "Home",
@@ -55,6 +57,34 @@ export default {
             petSelected: "{name} selected",
             allPetsSelected: "All pets selected",
             goToItem: "Go to item {item}",
+        }
+    },
+    landing: {
+        hero: {
+            h1: "All your pet’s care in one place",
+            h2: "Pet care, organized",
+            p: "Track vaccines, vet visits, treatments, weight, and daily activity.",
+            cta: {
+                openApp: "Open App",
+                learnMore: "Learn More",
+            },
+            alt: {
+                sasha: "Dog image",
+                pixie: "Cat image",
+                dashboard: "Dashboard image"
+            },
+            bubbles: {
+                pixie: "My next antiparasitic is in 16 days.",
+                sasha: "When is my next vaccine?"
+            }
+        },
+        calendar: {
+            h2: "Pixie's calendar",
+            h1: "Know what's next",
+            p: "See upcoming vaccines, vet visits, and antiparasitics in one calendar, then check back on everything you’ve logged.",
+            li1: "Month view, filtered by pet",
+            li2: "See upcoming care and past events side by side",
+            li3: "Log activity, grooming, behavior, and more"
         }
     },
     auth: {

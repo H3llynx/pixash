@@ -36,13 +36,15 @@ export default {
             noNeed: "No hace falta",
             petSelector: "selecciona otra mascota",
             lastChecked: "última actualización: {date}",
-            timeline: "Cronología"
+            timeline: "Cronología",
+            about: "Sobre Pixash"
         },
         header: {
             vetH2: "Cuidado veterinario",
             vetSpan: "Clínicas y tratamientos",
             historyH2: "Historial",
             historySpan: "Registros por mascota",
+            login: "Iniciar sesión"
         },
         navbar: {
             home: "Inicio",
@@ -55,6 +57,34 @@ export default {
             petSelected: "Mascota seleccionada: {name}",
             allPetsSelected: "Todas las mascotas seleccionadas",
             goToItem: "Ir al elemento: {item}",
+        }
+    },
+    landing: {
+        hero: {
+            h1: "Todo el cuidado de tus mascotas en un solo lugar",
+            h2: "Salud, actividad e historial",
+            p: "Registra vacunas, visitas al veterinario, tratamientos, peso y rutinas diarias.",
+            cta: {
+                openApp: "Abrir App",
+                learnMore: "Saber más",
+            },
+            alt: {
+                sasha: "Imagen de un perro",
+                pixie: "Imagen de un gato",
+                dashboard: "Imagen de la pantalla del panel de control de Pixash",
+            },
+            bubbles: {
+                pixie: "Mi próximo antiparasitario es en 16 días.",
+                sasha: "¿Cuándo es mi próxima vacuna?"
+            }
+        },
+        calendar: {
+            h2: "El calendario de Pixie",
+            h1: "Sabe qué viene después",
+            p: "Consulta las próximas vacunas, visitas al veterinario y antiparasitarios en un mismo calendario y revisa todo lo que has registrado.",
+            li1: "Vista mensual, filtrada por mascota",
+            li2: "Consulta los próximos cuidados y los eventos pasados juntos",
+            li3: "Registra actividad, higiene, comportamiento y más"
         }
     },
     auth: {

@@ -80,6 +80,7 @@
   --background-image-gold-gradient: linear-gradient(145deg, #e9b96a 0%, var(--color-gold) 40%, var(--color-gold-dark) 100%);
   --background-image-eucalyptus-gradient: linear-gradient(145deg, var(--color-eucalyptus-light) 0%, var(--color-eucalyptus) 40%);
   --background-image-picture-placeholder: linear-gradient(90deg, var(--color-bg-2), #F0F0F0);
+  --background-image-color-gradient: linear-gradient(145deg, var(--color-accent-softer), var(--color-interactive));
 
   --color-bg-loading: var(--color-eucalyptus);
   --color-text-loading-1: var(--color-orange-softer);

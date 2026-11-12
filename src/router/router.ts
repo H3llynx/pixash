@@ -4,6 +4,7 @@ import AuthView from '../views/AuthView.vue';
 import CalendarView from '../views/CalendarView.vue';
 import DashboardView from '../views/DashboardView.vue';
 import HistoryView from '../views/HistoryView.vue';
+import LandingView from '../views/LandingView.vue';
 import VetView from '../views/VetView.vue';
 import { ROUTES } from './config';
 
@@ -17,7 +18,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: () => user.value ? ROUTES.dashboard : ROUTES.auth
+      redirect: () => user.value ? ROUTES.dashboard : ROUTES.landing
     },
     {
       path: ROUTES.dashboard,
@@ -38,6 +39,10 @@ const router = createRouter({
       path: ROUTES.history,
       component: HistoryView,
       meta: { requiresAuth: true }
+    },
+    {
+      path: ROUTES.landing,
+      component: LandingView
     },
     {
       path: ROUTES.auth,
