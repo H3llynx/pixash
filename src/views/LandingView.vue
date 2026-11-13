@@ -2,12 +2,16 @@
 import Header from '../components/Header.vue';
 import Calendar from '../features/landing/components/Calendar.vue';
 import Hero from '../features/landing/components/Hero.vue';
+import OtherFeatures from '../features/landing/components/OtherFeatures.vue';
+import Treatments from '../features/landing/components/Treatments.vue';
 </script>
 
 <template>
     <Header class="sticky top-0 bg-bg z-1" />
     <Hero />
     <Calendar />
+    <Treatments />
+    <OtherFeatures />
 </template>
 
 <style scoped>

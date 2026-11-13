@@ -86,13 +86,41 @@ export default {
             li2: "See upcoming care and past events side by side",
             li3: "Log activity, grooming, behavior, and more"
         },
-        treatment: {
+        treatments: {
             h2: "Sasha's post-op treatment",
             h1: "See exactly where treatment stands",
             p: "Track treatments and medication in one place. Log each dose, see what comes next, and easily spot anything missed.",
             li1: "Active and scheduled treatments at a glance",
             li2: "Log a dose in one tap",
             li3: "Missed doses are easy to spot"
+        },
+        features: {
+            h1: "Everything your pet needs, in one place",
+            lump: {
+                title: "Lump monitoring",
+                description: "Photograph a lump and re-check it over time. See how it changes and share a clear record with your vet."
+            },
+            weight: {
+                title: "Weight tracking",
+                description: "Log weight and follow the trend in a simple chart.",
+                caption: "* Pixie has notes."
+            },
+            insuranceChip: {
+                title: "Insurance & microchip",
+                description: "Keep policy numbers and chip IDs handy, with one-tap copying."
+            },
+            vets: {
+                title: "Your vets, always at hand",
+                description: "Save clinics with phone, email, opening hours, and an emergency note — linked to the right pet."
+            },
+            history: {
+                title: "A full history, per pet",
+                description: "Filter by vaccines, vet visits, weight, antiparasitics, and other events. Every record is easy to find."
+            },
+            multiPet: {
+                title: "Made for every pet",
+                description: "Create a profile for each pet and keep their care, history, and records separate."
+            }
         }
     },
     auth: {

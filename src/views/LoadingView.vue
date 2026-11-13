@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import SashaPixie from '../assets/sasha-pixie.png';
 import Paw from '../components/icons/Paw.vue';
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -10,7 +13,8 @@ import Paw from '../components/icons/Paw.vue';
         </div>
         <div class="fadein-2">
             <h1 class="text-4xl text-text-softer">Pixash</h1>
-            <p class="text-sm leading-3 tracking-wider">pet care, beautifully organised
+            <p class="text-sm leading-3 tracking-wider">
+                {{ t('landing.hero.h1') }}
             </p>
         </div>
     </div>

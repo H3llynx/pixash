@@ -86,7 +86,7 @@ export default {
             li2: "Consulta los próximos cuidados y los eventos pasados juntos",
             li3: "Registra actividad, higiene, comportamiento y más"
         },
-        treatment: {
+        treatments: {
             h2: "El tratamiento post-operatorio de Sasha",
             h1: "Nunca dudes si se lo has dado",
             p: "Lleva un registro de tratamientos y medicación en un solo lugar. Registra cada dosis, consulta lo que viene después y detecta de un vistazo las dosis pendientes.",
@@ -94,6 +94,34 @@ export default {
             li2: "Registra una dosis con un toque",
             li3: "Las dosis pendientes son fáciles de identificar"
         },
+        features: {
+            h1: "Todo lo que tu mascota necesita, en un solo lugar",
+            lump: {
+                title: "Seguimiento de bultos",
+                description: "Haz una foto de un bulto y vuelve a revisarlo con el tiempo. Observa cómo cambia y comparte un registro claro con tu veterinario."
+            },
+            weight: {
+                title: "Control de peso",
+                description: "Registra el peso y sigue su evolución en una gráfica sencilla.",
+                caption: "* Pixie tiene opiniones."
+            },
+            insuranceChip: {
+                title: "Seguro y microchip",
+                description: "Ten a mano el número de microchip y la información de contacto del seguro de tu mascota."
+            },
+            vets: {
+                title: "Tus veterinarios, siempre a mano",
+                description: "Guarda clínicas con teléfono, correo electrónico, horarios... vinculadas a la mascota adecuada."
+            },
+            history: {
+                title: "Un historial completo, por mascota",
+                description: "Filtra por vacunas, visitas al veterinario, peso, antiparasitarios y otros eventos. Encuentra cada registro fácilmente."
+            },
+            multiPet: {
+                title: "Pensado para todas tus mascotas",
+                description: "Crea un perfil para cada mascota y mantén su cuidado, historial y registros separados."
+            }
+        }
     },
     auth: {
         password: {

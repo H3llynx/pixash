@@ -51,7 +51,7 @@ const scrollToCalendar = () => {
                     <img :src="Pixie" :alt="t('landing.hero.alt.pixie')"
                         class="ml-auto rotate-6 rounded-xl shadow-xl border border-6 border-border" />
                     <span
-                        :class="[theme === 'light' ? 'bg-bg' : 'bg-bg-2', 'absolute top-[80%] max-w-[70vw] right-1/3 lg:right-2/3 w-max py-0.5 px-1 rounded-b-2xl rounded-l-2xl border-2 border-interactive']">
+                        :class="[theme === 'light' ? 'bg-bg' : 'bg-bg-2', 'absolute top-[80%] max-w-[70vw] lg:w-16 xl:w-max right-1/3 lg:right-2/3 w-max py-0.5 px-1 rounded-b-2xl rounded-l-2xl border-2 border-interactive']">
                         {{ t("landing.hero.bubbles.pixie") }}</span>
                 </div>
             </div>
