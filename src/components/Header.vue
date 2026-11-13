@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RouterLink, useRoute } from 'vue-router';
 import { useMedia } from '../composables/useMedia.ts';
@@ -15,6 +16,24 @@ const { hasPets } = usePets();
 const { isMd } = useMedia();
 const { t } = useI18n();
 const route = useRoute();
+
+const isAfterOpenAppBtn = ref(false);
+
+let openAppObserver: IntersectionObserver | undefined;
+
+onMounted(() => {
+    const openAppBtn = document.getElementById('openAppBtn');
+    if (!openAppBtn) return;
+
+    openAppObserver = new IntersectionObserver(([entry]) => {
+        isAfterOpenAppBtn.value = !entry.isIntersecting;
+    });
+    openAppObserver.observe(openAppBtn);
+});
+
+onUnmounted(() => {
+    openAppObserver?.disconnect();
+});
 </script>
 
 <template>
@@ -24,7 +43,7 @@ const route = useRoute();
         <div :class="[hasPets ? 'z-2' : 'z-3', 'flex relative items-center justify-end flex-wrap']">
             <template v-if="!user && isMd">
                 <RouterLink v-if="route.path === ROUTES.landing" :to="ROUTES.auth"
-                    class="text-text-secondary mx-1.5 w-max">
+                    :class="[isAfterOpenAppBtn ? 'text-bg' : 'text-text-secondary', isAfterOpenAppBtn && 'bg-accent hover:bg-interactive', 'mx-1.5 w-max rounded px-2 py-[10px] rounded-xl']">
                     {{ t("common.header.login")
                     }}
                 </RouterLink>

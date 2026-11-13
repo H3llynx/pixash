@@ -107,7 +107,7 @@ export default {
             },
             insuranceChip: {
                 title: "Seguro y microchip",
-                description: "Ten a mano el número de microchip y la información de contacto del seguro de tu mascota."
+                description: "Ten a mano el número de microchip y la información de contacto del seguro de tus mascotas."
             },
             vets: {
                 title: "Tus veterinarios, siempre a mano",
@@ -120,8 +120,9 @@ export default {
             multiPet: {
                 title: "Pensado para todas tus mascotas",
                 description: "Crea un perfil para cada mascota y mantén su cuidado, historial y registros separados."
-            }
-        }
+            },
+        },
+        footer: "Hecho con cariño para Sasha y Pixie"
     },
     auth: {
         password: {

@@ -121,7 +121,8 @@ export default {
                 title: "Made for every pet",
                 description: "Create a profile for each pet and keep their care, history, and records separate."
             }
-        }
+        },
+        footer: "Made with care for Sasha and Pixie"
     },
     auth: {
         password: {

@@ -29,7 +29,7 @@ const scrollToCalendar = () => {
                 <h1 class="text-4xl md:text-6xl">{{ t("landing.hero.h1") }}</h1>
                 <p class="text-text-softer">{{ t("landing.hero.p") }}</p>
                 <div class="flex gap-1 pt-0.5 pb-1.5 m-auto lg:m-0">
-                    <RouterLink :to="ROUTES.auth"
+                    <RouterLink :to="ROUTES.auth" id="openAppBtn"
                         class="px-2 py-[10px] font-medium rounded-xl bg-accent text-bg hover:bg-interactive">
                         {{ t("landing.hero.cta.openApp") }}
                     </RouterLink>
