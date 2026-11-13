@@ -398,7 +398,7 @@ export const updateLog = async (
         updated = {
             lumpId: data.lumpId,
             date: data.date,
-            size: data.size,
+            ...(data.size ? { size: data.size } : {}),
             pictures: data.pictures,
             notes: data.notes,
             status: data.status,
@@ -548,7 +548,17 @@ export const addLump = async (
 
 export const deleteLump = async (lump: Pick<LumpExtended, "id" | "petId">, userId: string) => {
     try {
-        await deleteDoc(getLumpDoc(userId, lump.petId, lump.id));
+        const lumpRef = getLumpDoc(userId, lump.petId, lump.id);
+        const logsRef = collection(db, DB.users, userId, DB.pets, lump.petId, DB.logs);
+        const associatedLogsSnapshot = await getDocs(query(logsRef, where('lumpId', '==', lump.id)));
+        const logs = associatedLogsSnapshot.docs;
+        const batchLimit = 499;
+        for (let i = 0; i < logs.length; i += batchLimit) {
+            const batch = writeBatch(db);
+            logs.slice(i, i + batchLimit).forEach((logDoc) => batch.delete(logDoc.ref));
+            await batch.commit();
+        }
+        await deleteDoc(lumpRef);
     } catch (error) {
         console.error("Error deleting lump: ", error);
         throw error;
