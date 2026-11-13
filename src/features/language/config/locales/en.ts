@@ -85,6 +85,14 @@ export default {
             li1: "Month view, filtered by pet",
             li2: "See upcoming care and past events side by side",
             li3: "Log activity, grooming, behavior, and more"
+        },
+        treatment: {
+            h2: "Sasha's post-op treatment",
+            h1: "See exactly where treatment stands",
+            p: "Track treatments and medication in one place. Log each dose, see what comes next, and easily spot anything missed.",
+            li1: "Active and scheduled treatments at a glance",
+            li2: "Log a dose in one tap",
+            li3: "Missed doses are easy to spot"
         }
     },
     auth: {

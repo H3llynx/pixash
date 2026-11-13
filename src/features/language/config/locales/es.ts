@@ -85,7 +85,15 @@ export default {
             li1: "Vista mensual, filtrada por mascota",
             li2: "Consulta los próximos cuidados y los eventos pasados juntos",
             li3: "Registra actividad, higiene, comportamiento y más"
-        }
+        },
+        treatment: {
+            h2: "El tratamiento post-operatorio de Sasha",
+            h1: "Nunca dudes si se lo has dado",
+            p: "Lleva un registro de tratamientos y medicación en un solo lugar. Registra cada dosis, consulta lo que viene después y detecta de un vistazo las dosis pendientes.",
+            li1: "Tratamientos activos y programados de un vistazo",
+            li2: "Registra una dosis con un toque",
+            li3: "Las dosis pendientes son fáciles de identificar"
+        },
     },
     auth: {
         password: {
