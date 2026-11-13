@@ -86,6 +86,8 @@ const missed = computed(() => getMissedDosesHistory(props.pet, props.treatment, 
                     </Button>
                 </div>
             </div>
+            <p class="px-1.5 py-0.5 border-border text-xs text-text-secondary">{{
+                t("health.treatment.historyModal.bottomText2") }}</p>
             <p class="px-1.5 py-1 text-sm text-text-secondary">{{
                 t("health.treatment.historyModal.bottomText") }}</p>
         </div>

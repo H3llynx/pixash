@@ -5,7 +5,7 @@ import type { PetExtended } from '../../../pets/types.ts';
 import { useTreatments } from '../../composables/useTreatments.ts';
 import type { MissedDoseRecord, TreatmentExtended } from '../../types';
 
-const { openModal } = useTreatments();
+const { openModal, savingNewLog } = useTreatments();
 const { t, locale } = useI18n();
 
 defineProps<{
@@ -23,7 +23,7 @@ defineProps<{
             <h5 class="uppercase tracking-wide">{{ t('health.treatment.missedDoses') }}</h5>
         </div>
         <div v-for="missed in missedDoses" :key="`${treatment.id}-${missed.medication.id}-${missed.date}`"
-            class="inline-flex items-center gap-1 w-full p-0.75 rounded-xl bg-error-rgba border-l-3 border-error">
+            :class="{ 'inline-flex items-center gap-1 w-full p-0.75 rounded-xl bg-error-rgba border-l-3 border-error': true, 'opacity-40 animate-pulse': savingNewLog }">
             <span>{{ missed.date.toLocaleDateString(locale) }}</span>
             <span class="flex w-1.5 h-1.5 rounded-full bg-error text-white items-center justify-center">{{
                 missed.count

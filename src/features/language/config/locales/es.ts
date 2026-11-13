@@ -452,11 +452,12 @@ export default {
             viewMedLog: "Ver registros",
             historyModal: {
                 logged: "Registradas",
-                missed: "Omitidas",
+                missed: "Omitidas *",
                 window: "Periodo actual",
                 beforeStart: "Antes de la fecha de inicio",
                 afterEnd: "Después de la fecha de fin",
-                bottomText: "Los registros fuera de las fechas actuales del tratamiento se conservan, pero quedan marcados. Edítalos o elimínalos aquí si ya no corresponden."
+                bottomText: "Los registros fuera de las fechas actuales del tratamiento se conservan, pero quedan marcados. Edítalos o elimínalos aquí si ya no corresponden.",
+                bottomText2: "* No incluye las dosis de hoy."
             }
         },
         medicine: {

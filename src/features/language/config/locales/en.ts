@@ -452,11 +452,12 @@ export default {
             viewMedLog: "View Log history",
             historyModal: {
                 logged: "Logged",
-                missed: "Missed",
+                missed: "Missed *",
                 window: "Current window",
                 beforeStart: "Before start date",
                 afterEnd: "After end date",
-                bottomText: "Logs outside the treatment's current dates are kept but flagged — edit or remove them here if they no longer apply."
+                bottomText: "Logs outside the treatment's current dates are kept but flagged — edit or remove them here if they no longer apply.",
+                bottomText2: "* Does not include today’s doses."
             }
         },
         medicine: {

@@ -111,8 +111,8 @@ export const useTreatments = () => {
         if (isMedicationEnded(medication)) return 0;
         const loggedList = getTodayLoggedList(pet, treatment, medication) || [];
         const dailyDose = getDailyDose(medication.frequency);
-        if (dailyDose !== undefined) return dailyDose - loggedList.length;
-        if (medication.frequency === "every_48_hours") return 1 - loggedList.length;
+        if (dailyDose !== undefined) return Math.max(0, dailyDose - loggedList.length);
+        if (medication.frequency === "every_48_hours") return Math.max(0, 1 - loggedList.length);
         return 1;
     };
 
@@ -139,10 +139,16 @@ export const useTreatments = () => {
         };
 
         const loggedToday = getTodayLoggedList(pet, treatment, medication);
+
         if (loggedToday.length >= dailyDose) return 0;
+
         const referenceTimestamp = loggedToday.length === 0
-            ? Math.max(new Date().setHours(DOSE_WINDOW.startHour, 0, 0, 0) + intervalMs, treatment.startDate.toMillis())
+            ? Math.max(
+                treatment.startDate.toMillis() + intervalMs,
+                new Date().setHours(DOSE_WINDOW.startHour, 0, 0, 0)
+            )
             : latestLog!.givenAt.toMillis() + intervalMs;
+
         return Date.now() >= referenceTimestamp ? 1 : 0;
     };
 
