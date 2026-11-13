@@ -36,9 +36,9 @@ const { isLg } = useMedia();
                 </li>
             </ul>
         </div>
-        <img v-if="isLg" :src="theme === 'light' ? CalendarLight : CalendarDark" :alt="t('landing.calendar.alt')"
+        <img v-if="isLg" :src="theme === 'light' ? CalendarLight : CalendarDark" alt=""
             class="w-1/2 rounded-xl border border-border-light">
-        <img v-else :src="theme === 'light' ? CalendarSmLight : CalendarSmDark" :alt="t('landing.calendar.alt')"
+        <img v-else :src="theme === 'light' ? CalendarSmLight : CalendarSmDark" alt=""
             class="w-full rounded-xl border border-border" />
     </section>
 </template>

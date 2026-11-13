@@ -54,8 +54,10 @@ const router = createRouter({
 router.beforeEach(async (to, _from) => {
   await authReady;
   if (to.meta.requiresAuth && !user.value) {
-    return "/auth";
-  } else if (to.path === ROUTES.auth || to.path === ROUTES.landing) {
+    return ROUTES.auth;
+  } else if (to.path === ROUTES.auth && user.value) {
+    return ROUTES.dashboard;
+  } else if (to.path === ROUTES.landing && user.value) {
     return ROUTES.dashboard;
   }
 });

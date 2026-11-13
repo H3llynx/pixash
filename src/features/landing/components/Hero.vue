@@ -24,7 +24,7 @@ const scrollToCalendar = () => {
         <div class="text-center lg:text-left flex flex-col lg:flex-row gap-1.5 w-full py-2">
             <div class="lg:w-3/5 flex flex-col gap-1.5">
                 <h2>{{ t("landing.hero.h2")
-                    }}
+                }}
                 </h2>
                 <h1 class="text-4xl md:text-6xl">{{ t("landing.hero.h1") }}</h1>
                 <p class="text-text-softer">{{ t("landing.hero.p") }}</p>
@@ -48,7 +48,7 @@ const scrollToCalendar = () => {
                         {{ t("landing.hero.bubbles.sasha") }}</span>
                 </div>
                 <div class="relative flex-1 self-bottom">
-                    <img :src="Pixie" :alt="t('landing.hero.hero.alt.pixie')"
+                    <img :src="Pixie" :alt="t('landing.hero.alt.pixie')"
                         class="ml-auto rotate-6 rounded-xl shadow-xl border border-6 border-border" />
                     <span
                         :class="[theme === 'light' ? 'bg-bg' : 'bg-bg-2', 'absolute top-[80%] max-w-[70vw] right-1/3 lg:right-2/3 w-max py-0.5 px-1 rounded-b-2xl rounded-l-2xl border-2 border-interactive']">
