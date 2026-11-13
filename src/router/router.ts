@@ -55,8 +55,8 @@ router.beforeEach(async (to, _from) => {
   await authReady;
   if (to.meta.requiresAuth && !user.value) {
     return "/auth";
-  } else if (to.path === "/auth" && user.value) {
-    return "/dashboard";
+  } else if (to.path === ROUTES.auth || to.path === ROUTES.landing) {
+    return ROUTES.dashboard;
   }
 });
 
