@@ -111,6 +111,7 @@ export type Vet = {
     phone?: string;
     email?: string;
     hours?: string;
+    order?: number;
 };
 
 export type VetExtended = Vet & { id: string; };

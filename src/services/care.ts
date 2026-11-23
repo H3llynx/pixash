@@ -267,14 +267,21 @@ export const fetchVets = async (userId: string): Promise<VetExtended[]> => {
             console.log("No vets found");
             return [];
         }
-        return snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data() as Omit<VetExtended, "id">
-        }));
+        return snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() as Omit<VetExtended, "id"> }))
+            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     } catch (error) {
         console.error("Fetch vets error:", error);
         throw error;
     }
+};
+
+export const saveVetOrder = async (userId: string, vets: VetExtended[]) => {
+    const batch = writeBatch(db);
+    vets.forEach((vet, index) => {
+        batch.update(doc(getVetCollection(userId), vet.id), { order: index });
+    });
+    await batch.commit();
 };
 
 export const addVet = async (vet: Vet, userId: string) => {
@@ -291,7 +298,8 @@ export const addVet = async (vet: Vet, userId: string) => {
         email: vet.email,
         hours: vet.hours,
         ownerUid: userId,
-        createdAt: serverTimestamp()
+        createdAt: serverTimestamp(),
+        order: vet.order
     };
     try {
         const docRef = await addDoc(getVetCollection(userId), newVet);

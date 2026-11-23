@@ -196,7 +196,9 @@ export default {
             email: "Enviar correo a {name}",
             edit: "Editar {name}",
             notes: "Editar notas",
-            saveNotes: "Dejar de editar notas"
+            saveNotes: "Dejar de editar notas",
+            moveEarlier: "Mover a {name} antes",
+            moveLater: "Mover a {name} después"
         },
     },
     pet: {

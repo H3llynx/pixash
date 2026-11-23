@@ -1,6 +1,6 @@
 import { FirebaseError } from "firebase/app";
 import { computed, reactive, ref, type Ref } from "vue";
-import { addLog, addLump, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteLump, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchPetLogs, fetchPetLumps, fetchPetTreatments, fetchPetVaccines, fetchPetVisits, fetchVets, updateLog, updateLump, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/care";
+import { addLog, addLump, addTreatment, addVaccine, addVet, addVetVisit, deleteLog, deleteLump, deleteTreatment, deleteVaccine, deleteVet, deleteVisit, fetchPetLogs, fetchPetLumps, fetchPetTreatments, fetchPetVaccines, fetchPetVisits, fetchVets, saveVetOrder, updateLog, updateLump, updateTreatment, updateVaccine, updateVet, updateVetVisit } from "../../../services/care";
 import { resetState } from "../../../utils";
 import type { PetExtended } from "../../pets/types";
 import { useAuth } from "../../user/composables/useAuth";
@@ -217,12 +217,33 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
     const addNewVet = async (newVet: Vet) => {
         await handleHealthAction(async () => {
             vetLoading.value = true;
-            await addVet(newVet, user.value!.uid);
+            const firstOrder = Math.min(0, ...vets.value.map(v => v.order ?? 0)) - 1;
+            await addVet({ ...newVet, order: firstOrder }, user.value!.uid);
             await fetchUserVets();
             isAddingCare.vet = false;
         }, () => {
             vetLoading.value = false;
         });
+    };
+
+    const moveVet = async (fromId: string, toId: string) => {
+        if (fromId === toId) return;
+        const previous = vets.value;
+        const list = [...vets.value];
+        const from = list.findIndex(v => v.id === fromId);
+        const to = list.findIndex(v => v.id === toId);
+        if (from === -1 || to === -1) return;
+
+        const [moved] = list.splice(from, 1);
+        list.splice(to, 0, moved);
+        vets.value = list.map((v, i) => ({ ...v, order: i }));
+
+        try {
+            await saveVetOrder(user.value!.uid, vets.value);
+        } catch (error) {
+            console.error("Save vet order error:", error);
+            vets.value = previous;
+        }
     };
 
     const updateSelectedVet = async (vet: VetExtended, data: Partial<Vet>) => {
@@ -360,6 +381,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         deleteSelectedVisit,
         fetchUserVets,
         addNewVet,
+        moveVet,
         vets,
         isUpdatingVet,
         selectedVet,

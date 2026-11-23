@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BriefcaseMedical, NotebookPen } from '@lucide/vue';
+import { BriefcaseMedical, ChevronLeft, ChevronRight, NotebookPen } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
@@ -14,7 +14,12 @@ import VetTypeTag from './VetTypeTag.vue';
 const { pets, selectPet, isAddingCare, selectedVet, isUpdatingVet } = usePets();
 const { t } = useI18n();
 
-const props = defineProps<{ vet: VetExtended }>();
+const props = defineProps<{
+    vet: VetExtended;
+    canMoveEarlier?: boolean;
+    canMoveLater?: boolean;
+}>();
+const emit = defineEmits<{ move: [direction: -1 | 1] }>();
 
 const assignedPets = computed(() => {
     const assignedPetIds = props.vet.assignedPets ?? [];
@@ -52,7 +57,7 @@ const handleVetUpdate = () => {
 </script>
 
 <template>
-    <div class="card card-border w-full md:w-sm shrink-0 text-sm">
+    <div class="group card card-border w-full md:w-sm shrink-0 text-sm cursor-grab relative">
         <div class="flex items-start gap-0.5 py-1">
             <div class="rounded-xl w-4 h-4 bg-border text-4xl flex shrink-0 justify-center items-center">
                 <BriefcaseMedical />
@@ -61,6 +66,19 @@ const handleVetUpdate = () => {
                 <div class="flex gap-0.5 items-start justify-between">
                     <h1>{{ vet.name }}</h1>
                     <Button action="edit" @click="handleVetUpdate" :aria-label="t('common.button.edit')" />
+                    <div
+                        class="opacity-0 pointer-coarse:opacity-100 group-hover:opacity-100 group-focus-within:opacity-100 default-transition flex gap-0.25 absolute -top-0.75 right-0">
+                        <Button v-if="canMoveEarlier" variant="tertiary" size="rounded"
+                            class="opacity-60 focus:opacity-100 focus:outline-offset-0 hover:opacity-100"
+                            :aria-label="t('vet.cta.moveEarlier', { name: vet.name })" @click="emit('move', -1)">
+                            <ChevronLeft :size="20" />
+                        </Button>
+                        <Button v-if="canMoveLater" variant="tertiary" size="rounded"
+                            class="opacity-60 focus:opacity-100 focus:outline-offset-0 hover:opacity-100"
+                            :aria-label="t('vet.cta.moveLater', { name: vet.name })" @click="emit('move', 1)">
+                            <ChevronRight :size="20" />
+                        </Button>
+                    </div>
                 </div>
                 <div class="flex flex-wrap gap-x-[5px]">
                     <span class="capitalize">{{ vet.address1 }}</span>

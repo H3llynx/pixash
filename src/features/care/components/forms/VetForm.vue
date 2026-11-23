@@ -38,7 +38,7 @@ const defaultForm: Vet = {
     assignedPets: [],
     phone: "",
     email: "",
-    hours: "",
+    hours: ""
 };
 const formData = reactive(structuredClone(defaultForm));
 
@@ -113,6 +113,7 @@ watch(() => selectedVet.value,
                 phone: vet.phone ?? "",
                 email: vet.email ?? "",
                 hours: vet.hours ?? "",
+                order: vet.order ?? 0
             });
         }
     },
@@ -139,11 +140,12 @@ watch(() => selectedVet.value,
                 <form @submit.prevent="handleSubmit" class="mt-1">
                     <div class="default-padding flex flex-col gap-1">
                         <Input v-model="formData.name" :id="name.id" :label="t(name.label)" required />
-                        <Input v-for="[key, field] in addressTopFields" v-model="formData[key as keyof typeof formData]"
-                            :key="field.id" :id="field.id" :label="t(field.label)" :required="field.required" />
+                        <Input v-for="[key, field] in addressTopFields"
+                            v-model="formData[key as 'address1' | 'address2']" :key="field.id" :id="field.id"
+                            :label="t(field.label)" :required="field.required" />
                         <div class="flex gap-1">
                             <Input v-for="[key, field] in addressFlexFields"
-                                v-model="formData[key as keyof typeof formData]" :key="field.id" :id="field.id"
+                                v-model="formData[key as 'postCode' | 'city']" :key="field.id" :id="field.id"
                                 :label="t(field.label)" :required="field.required"
                                 :inputmode="(field as any).inputmode" />
                         </div>
@@ -161,7 +163,7 @@ watch(() => selectedVet.value,
                             <p>{{ t(notes.label) }}</p>
                             <Textarea v-model="formData.notes" :id="notes.id" :maxLength="500" />
                         </label>
-                        <Input v-for="[key, field] in contactFields" v-model="formData[key as keyof typeof formData]"
+                        <Input v-for="[key, field] in contactFields" v-model="formData[key as 'phone' | 'email']"
                             :key="field.id" :type="field.type" :id="field.id" :label="t(field.label)"
                             :pattern="field.type === 'tel' ? phonePattern : undefined" />
                         <label :for="hours.id">
