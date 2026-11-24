@@ -31,10 +31,8 @@ defineProps<{
                 name: pet.name
             }) }}
         </p>
-        <DueCard v-if="log.dueOn" :title="t('events.nextAntiparasitic')" :pet="pet" :data="log"
-            class="w-full md:max-w-2/3" />
+        <DueCard v-if="log.dueOn" :title="t('events.nextAntiparasitic')" :event="log" class="w-full md:max-w-2/3" />
         <Button @click="onClose">{{ route.path === ROUTES.calendar ? t("common.button.backCal")
-            :
-            t("common.button.backDash") }}</Button>
+            : t("common.button.backDash") }}</Button>
     </div>
 </template>

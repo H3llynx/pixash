@@ -1,35 +1,26 @@
 <script setup lang="ts">
-import { CalendarClock, Check, MapPinned } from '@lucide/vue';
-import { computed, ref, toRef } from 'vue';
+import { CalendarCheck, MapPinned } from '@lucide/vue';
+import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
-import FreeModal from '../../../../components/FreeModal.vue';
-import Input from '../../../../components/Input.vue';
 import Loading from '../../../../components/loading/Loading.vue';
-import LoadingPet from '../../../../components/loading/LoadingPet.vue';
-import { useToast } from '../../../../composables/useToast.ts';
-import { todayAsInput, tsToDate } from '../../../../utils.ts';
+import { tsToDate } from '../../../../utils.ts';
 import PetIndicator from '../../../pets/components/PetIndicator.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { useEvents } from '../../composables/useEvents.ts';
-import type { STAGE } from '../../config.ts';
-import type { AntiparasiteLogExtended, AntiparasiteTypes, LogExtended, PetEvent, VaccineExtended, VaccineRecord, VaccineTypes, VisitExtended } from '../../types.ts';
+import type { AntiparasiteLogExtended, PetEvent, VaccineExtended, VisitExtended } from '../../types.ts';
 import DateTag from './DateTag.vue';
 import EventIcon from './EventIcon.vue';
+import MarkDoneModal from './MarkDoneModal.vue';
 
-const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, updateSelectedVaccine, updateSelectedLog, addNewVaccine, addNewLog, careError, careLoading } = usePets();
+const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, careLoading } = usePets();
 const { t } = useI18n();
-const { useEventData, selectedEvent } = useEvents();
-const { show } = useToast();
+const { useEventData, selectedEvent, nextDueModalOpen } = useEvents();
 
 const props = defineProps<{ event: PetEvent }>();
 const { pet, vet, title } = useEventData(toRef(props, "event"));
 
 const date = computed(() => props.event.dueOn ?? props.event.date ?? props.event.ts);
-const nextDueModal = ref<boolean>(false);
-const nextDueInput = ref<boolean>(false);
-const nextDueDate = ref<string>("");
-const loading = ref<boolean>(false);
 
 const handleClick = (event: PetEvent) => {
     if (event.eventType === "vaccine") {
@@ -48,72 +39,6 @@ const handleClick = (event: PetEvent) => {
         selectedEvent.value = null;
     }
 };
-
-const markAsDone = async (event: PetEvent) => {
-    if (!pet.value) return;
-    const today = todayAsInput();
-    loading.value = true;
-    try {
-        if (event.eventType === "vaccine") {
-            const baseData: VaccineRecord = {
-                types: event.types as VaccineTypes["id"][],
-                stage: event.stage as typeof STAGE[number]["id"],
-                vet: event.vet,
-                notes: event.notes,
-            };
-            if (event.givenAt && event.dueOn) {
-                await updateSelectedVaccine(event as VaccineExtended, {
-                    ...baseData,
-                    givenAt: tsToDate(event.givenAt, "input") as string,
-                    dueOn: ""
-                });
-                await addNewVaccine({ ...baseData, givenAt: today, dueOn: nextDueDate.value }, pet.value.id);
-            } else {
-                await updateSelectedVaccine(event as VaccineExtended, {
-                    ...baseData,
-                    givenAt: today,
-                    dueOn: nextDueDate.value
-                });
-            }
-            selectVaccine(null);
-        };
-        if (event.eventType === "log" && event.type === "antiparasite") {
-            const baseData = {
-                treated: event.treated as AntiparasiteTypes["id"][],
-                notes: event.notes,
-                type: event.type,
-            };
-            if (event.givenAt && event.dueOn) {
-                await updateSelectedLog(event as LogExtended, {
-                    ...baseData,
-                    givenAt: tsToDate(event.givenAt, "input") as string,
-                    dueOn: ""
-                });
-                await addNewLog({ ...baseData, givenAt: today, dueOn: nextDueDate.value }, pet.value.id);
-            } else {
-                await updateSelectedLog(event as LogExtended, {
-                    ...baseData,
-                    givenAt: today,
-                    dueOn: nextDueDate.value
-                });
-            }
-            selectLog(null);
-        };
-        show({ type: "success", title: t("toast.success.title.generic"), message: t("toast.success.message.markedDone") });
-    } catch {
-        show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
-    } finally {
-        nextDueModal.value = false;
-        loading.value = false;
-    }
-};
-
-const cancelMarkDone = () => {
-    selectVaccine(null);
-    selectLog(null)
-    nextDueModal.value = false;
-}
-
 </script>
 <template>
     <div tabindex="0" role="button" :class="{
@@ -133,9 +58,9 @@ const cancelMarkDone = () => {
                         {{ tsToDate(event.ts, "date") }}</p>
                     <Button
                         v-if="event.eventType === 'vaccine' || event.eventType === 'log' && event.type === 'antiparasite'"
-                        size="xxs" variant="tertiary" @click="nextDueModal = true" @click.stop="nextDueModal = true"
-                        @keydown.enter.stop>
-                        <Check :size="16" />{{ t("common.button.markDone") }}
+                        size="xxs" variant="tertiary" @click="nextDueModalOpen = true"
+                        @click.stop="nextDueModalOpen = true" @keydown.enter.stop>
+                        <CalendarCheck :size="16" />{{ t("common.button.markDone") }}
                     </Button>
                 </div>
                 <p v-if="event.vet" class="mt-auto pt-1 text-xs text-text-softer flex items-center gap-[5px]">
@@ -146,26 +71,7 @@ const cancelMarkDone = () => {
         </div>
         <PetIndicator :pet="pet!" />
     </div>
-    <FreeModal v-model="nextDueModal" class="relative">
-        <LoadingPet v-if="loading" />
-        <template v-else>
-            <h3 class="font-title">{{ t("common.text.askingNextDue") }}</h3>
-            <Button v-if="!nextDueInput" @click="nextDueInput = true">{{ t("common.text.yes") }}</Button>
-            <Button v-if="!nextDueDate" variant="secondary" @click="markAsDone(event)">{{ t("common.text.noNeed")
-                }}</Button>
-            <template v-if="nextDueInput">
-                <Input v-model="nextDueDate" type="date" :min="todayAsInput()">
-                    <template #addon>
-                        <CalendarClock v-if="!nextDueDate" class="mr-0.5" color="var(--color-border)" />
-                        <Button v-else variant="ghost" size="xs" @click="nextDueDate = ''">{{
-                            t("common.button.clear") }}</Button>
-                    </template>
-                </Input>
-                <Button v-if="nextDueDate" @click="markAsDone(event)">{{ t("common.button.confirm") }}</Button>
-            </template>
-            <Button variant="ghost" @click="cancelMarkDone">{{ t("common.button.cancel") }}</Button>
-        </template>
-    </FreeModal>
+    <MarkDoneModal :event="event" />
 </template>
 
 <style scoped>

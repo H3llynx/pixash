@@ -10,6 +10,7 @@ const selectedDate = ref<string | null>(null);
 const currentMonth = ref<Date>(new Date());
 const currentMonthName = ref<string | null>(null);
 const selectedEvent = ref<PetEvent | null>(null);
+const nextDueModalOpen = ref<boolean>(false);
 
 export const useEvents = () => {
     const { vaccines, pets, vetVisits, treatments, logs, vets, selectedPet, isForSpecificPet } = usePets();
@@ -128,6 +129,7 @@ export const useEvents = () => {
         eventsThisMonth,
         petUpcomingEvents,
         useEventData,
-        selectedEvent
+        selectedEvent,
+        nextDueModalOpen
     }
 }

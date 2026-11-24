@@ -15,12 +15,12 @@ const { t } = useI18n();
 <template>
     <div class="pet-selector pb-0 lg:px-1.5">
         <template v-if="selectedPet?.nextVaccine || selectedPet?.nextVetVisit || selectedPet?.nextAntiparasitic">
-            <DueCard v-if="selectedPet.nextVaccine" :pet="selectedPet" :data="selectedPet.nextVaccine"
-                :title="t('dashboard.title.nextVaccine')" />
-            <DueCard v-if="selectedPet.nextVetVisit" :pet="selectedPet" :data="selectedPet.nextVetVisit"
-                :title="t('dashboard.title.nextVetVisit')" />
-            <DueCard v-if="selectedPet.nextAntiparasitic" :pet="selectedPet"
-                :data="(selectedPet.nextAntiparasitic as PetEvent)" :title="t('dashboard.title.nextAntiparasitic')" />
+            <DueCard v-if="selectedPet.nextVetVisit" :event="selectedPet.nextVetVisit"
+                :title="t('dashboard.title.nextVetVisit')" cta />
+            <DueCard v-if="selectedPet.nextVaccine" :event="selectedPet.nextVaccine"
+                :title="t('dashboard.title.nextVaccine')" cta />
+            <DueCard v-if="selectedPet.nextAntiparasitic" :event="(selectedPet.nextAntiparasitic as PetEvent)"
+                :title="t('dashboard.title.nextAntiparasitic')" cta />
         </template>
         <template v-else>
             <Button variant="add" :size="isLg ? 'tile' : 'third'" class="flex-col" @click="handleAdd('vaccine')">
