@@ -17,7 +17,7 @@ export const useBodyMap = (model: Ref<LumpPosition>, readonly: Ref<boolean>) => 
     const containerRef = ref<HTMLDivElement | null>(null);
     const svgRef = ref<SVGSVGElement | null>(null);
     const pin = ref<SVGCircleElement | null>(null);
-    const locationText = ref<string>(t("health.lumpForm.bodyRegions.instructions"));
+    const locationText = ref<string>(t("health.lumps.form.bodyRegions.instructions"));
 
     let lastNearest: BodyRegion | null = null;
     let dragStart = { x: 0, y: 0 };
@@ -114,16 +114,16 @@ export const useBodyMap = (model: Ref<LumpPosition>, readonly: Ref<boolean>) => 
 
     const updateReadout = () => {
         if (!lastNearest) {
-            locationText.value = t("health.lumpForm.bodyRegions.instructions");
+            locationText.value = t("health.lumps.form.bodyRegions.instructions");
             return;
         }
-        locationText.value = `📍 ${t(`health.lumpForm.bodyRegions.${lastNearest.id}.${model.value.side}`)}`;
+        locationText.value = `📍 ${t(`health.lumps.form.bodyRegions.${lastNearest.id}.${model.value.side}`)}`;
     };
 
     const getReadoutStyle = () => {
         return {
             "text-sm my-0.5 text-accent": true,
-            "text-text-secondary": locationText.value === t("health.lumpForm.bodyRegions.instructions")
+            "text-text-secondary": locationText.value === t("health.lumps.form.bodyRegions.instructions")
         }
     };
 

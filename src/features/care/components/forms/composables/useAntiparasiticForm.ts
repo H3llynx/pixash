@@ -19,7 +19,7 @@ export const useAntiparasiticForm = () => {
     const antiparasitics = ref<AntiparasiteTypes[]>([]);
     const loading = ref<boolean>(false);
     const error = ref<boolean>(false);
-    const newLog = ref<PetEvent | null>(null);
+    const newOrEdittedLog = ref<PetEvent | null>(null);
     const givenAt = computed(() => selectedDate.value && selectedDate.value <= todayAsInput() ? selectedDate.value : formData.notGiven ? "" : todayAsInput());
     const dueOn = computed(() => selectedDate.value && selectedDate.value > givenAt.value ? selectedDate.value : "");
     const fillLogData = (log: AntiparasiteLogExtended) => {
@@ -40,7 +40,7 @@ export const useAntiparasiticForm = () => {
     };
     const formData = reactive(structuredClone(defaultForm));
     const handleClose = () => {
-        newLog.value = null;
+        newOrEdittedLog.value = null;
         error.value = false;
         selectedDate.value = null;
         isAddingCare.antiparasitic = false;
@@ -82,7 +82,7 @@ export const useAntiparasiticForm = () => {
         try {
             if (isAddingCare.antiparasitic) {
                 const logId = await addNewLog(log, selectedPet.value.id);
-                if (logId) newLog.value = logs.value.find(l => l.id === logId) as AntiparasiteLogExtended ?? null;
+                if (logId) newOrEdittedLog.value = logs.value.find(l => l.id === logId) as AntiparasiteLogExtended ?? null;
                 resetForm(formData, defaultForm);
             }
             else if (selectedAntiparasiticLog.value) {
@@ -96,7 +96,7 @@ export const useAntiparasiticForm = () => {
                 if (!shallowEqual(formData, originalData)) {
                     const logId = selectedAntiparasiticLog.value.id;
                     await updateSelectedLog(selectedAntiparasiticLog.value, log);
-                    newLog.value = logs.value.find(l => l.id === logId) as AntiparasiteLogExtended ?? null;
+                    newOrEdittedLog.value = logs.value.find(l => l.id === logId) as AntiparasiteLogExtended ?? null;
                     resetForm(formData, defaultForm);
                 };
             };
@@ -152,5 +152,5 @@ export const useAntiparasiticForm = () => {
         };
     });
 
-    return { formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error, loading }
+    return { formData, fillLogData, newOrEdittedLog, handleClose, handleDelete, handleSubmit, antiparasitics, error, loading }
 }

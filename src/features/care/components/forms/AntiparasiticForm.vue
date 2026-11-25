@@ -19,7 +19,7 @@ import { useAntiparasiticForm } from './composables/useAntiparasiticForm.ts';
 import LogSuccess from './LogSuccess.vue';
 
 const { isAddingCare, selectedAntiparasiticLog, selectedPet } = usePets();
-const { loading, formData, fillLogData, newLog, handleClose, handleDelete, handleSubmit, antiparasitics, error } = useAntiparasiticForm();
+const { loading, formData, fillLogData, newOrEdittedLog, handleClose, handleDelete, handleSubmit, antiparasitics, error } = useAntiparasiticForm();
 const { t } = useI18n();
 const { mode, isReadonly } = useFormMode();
 provide('readonly', isReadonly);
@@ -43,7 +43,7 @@ watch(() => mode.value, (mode) => {
     <Transition name="panel">
         <Panel v-if="isAddingCare.antiparasitic || selectedAntiparasiticLog" :onClose="handleClose">
             <LoadingPet v-if="loading" />
-            <div class="md:max-w-max" v-else-if="!newLog">
+            <div class="md:max-w-max" v-else-if="!newOrEdittedLog">
                 <div class="flex gap-1 justify-between my-1 default-padding items-center">
                     <div v-if="selectedAntiparasiticLog && selectedPet"
                         class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
@@ -93,7 +93,7 @@ watch(() => mode.value, (mode) => {
                     </div>
                 </form>
             </div>
-            <LogSuccess v-else-if="newLog" :onClose="handleClose" :pet="selectedPet!" :log="newLog" />
+            <LogSuccess v-else-if="newOrEdittedLog" :onClose="handleClose" :pet="selectedPet!" :log="newOrEdittedLog" />
         </Panel>
     </Transition>
 </template>

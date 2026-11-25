@@ -22,7 +22,7 @@ const size = computed(() => getLatestLumpCheckValue(checks.value, "size"));
 const picture = computed(() => getLatestLumpCheckValue(checks.value, "pictures")?.at(-1));
 const location = computed(() => {
     const region = getNearestBodyRegion(pet.value?.species as "dog" | "cat", props.lump.location.x, props.lump.location.y);
-    return t(`health.lumpForm.bodyRegions.${region.id}.${props.lump.location.side}`);
+    return t(`health.lumps.form.bodyRegions.${region.id}.${props.lump.location.side}`);
 });
 const lastChecked = computed(() => getLatestLumpCheckValue(checks.value, "date"));
 const trend = computed(() => getSizeTrend(props.lump.id));
@@ -39,7 +39,7 @@ const trend = computed(() => getSizeTrend(props.lump.id));
                 <h4>{{ lump.title }}</h4>
                 <span v-if="size" class="text-text-secondary text-xs shrink-0">{{ fromMm(Number(size.valueMm),
                     size.displayUnit)
-                }} {{ size.displayUnit }}</span>
+                    }} {{ size.displayUnit }}</span>
             </div>
             <span class="text-text-secondary text-xs font-medium inline-flex">
                 {{ location }} · {{ t('common.text.lastChecked', { date: tsToDate(lastChecked, "dateShort") })

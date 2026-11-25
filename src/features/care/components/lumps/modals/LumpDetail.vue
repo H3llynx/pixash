@@ -27,7 +27,7 @@ const status = computed(() => {
 const location = computed(() => {
     if (!checkedLump.value || !pet.value) return "";
     const region = getNearestBodyRegion(pet.value.species as "dog" | "cat", checkedLump.value.location.x, checkedLump.value.location.y);
-    return t(`health.lumpForm.bodyRegions.${region.id}.${checkedLump.value.location.side}`);
+    return t(`health.lumps.form.bodyRegions.${region.id}.${checkedLump.value.location.side}`);
 });
 
 const progression = computed(() => {
@@ -87,7 +87,7 @@ const openLightbox = (pictures: string[], index = 0) => {
                         mm</span>
                     <span class="block text-xs tracking-wide uppercase text-text-secondary">{{
                         t("health.lumps.sinceFirstMeasured")
-                    }}
+                        }}
                     </span>
                 </div>
                 <div>

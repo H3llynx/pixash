@@ -57,10 +57,10 @@ watch(() => selectedLump.value, (lump) => {
                         class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
                         <PetIcon :pet="selectedPet" />
                     </div>
-                    <h1 v-if="mode === 'edit'">{{ t("health.lumpForm.heading") }}</h1>
+                    <h1 v-if="mode === 'edit'">{{ t("health.lumps.form.heading") }}</h1>
                     <template v-else>
                         <h1 class="font-medium">{{ selectedPet!.name }} · {{ selectedLump!.title
-                        }}
+                            }}
                         </h1>
                     </template>
                     <Button v-if="selectedLump" action="delete" :aria-label="t('common.button.delete')"

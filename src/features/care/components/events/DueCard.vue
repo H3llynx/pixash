@@ -4,11 +4,14 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { tsToDate } from '../../../../utils.ts';
+import PetIcon from '../../../pets/components/PetIcon.vue';
+import { usePets } from '../../../pets/composables/usePets.ts';
 import { useEvents } from '../../composables/useEvents.ts';
 import type { PetEvent } from '../../types.ts';
 import DateTag from './DateTag.vue';
 import MarkDoneModal from './MarkDoneModal.vue';
 
+const { pets } = usePets();
 const { nextDueModalOpen } = useEvents();
 const { t } = useI18n();
 
@@ -16,10 +19,12 @@ const props = defineProps<{
     title: string;
     event: PetEvent;
     cta?: boolean;
+    icon?: boolean;
 }>();
 
-const timestamp = computed(() => props.event.dueOn ?? props.event.date ?? props.event.ts)
+const timestamp = computed(() => props.event.dueOn ?? props.event.date ?? props.event.ts);
 const date = computed(() => props.event.dueOn ? tsToDate(props.event.dueOn, "date") : tsToDate(props.event.date, "date"));
+const pet = computed(() => pets.value.find(pet => pet.id = props.event.petId));
 </script>
 
 <template>
@@ -35,6 +40,9 @@ const date = computed(() => props.event.dueOn ? tsToDate(props.event.dueOn, "dat
                     @click.stop="nextDueModalOpen = true" @keydown.enter.stop :aria-label="t('health.cta.markDone')">
                     <CalendarCheck2 :size="16" />
                 </Button>
+                <div v-if="icon" class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
+                    <PetIcon :pet="pet!" />
+                </div>
             </div>
         </div>
     </div>

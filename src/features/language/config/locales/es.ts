@@ -394,6 +394,36 @@ export default {
             notesPlaceholder: "Comentarios (opcional)",
             photos: "Fotos",
         },
+        vaccines: {
+            form: {
+                types: "Vacuna",
+                stage: "Etapa",
+                given: "{name} ya ha recibido esta vacuna",
+                vet: "Veterinario",
+                validationTypes: "Debes seleccionar un tipo de vacuna",
+            },
+            stage: {
+                adult: "Adulto",
+                young: "Joven",
+            },
+            types: {
+                rabies: "Rabia",
+                other: "Otras vacunas",
+                dog: {
+                    combo: "Combo básico (DAPP)",
+                    leish: "Leishmaniosis"
+                },
+                cat: {
+                    combo: "Combo básico (FVRCP)",
+                    felv: "Leucemia felina (FeLV)",
+                    fiv: "Inmunodeficiencia felina (FIV)",
+                },
+                smallMammal: {
+                    myxo: "Mixomatosis + RHD",
+                    distemper: "Moquillo",
+                }
+            }
+        },
         antiparasitics: {
             form: {
                 treated: "¿Qué trataste?",
@@ -403,7 +433,7 @@ export default {
                 notGiven: "{name} aún no ha recibido este antiparasitario",
             },
             logged: "Antiparasitario contra {parasites} registrado para {name}.",
-            parasites: {
+            types: {
                 worms: "Gusanos intestinales",
                 fleas: "Pulgas",
                 ticks: "Garrapatas",
@@ -414,69 +444,32 @@ export default {
                 other: "Otro tratamiento"
             },
         },
-        vaccineForm: {
-            types: "Vacuna",
-            stage: "Etapa",
-            given: "{name} ya ha recibido esta vacuna",
-            vet: "Veterinario",
-            validationTypes: "Debes seleccionar un tipo de vacuna",
-        },
-        vetVisitForm: {
-            title: "Motivo de la visita",
-            date: "Fecha",
-            vet: "Veterinario",
-            other: "Otro",
-            placeholderVet: "Escribe el nombre de tu veterinario...",
-            chooseExisting: "Elegir de mis veterinarios"
-        },
-        treatmentForm: {
-            name: "Nombre del tratamiento",
-            startDate: "Fecha de inicio",
-            vet: "Prescrito por",
-        },
-        lumpForm: {
-            heading: "Registrar un bulto",
-            title: "Título",
-            location: {
-                label: "Ubicación",
-                left: "Lado izquierdo",
-                right: "Lado derecho"
+        vet: {
+            vetForm: {
+                name: "Nombre",
+                address1: "Dirección línea 1",
+                address2: "Dirección línea 2",
+                city: "Localidad/Ciudad",
+                postCode: "Código postal",
+                types: "Rol(es) del veterinario",
+                assignedPets: "Mascota(s) asignada(s)",
+                phone: "Número de teléfono",
+                email: "Correo electrónico",
+                hours: "Horario de atención"
             },
-            size: "Tamaño",
-            status: {
-                label: "Estado",
-                monitoring: "En observación",
-                checked: "Revisado",
-                pending: "En análisis",
-                removed: "Extirpado",
+            visitForm: {
+                title: "Motivo de la visita",
+                date: "Fecha",
+                vet: "Veterinario",
+                other: "Otro",
+                placeholderVet: "Escribe el nombre de tu veterinario...",
+                chooseExisting: "Elegir de mis veterinarios"
             },
-            bodyRegions: {
-                instructions: "Selecciona un punto en la imagen",
-                snout: { left: "Hocico izquierdo", right: "Hocico derecho" },
-                head: { left: "Cabeza izquierda", right: "Cabeza derecha" },
-                ear: { left: "Oreja izquierda", right: "Oreja derecha" },
-                neckCollar: { left: "Cuello izquierdo", right: "Cuello derecho" },
-                shoulder: { left: "Hombro izquierdo", right: "Hombro derecho" },
-                back: { left: "Lomo izquierdo", right: "Lomo derecho" },
-                belly: { left: "Vientre izquierdo", right: "Vientre derecho" },
-                flank: { left: "Costado izquierdo", right: "Costado derecho" },
-                hip: { left: "Cadera izquierda", right: "Cadera derecha" },
-                frontLeg: { left: "Pata delantera izquierda", right: "Pata delantera derecha" },
-                hindLeg: { left: "Pata trasera izquierda", right: "Pata trasera derecha" },
-                tail: { left: "Cola izquierda", right: "Cola derecha" },
-            }
-        },
-        vetForm: {
-            name: "Nombre",
-            address1: "Dirección línea 1",
-            address2: "Dirección línea 2",
-            city: "Localidad/Ciudad",
-            postCode: "Código postal",
-            types: "Rol(es) del veterinario",
-            assignedPets: "Mascota(s) asignada(s)",
-            phone: "Número de teléfono",
-            email: "Correo electrónico",
-            hours: "Horario de atención"
+            types: {
+                primary: "Principal",
+                secondary: "Secundario",
+                emergency: "Emergencia"
+            },
         },
         treatment: {
             ongoing: "Tratamiento en curso",
@@ -498,53 +491,64 @@ export default {
                 afterEnd: "Después de la fecha de fin",
                 bottomText: "Los registros fuera de las fechas actuales del tratamiento se conservan, pero quedan marcados. Edítalos o elimínalos aquí si ya no corresponden.",
                 bottomText2: "* No incluye las dosis de hoy."
+            },
+            form: {
+                name: "Nombre del tratamiento",
+                startDate: "Fecha de inicio",
+                vet: "Prescrito por",
+                medicine: {
+                    title: "Medicamento {index}",
+                    name: "Nombre del medicamento",
+                    instructions: "Instrucciones de la medicación",
+                    frequency: {
+                        label: "Frecuencia de la medicación",
+                        daily: "Diaria",
+                        twiceDaily: "Dos veces al día",
+                        threeDaily: "Tres veces al día",
+                        every48: "Cada 48h",
+                        custom: "Personalizada"
+                    },
+                    noEnd: "Sin fecha de fin",
+                    endDate: "Fecha de fin",
+                    validationFrequency: "Debes seleccionar una frecuencia",
+                    cta: "Añadir medicamento",
+                    delete: "Eliminar medicamento"
+                }
             }
         },
-        medicine: {
-            title: "Medicamento {index}",
-            name: "Nombre del medicamento",
-            instructions: "Instrucciones de la medicación",
-            frequency: {
-                label: "Frecuencia de la medicación",
-                daily: "Diaria",
-                twiceDaily: "Dos veces al día",
-                threeDaily: "Tres veces al día",
-                every48: "Cada 48h",
-                custom: "Personalizada"
-            },
-            noEnd: "Sin fecha de fin",
-            endDate: "Fecha de fin",
-            validationFrequency: "Debes seleccionar una frecuencia",
-            cta: "Añadir medicamento",
-            delete: "Eliminar medicamento"
-        },
-        stage: {
-            adult: "Adulto",
-            young: "Joven",
-        },
-        vetTypes: {
-            primary: "Principal",
-            secondary: "Secundario",
-            emergency: "Emergencia"
-        },
-        vaccineTypes: {
-            rabies: "Rabia",
-            other: "Otras vacunas",
-            dog: {
-                combo: "Combo básico (DAPP)",
-                leish: "Leishmaniosis"
-            },
-            cat: {
-                combo: "Combo básico (FVRCP)",
-                felv: "Leucemia felina (FeLV)",
-                fiv: "Inmunodeficiencia felina (FIV)",
-            },
-            smallMammal: {
-                myxo: "Mixomatosis + RHD",
-                distemper: "Moquillo",
-            },
-        },
         lumps: {
+            form: {
+                heading: "Registrar un bulto",
+                title: "Título",
+                location: {
+                    label: "Ubicación",
+                    left: "Lado izquierdo",
+                    right: "Lado derecho"
+                },
+                size: "Tamaño",
+                status: {
+                    label: "Estado",
+                    monitoring: "En observación",
+                    checked: "Revisado",
+                    pending: "En análisis",
+                    removed: "Extirpado",
+                },
+                bodyRegions: {
+                    instructions: "Selecciona un punto en la imagen",
+                    snout: { left: "Hocico izquierdo", right: "Hocico derecho" },
+                    head: { left: "Cabeza izquierda", right: "Cabeza derecha" },
+                    ear: { left: "Oreja izquierda", right: "Oreja derecha" },
+                    neckCollar: { left: "Cuello izquierdo", right: "Cuello derecho" },
+                    shoulder: { left: "Hombro izquierdo", right: "Hombro derecho" },
+                    back: { left: "Lomo izquierdo", right: "Lomo derecho" },
+                    belly: { left: "Vientre izquierdo", right: "Vientre derecho" },
+                    flank: { left: "Costado izquierdo", right: "Costado derecho" },
+                    hip: { left: "Cadera izquierda", right: "Cadera derecha" },
+                    frontLeg: { left: "Pata delantera izquierda", right: "Pata delantera derecha" },
+                    hindLeg: { left: "Pata trasera izquierda", right: "Pata trasera derecha" },
+                    tail: { left: "Cola izquierda", right: "Cola derecha" },
+                }
+            },
             trend: {
                 up: "creciendo",
                 down: "reduciéndose",

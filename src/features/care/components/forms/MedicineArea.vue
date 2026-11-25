@@ -18,12 +18,12 @@ const medicineList = defineModel<Medicine[]>();
         <MedicineBox :index="index + 1" v-model="medicineList[index]" />
         <Button v-if="medicineList?.length > 1 && !readonly" variant="ghost" size="xs"
             @click="medicineList = medicineList.filter((_m, i) => i !== index)"
-            class="absolute top-px right-px bg-transparent" :aria-label="t('health.medicine.delete')">
+            class="absolute top-px right-px bg-transparent" :aria-label="t('health.treatment.form.medicine.delete')">
             <X />
         </Button>
     </div>
     <Button v-if="!readonly" type="button" variant="add"
         @click="medicineList = medicineList ? [...medicineList, addMedicine()] : [addMedicine()]">{{
-            t("health.medicine.cta")
+            t("health.treatment.form.medicine.cta")
         }}</Button>
 </template>

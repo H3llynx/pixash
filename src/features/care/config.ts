@@ -1,34 +1,34 @@
 export const VACCINE_TYPES = {
     dog: [
-        { id: "rabies", label: "health.vaccineTypes.rabies" },
-        { id: "core-combo", label: "health.vaccineTypes.dog.combo" },
-        { id: "leish", label: "health.vaccineTypes.dog.leish" },
+        { id: "rabies", label: "health.vaccines.types.rabies" },
+        { id: "core-combo", label: "health.vaccines.types.dog.combo" },
+        { id: "leish", label: "health.vaccines.types.dog.leish" },
     ],
     cat: [
-        { id: "rabies", label: "health.vaccineTypes.rabies" },
-        { id: "core-combo", label: "health.vaccineTypes.cat.combo" },
-        { id: "felv", label: "health.vaccineTypes.cat.felv" },
-        { id: "fiv", label: "health.vaccineTypes.cat.fiv" },
+        { id: "rabies", label: "health.vaccines.types.rabies" },
+        { id: "core-combo", label: "health.vaccines.types.cat.combo" },
+        { id: "felv", label: "health.vaccines.types.cat.felv" },
+        { id: "fiv", label: "health.vaccines.types.cat.fiv" },
     ],
     smallMammal: [
-        { id: "rabbit-myxorhd", label: "health.vaccineTypes.smallMammal.myxo" },
-        { id: "rabies", label: "health.vaccineTypes.rabies" },
-        { id: "ferret-distemper", label: "health.vaccineTypes.smallMammal.distemper" },
+        { id: "rabbit-myxorhd", label: "health.vaccines.types.smallMammal.myxo" },
+        { id: "rabies", label: "health.vaccines.types.rabies" },
+        { id: "ferret-distemper", label: "health.vaccines.types.smallMammal.distemper" },
     ],
     default: [
-        { id: "other", label: "health.vaccineTypes.other" },
+        { id: "other", label: "health.vaccines.types.other" },
     ],
 } as const;
 
 export const PARASITES = {
-    worms: { id: "worms", label: "health.antiparasitics.parasites.worms" },
-    fleas: { id: "fleas", label: "health.antiparasitics.parasites.fleas" },
-    lice: { id: "lice", label: "health.antiparasitics.parasites.lice" },
-    ticks: { id: "ticks", label: "health.antiparasitics.parasites.ticks" },
-    heartworm: { id: "heartworm", label: "health.antiparasitics.parasites.heartworms" },
-    mites: { id: "mites", label: "health.antiparasitics.parasites.mites" },
-    protozoa: { id: "protozoa", label: "health.antiparasitics.parasites.protozoa" },
-    other: { id: "other", label: "health.antiparasitics.parasites.other" }
+    worms: { id: "worms", label: "health.antiparasitics.types.worms" },
+    fleas: { id: "fleas", label: "health.antiparasitics.types.fleas" },
+    lice: { id: "lice", label: "health.antiparasitics.types.lice" },
+    ticks: { id: "ticks", label: "health.antiparasitics.types.ticks" },
+    heartworm: { id: "heartworm", label: "health.antiparasitics.types.heartworms" },
+    mites: { id: "mites", label: "health.antiparasitics.types.mites" },
+    protozoa: { id: "protozoa", label: "health.antiparasitics.types.protozoa" },
+    other: { id: "other", label: "health.antiparasitics.types.other" }
 };
 export const ANTIPARASITE_TYPES = {
     dog: [PARASITES.worms, PARASITES.fleas, PARASITES.ticks, PARASITES.heartworm],
@@ -41,9 +41,9 @@ export const ANTIPARASITE_TYPES = {
     default: [PARASITES.other],
 } as const;
 
-export const STAGE = [{ id: "young", label: "health.stage.young" }, { id: "adult", label: "health.stage.adult" }] as const;
+export const STAGE = [{ id: "young", label: "health.vaccines.stage.young" }, { id: "adult", label: "health.vaccines.stage.adult" }] as const;
 
-export const VET_TYPES = [{ id: "primary", label: "health.vetTypes.primary" }, { id: "secondary", label: "health.vetTypes.secondary" }, { id: "emergency", label: "health.vetTypes.emergency" }];
+export const VET_TYPES = [{ id: "primary", label: "health.vet.types.primary" }, { id: "secondary", label: "health.vet.types.secondary" }, { id: "emergency", label: "health.vet.types.emergency" }];
 
 export const EVENT_TYPES = [{ id: "vaccine", label: "events.vaccines" }, { id: "visit", label: "events.visits" }, { id: "weight", label: "events.weightLog" }, { id: "antiparasite", label: "events.antiparasitics" }, { id: "other", label: "events.other" }];
 
@@ -61,31 +61,31 @@ export const LOG_SUBTYPES = [
 export const MED_FREQUENCY = [
     {
         id: "daily",
-        label: "health.medicine.frequency.daily",
+        label: "health.treatment.form.medicine.frequency.daily",
         dailyDose: 1,
         intervalHours: 24,
     },
     {
         id: "twice_daily",
-        label: "health.medicine.frequency.twiceDaily",
+        label: "health.treatment.form.medicine.frequency.twiceDaily",
         dailyDose: 2,
         intervalHours: 10,
 
     },
     {
         id: "three_times_daily",
-        label: "health.medicine.frequency.threeDaily",
+        label: "health.treatment.form.medicine.frequency.threeDaily",
         dailyDose: 3,
         intervalHours: 6,
     },
     {
         id: "every_48_hours",
-        label: "health.medicine.frequency.every48",
+        label: "health.treatment.form.medicine.frequency.every48",
         intervalHours: 48,
     },
     {
         id: "custom",
-        label: "health.medicine.frequency.custom",
+        label: "health.treatment.form.medicine.frequency.custom",
     }
 ];
 
@@ -98,10 +98,10 @@ export const TREATMENTCOLORS = [
 ];
 
 export const LUMP_STATUS = [
-    { id: "monitoring", label: "health.lumpForm.status.monitoring", rgb: "rgb(207, 167, 22)", rgba: "rgba(207, 167, 22, 0.15)" },
-    { id: "checked", label: "health.lumpForm.status.checked", rgb: "var(--color-text-softer)", rgba: "rgba(176, 204, 214, 0.5)" },
-    { id: "pending", label: "health.lumpForm.status.pending", rgb: "rgb(172, 94, 255)", rgba: "rgba(134, 71, 182, 0.15)" },
-    { id: "removed", label: "health.lumpForm.status.removed", rgb: "rgb(47, 187, 138)", rgba: "rgba(47, 187, 138, 0.1)" },
+    { id: "monitoring", label: "health.lumps.form.status.monitoring", rgb: "rgb(207, 167, 22)", rgba: "rgba(207, 167, 22, 0.15)" },
+    { id: "checked", label: "health.lumps.form.status.checked", rgb: "var(--color-text-softer)", rgba: "rgba(176, 204, 214, 0.5)" },
+    { id: "pending", label: "health.lumps.form.status.pending", rgb: "rgb(172, 94, 255)", rgba: "rgba(134, 71, 182, 0.15)" },
+    { id: "removed", label: "health.lumps.form.status.removed", rgb: "rgb(47, 187, 138)", rgba: "rgba(47, 187, 138, 0.1)" },
 ] as const;
 
 export const LUMP_RESULT = [
@@ -111,32 +111,32 @@ export const LUMP_RESULT = [
 ]
 
 const vetFields = {
-    label: "health.vetVisitForm.vet",
-    placeholder: "health.vetVisitForm.placeholderVet"
+    label: "health.vet.visitForm.vet",
+    placeholder: "health.vet.visitForm.placeholderVet"
 };
 
 export const medFields = {
-    title: "health.medicine.title",
+    title: "health.treatment.form.medicine.title",
     name: {
-        label: "health.medicine.name",
+        label: "health.treatment.form.medicine.name",
         type: "text",
     },
     instructions: {
-        label: "health.medicine.instructions",
+        label: "health.treatment.form.medicine.instructions",
         type: "text",
     },
     frequency: {
         name: "medication-frequency",
-        label: "health.medicine.frequency.label",
+        label: "health.treatment.form.medicine.frequency.label",
         type: "radio",
         options: MED_FREQUENCY
     },
     noEnd: {
         id: "treatment-end-date",
-        label: "health.medicine.noEnd"
+        label: "health.treatment.form.medicine.noEnd"
     },
     endDate: {
-        label: "health.medicine.endDate",
+        label: "health.treatment.form.medicine.endDate",
         type: "date"
     },
 };
@@ -171,19 +171,19 @@ export const antiparasiteFields = {
 
 export const vaccineFields = {
     types: {
-        label: "health.vaccineForm.types",
+        label: "health.vaccines.form.types",
         type: "checkbox",
         options: VACCINE_TYPES,
     },
     stage: {
         name: "vaccine-stage",
-        label: "health.vaccineForm.stage",
+        label: "health.vaccines.form.stage",
         type: "radio",
         options: STAGE,
     },
     given: {
         id: "vaccine-given",
-        label: "health.vaccineForm.given",
+        label: "health.vaccines.form.given",
     },
     givenDate: {
         id: "vaccine-given-date",
@@ -214,11 +214,11 @@ export const vaccineFields = {
 export const vetVisitFields = {
     title: {
         id: "visit-title",
-        label: "health.vetVisitForm.title",
+        label: "health.vet.visitForm.title",
     },
     date: {
         id: "visit-date",
-        label: "health.vetVisitForm.date",
+        label: "health.vet.visitForm.date",
         type: "datetime-local",
     },
     vet: {
@@ -236,31 +236,31 @@ export const vetVisitFields = {
 export const vetFormFields = {
     name: {
         id: "vet-title",
-        label: "health.vetForm.name",
+        label: "health.vet.vetForm.name",
     },
     address1: {
         id: "vet-address1",
-        label: "health.vetForm.address1",
+        label: "health.vet.vetForm.address1",
         required: true,
     },
     address2: {
         id: "vet-address2",
-        label: "health.vetForm.address2",
+        label: "health.vet.vetForm.address2",
         required: false,
     },
     city: {
         id: "vet-city",
-        label: "health.vetForm.city",
+        label: "health.vet.vetForm.city",
         required: true,
     },
     postCode: {
         id: "vet-postCode",
-        label: "health.vetForm.postCode",
+        label: "health.vet.vetForm.postCode",
         inputmode: "numeric",
         required: true,
     },
     types: {
-        label: "health.vetForm.types",
+        label: "health.vet.vetForm.types",
         type: "checkbox",
         options: VET_TYPES
     },
@@ -269,22 +269,22 @@ export const vetFormFields = {
         label: "health.sharedFields.notes",
     },
     assignedPets: {
-        label: "health.vetForm.assignedPets",
+        label: "health.vet.vetForm.assignedPets",
         type: "checkbox",
     },
     phone: {
         id: "vet-phone",
-        label: "health.vetForm.phone",
+        label: "health.vet.vetForm.phone",
         type: "tel",
     },
     email: {
         id: "vet-email",
-        label: "health.vetForm.email",
+        label: "health.vet.vetForm.email",
         type: "email",
     },
     hours: {
         id: "vet-hours",
-        label: "health.vetForm.hours",
+        label: "health.vet.vetForm.hours",
     },
 } as const;
 
@@ -311,11 +311,11 @@ export const logFields = {
 export const treatmentFields = {
     name: {
         id: "treatment-name",
-        label: "health.treatmentForm.name",
+        label: "health.treatment.form.name",
     },
     startDate: {
         id: "treatment-start-date",
-        label: "health.treatmentForm.startDate",
+        label: "health.treatment.form.startDate",
         type: "date",
     },
     vet: {
@@ -334,26 +334,26 @@ export const treatmentFields = {
 export const lumpFields = {
     title: {
         id: "lump-title",
-        label: "health.lumpForm.title",
+        label: "health.lumps.form.title",
     },
     location: {
         name: "lump-location",
-        label: "health.lumpForm.location.label",
+        label: "health.lumps.form.location.label",
         type: "radio",
         options: [
-            { id: "left", label: "health.lumpForm.location.left" },
-            { id: "right", label: "health.lumpForm.location.right" }
+            { id: "left", label: "health.lumps.form.location.left" },
+            { id: "right", label: "health.lumps.form.location.right" }
         ]
     },
     size: {
         id: "lump-size",
         type: "number",
-        label: "health.lumpForm.size"
+        label: "health.lumps.form.size"
     },
     status: {
         name: "lump-status",
         type: "radio",
-        label: "health.lumpForm.status.label",
+        label: "health.lumps.form.status.label",
         options: LUMP_STATUS
     },
     notes: {

@@ -394,6 +394,36 @@ export default {
             notesPlaceholder: "Comments (optional)",
             photos: "Photos"
         },
+        vaccines: {
+            form: {
+                types: "Vaccine",
+                stage: "Stage",
+                given: "{name} has already received this vaccine",
+                vet: "Vet",
+                validationTypes: "You must select a vaccine type",
+            },
+            stage: {
+                adult: "Adult",
+                young: "Young",
+            },
+            types: {
+                rabies: "Rabies",
+                other: "Other vaccines",
+                dog: {
+                    combo: "Core combo (DAPP)",
+                    leish: "Leishmaniosis"
+                },
+                cat: {
+                    combo: "Core combo (FVRCP)",
+                    felv: "Feline leukemia (FeLV)",
+                    fiv: "Feline immunodeficiency (FIV)",
+                },
+                smallMammal: {
+                    myxo: "Myxomatosis + RHD",
+                    distemper: "Distemper",
+                },
+            }
+        },
         antiparasitics: {
             form: {
                 treated: "What did you treat?",
@@ -403,7 +433,7 @@ export default {
                 notGiven: "{name} has not yet received this antiparasitic"
             },
             logged: "Antiparasitic against {parasites} logged for {name}.",
-            parasites: {
+            types: {
                 worms: "Intestinal worms",
                 fleas: "Fleas",
                 ticks: "Ticks",
@@ -414,69 +444,32 @@ export default {
                 other: "Other treatment"
             },
         },
-        vaccineForm: {
-            types: "Vaccine",
-            stage: "Stage",
-            given: "{name} has already received this vaccine",
-            vet: "Vet",
-            validationTypes: "You must select a vaccine type",
-        },
-        vetVisitForm: {
-            title: "Reason for visit",
-            date: "Date",
-            vet: "Vet",
-            other: "Other",
-            placeholderVet: "Type your vet's name...",
-            chooseExisting: "Pick from my vets"
-        },
-        treatmentForm: {
-            name: "Treatment name",
-            startDate: "Start date",
-            vet: "Prescribed by",
-        },
-        lumpForm: {
-            heading: "Add a lump",
-            title: "Title",
-            location: {
-                label: "Location",
-                left: "Left",
-                right: "Right"
+        vet: {
+            vetForm: {
+                name: "Name",
+                address1: "Address line 1",
+                address2: "Address line 2",
+                city: "Town/City",
+                postCode: "Postcode",
+                types: "Vet role(s)",
+                assignedPets: "Assigned pet(s)",
+                phone: "Phone number",
+                email: "Email",
+                hours: "Working hours",
             },
-            size: "Size",
-            status: {
-                label: "Status",
-                monitoring: "Monitoring",
-                checked: "Checked",
-                pending: "Pending lab results",
-                removed: "Removed",
+            visitForm: {
+                title: "Reason for visit",
+                date: "Date",
+                vet: "Vet",
+                other: "Other",
+                placeholderVet: "Type your vet's name...",
+                chooseExisting: "Pick from my vets"
             },
-            bodyRegions: {
-                instructions: "Select a spot on the diagram",
-                snout: { left: "Left snout", right: "Right snout" },
-                head: { left: "Left head", right: "Right head" },
-                ear: { left: "Left ear", right: "Right ear" },
-                neckCollar: { left: "Left neck", right: "Right neck" },
-                shoulder: { left: "Left shoulder", right: "Right shoulder" },
-                back: { left: "Left back", right: "Right back" },
-                belly: { left: "Left belly", right: "Right belly" },
-                flank: { left: "Left flank", right: "Right flank" },
-                hip: { left: "Left hip", right: "Right hip" },
-                frontLeg: { left: "Left front leg", right: "Right front leg" },
-                hindLeg: { left: "Left hind leg", right: "Right hind leg" },
-                tail: { left: "Left tail", right: "Right tail" },
-            }
-        },
-        vetForm: {
-            name: "Name",
-            address1: "Address line 1",
-            address2: "Address line 2",
-            city: "Town/City",
-            postCode: "Postcode",
-            types: "Vet role(s)",
-            assignedPets: "Assigned pet(s)",
-            phone: "Phone number",
-            email: "Email",
-            hours: "Working hours",
+            types: {
+                primary: "Primary",
+                secondary: "Secondary",
+                emergency: "Emergency"
+            },
         },
         treatment: {
             ongoing: "Ongoing treatment",
@@ -498,53 +491,64 @@ export default {
                 afterEnd: "After end date",
                 bottomText: "Logs outside the treatment's current dates are kept but flagged — edit or remove them here if they no longer apply.",
                 bottomText2: "* Does not include today’s doses."
+            },
+            form: {
+                name: "Treatment name",
+                startDate: "Start date",
+                vet: "Prescribed by",
+                medicine: {
+                    title: "Medicine {index}",
+                    name: "Medicine name",
+                    instructions: "Medication instruction",
+                    frequency: {
+                        label: "Medication frequency",
+                        daily: "Daily",
+                        twiceDaily: "Twice daily",
+                        threeDaily: "Three times daily",
+                        every48: "Every 48h",
+                        custom: "Custom"
+                    },
+                    noEnd: "No end date",
+                    endDate: "End date",
+                    validationFrequency: "You must select a frequency",
+                    cta: "Add medicine",
+                    delete: "Delete medicine"
+                }
             }
         },
-        medicine: {
-            title: "Medicine {index}",
-            name: "Medicine name",
-            instructions: "Medication instruction",
-            frequency: {
-                label: "Medication frequency",
-                daily: "Daily",
-                twiceDaily: "Twice daily",
-                threeDaily: "Three times daily",
-                every48: "Every 48h",
-                custom: "Custom"
-            },
-            noEnd: "No end date",
-            endDate: "End date",
-            validationFrequency: "You must select a frequency",
-            cta: "Add medicine",
-            delete: "Delete medicine"
-        },
-        stage: {
-            adult: "Adult",
-            young: "Young",
-        },
-        vetTypes: {
-            primary: "Primary",
-            secondary: "Secondary",
-            emergency: "Emergency"
-        },
-        vaccineTypes: {
-            rabies: "Rabies",
-            other: "Other vaccines",
-            dog: {
-                combo: "Core combo (DAPP)",
-                leish: "Leishmaniosis"
-            },
-            cat: {
-                combo: "Core combo (FVRCP)",
-                felv: "Feline leukemia (FeLV)",
-                fiv: "Feline immunodeficiency (FIV)",
-            },
-            smallMammal: {
-                myxo: "Myxomatosis + RHD",
-                distemper: "Distemper",
-            },
-        },
         lumps: {
+            form: {
+                heading: "Add a lump",
+                title: "Title",
+                location: {
+                    label: "Location",
+                    left: "Left",
+                    right: "Right"
+                },
+                size: "Size",
+                status: {
+                    label: "Status",
+                    monitoring: "Monitoring",
+                    checked: "Checked",
+                    pending: "Pending lab results",
+                    removed: "Removed",
+                },
+                bodyRegions: {
+                    instructions: "Select a spot on the diagram",
+                    snout: { left: "Left snout", right: "Right snout" },
+                    head: { left: "Left head", right: "Right head" },
+                    ear: { left: "Left ear", right: "Right ear" },
+                    neckCollar: { left: "Left neck", right: "Right neck" },
+                    shoulder: { left: "Left shoulder", right: "Right shoulder" },
+                    back: { left: "Left back", right: "Right back" },
+                    belly: { left: "Left belly", right: "Right belly" },
+                    flank: { left: "Left flank", right: "Right flank" },
+                    hip: { left: "Left hip", right: "Right hip" },
+                    frontLeg: { left: "Left front leg", right: "Right front leg" },
+                    hindLeg: { left: "Left hind leg", right: "Right hind leg" },
+                    tail: { left: "Left tail", right: "Right tail" },
+                }
+            },
             trend: {
                 up: "growing",
                 down: "shrinking",
