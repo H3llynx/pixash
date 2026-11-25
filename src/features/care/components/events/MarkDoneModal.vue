@@ -93,7 +93,7 @@ const cancelMarkDone = () => {
 </script>
 
 <template>
-    <FreeModal v-model="nextDueModalOpen" class="relative">
+    <FreeModal v-model="nextDueModalOpen">
         <LoadingPet v-if="loading" />
         <template v-else>
             <div class="flex flex-col sm:flex-row gap-0.5 mb-0.5">
@@ -117,10 +117,10 @@ const cancelMarkDone = () => {
             <div class="flex flex-col sm:flex-row gap-0.5 justify-between">
                 <Button variant="tertiary" class="w-full text-sm" @click="markAsDone(event)">{{
                     t("health.nextDueModal.skip")
-                    }}</Button>
+                }}</Button>
                 <Button variant="ghost" class="text-sm text-text-secondary" @click="cancelMarkDone">{{
                     t("common.button.cancel")
-                }}</Button>
+                    }}</Button>
             </div>
         </template>
     </FreeModal>
