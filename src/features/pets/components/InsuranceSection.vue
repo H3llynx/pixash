@@ -15,7 +15,7 @@ const { copyToClipboard, clipboardText } = useClipboard();
         <h2>{{ t("pet.profile.labels.insurance") }}</h2>
         <div class="flex flex-col gap-0.5">
             <div class="flex flex-row gap-1 items-center">
-                <div class="rounded-xl w-4 h-4 bg-accent-rgba text-4xl flex shrink-0 justify-center items-center">
+                <div class="rounded-xl w-4 h-4 bg-accent-rgba flex shrink-0 justify-center items-center">
                     <Shield />
                 </div>
                 <div>

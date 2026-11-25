@@ -60,7 +60,7 @@ const handleClick = (event: PetEvent) => {
                         v-if="event.eventType === 'vaccine' || event.eventType === 'log' && event.type === 'antiparasite'"
                         size="xxs" variant="tertiary" @click="nextDueModalOpen = true"
                         @click.stop="nextDueModalOpen = true" @keydown.enter.stop>
-                        <CalendarCheck :size="16" />{{ t("common.button.markDone") }}
+                        <CalendarCheck :size="16" />{{ t("health.cta.markDone") }}
                     </Button>
                 </div>
                 <p v-if="event.vet" class="mt-auto pt-1 text-xs text-text-softer flex items-center gap-[5px]">

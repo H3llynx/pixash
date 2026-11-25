@@ -6,6 +6,7 @@ import Button from '../../../../components/Button.vue';
 import FreeModal from '../../../../components/FreeModal.vue';
 import Input from '../../../../components/Input.vue';
 import LoadingPet from '../../../../components/loading/LoadingPet.vue';
+import { useMedia } from '../../../../composables/useMedia.ts';
 import { useToast } from '../../../../composables/useToast.ts';
 import { todayAsInput, tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
@@ -17,11 +18,11 @@ const { selectVaccine, selectLog, updateSelectedVaccine, updateSelectedLog, addN
 const { show } = useToast();
 const { t } = useI18n();
 const { nextDueModalOpen, useEventData } = useEvents();
+const { isSm } = useMedia();
 
 const props = defineProps<{ event: PetEvent }>();
 const { pet } = useEventData(toRef(props, "event"));
 
-const nextDueInput = ref<boolean>(false);
 const nextDueDate = ref<string>("");
 const loading = ref<boolean>(false);
 
@@ -95,21 +96,39 @@ const cancelMarkDone = () => {
     <FreeModal v-model="nextDueModalOpen" class="relative">
         <LoadingPet v-if="loading" />
         <template v-else>
-            <h3 class="font-title">{{ t("common.text.askingNextDue") }}</h3>
-            <Button v-if="!nextDueInput" @click="nextDueInput = true">{{ t("common.text.yes") }}</Button>
-            <Button v-if="!nextDueDate" variant="secondary" @click="markAsDone(event)">{{ t("common.text.noNeed")
+            <div class="flex flex-col sm:flex-row gap-0.5 mb-0.5">
+                <div
+                    class="m-auto rounded-xl w-4 h-4 sm:w-2.5 sm:h-2.5 bg-accent-rgba text-accent flex shrink-0 justify-center items-center">
+                    <CalendarClock :size="isSm ? 22 : 30" />
+                </div>
+                <div class="text-center sm:text-left">
+                    <h3 class="font-title">{{ t("health.nextDueModal.title") }}</h3>
+                    <p class="text-sm text-text-secondary">{{ t("health.nextDueModal.text") }}</p>
+                </div>
+            </div>
+            <Input v-model="nextDueDate" type="date" :min="todayAsInput()" :label="t('health.sharedFields.dueDate')">
+                <template #addon>
+                    <CalendarClock v-if="!nextDueDate" class="mr-0.5" color="var(--color-border)" />
+                    <Button v-else variant="ghost" size="xs" @click="nextDueDate = ''">{{
+                        t("common.button.clear") }}</Button>
+                </template>
+            </Input>
+            <Button v-if="nextDueDate" @click="markAsDone(event)">{{ t("common.button.confirm") }}</Button>
+            <div class="flex flex-col sm:flex-row gap-0.5 justify-between">
+                <Button variant="tertiary" class="w-full text-sm" @click="markAsDone(event)">{{
+                    t("health.nextDueModal.skip")
                 }}</Button>
-            <template v-if="nextDueInput">
-                <Input v-model="nextDueDate" type="date" :min="todayAsInput()">
-                    <template #addon>
-                        <CalendarClock v-if="!nextDueDate" class="mr-0.5" color="var(--color-border)" />
-                        <Button v-else variant="ghost" size="xs" @click="nextDueDate = ''">{{
-                            t("common.button.clear") }}</Button>
-                    </template>
-                </Input>
-                <Button v-if="nextDueDate" @click="markAsDone(event)">{{ t("common.button.confirm") }}</Button>
-            </template>
-            <Button variant="ghost" @click="cancelMarkDone">{{ t("common.button.cancel") }}</Button>
+                <Button variant="ghost" class="text-sm text-text-secondary" @click="cancelMarkDone">{{
+                    t("common.button.cancel")
+                    }}</Button>
+            </div>
         </template>
     </FreeModal>
 </template>
+
+<style scoped>
+:deep(label p) {
+    text-transform: none;
+    color: var(--color-text-softer);
+}
+</style>

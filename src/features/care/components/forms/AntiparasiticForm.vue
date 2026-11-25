@@ -50,7 +50,8 @@ watch(() => mode.value, (mode) => {
                         <PetIcon :pet="selectedPet" />
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.title.logAntiparasitic") }}</h1>
-                    <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{ t("health.antiparasiteForm.viewTitle")
+                    <h1 v-else class="font-medium">{{ selectedPet!.name }} · {{
+                        t("health.antiparasitics.form.viewTitle")
                         }}
                     </h1>
                     <Button v-if="selectedAntiparasiticLog" action="delete"
@@ -64,7 +65,7 @@ watch(() => mode.value, (mode) => {
                             :id="option.id" :value="option.id" :key="option.id" :label="t(option.label)"
                             :type="treated.type" @change="error = false" />
                         <p v-if="error" class="text-sm w-full text-error pb-0.5">{{
-                            t("health.antiparasiteForm.validationTypes") }}</p>
+                            t("health.antiparasitics.form.validationTypes") }}</p>
                     </Selector>
                     <div class="default-padding flex flex-col gap-1">
                         <Input v-if="!formData.notGiven" v-model="formData.givenAt" :id="givenDate.id"

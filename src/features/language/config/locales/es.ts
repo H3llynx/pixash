@@ -14,9 +14,6 @@ export default {
             next: "Siguiente",
             add: "Añadir",
             all: "Todos",
-            backDash: "Volver al panel",
-            backCal: "Volver al calendario",
-            markDone: "Marcar como hecho"
         },
         text: {
             genericError: "Se produjo un error inesperado",
@@ -27,14 +24,9 @@ export default {
             noWeightLog: "No hay registros de peso.",
             lastLogged: "Último registro",
             done: "¡Hecho!",
-            antiparasiticLogged: "Antiparasitario contra {parasites} registrado para {name}.",
             addPicture: "Añadir una foto de perfil",
             copied: "¡Copiado!",
             errorCopy: "Error al copiar",
-            askingNextDue: "¿Deseas indicar la fecha de la próxima dosis?",
-            yes: "Si",
-            noNeed: "No hace falta",
-            petSelector: "selecciona otra mascota",
             lastChecked: "última actualización: {date}",
             timeline: "Cronología",
             about: "Sobre Pixash"
@@ -54,6 +46,7 @@ export default {
         },
         fileInputLabel: "Subir desde tu dispositivo.",
         a11y: {
+            petSelector: "selecciona otra mascota",
             petSelected: "Mascota seleccionada: {name}",
             allPetsSelected: "Todas las mascotas seleccionadas",
             goToItem: "Ir al elemento: {item}",
@@ -388,7 +381,10 @@ export default {
             viewTreatment: "Ver detalles del tratamiento",
             deleteTreatment: "Eliminar tratamiento",
             logDose: "Registrar dosis",
-            editMedTime: "Actualizar hora de administración"
+            editMedTime: "Actualizar hora de administración",
+            backDash: "Volver al panel",
+            backCal: "Volver al calendario",
+            markDone: "Marcar como hecho"
         },
         sharedFields: {
             givenDate: "Fecha de administración",
@@ -398,12 +394,25 @@ export default {
             notesPlaceholder: "Comentarios (opcional)",
             photos: "Fotos",
         },
-        antiparasiteForm: {
-            treated: "¿Qué trataste?",
-            notes: "Otra información",
-            validationTypes: "Debes seleccionar qué se trató",
-            viewTitle: "Antiparasitario",
-            notGiven: "{name} aún no ha recibido este antiparasitario",
+        antiparasitics: {
+            form: {
+                treated: "¿Qué trataste?",
+                notes: "Otra información",
+                validationTypes: "Debes seleccionar qué se trató",
+                viewTitle: "Antiparasitario",
+                notGiven: "{name} aún no ha recibido este antiparasitario",
+            },
+            logged: "Antiparasitario contra {parasites} registrado para {name}.",
+            parasites: {
+                worms: "Gusanos intestinales",
+                fleas: "Pulgas",
+                ticks: "Garrapatas",
+                heartworms: "Gusano del corazón",
+                mites: "Ácaros",
+                lice: "Piojos",
+                protozoa: "Protozoos",
+                other: "Otro tratamiento"
+            },
         },
         vaccineForm: {
             types: "Vacuna",
@@ -518,16 +527,6 @@ export default {
             secondary: "Secundario",
             emergency: "Emergencia"
         },
-        parasites: {
-            worms: "Gusanos intestinales",
-            fleas: "Pulgas",
-            ticks: "Garrapatas",
-            heartworms: "Gusano del corazón",
-            mites: "Ácaros",
-            lice: "Piojos",
-            protozoa: "Protozoos",
-            other: "Otro tratamiento"
-        },
         vaccineTypes: {
             rabies: "Rabia",
             other: "Otras vacunas",
@@ -555,6 +554,11 @@ export default {
             sinceFirstMeasured: "desde la primera medición",
             checksLogged: "seguimientos registrados",
             addCheck: "Nuevo seguimiento"
+        },
+        nextDueModal: {
+            title: "¿Cuándo es la próxima dosis?",
+            text: "Añade una fecha para mantener al día el calendario de tu mascota.",
+            skip: "Omitir por ahora",
         }
     },
     events: {

@@ -13,10 +13,7 @@ export default {
             back: "Back",
             next: "Next",
             add: "Add",
-            all: "All",
-            backDash: "Back to dashboard",
-            backCal: "Back to calendar",
-            markDone: "Mark as done",
+            all: "All"
         },
         text: {
             genericError: "Something went wrong. Please try again.",
@@ -27,14 +24,9 @@ export default {
             noWeightLog: "No weight log registered.",
             lastLogged: "Last logged",
             done: "Done!",
-            antiparasiticLogged: "Antiparasitic against {parasites} logged for {name}.",
             addPicture: "Add a profile picture",
             copied: "Copied!",
             errorCopy: "Failed to copy",
-            askingNextDue: "Is there a next due date?",
-            yes: "Yes",
-            noNeed: "No need",
-            petSelector: "select another pet",
             lastChecked: "last checked {date}",
             timeline: "Timeline",
             about: "About Pixash"
@@ -54,6 +46,7 @@ export default {
         },
         fileInputLabel: "Upload from your device.",
         a11y: {
+            petSelector: "select another pet",
             petSelected: "{name} selected",
             allPetsSelected: "All pets selected",
             goToItem: "Go to item {item}",
@@ -388,22 +381,38 @@ export default {
             viewTreatment: "View treatment detail",
             deleteTreatment: "Delete treatment",
             logDose: "Log dose",
-            editMedTime: "Update medication given time"
+            editMedTime: "Update medication given time",
+            backDash: "Back to dashboard",
+            backCal: "Back to calendar",
+            markDone: "Mark as done",
         },
         sharedFields: {
             givenDate: "Date given",
             nextDose: "Next dose scheduled?",
-            dueDate: "Next due",
+            dueDate: "Next due date",
             notes: "Notes",
             notesPlaceholder: "Comments (optional)",
             photos: "Photos"
         },
-        antiparasiteForm: {
-            treated: "What did you treat?",
-            notes: "Other information",
-            validationTypes: "You must select what was treated",
-            viewTitle: "Antiparasitic",
-            notGiven: "{name} has not yet received this antiparasitic",
+        antiparasitics: {
+            form: {
+                treated: "What did you treat?",
+                notes: "Other information",
+                validationTypes: "You must select what was treated",
+                viewTitle: "Antiparasitic",
+                notGiven: "{name} has not yet received this antiparasitic"
+            },
+            logged: "Antiparasitic against {parasites} logged for {name}.",
+            parasites: {
+                worms: "Intestinal worms",
+                fleas: "Fleas",
+                ticks: "Ticks",
+                heartworms: "Heartworms",
+                mites: "Mites",
+                lice: "Lice",
+                protozoa: "Protozoa",
+                other: "Other treatment"
+            },
         },
         vaccineForm: {
             types: "Vaccine",
@@ -518,16 +527,6 @@ export default {
             secondary: "Secondary",
             emergency: "Emergency"
         },
-        parasites: {
-            worms: "Intestinal worms",
-            fleas: "Fleas",
-            ticks: "Ticks",
-            heartworms: "Heartworms",
-            mites: "Mites",
-            lice: "Lice",
-            protozoa: "Protozoa",
-            other: "Other treatment"
-        },
         vaccineTypes: {
             rabies: "Rabies",
             other: "Other vaccines",
@@ -555,6 +554,11 @@ export default {
             sinceFirstMeasured: "since first measured",
             checksLogged: "checks logged",
             addCheck: "Add a new check",
+        },
+        nextDueModal: {
+            title: "When is the next dose due?",
+            text: "Pick a date to keep your pet’s care on track.",
+            skip: "Skip for now",
         }
     },
     events: {

@@ -26,13 +26,13 @@ defineProps<{
         </div>
         <h1>{{ t("common.text.done") }}</h1>
         <p v-if="log.treated" class="md:max-w-2/3 mx-auto">
-            {{ t("common.text.antiparasiticLogged", {
+            {{ t("health.antiparasitics.logged", {
                 parasites: showAntiparasites(log.treated),
                 name: pet.name
             }) }}
         </p>
         <DueCard v-if="log.dueOn" :title="t('events.nextAntiparasitic')" :event="log" class="w-full md:max-w-2/3" />
-        <Button @click="onClose">{{ route.path === ROUTES.calendar ? t("common.button.backCal")
-            : t("common.button.backDash") }}</Button>
+        <Button @click="onClose">{{ route.path === ROUTES.calendar ? t("health.cta.backCal")
+            : t("health.cta.backDash") }}</Button>
     </div>
 </template>

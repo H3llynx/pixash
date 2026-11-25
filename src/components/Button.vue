@@ -9,9 +9,9 @@ const button = tv({
     base: "font-medium filter-blur rounded-xl border border-transparent inline-flex items-center gap-[5px] justify-center disabled:opacity-40 disabled:cursor-not-allowed",
     variants: {
         variant: {
-            primary: "bg-accent text-bg rounded-full enabled:hover:bg-interactive",
-            secondary: "bg-bg-2 text-text rounded-full enabled:hover:bg-interactive enabled:hover:text-bg",
-            tertiary: "text-text-softer enabled:hover:text-interactive bg-bg-rgba border-border rounded-full",
+            primary: "bg-accent text-bg enabled:hover:bg-interactive",
+            secondary: "bg-bg-2 text-text enabled:hover:bg-interactive enabled:hover:text-bg",
+            tertiary: "text-text-softer enabled:hover:text-interactive bg-bg-rgba border-border",
             ghost: "enabled:hover:text-accent bg-bg-rgba disabled:opacity-100 disabled:bg-transparent h-max",
             addon: "text-text-secondary addon-focus rounded-full",
             stacked: "stacked-btn text-text-secondary capitalize",

@@ -32,7 +32,7 @@ const date = computed(() => props.event.dueOn ? tsToDate(props.event.dueOn, "dat
                 <Button
                     v-if="cta && (event.eventType === 'vaccine' || event.eventType === 'log' && event.type === 'antiparasite')"
                     size="rounded" variant="secondary" @click="nextDueModalOpen = true"
-                    @click.stop="nextDueModalOpen = true" @keydown.enter.stop :aria-label="t('common.button.markDone')">
+                    @click.stop="nextDueModalOpen = true" @keydown.enter.stop :aria-label="t('health.cta.markDone')">
                     <CalendarCheck2 :size="16" />
                 </Button>
             </div>

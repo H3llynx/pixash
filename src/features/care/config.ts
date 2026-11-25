@@ -21,14 +21,14 @@ export const VACCINE_TYPES = {
 } as const;
 
 export const PARASITES = {
-    worms: { id: "worms", label: "health.parasites.worms" },
-    fleas: { id: "fleas", label: "health.parasites.fleas" },
-    lice: { id: "lice", label: "health.parasites.lice" },
-    ticks: { id: "ticks", label: "health.parasites.ticks" },
-    heartworm: { id: "heartworm", label: "health.parasites.heartworms" },
-    mites: { id: "mites", label: "health.parasites.mites" },
-    protozoa: { id: "protozoa", label: "health.parasites.protozoa" },
-    other: { id: "other", label: "health.parasites.other" }
+    worms: { id: "worms", label: "health.antiparasitics.parasites.worms" },
+    fleas: { id: "fleas", label: "health.antiparasitics.parasites.fleas" },
+    lice: { id: "lice", label: "health.antiparasitics.parasites.lice" },
+    ticks: { id: "ticks", label: "health.antiparasitics.parasites.ticks" },
+    heartworm: { id: "heartworm", label: "health.antiparasitics.parasites.heartworms" },
+    mites: { id: "mites", label: "health.antiparasitics.parasites.mites" },
+    protozoa: { id: "protozoa", label: "health.antiparasitics.parasites.protozoa" },
+    other: { id: "other", label: "health.antiparasitics.parasites.other" }
 };
 export const ANTIPARASITE_TYPES = {
     dog: [PARASITES.worms, PARASITES.fleas, PARASITES.ticks, PARASITES.heartworm],
@@ -143,13 +143,13 @@ export const medFields = {
 
 export const antiparasiteFields = {
     treated: {
-        label: "health.antiparasiteForm.treated",
+        label: "health.antiparasitics.form.treated",
         type: "checkbox",
         options: ANTIPARASITE_TYPES,
     },
     notGiven: {
         id: "vaccine-given",
-        label: "health.antiparasiteForm.notGiven",
+        label: "health.antiparasitics.form.notGiven",
     },
     givenDate: {
         id: "antiparasite-given-date",
@@ -163,7 +163,7 @@ export const antiparasiteFields = {
     },
     notes: {
         id: "antiparasite-notes",
-        label: "health.antiparasiteForm.notes",
+        label: "health.antiparasitics.form.notes",
         type: "text",
         placeholder: "health.sharedFields.notesPlaceholder"
     },

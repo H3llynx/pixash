@@ -125,7 +125,6 @@ button {
     button {
         justify-content: flex-start;
         gap: 1rem;
-        border-radius: 0.75rem;
         color: var(--color-text);
     }
 }
