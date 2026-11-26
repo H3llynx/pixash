@@ -4,7 +4,7 @@ import { i18n } from "../language/config/i18n";
 import { catBodyRegions, dogBodyRegions, SPECIES } from "../pets/config";
 import type { PetExtended } from "../pets/types";
 import { ANTIPARASITE_TYPES, LOG_SUBTYPES, MED_FREQUENCY, PARASITES, TREATMENTCOLORS, VACCINE_TYPES } from "./config";
-import type { AntiparasiteLogExtended, AntiparasiteTypes, BodyRegion, LogExtended, LumpCheckExtended, MedicineDb, OtherLogExtended, TreatmentExtended, VaccineExtended, VaccineTypes, VisitExtended, WeightLogExtended } from "./types";
+import type { AntiparasiteLogExtended, AntiparasiteTypes, BodyRegion, LogExtended, LumpCheckExtended, MedicineDb, OtherLogExtended, TreatmentExtended, VaccineExtended, VaccineTypes, VetExtended, VisitExtended, WeightLogExtended } from "./types";
 
 export const getVaccineTypes = (species: typeof SPECIES[number]["id"] | "default") => {
     if (!species) return;
@@ -169,4 +169,17 @@ export const getLatestLumpCheckValue = <K extends keyof LumpCheckExtended>(
     for (let i = sorted.length - 1; i >= 0; i--) {
         if (sorted[i][key] !== undefined) return sorted[i][key];
     }
+};
+
+export const handleCall = (vet: VetExtended) => {
+    if (!vet.phone) return;
+    window.location.href = `tel:${vet.phone}`;
+};
+
+export const handleMaps = (vet: VetExtended) => {
+    const address = [vet.name, vet.address1, vet.address2, vet.postCode, vet.city]
+        .filter(Boolean)
+        .join(', ');
+    const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(address)}`;
+    window.open(mapsUrl, '_blank');
 };

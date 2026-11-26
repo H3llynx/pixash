@@ -7,6 +7,7 @@ import { resetState } from '../../../../utils.ts';
 import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import type { VetExtended } from '../../types.ts';
+import { handleCall, handleMaps } from '../../utils.ts';
 import VetNotes from './VetNotes.vue';
 import VetProfileRow from './VetProfileRow.vue';
 import VetTypeTag from './VetTypeTag.vue';
@@ -34,19 +35,6 @@ const handleVisit = () => {
     if (pet) selectPet(pet);
     isUpdatingVet.value = false;
     isAddingCare.visit = true;
-};
-
-const handleCall = () => {
-    if (!props.vet.phone) return;
-    window.location.href = `tel:${props.vet.phone}`;
-};
-
-const handleMaps = () => {
-    const address = [props.vet.name, props.vet.address1, props.vet.address2, props.vet.postCode, props.vet.city]
-        .filter(Boolean)
-        .join(', ');
-    const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(address)}`;
-    window.open(mapsUrl, '_blank');
 };
 
 const handleVetUpdate = () => {
@@ -98,10 +86,10 @@ const handleVetUpdate = () => {
         <div class="mt-auto flex flex-col gap-0.5">
             <VetNotes :vet="vet" />
             <div class="flex gap-0.5 pt-1 justify-end">
-                <Button variant="tertiary" size="third" class="rounded-xl" @click="handleMaps">
+                <Button variant="tertiary" size="third" class="rounded-xl" @click="handleMaps(vet)">
                     {{ t("vet.cta.maps") }}
                 </Button>
-                <Button v-if="vet.phone" variant="tertiary" size="third" class="rounded-xl" @click="handleCall">
+                <Button v-if="vet.phone" variant="tertiary" size="third" class="rounded-xl" @click="handleCall(vet)">
                     {{ t("vet.cta.call") }}
                 </Button>
                 <Button size="third" class="rounded-xl" @click="handleVisit">

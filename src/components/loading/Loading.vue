@@ -28,7 +28,7 @@
 
     &:nth-of-type(1) {
         animation: fadedots 1.2s ease-in-out infinite 0s;
-        background: var(--color-loading-svg-1);
+        background: var(--color-text-softer);
     }
 
     &:nth-of-type(2) {
@@ -38,7 +38,7 @@
 
     &:nth-of-type(3) {
         animation: fadedots 1.2s ease-in-out infinite 0.4s;
-        background: var(--color-loading-svg-1);
+        background: var(--color-border);
     }
 }
 </style>

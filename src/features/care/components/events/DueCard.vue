@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { CalendarCheck2 } from '@lucide/vue';
-import { computed } from 'vue';
+import { CalendarCheck2, Info, Map, Phone } from '@lucide/vue';
+import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import { tsToDate } from '../../../../utils.ts';
 import PetIcon from '../../../pets/components/PetIcon.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { useEvents } from '../../composables/useEvents.ts';
-import type { PetEvent } from '../../types.ts';
+import type { PetEvent, VisitExtended } from '../../types.ts';
+import { handleCall, handleMaps } from '../../utils.ts';
 import DateTag from './DateTag.vue';
 
-const { pets } = usePets();
-const { openNextDueModal } = useEvents();
+const { vets, selectVisit } = usePets();
+const { openNextDueModal, useEventData } = useEvents();
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -21,9 +22,11 @@ const props = defineProps<{
     icon?: boolean;
 }>();
 
+const { pet } = useEventData(toRef(props, "event"));
+
+const vet = computed(() => vets.value.find(vet => vet.id === props.event.vet));
 const timestamp = computed(() => props.event.dueOn ?? props.event.date ?? props.event.ts);
 const date = computed(() => props.event.dueOn ? tsToDate(props.event.dueOn, "date") : tsToDate(props.event.date, "date"));
-const pet = computed(() => pets.value.find(pet => pet.id = props.event.petId));
 </script>
 
 <template>
@@ -39,6 +42,19 @@ const pet = computed(() => pets.value.find(pet => pet.id = props.event.petId));
                     :aria-label="t('health.cta.markDone')">
                     <CalendarCheck2 :size="16" />
                 </Button>
+                <div v-if="event.eventType === 'visit'" class="flex gap-0.5 flex-wrap">
+                    <Button size="rounded" variant="secondary" @click="selectVisit(event as VisitExtended)">
+                        <Info :size="16" />
+                    </Button>
+                    <template v-if="vet">
+                        <Button v-if="vet.phone" size="rounded" variant="secondary" @click="handleCall(vet)">
+                            <Phone :size="16" />
+                        </Button>
+                        <Button size="rounded" variant="secondary" @click="handleMaps(vet)">
+                            <Map :size="16" />
+                        </Button>
+                    </template>
+                </div>
                 <div v-if="icon" class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
                     <PetIcon :pet="pet!" />
                 </div>
