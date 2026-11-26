@@ -23,15 +23,15 @@ const { t } = useI18n();
                 :title="t('dashboard.title.nextAntiparasitic')" cta />
         </template>
         <template v-else>
-            <Button variant="add" :size="isLg ? 'tile' : 'third'" class="flex-col" @click="handleAdd('vaccine')">
+            <Button variant="add" :size="isLg ? 'tile' : 'lg'" class="flex-col" @click="handleAdd('vaccine')">
                 <span>{{ t("health.title.addVaccine") }}</span>
                 <Plus color="var(--color-text-secondary)" />
             </Button>
-            <Button variant="add" :size="isLg ? 'tile' : 'third'" class="flex-col" @click="handleAdd('visit')">
+            <Button variant="add" :size="isLg ? 'tile' : 'lg'" class="flex-col" @click="handleAdd('visit')">
                 <span>{{ t("health.title.addVetVisit") }}</span>
                 <Plus color="var(--color-text-secondary)" />
             </Button>
-            <Button variant="add" :size="isLg ? 'tile' : 'third'" class="flex-col" @click="handleAdd('antiparasitic')">
+            <Button variant="add" :size="isLg ? 'tile' : 'lg'" class="flex-col" @click="handleAdd('antiparasitic')">
                 <span>{{ t("health.title.logAntiparasitic") }}</span>
                 <Plus color="var(--color-text-secondary)" />
             </Button>

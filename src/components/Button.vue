@@ -28,7 +28,7 @@ const button = tv({
             md: "px-2 py-[10px]",
             lg: "px-2 py-1",
             tile: "w-9 h-8 px-1 py-0.5",
-            third: "min-w-1/3 px-0.5 py-1 text-sm",
+            third: "w-1/3 px-0.5 py-1 text-sm",
             card: "p-1 md:max-w-md"
         }
     },
