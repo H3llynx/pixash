@@ -14,11 +14,16 @@ const props = withDefaults(defineProps<{
 }>(), {
     type: "text"
 });
-
 const model = defineModel<string | boolean | string[]>();
 const $attrs = useAttrs();
 
 const readonly = inject("readonly", ref(false));
+
+const inputRef = ref<HTMLInputElement>();
+
+const focus = () => inputRef.value?.focus();
+
+defineExpose({ focus });
 
 const inputValue = computed(() => {
     if (props.type === "radio" || props.type === "checkbox") return $attrs.value as string;
@@ -62,7 +67,7 @@ const handleChange = (event: Event) => {
         <p v-if="label">{{ label }}</p>
         <div :class="{ 'input-container': true, 'hidden': readonly && (type === 'date' || type === 'datetime-local') }"
             :aria-hidden="readonly && (type === 'date' || type === 'datetime-local')">
-            <input v-bind="$attrs" :id="id" :type="type" :placeholder="placeholder" :value="inputValue"
+            <input ref="inputRef" v-bind="$attrs" :id="id" :type="type" :placeholder="placeholder" :value="inputValue"
                 :checked="inputChecked" class="pl-1 pr-2.5 py-0.5"
                 :readonly="readonly && !['radio', 'checkbox'].includes(type)"
                 :disabled="readonly && ['radio', 'checkbox'].includes(type)" :tabindex="readonly ? -1 : 0"

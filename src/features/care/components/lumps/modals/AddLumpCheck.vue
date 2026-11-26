@@ -1,18 +1,18 @@
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import Button from '../../../../../components/Button.vue';
 import FreeModal from '../../../../../components/FreeModal.vue';
+import LoadingPet from '../../../../../components/loading/LoadingPet.vue';
+import { useAddPictures } from '../../../../../composables/useAddPictures.ts';
+import { useToast } from '../../../../../composables/useToast.ts';
+import { tsToDate } from '../../../../../utils.ts';
+import PetIcon from '../../../../pets/components/PetIcon.vue';
 import { usePets } from '../../../../pets/composables/usePets.ts';
+import { useLumpCheck } from '../../../composables/useLumpCheck.ts';
+import { fromMm, getLatestLumpCheckValue } from '../../../utils.ts';
 import { useLumpForm } from '../../forms/composables/useLumpForm.ts';
 import LumpCheckArea from '../../forms/LumpCheckArea.vue';
-import { computed, ref, watch } from 'vue';
-import Button from '../../../../../components/Button.vue';
-import { useLumpCheck } from '../../../composables/useLumpCheck.ts';
-import PetIcon from '../../../../pets/components/PetIcon.vue';
-import { fromMm, getLatestLumpCheckValue } from '../../../utils.ts';
-import { tsToDate } from '../../../../../utils.ts';
-import LoadingPet from '../../../../../components/loading/LoadingPet.vue';
-import { useToast } from '../../../../../composables/useToast.ts';
-import { useAddPictures } from '../../../../../composables/useAddPictures.ts';
 
 const { pets, addNewLog, careError } = usePets();
 const { checkData } = useLumpForm();
@@ -44,7 +44,6 @@ const handleSubmit = async () => {
         if (pictures.value.length) await hostFormPictures(checkData);
         if (selectedCheck.value) await updateCheck(selectedCheck.value, buildCheck(checkData, checkedLump.value.id));
         else {
-            console.log("else running")
             await addNewLog(buildCheck(checkData, checkedLump.value.id), pet.value.id);
             if (!isViewModalOpen.value) show({
                 type: "success",
@@ -112,12 +111,11 @@ watch(() => selectedCheck.value, (check) => {
                     </div>
                 </div>
             </div>
-            <form class="mini-form pb-2" @submit.prevent="">
+            <form class="mini-form pb-2" @submit.prevent="handleSubmit">
                 <LumpCheckArea v-model="checkData" v-model:pictures="pictures" :loadedPictures="loadedPictures" />
                 <div class="flex flex-col gap-1 pt-1.5 default-padding">
-                    <Button :disabled="isCheckEmpty(checkData, pictures, lastStatus) || loading"
-                        @click="handleSubmit">{{
-                            t("common.button.confirm") }}</Button>
+                    <Button :disabled="isCheckEmpty(checkData, pictures, lastStatus) || loading">{{
+                        t("common.button.confirm") }}</Button>
                     <Button type="button" variant="ghost" @click="handleCancel">{{ t("common.button.cancel")
                         }}</Button>
                 </div>

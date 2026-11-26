@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { inject, nextTick, onMounted, ref, watch } from 'vue';
 import { usePets } from '../features/pets/composables/usePets';
 import Button from './Button.vue';
 
 const { hasPets } = usePets();
+const readonly = inject("readonly", ref(false));
 
 withDefaults(defineProps<{
     canClose?: boolean
@@ -11,6 +12,20 @@ withDefaults(defineProps<{
 }>(), { canClose: true });
 
 const panelRef = ref<HTMLElement>();
+
+const focusFirstInput = async () => {
+    await nextTick();
+    const firstInput = panelRef.value?.querySelector<HTMLElement>(
+        "input:not([type='hidden']):not([disabled]):not([readonly])"
+    );
+    firstInput?.focus();
+};
+
+watch(readonly, async (isReadonly) => {
+    if (!isReadonly) {
+        focusFirstInput();
+    }
+});
 
 onMounted(() => {
     panelRef.value?.focus();
