@@ -2,6 +2,7 @@
 import Dialog from './components/Dialog.vue';
 import NavBar from './components/NavBar.vue';
 import Toast from './components/Toast.vue';
+import MarkDoneModal from './features/care/components/events/MarkDoneModal.vue';
 import AntiparasiticForm from './features/care/components/forms/AntiparasiticForm.vue';
 import LogForm from './features/care/components/forms/LogForm.vue';
 import LumpForm from './features/care/components/forms/LumpForm.vue';
@@ -32,6 +33,7 @@ const { loading, user } = useAuth();
   <LogMedication />
   <AddLumpCheck />
   <LumpDetail />
+  <MarkDoneModal />
   <Toast />
   <Dialog />
 </template>

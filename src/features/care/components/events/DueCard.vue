@@ -9,10 +9,9 @@ import { usePets } from '../../../pets/composables/usePets.ts';
 import { useEvents } from '../../composables/useEvents.ts';
 import type { PetEvent } from '../../types.ts';
 import DateTag from './DateTag.vue';
-import MarkDoneModal from './MarkDoneModal.vue';
 
 const { pets } = usePets();
-const { nextDueModalOpen } = useEvents();
+const { openNextDueModal } = useEvents();
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -36,8 +35,8 @@ const pet = computed(() => pets.value.find(pet => pet.id = props.event.petId));
                 <DateTag :date="timestamp" withMissed />
                 <Button
                     v-if="cta && (event.eventType === 'vaccine' || event.eventType === 'log' && event.type === 'antiparasite')"
-                    size="rounded" variant="secondary" @click="nextDueModalOpen = true"
-                    @click.stop="nextDueModalOpen = true" @keydown.enter.stop :aria-label="t('health.cta.markDone')">
+                    size="rounded" variant="secondary" @click.stop="openNextDueModal(event)" @keydown.enter.stop
+                    :aria-label="t('health.cta.markDone')">
                     <CalendarCheck2 :size="16" />
                 </Button>
                 <div v-if="icon" class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
@@ -46,7 +45,6 @@ const pet = computed(() => pets.value.find(pet => pet.id = props.event.petId));
             </div>
         </div>
     </div>
-    <MarkDoneModal :event="event" />
 </template>
 
 <style scoped>

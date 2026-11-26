@@ -370,6 +370,7 @@ export default {
             saveVisit: "Guardar visita veterinaria",
             saveVet: "Guardar {name}",
             saveLump: "Registrar bulto",
+            saveNextDose: "Guardar próxima dosis",
             deleteVaccine: "Eliminar vacuna",
             deleteVisit: "Eliminar visita veterinaria",
             deleteVet: "Eliminar veterinario",
@@ -563,6 +564,15 @@ export default {
             title: "¿Cuándo es la próxima dosis?",
             text: "Añade una fecha para mantener al día el calendario de tu mascota.",
             skip: "Omitir por ahora",
+            dateOptions: {
+                legend: "Elige una opción para establecer la fecha automáticamente.",
+                week: "1 semana",
+                month: "1 mes",
+                month2: "2 meses",
+                month3: "3 meses",
+                month6: "6 meses",
+                year: "1 año"
+            }
         }
     },
     events: {

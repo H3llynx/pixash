@@ -370,6 +370,7 @@ export default {
             saveVisit: "Save vet visit",
             saveVet: "Save {name}",
             saveLump: "Save lump",
+            saveNextDose: "Save next dose",
             deleteVaccine: "Delete vaccine",
             deleteVisit: "Delete vet visit",
             deleteVet: "Delete vet",
@@ -563,6 +564,15 @@ export default {
             title: "When is the next dose due?",
             text: "Pick a date to keep your pet’s care on track.",
             skip: "Skip for now",
+            dateOptions: {
+                legend: "Choose an option to set the date automatically.",
+                week: "1 week",
+                month: "1 month",
+                month2: "2 months",
+                month3: "3 months",
+                month6: "6 months",
+                year: "1 year"
+            }
         }
     },
     events: {

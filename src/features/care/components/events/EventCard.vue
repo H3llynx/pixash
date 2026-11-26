@@ -11,11 +11,10 @@ import { useEvents } from '../../composables/useEvents.ts';
 import type { AntiparasiteLogExtended, PetEvent, VaccineExtended, VisitExtended } from '../../types.ts';
 import DateTag from './DateTag.vue';
 import EventIcon from './EventIcon.vue';
-import MarkDoneModal from './MarkDoneModal.vue';
 
 const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, careLoading } = usePets();
 const { t } = useI18n();
-const { useEventData, selectedEvent, nextDueModalOpen } = useEvents();
+const { useEventData, selectedEvent, openNextDueModal } = useEvents();
 
 const props = defineProps<{ event: PetEvent }>();
 const { pet, vet, title } = useEventData(toRef(props, "event"));
@@ -58,8 +57,7 @@ const handleClick = (event: PetEvent) => {
                         {{ tsToDate(event.ts, "date") }}</p>
                     <Button
                         v-if="event.eventType === 'vaccine' || event.eventType === 'log' && event.type === 'antiparasite'"
-                        size="xxs" variant="tertiary" @click="nextDueModalOpen = true"
-                        @click.stop="nextDueModalOpen = true" @keydown.enter.stop>
+                        size="xxs" variant="tertiary" @click.stop="openNextDueModal(event)" @keydown.enter.stop>
                         <CalendarCheck :size="16" />{{ t("health.cta.markDone") }}
                     </Button>
                 </div>
@@ -71,7 +69,6 @@ const handleClick = (event: PetEvent) => {
         </div>
         <PetIndicator :pet="pet!" />
     </div>
-    <MarkDoneModal :event="event" />
 </template>
 
 <style scoped>

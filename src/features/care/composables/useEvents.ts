@@ -3,7 +3,7 @@ import { useI18n } from "vue-i18n";
 import { tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import { getPetIcon } from "../../pets/utils";
-import { type PetEvent } from "../types";
+import type { PetEvent } from "../types";
 import { getLogIcon, getTreatmentBackground, showVaccines } from "../utils";
 
 const selectedDate = ref<string | null>(null);
@@ -11,6 +11,7 @@ const currentMonth = ref<Date>(new Date());
 const currentMonthName = ref<string | null>(null);
 const selectedEvent = ref<PetEvent | null>(null);
 const nextDueModalOpen = ref<boolean>(false);
+const nextDueModalEvent = ref<PetEvent | null>(null)
 
 export const useEvents = () => {
     const { vaccines, pets, vetVisits, treatments, logs, vets, selectedPet, isForSpecificPet } = usePets();
@@ -121,6 +122,11 @@ export const useEvents = () => {
         return { pet, vet, title };
     };
 
+    const openNextDueModal = (event: PetEvent) => {
+        nextDueModalOpen.value = true;
+        nextDueModalEvent.value = event;
+    };
+
     return {
         selectedDate,
         currentMonth,
@@ -130,6 +136,8 @@ export const useEvents = () => {
         petUpcomingEvents,
         useEventData,
         selectedEvent,
-        nextDueModalOpen
+        nextDueModalOpen,
+        nextDueModalEvent,
+        openNextDueModal
     }
-}
+};

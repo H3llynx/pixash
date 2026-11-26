@@ -47,6 +47,11 @@ export const VET_TYPES = [{ id: "primary", label: "health.vet.types.primary" }, 
 
 export const EVENT_TYPES = [{ id: "vaccine", label: "events.vaccines" }, { id: "visit", label: "events.visits" }, { id: "weight", label: "events.weightLog" }, { id: "antiparasite", label: "events.antiparasitics" }, { id: "other", label: "events.other" }];
 
+export const DUE_DATE_OPTIONS = {
+    antiparasitics: [{ id: "month", label: "health.nextDueModal.dateOptions.month" }, { id: "month2", label: "health.nextDueModal.dateOptions.month2" }, { id: "month3", label: "health.nextDueModal.dateOptions.month3" }],
+    vaccines: [{ id: "month", label: "health.nextDueModal.dateOptions.month" }, { id: "month6", label: "health.nextDueModal.dateOptions.month6" }, { id: "year", label: "health.nextDueModal.dateOptions.year" }],
+};
+
 export const LOG_SUBTYPES = [
     { id: "feeding", label: "pet.logs.feeding", icon: "🍽️" },
     { id: "water", label: "pet.logs.water", icon: "💧" },
