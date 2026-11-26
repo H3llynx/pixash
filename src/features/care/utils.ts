@@ -173,7 +173,7 @@ export const getLatestLumpCheckValue = <K extends keyof LumpCheckExtended>(
 
 export const handleCall = (vet: VetExtended) => {
     if (!vet.phone) return;
-    window.location.href = `tel:${vet.phone}`;
+    window.location.href = `tel:${vet.phone.replace(/\s/g, "")}`;
 };
 
 export const handleMaps = (vet: VetExtended) => {

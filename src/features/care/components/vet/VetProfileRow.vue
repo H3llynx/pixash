@@ -3,6 +3,7 @@ import { Mail } from '@lucide/vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import type { VetExtended } from '../../types.ts';
+import { handleCall } from '../../utils.ts';
 import AddVetDetail from '../forms/AddVetDetail.vue';
 
 const { t } = useI18n();
@@ -15,10 +16,6 @@ const props = defineProps<{
 const handleMail = () => {
     if (!props.vet.email) return;
     window.location.href = `mailto:${props.vet.email}`;
-};
-const handleCall = () => {
-    if (!props.vet.phone) return;
-    window.location.href = `tel:${props.vet.phone.replace(/\s/g, "")}`;
 };
 </script>
 
@@ -34,7 +31,7 @@ const handleCall = () => {
             <AddVetDetail data="email" :vet="vet" v-else />
         </template>
         <template v-else-if="data === 'phone'">
-            <Button v-if="vet[data]" variant="ghost" size="xs" class="phone-btn" @click="handleCall">{{
+            <Button v-if="vet[data]" variant="ghost" size="xs" class="phone-btn" @click="handleCall(vet)">{{
                 vet.phone }}</Button>
             <AddVetDetail data="phone" :vet="vet" v-else />
         </template>

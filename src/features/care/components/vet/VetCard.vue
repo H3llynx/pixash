@@ -7,7 +7,7 @@ import { resetState } from '../../../../utils.ts';
 import PetTag from '../../../pets/components/PetTag.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import type { VetExtended } from '../../types.ts';
-import { handleCall, handleMaps } from '../../utils.ts';
+import { handleMaps } from '../../utils.ts';
 import VetNotes from './VetNotes.vue';
 import VetProfileRow from './VetProfileRow.vue';
 import VetTypeTag from './VetTypeTag.vue';
@@ -86,14 +86,11 @@ const handleVetUpdate = () => {
         <div class="mt-auto flex flex-col gap-0.5">
             <VetNotes :vet="vet" />
             <div class="flex gap-0.5 pt-1 justify-end">
-                <Button variant="tertiary" size="third" @click="handleMaps(vet)">
+                <Button variant="tertiary" size="half" @click="handleMaps(vet)">
                     {{ t("vet.cta.maps") }}
                 </Button>
-                <Button v-if="vet.phone" variant="tertiary" size="third" @click="handleCall(vet)">
-                    {{ t("vet.cta.call") }}
-                </Button>
-                <Button size="third" @click="handleVisit">
-                    <NotebookPen :size="18" class="shrink-0" />
+                <Button size="half" @click="handleVisit">
+                    <NotebookPen :size="20" class="shrink-0" />
                     {{ t("vet.cta.visit") }}
                 </Button>
             </div>
