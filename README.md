@@ -18,6 +18,7 @@ The real push, though, was Sasha. She's 10 now, and earlier this year she had he
 
 Therefore, I decided to build the exact tool I want, the way I want it, and completely for free.
 
+Pixash app is currently available in 🇬🇧 English, 🇪🇸 Spanish and 🇫🇷 French.
 ---
 
 ## Tech stack
@@ -107,7 +108,7 @@ Current progress:
 - [x] History view per pet and care event
 - [x] Other logs (feeding, activity, grooming, etc...)
 - [x] Missed medicine tracking and medication compliance
-- [ ] Lump tracking
+- [x] Lump tracking
 - [ ] Offline mode
 - [ ] Profile sharing between app users
 

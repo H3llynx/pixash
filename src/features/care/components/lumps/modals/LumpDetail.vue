@@ -87,7 +87,7 @@ const openLightbox = (pictures: string[], index = 0) => {
                         mm</span>
                     <span class="block text-xs tracking-wide uppercase text-text-secondary">{{
                         t("health.lumps.sinceFirstMeasured")
-                        }}
+                    }}
                     </span>
                 </div>
                 <div>
@@ -125,8 +125,7 @@ const openLightbox = (pictures: string[], index = 0) => {
                     <p v-if="check.notes" class="text-xs text-text-secondary">{{ check.notes }}</p>
                     <p class="text-[0.6rem] tracking-wide font-medium uppercase pt-0.5"
                         :style="{ color: LUMP_STATUS.find(s => s.id === check.status)?.rgb }">
-                        {{
-                            check.status }}</p>
+                        {{t(LUMP_STATUS.find(s => s.id === check.status)!.label)}}</p>
                 </div>
             </div>
             <VueEasyLightbox :visible="visibleRef" :imgs="imgsRef" :index="indexRef" :loop="true" @hide="onHide" />
