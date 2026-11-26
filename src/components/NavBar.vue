@@ -11,7 +11,7 @@ const { t } = useI18n();
 
 <template>
     <nav
-        class="bg-bg-2 w-screen p-0.5 md:py-5 fixed bottom-0 h-5 md:min-h-screen overflow-y-scroll md:w-max flex md:flex-col justify-evenly md:justify-start gap-2 md:gap-1">
+        class="bg-bg-2 w-screen p-0.5 md:py-5 fixed bottom-0 h-5 md:min-h-screen overflow-y-scroll md:w-max flex md:flex-col justify-evenly md:justify-start gap-0.75 md:gap-1">
         <RouterLink :to="ROUTES.dashboard">
             <LayoutGrid />{{ t("common.navbar.home") }}
         </RouterLink>
