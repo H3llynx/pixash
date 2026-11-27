@@ -8,42 +8,24 @@ import { tsToDate } from '../../../../utils.ts';
 import PetIndicator from '../../../pets/components/PetIndicator.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { useEvents } from '../../composables/useEvents.ts';
-import type { AntiparasiteLogExtended, PetEvent, VaccineExtended, VisitExtended } from '../../types.ts';
+import type { PetEvent } from '../../types.ts';
 import DateTag from './DateTag.vue';
 import EventIcon from './EventIcon.vue';
 
-const { logs, vaccines, vetVisits, selectVaccine, selectVisit, selectLog, vets, careLoading } = usePets();
+const { vets, careLoading } = usePets();
 const { t } = useI18n();
-const { useEventData, selectedEvent, openNextDueModal } = useEvents();
+const { useEventData, selectedEvent, openNextDueModal, handleEventClick } = useEvents();
 
 const props = defineProps<{ event: PetEvent }>();
 const { pet, vet, title } = useEventData(toRef(props, "event"));
 
 const date = computed(() => props.event.dueOn ?? props.event.date ?? props.event.ts);
-
-const handleClick = (event: PetEvent) => {
-    if (event.eventType === "vaccine") {
-        const vaccine = vaccines.value.find(v => v.id === event.id) as VaccineExtended;
-        selectVaccine(vaccine);
-        selectedEvent.value = vaccine;
-    } else if (event.eventType === "visit") {
-        const visit = vetVisits.value.find(v => v.id === event.id) as VisitExtended;
-        selectVisit(visit);
-        selectedEvent.value = visit;
-    } else if (event.type === "antiparasite") {
-        const log = logs.value.find(l => l.id === event.id) as AntiparasiteLogExtended;
-        selectLog(log);
-        selectedEvent.value = log;
-    } else {
-        selectedEvent.value = null;
-    }
-};
 </script>
 <template>
     <div tabindex="0" role="button" :class="{
         'animate-pulse': careLoading && selectedEvent?.id === event.id,
         'card border border-border bg-bg-rgba default-transition hover:scale-105 hover:bg-bg-2 cursor-pointer flex-row md:max-w-md gap-1.5 justify-between': true
-    }" @click="handleClick(event)" @keydown.enter="handleClick(event)">
+    }" @click="handleEventClick(event)" @keydown.enter="handleEventClick(event)">
         <div class="flex gap-0.5 w-full min-w-0 h-full">
             <EventIcon :event="event" />
             <div class="flex-1 min-w-0 flex flex-col">

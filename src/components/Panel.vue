@@ -29,7 +29,6 @@ watch(readonly, async (isReadonly) => {
 
 onMounted(() => {
     panelRef.value?.focus();
-    document.documentElement.scrollTop = 0;
 });
 </script>
 

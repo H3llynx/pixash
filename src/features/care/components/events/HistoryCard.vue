@@ -1,26 +1,21 @@
 <script setup lang="ts">
-import { Check, MapPinned, Weight, X } from '@lucide/vue';
-import { computed, ref, toRef } from 'vue';
+import { Check, Ellipsis, MapPinned, Weight } from '@lucide/vue';
+import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from '../../../../components/Button.vue';
 import Loading from '../../../../components/loading/Loading.vue';
-import { useDialog } from '../../../../composables/useDialog.ts';
-import { useToast } from '../../../../composables/useToast.ts';
 import { tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { prefersKg } from '../../../pets/utils.ts';
 import { useEvents } from '../../composables/useEvents.ts';
-import type { LogExtended, PetEvent, VaccineExtended, VisitExtended } from '../../types.ts';
+import type { PetEvent } from '../../types.ts';
 import { showAntiparasites } from '../../utils.ts';
 import EventIcon from './EventIcon.vue';
 import TypeTag from './TypeTag.vue';
 
-const { careLoading, vets, pets, selectedPet, deleteSelectedVaccine, deleteSelectedVisit, deleteSelectedLog, careError } = usePets();
+const { careLoading, vets, pets } = usePets();
 const { t } = useI18n();
-const { useEventData, selectedEvent } = useEvents();
-const { open } = useDialog();
-const { show } = useToast();
-const loading = ref<boolean>(false);
+const { useEventData, selectedEvent, handleEventClick } = useEvents();
 
 const props = defineProps<{ event: PetEvent }>();
 
@@ -38,32 +33,6 @@ const weight = computed(() => {
         return `${Math.round(props.event.weight * unitFactor * 100) / 100} ${unit}`
     };
 });
-
-const handleDelete = () => {
-    const pet = selectedPet.value;
-    if (!pet) return;
-    open({
-        title: t("dialog.deleteRecord.title", { name: pet.name, title: title.value?.toLowerCase() }),
-        message: t("dialog.deleteGenericMsg"),
-        isDelete: true,
-        onConfirm: async () => {
-            loading.value = true;
-            try {
-                loading.value = true;
-                if (props.event.eventType === "vaccine") await deleteSelectedVaccine(props.event as VaccineExtended);
-                else if (props.event.eventType === "visit") await deleteSelectedVisit(props.event as VisitExtended);
-                else await deleteSelectedLog(props.event as LogExtended)
-                show({
-                    type: "success",
-                    title: t("toast.success.title.generic"),
-                    message: t("toast.success.message.eventDeleted", { name: pet.name, title: title.value }),
-                });
-            } catch (error) {
-                show({ type: "error", title: t("toast.error.genericTitle"), message: careError.value || "" });
-            } finally { loading.value = false; }
-        }
-    });
-}
 </script>
 
 <template>
@@ -101,8 +70,8 @@ const handleDelete = () => {
                 </p>
             </div>
         </div>
-        <Button variant="ghost" size="min" :aria-label="t('common.button.delete')" @click="handleDelete">
-            <X :size="16" />
+        <Button variant="ghost" size="min" :aria-label="t('common.button.edit')" @click="handleEventClick(event)">
+            <Ellipsis :size="18" />
         </Button>
     </div>
 </template>

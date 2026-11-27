@@ -3,7 +3,7 @@ import { useI18n } from "vue-i18n";
 import { tsToDate } from "../../../utils";
 import { usePets } from "../../pets/composables/usePets";
 import { getPetIcon } from "../../pets/utils";
-import type { PetEvent } from "../types";
+import type { LogExtended, PetEvent, VaccineExtended, VisitExtended } from "../types";
 import { getLogIcon, getTreatmentBackground, showVaccines } from "../utils";
 
 const selectedDate = ref<string | null>(null);
@@ -14,7 +14,7 @@ const nextDueModalOpen = ref<boolean>(false);
 const nextDueModalEvent = ref<PetEvent | null>(null)
 
 export const useEvents = () => {
-    const { vaccines, pets, vetVisits, treatments, logs, vets, selectedPet, isForSpecificPet } = usePets();
+    const { vaccines, pets, vetVisits, treatments, logs, vets, selectedPet, isForSpecificPet, selectVaccine, selectVisit, selectLog } = usePets();
     const { t } = useI18n();
 
     const calendarEvents = computed(() => [
@@ -122,6 +122,20 @@ export const useEvents = () => {
         return { pet, vet, title };
     };
 
+    const handleEventClick = (event: PetEvent) => {
+        if (event.eventType === "vaccine") {
+            const vaccine = vaccines.value.find(v => v.id === event.id) as VaccineExtended;
+            selectVaccine(vaccine);
+        } else if (event.eventType === "visit") {
+            const visit = vetVisits.value.find(v => v.id === event.id) as VisitExtended;
+            selectVisit(visit);
+        } else {
+            const log = logs.value.find(l => l.id === event.id) as LogExtended;
+            selectLog(log);
+        }
+        selectedEvent.value = event;
+    };
+
     const openNextDueModal = (event: PetEvent) => {
         nextDueModalOpen.value = true;
         nextDueModalEvent.value = event;
@@ -135,6 +149,7 @@ export const useEvents = () => {
         eventsThisMonth,
         petUpcomingEvents,
         useEventData,
+        handleEventClick,
         selectedEvent,
         nextDueModalOpen,
         nextDueModalEvent,

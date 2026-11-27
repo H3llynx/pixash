@@ -84,6 +84,7 @@ export type PetEvent = {
     eventType: string;
     ts: Timestamp;
     subtype?: string;
+    pictures?: string[];
     title?: string;
     weight?: number;
     vet?: string;
