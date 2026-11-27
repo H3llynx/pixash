@@ -576,14 +576,11 @@ export const deleteLump = async (lump: Pick<LumpExtended, "id" | "petId">, userI
 export const updateLump = async (
     lump: Pick<LumpExtended, "id" | "petId">,
     userId: string,
-    data: Pick<LumpRecord, "title" | "location">
+    data: Pick<LumpRecord, "title" | "location" | "state">
 ) => {
     const docRef = getLumpDoc(userId, lump.petId, lump.id);
     try {
-        await updateDoc(docRef, {
-            title: data.title,
-            location: data.location,
-        });
+        await updateDoc(docRef, data);
     } catch (error) {
         console.error("Error updating lump: ", error);
         throw error;

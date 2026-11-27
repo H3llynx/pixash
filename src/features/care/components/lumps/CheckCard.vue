@@ -44,7 +44,7 @@ const removeCheck = () => {
                         check.size.displayUnit }}</span>
                 <span class="text-text-softer capitalize text-xs">{{ tsToDate(check.date, "dateShort") }}</span>
             </div>
-            <span v-if="check.status" class="lump-status tag uppercase font-medium mt-0.75"
+            <span v-if="check.status" class="lump-status tag mt-0.75"
                 :style="{ '--bg-color': LUMP_STATUS.find(s => s.id === check.status)?.rgba, '--text-color': LUMP_STATUS.find(s => s.id === check.status)?.rgb }">
                 {{t(LUMP_STATUS.find(s => s.id === check.status)!.label)}}
             </span>

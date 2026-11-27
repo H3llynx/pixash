@@ -6,7 +6,7 @@ import { useToast } from "../../../../../composables/useToast";
 import { resetForm, shallowEqual } from "../../../../../utils";
 import { usePets } from "../../../../pets/composables/usePets";
 import { useLumpCheck } from "../../../composables/useLumpCheck";
-import { lumpFields } from "../../../config";
+import { LUMP_STATE, lumpFields } from "../../../config";
 import type { LumpExtended } from "../../../types";
 
 
@@ -23,11 +23,12 @@ export const useLumpForm = () => {
     const loadedPictures = reactive(new Set<string>());
 
     const { hostFormPictures, resetFormPictureState } = useAddPictures(pictures);
-    const { location } = lumpFields;
+    const { location, state } = lumpFields;
 
     const defaultLump = {
         title: "",
         location: { side: location.options[0].id, x: 0, y: 0 },
+        state: state.options[0].id as typeof LUMP_STATE[number]["id"]
     };
 
     const lumpData = reactive(structuredClone(defaultLump));
@@ -42,6 +43,7 @@ export const useLumpForm = () => {
         Object.assign(lumpData, {
             title: lump.title,
             location: { ...lump.location },
+            state: lump.state
         });
     };
 
@@ -68,14 +70,16 @@ export const useLumpForm = () => {
             else if (selectedLump.value) {
                 const originalData = {
                     title: selectedLump.value.title,
-                    location: selectedLump.value.location
+                    location: selectedLump.value.location,
+                    state: selectedLump.value.state
                 };
                 if (!shallowEqual(lumpData, originalData)) {
+                    const title = lumpData.title;
                     await updateSelectedLump(selectedLump.value, lumpData);
                     show({
                         type: "success",
                         title: t("toast.success.title.generic"),
-                        message: t("toast.success.message.lumpUpdated", { title: lumpData.title }),
+                        message: t("toast.success.message.lumpUpdated", { title: title }),
                     });
                 };
             };

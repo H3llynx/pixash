@@ -12,7 +12,7 @@ import PetIcon from '../../../pets/components/PetIcon.vue';
 import PetSelector from '../../../pets/components/PetSelector.vue';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { useLumpCheck } from '../../composables/useLumpCheck.ts';
-import { lumpFields } from '../../config.ts';
+import { LUMP_STATE, lumpFields } from '../../config.ts';
 import BodyMap from '../lumps/BodyMap.vue';
 import CheckCard from '../lumps/CheckCard.vue';
 import ButtonArea from './ButtonArea.vue';
@@ -27,7 +27,7 @@ const { mode, isReadonly } = useFormMode();
 provide('readonly', isReadonly);
 
 const { lumpChecks } = useLumpCheck();
-const { title, location } = lumpFields;
+const { title, location, state } = lumpFields;
 
 const checks = computed(() => [...lumpChecks.value]
     .filter(check => check.lumpId === selectedLump.value?.id)
@@ -52,17 +52,24 @@ watch(() => selectedLump.value, (lump) => {
         <Panel v-if="isAddingCare.lump || selectedLump" :onClose="handleClose">
             <LoadingPet v-if="loading" />
             <div class="md:max-w-max" v-else>
-                <div class="flex gap-1 justify-between my-1 default-padding">
+                <div class="flex gap-1 justify-between my-1 default-padding items-start">
                     <div v-if="selectedLump && selectedPet"
                         class="rounded-full w-3 h-3 text-3xl flex shrink-0 justify-center items-center">
                         <PetIcon :pet="selectedPet" />
                     </div>
                     <h1 v-if="mode === 'edit'">{{ t("health.lumps.form.heading") }}</h1>
-                    <template v-else>
+                    <div v-else class="flex gap-1 w-full">
                         <h1 class="font-medium">{{ selectedPet!.name }} · {{ selectedLump!.title
                             }}
                         </h1>
-                    </template>
+                        <span v-if="selectedLump!.state !== 'unknown'" class="lump-state tag ml-auto my-0.25" :style="{
+                            '--bg-color': LUMP_STATE.find(s => s.id === selectedLump!.state)?.rgba,
+                            '--text-color': LUMP_STATE.find(s => s.id === selectedLump!.state)?.rgb,
+                            '--border-color': LUMP_STATE.find(s => s.id === selectedLump!.state)?.border,
+                        }">
+                            {{t(LUMP_STATE.find(s => s.id === selectedLump!.state)!.label)}}
+                        </span>
+                    </div>
                     <Button v-if="selectedLump" action="delete" :aria-label="t('common.button.delete')"
                         @click="handleDelete" />
                 </div>
@@ -87,6 +94,16 @@ watch(() => selectedLump.value, (lump) => {
                         </Button>
                         <CheckCard v-for="check in checks" :key="check.id" :check="check" />
                     </div>
+                    <Selector v-if="mode === 'edit'" :legend="t(state.label)" class="mt-1 state">
+                        <div v-for="option in state.options" :key="option.id" :style="{
+                            '--bg-color': option.rgba,
+                            '--text-color': option.rgb,
+                            '--border-color': option.border
+                        }">
+                            <Input v-model="lumpData.state" :name="state.name" :id="option.id" :value="option.id"
+                                :label="t(option.label)" :type="state.type" />
+                        </div>
+                    </Selector>
                     <div class="default-padding mt-1">
                         <ButtonArea v-model="mode" :loading="loading" :selectedCare="selectedLump"
                             :customCta="t('health.cta.saveLump')" />
@@ -106,5 +123,11 @@ watch(() => selectedLump.value, (lump) => {
 :deep(.location label:has(input[type='radio']:not(:checked)) p) {
     background: transparent;
     border: none;
+}
+
+:deep(.state label:has(input[type='radio']:checked) p) {
+    background: var(--bg-color);
+    color: var(--text-color);
+    border-color: var(--border-color);
 }
 </style>

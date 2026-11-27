@@ -532,6 +532,12 @@ export default {
                     pending: "Pending lab results",
                     removed: "Removed",
                 },
+                state: {
+                    label: "Nature",
+                    malignant: "Malignant",
+                    benign: "Benign",
+                    unknown: "Unknown",
+                },
                 bodyRegions: {
                     instructions: "Select a spot on the diagram",
                     snout: { left: "Left snout", right: "Right snout" },
@@ -622,7 +628,7 @@ export default {
                 insuranceUpdated: "{name}'s insurance information successfully updated",
                 lumpAdded: "{name}'s new lump has been successfully registered",
                 lumpUpdated: "{title} has been successfully updated",
-                lumpDeleted: "{title} has been successfully deleted",
+                lumpDeleted: "{title} has been successfully deleted"
             },
         },
         error: {

@@ -109,6 +109,12 @@ export const LUMP_STATUS = [
     { id: "removed", label: "health.lumps.form.status.removed", rgb: "rgb(47, 187, 138)", rgba: "rgba(47, 187, 138, 0.1)" },
 ] as const;
 
+export const LUMP_STATE = [
+    { id: "unknown", label: "health.lumps.form.state.unknown", rgb: "var(--color-text-softer)", rgba: "rgba(176, 204, 214, 0.5)", border: "var(--color-border)" },
+    { id: "malignant", label: "health.lumps.form.state.malignant", rgb: "var(--color-error-text)", rgba: "var(--color-error-rgba)", border: "var(--color-error-border)" },
+    { id: "benign", label: "health.lumps.form.state.benign", rgb: "rgb(47, 187, 138)", rgba: "rgba(47, 187, 138, 0.1)", border: "rgb(29, 165, 117)" },
+] as const;
+
 export const LUMP_RESULT = [
     { id: "benign", rgb: "rgb(47, 187, 138)", rgba: "rgba(47, 187, 138, 0.1)" },
     { id: "malignant", rgb: "rgb(226, 75, 74)", rgba: "rgba(163, 45, 45, 0.15)" },
@@ -310,7 +316,7 @@ export const logFields = {
         label: "pet.form.notes",
         type: "text",
         placeholder: "pet.form.notesPlaceholder"
-    },
+    }
 } as const;
 
 export const treatmentFields = {
@@ -360,6 +366,12 @@ export const lumpFields = {
         type: "radio",
         label: "health.lumps.form.status.label",
         options: LUMP_STATUS
+    },
+    state: {
+        name: "lump-state",
+        type: "radio",
+        label: "health.lumps.form.state.label",
+        options: LUMP_STATE
     },
     notes: {
         id: "lump-notes",

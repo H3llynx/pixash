@@ -503,6 +503,14 @@
   .lump-status {
     background: var(--bg-color);
     color: var(--text-color);
+    @apply tracking-wide uppercase font-medium;
+  }
+
+  .lump-state {
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    @apply tracking-wide uppercase font-medium;
   }
 
   .profile-row {
@@ -590,6 +598,7 @@
   .scroll-container {
     max-height: 90dvh;
     overflow-y: auto;
+    @apply rounded-2xl;
 
     &::-webkit-scrollbar {
       width: 4px;

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ArrowDown, ArrowUp } from '@lucide/vue';
+import { ArrowDown, ArrowUp, TriangleAlert } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { tsToDate } from '../../../../utils.ts';
 import { usePets } from '../../../pets/composables/usePets.ts';
 import { useLumpCheck } from '../../composables/useLumpCheck.ts';
-import { LUMP_STATUS } from '../../config.ts';
+import { LUMP_STATE, LUMP_STATUS } from '../../config.ts';
 import type { LumpExtended } from '../../types';
 import { fromMm, getLatestLumpCheckValue, getNearestBodyRegion } from '../../utils.ts';
 
@@ -29,7 +29,8 @@ const trend = computed(() => getSizeTrend(props.lump.id));
 </script>
 
 <template>
-    <button @click="openModal(lump, 'view')" class="card w-3xs border border-border p-0 overflow-hidden">
+    <button @click="openModal(lump, 'view')"
+        :class="['card w-3xs border p-0 overflow-hidden', lump.state === 'malignant' ? 'border-error-border' : 'border-border']">
         <div class="w-full bg-picture-placeholder h-7 flex justify-center items-center overflow-hidden">
             <img v-if="picture" :src="picture" class="w-full object-cover">
             <span v-else>📷</span>
@@ -45,13 +46,19 @@ const trend = computed(() => getSizeTrend(props.lump.id));
                 {{ location }} · {{ t('common.text.lastChecked', { date: tsToDate(lastChecked, "dateShort") })
                 }}
             </span>
-            <div class="flex justify-between items-center gap-1 mt-0.75">
-                <span
-                    class="lump-status shrink-0 rounded-full text-[0.7rem] px-0.5 py-0.25 tracking-wide uppercase font-medium"
+            <div class="flex items-center gap-0.5 mt-0.75 flex-wrap">
+                <span v-if="lump.state !== 'unknown'" class="lump-state tag flex gap-[5px]" :style="{
+                    '--bg-color': LUMP_STATE.find(s => s.id === lump.state)?.rgba,
+                    '--text-color': LUMP_STATE.find(s => s.id === lump.state)?.rgb
+                }">
+                    <TriangleAlert v-if="lump.state === 'malignant'" :size="16" />
+                    {{t(LUMP_STATE.find(s => s.id === lump.state)!.label)}}
+                </span>
+                <span class="lump-status tag"
                     :style="{ '--bg-color': LUMP_STATUS.find(s => s.id === status)?.rgba, '--text-color': LUMP_STATUS.find(s => s.id === status)?.rgb }">
                     {{t(LUMP_STATUS.find(s => s.id === status)!.label)}}
                 </span>
-                <span v-if="trend" class="flex gap-0.25 items-center"
+                <span v-if="trend" class="flex gap-0.25 items-center ml-auto"
                     :style="{ color: trend === 'up' ? 'var(--color-yellow)' : trend === 'down' ? 'var(--color-text-softer)' : 'var(--color-text-secondary)' }">
                     <ArrowUp :size="14" v-if="trend === 'up'" />
                     <ArrowDown :size="14" v-if="trend === 'down'" />

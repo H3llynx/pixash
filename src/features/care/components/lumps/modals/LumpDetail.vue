@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Pen, Plus, X } from '@lucide/vue';
+import { Pen, Plus, TriangleAlert, X } from '@lucide/vue';
 import { computed } from 'vue';
 import VueEasyLightbox, { useEasyLightbox } from 'vue-easy-lightbox';
 import { useI18n } from 'vue-i18n';
@@ -8,7 +8,7 @@ import FreeModal from '../../../../../components/FreeModal.vue';
 import { tsToDate } from '../../../../../utils.ts';
 import { usePets } from '../../../../pets/composables/usePets.ts';
 import { useLumpCheck } from '../../../composables/useLumpCheck.ts';
-import { LUMP_STATUS } from '../../../config.ts';
+import { LUMP_STATE, LUMP_STATUS } from '../../../config.ts';
 import type { LumpCheckExtended } from '../../../types.ts';
 import { fromMm, getLatestLumpCheckValue, getNearestBodyRegion } from '../../../utils.ts';
 
@@ -19,6 +19,7 @@ const { show, onHide, visibleRef, indexRef, imgsRef, changeIndex } = useEasyLigh
 const hasMultipleImages = computed(() => Array.isArray(imgsRef.value) && imgsRef.value.length > 1);
 
 const pet = computed(() => pets.value.find(p => p.id === checkedLump.value?.petId));
+const mainPicture = computed(() => getLatestLumpCheckValue(selectedLumpChecks.value, "pictures")?.at(-1));
 const size = computed(() => getLatestLumpCheckValue(selectedLumpChecks.value, "size"));
 const status = computed(() => {
     if (!checkedLump.value) return null;
@@ -64,8 +65,11 @@ const openLightbox = (pictures: string[], index = 0) => {
 
 <template>
     <FreeModal v-model="isViewModalOpen" size="md" color="secondary">
-        <div v-if="checkedLump" class="scroll-container">
-            <div class="px-1.5 py-1 bg-picture-placeholder">
+        <div v-if="checkedLump"
+            :class="['scroll-container', checkedLump.state === 'malignant' && 'border border-error-border']">
+            <div class="px-1.5 py-1 bg-picture-placeholder relative">
+                <img v-if="mainPicture" :src="mainPicture" alt=""
+                    class="absolute inset-0 w-full h-full object-cover opacity-60 brightness-70" loading="lazy" />
                 <div class="flex justify-end items-center gap-0.5">
                     <Button action="edit" @click="editLump" :aria-label="t('common.button.edit')" />
                     <Button variant="ghost" size="min" @click="closeModal('view')"
@@ -73,13 +77,25 @@ const openLightbox = (pictures: string[], index = 0) => {
                         <X :size="18" />
                     </Button>
                 </div>
-                <h3 class="mt-2 mb-0.25">{{ checkedLump?.title }}</h3>
-                <div class="flex items-center gap-0.5">
+                <h2 class="font-main font-medium text-text mt-2 mb-0.5 text-shadow-lg/40 text-shadow-bg relative">
+                    {{
+                        checkedLump?.title }}
+                </h2>
+                <div class="flex items-center gap-0.5 relative">
                     <span class="inline-flex bg-bg  shadow-lg text-xs rounded-full py-[5px] px-0.5">📍
                         {{ location }}</span>
                     <span class="rounded-full text-[0.7rem] px-0.5 py-0.25 tracking-wide uppercase font-medium text-bg"
                         :style="{ backgroundColor: LUMP_STATUS.find(s => s.id === status)?.rgb }">
                         {{t(LUMP_STATUS.find(s => s.id === status)!.label)}}
+                    </span>
+                    <span v-if="checkedLump.state !== 'unknown'"
+                        class="lump-state tag filter-blur flex gap-[5px] ml-auto" :style="{
+                            '--bg-color': LUMP_STATE.find(s => s.id === checkedLump!.state)?.rgba,
+                            '--text-color': LUMP_STATE.find(s => s.id === checkedLump!.state)?.rgb,
+                            '--border-color': LUMP_STATE.find(s => s.id === checkedLump!.state)?.border
+                        }">
+                        <TriangleAlert v-if="checkedLump.state === 'malignant'" :size="16" />
+                        {{t(LUMP_STATE.find(s => s.id === checkedLump!.state)!.label)}}
                     </span>
                 </div>
             </div>
@@ -97,7 +113,7 @@ const openLightbox = (pictures: string[], index = 0) => {
                         mm</span>
                     <span class="block text-xs tracking-wide uppercase text-text-secondary">{{
                         t("health.lumps.sinceFirstMeasured")
-                    }}
+                        }}
                     </span>
                 </div>
                 <div>

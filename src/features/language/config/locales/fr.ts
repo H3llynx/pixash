@@ -531,6 +531,12 @@ export default {
                     pending: "Analyses en attente",
                     removed: "Retirée",
                 },
+                state: {
+                    label: "Nature",
+                    malignant: "Maligne",
+                    benign: "Bénigne",
+                    unknown: "Indéterminée",
+                },
                 bodyRegions: {
                     instructions: "Sélectionnez un emplacement sur le schéma",
                     snout: { left: "Museau gauche", right: "Museau droit" },

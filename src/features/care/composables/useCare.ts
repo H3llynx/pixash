@@ -348,7 +348,7 @@ export const useCare = (pets: Ref<PetExtended[]>) => {
         });
     };
 
-    const updateSelectedLump = async (lump: Pick<LumpExtended, "id" | "petId">, data: Pick<LumpRecord, "title" | "location">) => {
+    const updateSelectedLump = async (lump: Pick<LumpExtended, "id" | "petId">, data: Pick<LumpRecord, "title" | "location" | "state">) => {
         await handleHealthAction(async () => {
             await updateLump(lump, user.value!.uid, data);
             await refreshPetHealth(lump.petId);

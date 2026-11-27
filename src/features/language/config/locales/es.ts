@@ -532,6 +532,12 @@ export default {
                     pending: "En análisis",
                     removed: "Extirpado",
                 },
+                state: {
+                    label: "Naturaleza",
+                    malignant: "Maligna",
+                    benign: "Benigna",
+                    unknown: "Sin determinar",
+                },
                 bodyRegions: {
                     instructions: "Selecciona un punto en la imagen",
                     snout: { left: "Hocico izquierdo", right: "Hocico derecho" },
