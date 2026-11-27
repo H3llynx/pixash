@@ -15,14 +15,22 @@ import { useAllPetsView } from '../features/care/composables/useAllPetsView.ts';
 import { useEvents } from '../features/care/composables/useEvents.ts';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
+import { tsToDate } from '../utils.ts';
 
 const { loading, selectedVet, vetLoading, isUpdatingVet } = usePets();
-const { petUpcomingEvents } = useEvents();
+const { eventsInTs } = useEvents();
 const { t } = useI18n();
 const { is2xl } = useMedia();
-const { filteredScheduledTreatments } = useAllPetsView();
+const { petViewed, filteredScheduledTreatments } = useAllPetsView();
 
-const upcomingVisits = computed(() => petUpcomingEvents.value.filter(event => event.eventType === "visit"))
+const upcomingVisits = computed(() => {
+    const upcoming = eventsInTs.value
+        .filter(event => tsToDate(event.ts, "upcoming"))
+        .filter(event => event.eventType === "visit");
+    return petViewed.value
+        ? upcoming.filter(e => e.petId === petViewed.value)
+        : upcoming
+});
 
 onBeforeRouteLeave(() => {
     isUpdatingVet.value = false;

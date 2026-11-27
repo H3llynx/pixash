@@ -145,6 +145,7 @@ export const useEvents = () => {
         selectedDate,
         currentMonth,
         currentMonthName,
+        eventsInTs,
         calendarEvents,
         eventsThisMonth,
         petUpcomingEvents,
