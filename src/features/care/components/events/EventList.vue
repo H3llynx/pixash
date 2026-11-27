@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<{
     events: PetEvent[]
     history?: boolean
     itemsPerPage?: number
+    noEventText?: string
 }>(), { history: false });
 
 const currentPage = ref<number>(1);
@@ -53,7 +54,8 @@ watch(() => props.events, () => {
             </template>
             <template v-else>
                 <EventCard v-if="events.length" v-for="event in paginatedEvents" :event="event" :key="event.id" />
-                <p v-else-if="!loading" class="text-text-secondary text-sm">{{ t("common.text.noEventText") }}</p>
+                <p v-else-if="!loading" class="text-text-secondary text-sm">{{ noEventText ? noEventText :
+                    t("common.text.noEventText") }}</p>
             </template>
         </div>
         <div v-if="totalPages > 1" class="flex gap-0.5 h-max justify-end mt-1">

@@ -16,7 +16,7 @@ export default {
         },
         text: {
             genericError: "Une erreur est survenue. Veuillez réessayer.",
-            noEventText: "Aucun soin à venir n’est programmé.",
+            noEventText: "Aucun soin programmé.",
             noHistoryText: "Aucun enregistrement trouvé pour la catégorie sélectionnée.",
             noPastTreatments: "Aucun traitement médical passé n’est enregistré.",
             noActiveTreatment: "Aucun traitement médical en cours.",
@@ -588,7 +588,8 @@ export default {
             antiparasite: "Antiparasitaire",
             other: "Autre",
             weight: "Poids"
-        }
+        },
+        noUpcomingVisit: "Pas de visite prévue dans les 3 prochains mois."
     },
     toast: {
         dismiss: "Ignorer la notification",

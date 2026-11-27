@@ -469,7 +469,7 @@ export default {
                 primary: "Principal",
                 secondary: "Secundario",
                 emergency: "Emergencia"
-            },
+            }
         },
         treatment: {
             ongoing: "Tratamiento en curso",
@@ -589,7 +589,8 @@ export default {
             antiparasite: "Antiparasitario",
             other: "Otro",
             weight: "Peso"
-        }
+        },
+        noUpcomingVisit: "No hay ninguna visita prevista en los próximos 3 meses."
     },
     toast: {
         dismiss: "Descartar notificación",

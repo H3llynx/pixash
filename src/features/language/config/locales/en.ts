@@ -589,7 +589,8 @@ export default {
             antiparasite: "Antiparasitic",
             other: "Other",
             weight: "Weight"
-        }
+        },
+        noUpcomingVisit: "No visit scheduled in the next 3 months."
     },
     toast: {
         dismiss: "Dismiss notification",

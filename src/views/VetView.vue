@@ -1,20 +1,28 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { onBeforeRouteLeave } from 'vue-router';
 import AddButton from '../components/AddButton.vue';
 import Header from '../components/Header.vue';
 import VetSkeleton from '../components/loading/VetSkeleton.vue';
+import { useMedia } from '../composables/useMedia.ts';
+import EventList from '../features/care/components/events/EventList.vue';
 import VetForm from '../features/care/components/forms/VetForm.vue';
 import ActiveTreatments from '../features/care/components/treatments/ActiveTreatments.vue';
 import TreatmentList from '../features/care/components/treatments/TreatmentList.vue';
 import VetSection from '../features/care/components/vet/VetSection.vue';
 import { useAllPetsView } from '../features/care/composables/useAllPetsView.ts';
+import { useEvents } from '../features/care/composables/useEvents.ts';
 import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 
 const { loading, selectedVet, vetLoading, isUpdatingVet } = usePets();
+const { petUpcomingEvents } = useEvents();
 const { t } = useI18n();
+const { is2xl } = useMedia();
 const { filteredScheduledTreatments } = useAllPetsView();
+
+const upcomingVisits = computed(() => petUpcomingEvents.value.filter(event => event.eventType === "visit"))
 
 onBeforeRouteLeave(() => {
     isUpdatingVet.value = false;
@@ -37,10 +45,12 @@ onBeforeRouteLeave(() => {
             <VetSection />
         </div>
         <section
-            class="px-0 flex flex-col gap-3 pb-1 lg:pt-1.5 lg:bg-bg-3 lg:border-l lg:border-border lg:border-dashed lg:h-full">
-            <ActiveTreatments class="default-padding lg:px-1.5" viewAll />
+            class="flex flex-col gap-2.5 pb-1.5 h-full lg:flex-col lg:px-1.5 md:pt-1.5 lg:bg-bg-3 lg:border-l lg:border-border lg:border-dashed lg:h-full">
+            <EventList :title="t('dashboard.title.upcoming')" :events="upcomingVisits" :itemsPerPage="is2xl ? 6 : 4"
+                :noEventText="t('events.noUpcomingVisit')" />
+            <ActiveTreatments viewAll />
             <TreatmentList v-if="filteredScheduledTreatments" :treatments="filteredScheduledTreatments"
-                :title="t('health.treatment.scheduledTreatments')" class="default-padding lg:px-1.5" />
+                :title="t('health.treatment.scheduledTreatments')" />
             <AddButton vet />
         </section>
     </main>
