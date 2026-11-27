@@ -16,7 +16,6 @@ export default {
         },
         text: {
             genericError: "Une erreur est survenue. Veuillez réessayer.",
-            noEventText: "Aucun soin programmé.",
             noHistoryText: "Aucun enregistrement trouvé pour la catégorie sélectionnée.",
             noPastTreatments: "Aucun traitement médical passé n’est enregistré.",
             noActiveTreatment: "Aucun traitement médical en cours.",
@@ -159,7 +158,7 @@ export default {
     dashboard: {
         title: {
             petProfile: "Profil de {name}",
-            upcoming: "À venir",
+            upcoming: "3 prochains mois",
             nextVaccine: "Prochain vaccin",
             nextVetVisit: "Prochaine visite vétérinaire",
             nextAntiparasitic: "Prochain antiparasitaire",
@@ -589,7 +588,8 @@ export default {
             other: "Autre",
             weight: "Poids"
         },
-        noUpcomingVisit: "Pas de visite prévue dans les 3 prochains mois."
+        noUpcomingVisit: "Aucune visite vétérinaire prévue.",
+        noEventText: "Aucun soin programmé.",
     },
     toast: {
         dismiss: "Ignorer la notification",

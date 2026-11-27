@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { Plus } from '@lucide/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { onBeforeRouteLeave } from 'vue-router';
 import AddButton from '../components/AddButton.vue';
+import Button from '../components/Button.vue';
 import Header from '../components/Header.vue';
 import VetSkeleton from '../components/loading/VetSkeleton.vue';
 import { useMedia } from '../composables/useMedia.ts';
@@ -17,7 +19,7 @@ import PetSelector from '../features/pets/components/PetSelector.vue';
 import { usePets } from '../features/pets/composables/usePets';
 import { tsToDate } from '../utils.ts';
 
-const { loading, selectedVet, vetLoading, isUpdatingVet } = usePets();
+const { loading, selectedVet, vetLoading, isUpdatingVet, handleAdd } = usePets();
 const { eventsInTs } = useEvents();
 const { t } = useI18n();
 const { is2xl } = useMedia();
@@ -25,7 +27,7 @@ const { petViewed, filteredScheduledTreatments } = useAllPetsView();
 
 const upcomingVisits = computed(() => {
     const upcoming = eventsInTs.value
-        .filter(event => tsToDate(event.ts, "upcoming"))
+        .filter(event => tsToDate(event.ts, "next3month"))
         .filter(event => event.eventType === "visit");
     return petViewed.value
         ? upcoming.filter(e => e.petId === petViewed.value)
@@ -54,8 +56,14 @@ onBeforeRouteLeave(() => {
         </div>
         <section
             class="flex flex-col gap-2.5 pb-1.5 h-full lg:flex-col lg:px-1.5 md:pt-1.5 lg:bg-bg-3 lg:border-l lg:border-border lg:border-dashed lg:h-full">
-            <EventList :title="t('dashboard.title.upcoming')" :events="upcomingVisits" :itemsPerPage="is2xl ? 6 : 4"
-                :noEventText="t('events.noUpcomingVisit')" />
+            <div class="flex flex-col gap-1">
+                <EventList :title="t('dashboard.title.upcoming')" :events="upcomingVisits" :itemsPerPage="is2xl ? 6 : 4"
+                    :noEventText="t('events.noUpcomingVisit')" />
+                <Button v-if="!upcomingVisits.length" variant="add" size="lg" class="md:max-w-xs"
+                    @click="handleAdd('visit')">
+                    <Plus /> {{ t("health.title.addVetVisit") }}
+                </Button>
+            </div>
             <ActiveTreatments viewAll />
             <TreatmentList v-if="filteredScheduledTreatments" :treatments="filteredScheduledTreatments"
                 :title="t('health.treatment.scheduledTreatments')" />

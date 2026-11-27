@@ -17,7 +17,6 @@ export default {
         },
         text: {
             genericError: "Se produjo un error inesperado",
-            noEventText: "No hay citas ni cuidados programados.",
             noHistoryText: "No se encontraron registros para la categoría seleccionada",
             noPastTreatments: "No hay tratamientos médicos pasados registrados.",
             noActiveTreatment: "No hay tratamientos médicos activos.",
@@ -160,7 +159,7 @@ export default {
     dashboard: {
         title: {
             petProfile: "Perfil de {name}",
-            upcoming: "Próximamente",
+            upcoming: "Próximos 3 meses",
             nextVaccine: "Próxima vacuna",
             nextVetVisit: "Próxima visita veterinaria",
             nextAntiparasitic: "Próximo antiparasitario",
@@ -590,7 +589,8 @@ export default {
             other: "Otro",
             weight: "Peso"
         },
-        noUpcomingVisit: "No hay ninguna visita prevista en los próximos 3 meses."
+        noUpcomingVisit: "No hay ninguna visita al veterinario programada.",
+        noEventText: "No hay citas ni cuidados programados."
     },
     toast: {
         dismiss: "Descartar notificación",

@@ -17,7 +17,6 @@ export default {
         },
         text: {
             genericError: "Something went wrong. Please try again.",
-            noEventText: "No upcoming care scheduled.",
             noHistoryText: "No records found for the selected category",
             noPastTreatments: "There is no past medical treatment recorded.",
             noActiveTreatment: "No active medical treatments.",
@@ -160,7 +159,7 @@ export default {
     dashboard: {
         title: {
             petProfile: "{name}'s profile",
-            upcoming: "Upcoming",
+            upcoming: "Next 3 months",
             nextVaccine: "Next Vaccine",
             nextVetVisit: "Next vet visit",
             nextAntiparasitic: "Next antiparasitic",
@@ -590,7 +589,8 @@ export default {
             other: "Other",
             weight: "Weight"
         },
-        noUpcomingVisit: "No visit scheduled in the next 3 months."
+        noUpcomingVisit: "No vet visit scheduled.",
+        noEventText: "No upcoming care scheduled."
     },
     toast: {
         dismiss: "Dismiss notification",

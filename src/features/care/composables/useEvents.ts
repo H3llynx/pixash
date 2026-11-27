@@ -101,7 +101,7 @@ export const useEvents = () => {
 
     const petUpcomingEvents = computed(() => {
         if (!selectedPet.value) return [];
-        return eventsInTs.value.filter(event => tsToDate(event.ts, "upcoming"))
+        return eventsInTs.value.filter(event => tsToDate(event.ts, "next3month"))
             .filter(e => e.petId === selectedPet.value!.id)
     });
 

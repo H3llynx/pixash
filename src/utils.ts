@@ -24,7 +24,7 @@ export const resetForm = <T extends object>(
     }
 };
 
-type DateFormatMode = "date" | "dateShort" | "timeUntil" | "input" | "datetime" | "upcoming" | "thatMonth" | "isThisWeek" | "isPast";
+type DateFormatMode = "date" | "dateShort" | "timeUntil" | "input" | "datetime" | "next3month" | "thatMonth" | "isThisWeek" | "isPast";
 
 export const tsToDay = (ts: Timestamp) => {
     const d = ts.toDate();
@@ -88,10 +88,12 @@ export const tsToDate = (ts: Timestamp | undefined, mode: DateFormatMode, month?
             if (diffDays < -30) return t("tsToDate.monthsAgo", { number: Math.abs(diffMonths) });
             return t("tsToDate.daysAgo", { number: Math.abs(diffDays) });
         }
-        case "upcoming": {
-            const end = new Date(today);
-            end.setMonth(end.getMonth() + 3);
-            end.setHours(23, 59, 59, 999);
+        case "next3month": {
+            const end = new Date(
+                today.getFullYear(),
+                today.getMonth() + 4,
+                0
+            );
             return eventDay <= end;
         }
         case "thatMonth": {
