@@ -8,7 +8,10 @@ export const SPECIES = [
     { id: "amphibian", name: "pet.species.amphibian", icon: "🐸", prefersKg: false },
 ] as const;
 
-
+export const unidentifiedBreeds = [
+    { id: "unknown", label: "pet.breeds.unknown" },
+    { id: "mixed", label: "pet.breeds.mixed" },
+]
 export const dogBreeds = [
     { id: "akita", label: "pet.breeds.dog.akita" },
     { id: "amstaff", label: "pet.breeds.dog.amstaff" },
@@ -44,7 +47,6 @@ export const dogBreeds = [
     { id: "maltese", label: "pet.breeds.dog.maltese" },
     { id: "mastiff", label: "pet.breeds.dog.mastiff" },
     { id: "schnauzer", label: "pet.breeds.dog.schnauzer" },
-    { id: "mixed", label: "pet.breeds.dog.mixed" },
     { id: "newfoundland", label: "pet.breeds.dog.newfoundland" },
     { id: "corgi", label: "pet.breeds.dog.corgi" },
     { id: "pitbull", label: "pet.breeds.dog.pitbull" },
@@ -61,7 +63,7 @@ export const dogBreeds = [
     { id: "vizsla", label: "pet.breeds.dog.vizsla" },
     { id: "weimaraner", label: "pet.breeds.dog.weimaraner" },
     { id: "yorkshire", label: "pet.breeds.dog.yorkshire" },
-    { id: "unknown", label: "pet.breeds.unknown" },
+    ...unidentifiedBreeds
 ];
 
 export const catBreeds = [
@@ -73,7 +75,6 @@ export const catBreeds = [
     { id: "domesticLonghair", label: "pet.breeds.cat.domesticLonghair" },
     { id: "domesticShorthair", label: "pet.breeds.cat.domesticShorthair" },
     { id: "maineCoon", label: "pet.breeds.cat.maineCoon" },
-    { id: "mixed", label: "pet.breeds.cat.mixed" },
     { id: "norwegianForestCat", label: "pet.breeds.cat.norwegianForestCat" },
     { id: "orientalShorthair", label: "pet.breeds.cat.orientalShorthair" },
     { id: "persian", label: "pet.breeds.cat.persian" },
@@ -82,7 +83,7 @@ export const catBreeds = [
     { id: "scottishFold", label: "pet.breeds.cat.scottishFold" },
     { id: "siamese", label: "pet.breeds.cat.siamese" },
     { id: "sphynx", label: "pet.breeds.cat.sphynx" },
-    { id: "unknown", label: "pet.breeds.unknown" },
+    ...unidentifiedBreeds
 ];
 
 export const petFields = {

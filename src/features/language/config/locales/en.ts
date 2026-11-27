@@ -291,7 +291,6 @@ export default {
                 maltese: "Maltese",
                 mastiff: "Mastiff",
                 schnauzer: "Miniature Schnauzer",
-                mixed: "Mixed Breed",
                 newfoundland: "Newfoundland",
                 corgi: "Pembroke Welsh Corgi",
                 pitbull: "Pit Bull Terrier",
@@ -318,7 +317,6 @@ export default {
                 domesticLonghair: "Domestic Longhair",
                 domesticShorthair: "Domestic Shorthair",
                 maineCoon: "Maine Coon",
-                mixed: "Mixed Breed",
                 norwegianForestCat: "Norwegian Forest Cat",
                 orientalShorthair: "Oriental Shorthair",
                 persian: "Persian",
@@ -329,6 +327,7 @@ export default {
                 sphynx: "Sphynx",
             },
             unknown: "Unknown",
+            mixed: "Mixed breed"
         },
         sex: {
             male: "male",
