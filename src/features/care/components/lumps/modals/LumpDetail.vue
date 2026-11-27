@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Plus, X } from '@lucide/vue';
+import { Pen, Plus, X } from '@lucide/vue';
 import { computed } from 'vue';
 import VueEasyLightbox, { useEasyLightbox } from 'vue-easy-lightbox';
 import { useI18n } from 'vue-i18n';
@@ -9,16 +9,16 @@ import { tsToDate } from '../../../../../utils.ts';
 import { usePets } from '../../../../pets/composables/usePets.ts';
 import { useLumpCheck } from '../../../composables/useLumpCheck.ts';
 import { LUMP_STATUS } from '../../../config.ts';
+import type { LumpCheckExtended } from '../../../types.ts';
 import { fromMm, getLatestLumpCheckValue, getNearestBodyRegion } from '../../../utils.ts';
 
 const { pets, selectLump, savingLogIds } = usePets();
-const { selectedLumpChecks, isViewModalOpen, openModal, checkedLump, closeModal, isLumpRemoved, getSizeProgression } = useLumpCheck();
+const { selectedLumpChecks, selectedCheck, isViewModalOpen, openModal, checkedLump, deleteCheck, closeModal, isLumpRemoved, getSizeProgression } = useLumpCheck();
 const { t } = useI18n();
 const { show, onHide, visibleRef, indexRef, imgsRef, changeIndex } = useEasyLightbox({ imgs: [] });
 const hasMultipleImages = computed(() => Array.isArray(imgsRef.value) && imgsRef.value.length > 1);
 
 const pet = computed(() => pets.value.find(p => p.id === checkedLump.value?.petId));
-
 const size = computed(() => getLatestLumpCheckValue(selectedLumpChecks.value, "size"));
 const status = computed(() => {
     if (!checkedLump.value) return null;
@@ -29,7 +29,6 @@ const location = computed(() => {
     const region = getNearestBodyRegion(pet.value.species as "dog" | "cat", checkedLump.value.location.x, checkedLump.value.location.y);
     return t(`health.lumps.form.bodyRegions.${region.id}.${checkedLump.value.location.side}`);
 });
-
 const progression = computed(() => {
     if (!checkedLump.value) return null;
     const value = getSizeProgression(checkedLump.value.id);
@@ -45,6 +44,17 @@ const editLump = () => {
     selectLump(checkedLump.value.id);
     closeModal('view');
 };
+
+const editCheck = (check: LumpCheckExtended) => {
+    if (!checkedLump.value) return;
+    selectedCheck.value = check;
+    openModal(checkedLump.value, 'edit');
+};
+
+const removeCheck = (check: LumpCheckExtended) => {
+    if (selectedLumpChecks.value.length <= 1) return;
+    else deleteCheck(check);
+}
 
 const openLightbox = (pictures: string[], index = 0) => {
     imgsRef.value = pictures;
@@ -126,6 +136,15 @@ const openLightbox = (pictures: string[], index = 0) => {
                     <p class="text-[0.6rem] tracking-wide font-medium uppercase pt-0.5"
                         :style="{ color: LUMP_STATUS.find(s => s.id === check.status)?.rgb }">
                         {{t(LUMP_STATUS.find(s => s.id === check.status)!.label)}}</p>
+                </div>
+                <div class="flex gap-0.5">
+                    <Button variant="ghost" size="min" :aria-label="t('common.button.edit')" @click="editCheck(check)">
+                        <Pen :size="12" />
+                    </Button>
+                    <Button v-if="selectedLumpChecks.length > 1" variant="ghost" size="min"
+                        :aria-label="t('common.button.delete')" @click="removeCheck(check)">
+                        <X :size="12" />
+                    </Button>
                 </div>
             </div>
             <VueEasyLightbox :visible="visibleRef" :imgs="imgsRef" :index="indexRef" :loop="true" @hide="onHide" />

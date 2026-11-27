@@ -11,12 +11,11 @@ import type { LumpCheckExtended } from '../../types.ts';
 import { fromMm } from '../../utils.ts';
 
 const { t } = useI18n();
-const { lumpChecks, deleteCheck, selectedCheck, openModal } = useLumpCheck();
+const { selectedLumpChecks, deleteCheck, selectedCheck, openModal } = useLumpCheck();
 const { lumps, savingLogIds } = usePets();
 
 const props = defineProps<{ check: LumpCheckExtended }>();
 const lump = computed(() => lumps.value.find(lump => lump.id === props.check.lumpId));
-const relatedChecks = computed(() => lumpChecks.value.filter(check => check.lumpId === props.check.lumpId))
 
 const editCheck = () => {
     if (!lump.value) return;
@@ -25,9 +24,9 @@ const editCheck = () => {
 };
 
 const removeCheck = () => {
-    if (relatedChecks.value.length <= 1) return;
+    if (selectedLumpChecks.value.length <= 1) return;
     else deleteCheck(props.check);
-}
+};
 </script>
 
 <template>
@@ -51,11 +50,11 @@ const removeCheck = () => {
             </span>
         </div>
         <div class="absolute top-[3px] right-[3px] flex gap-[3px]">
-            <Button variant="ghost" size="min" :aria-label="t('health.cta.editMedTime')" @click="editCheck">
+            <Button variant="ghost" size="min" :aria-label="t('common.button.edit')" @click="editCheck">
                 <Pen :size="12" />
             </Button>
-            <Button v-if="relatedChecks.length > 1" variant="ghost" size="min" :aria-label="t('common.button.delete')"
-                @click="removeCheck">
+            <Button v-if="selectedLumpChecks.length > 1" variant="ghost" size="min"
+                :aria-label="t('common.button.delete')" @click="removeCheck">
                 <X :size="12" />
             </Button>
         </div>

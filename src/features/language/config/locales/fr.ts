@@ -527,8 +527,8 @@ export default {
                 size: "Taille",
                 status: {
                     label: "Statut",
-                    monitoring: "Suivi",
-                    checked: "Vérifiée",
+                    monitoring: "En suivi",
+                    checked: "Contrôlée",
                     pending: "Analyses en attente",
                     removed: "Retirée",
                 },
